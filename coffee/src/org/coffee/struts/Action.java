@@ -29,20 +29,19 @@ public abstract class Action extends HttpServlet {
 	@Override
 	public void init() throws ServletException {
 		System.out.println("IOC..创建对象....");
-		// 创建IOC对象
 		try {
+			// IOC 创建对象(单例)
 			ObjectManager.createObject(null);
 			Map<String,Object> iocObjs = ObjectManager.getIocObject();
-			// 设置属性在其application范围内
+			// 保设置对象的生命周期：application
 			for(String key : iocObjs.keySet()){
 				super.getServletContext().setAttribute(key, iocObjs.get(key));
 			}
-			// 为Action提供方法注入
+			// 为Action提供注入对象
 			BeanInfo bi = Introspector.getBeanInfo(this.getClass(), Action.class);
 			PropertyDescriptor[] props = bi.getPropertyDescriptors();
 			for (PropertyDescriptor prop : props) {
-				Resource resource = prop.getWriteMethod().getAnnotation(
-						Resource.class);
+				Resource resource = prop.getWriteMethod().getAnnotation(Resource.class);
 				if (resource != null) {
 					prop.getWriteMethod().invoke(this, iocObjs.get(prop.getName()));
 				}
@@ -61,9 +60,15 @@ public abstract class Action extends HttpServlet {
 	 */
 	public void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		//参数映射
+		// 参数映射
 		this.paramsReflect(null, this.getClass(), request, response);
-		this.execute();
+		// 请求转发
+		String method = request.getParameter("method");
+		if(method != null){
+			
+		}else{
+			this.execute();
+		}
 	}
 	// post 请求
 	public void doPost(HttpServletRequest request, HttpServletResponse response)
@@ -139,7 +144,6 @@ public abstract class Action extends HttpServlet {
 				}
 				/**
 				 *  当 fieldValue == null 的时候。 有可能会将通过IOC方式注入的对象重置为null
-				 *  
 				 **/
 				if(fieldValue != null){
 					prop.getWriteMethod()
