@@ -23,11 +23,6 @@ public class TServiceImpl implements TService {
 	}
 
 	@Override
-	public <T> void delete(T t) throws Exception{
-		this.dao.delete(t);
-	}
-
-	@Override
 	public <T> void insert(T t)throws Exception {
 		this.dao.insert(t);
 	}
@@ -47,7 +42,7 @@ public class TServiceImpl implements TService {
 	}
 	@Override
 	public <T> T queryForObject(Class<T> clazz, long id) throws Exception {
-		return this.dao.queryForobject(clazz,id);
+		return this.dao.queryForObject(clazz,id);
 	}
 	@Override
 	public void executeUpdate(String sql) throws Exception {
@@ -65,7 +60,7 @@ public class TServiceImpl implements TService {
 		sql += " limit "+start + "," + size;
 		PagerModel<T> pager = new PagerModel<T>();
 		pager.setItems(this.dao.queryForList(sql, clazz));
-//		System.out.println(sql);
+
 		pager.setTotal(this.getCount(countSql));
 		return pager;
 	}
