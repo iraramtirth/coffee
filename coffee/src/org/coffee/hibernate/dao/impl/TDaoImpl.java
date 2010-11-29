@@ -41,32 +41,6 @@ public class TDaoImpl implements TDao {
 	}
 
 	/**
-	 * 删除记录；该实体中必须含有ID主键；且主键不为null
-	 * @throws SQLException
-	 */
-	@Override
-	public <T> void delete(T t) throws SQLException {
-		try {
-			BeanInfo bi = Introspector.getBeanInfo(t.getClass(), Object.class);
-			PropertyDescriptor[] props = bi.getPropertyDescriptors();
-			Object id = null;
-			for (PropertyDescriptor p : props) {
-				if (p.getName().equals("id")) {
-					id = p.getReadMethod().invoke(t, (Object[]) null);
-					break;
-				}
-			}
-			String sql = "delete from "
-					+ t.getClass().getSimpleName().toLowerCase()
-					+ " where id = " + Integer.valueOf(id.toString());
-			Statement stmt = conn.createStatement();
-			stmt.executeUpdate(sql);
-			stmt.close();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
-	/**
 	 * 删除实体
 	 */
 	@Override
@@ -93,10 +67,7 @@ public class TDaoImpl implements TDao {
 		/**
 		 * 如果实体通过 Entity 跟 Table同时注解了(二者缺一不可)
 		 */
-		//ParameterizedType clazz = (ParameterizedType)t.getClass().getGenericSuperclass();
 		try {
-			// 获取Java泛型的注解信息
-//			Class<?> clazz = Class.forName(t.getClass().getName());
 			if(t.getClass().getAnnotation(Entity.class) != null 
 					&& t.getClass().getAnnotation(Table.class) != null){
 				// mysql 数据库对数据表名大小写敏感
@@ -112,11 +83,7 @@ public class TDaoImpl implements TDao {
 			
 			sql.append(" (");
 			for (int i = 0; i < props.length; i++) {
-				//System.out.println(t.getClass().getAnnotation(Column.class));
-				
 				Column column = props[i].getReadMethod().getAnnotation(Column.class);
-				// 通过注解配置字段信息
-//				Column column = clazz.getField(props[i].getName()).getAnnotation(Column.class);
 				if(column != null){
 					sql.append(column.name());
 				}else{
@@ -297,44 +264,9 @@ public class TDaoImpl implements TDao {
 	}
 	/**
 	 * 查询单个实体
-	 * id = t.getId()
 	 */
 	@Override
-	public <T> T queryForobject(T t) throws SQLException {
-		try {
-			BeanInfo bi = Introspector.getBeanInfo(t.getClass(), Object.class);
-			PropertyDescriptor[] props = bi.getPropertyDescriptors();
-			Object id = null;
-			for (PropertyDescriptor p : props) {
-				if (p.getName().equals("id")) {
-					id = p.getReadMethod().invoke(t, (Object[]) null);
-				}
-			}
-			String sql = "select * from "
-					+ t.getClass().getSimpleName().toLowerCase()
-					+ " where id = " + Integer.valueOf(id.toString());
-			Statement stmt = conn.createStatement();
-			ResultSet rs = stmt.executeQuery(sql);
-			while (rs.next()) {
-				for (PropertyDescriptor p : props) {
-					p.getWriteMethod().invoke(t,
-							new Object[] { rs.getObject(p.getName()) });
-				}
-			}
-			rs.close();
-			stmt.close();
-			return t;
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return null;
-	}
-
-	/**
-	 * 查询单个实体
-	 */
-	@Override
-	public <T> T queryForobject(Class<T> clazz, long id) throws SQLException {
+	public <T> T queryForObject(Class<T> clazz, long id) throws SQLException {
 		try {
 			BeanInfo bi = Introspector.getBeanInfo(clazz, Object.class);
 			PropertyDescriptor[] props = bi.getPropertyDescriptors();
