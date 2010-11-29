@@ -19,7 +19,7 @@ import org.coffee.spring.ioc.annotation.Resource;
  * 总的控制器 
  * @author wangtao
  */
-public class Action extends HttpServlet {
+public abstract class Action extends HttpServlet {
 
 	/**
 	 * 
@@ -56,9 +56,7 @@ public class Action extends HttpServlet {
 	 * 该方法没有任何作用；运行时将会有其子类覆盖，并执行之
 	 * @return
 	 */
-	public String execute() {
-		return "SUCCESS";
-	}
+	public abstract String execute();
 	/**
 	 * get请求
 	 */
