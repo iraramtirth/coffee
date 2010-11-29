@@ -8,5 +8,13 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME) 
 @Target(ElementType.TYPE)
 public @interface Entity {
-	public String name() default "";
+	/**
+	 *  实体名称 
+	 */
+	public String name() default "";	
+	/**
+	 *  序列名称
+	 *  适用于Oracle数据库
+	 */
+	public String sequence() default ""; 
 }
