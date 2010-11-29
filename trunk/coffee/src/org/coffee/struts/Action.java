@@ -4,6 +4,7 @@ import java.beans.BeanInfo;
 import java.beans.Introspector;
 import java.beans.PropertyDescriptor;
 import java.io.IOException;
+import java.lang.reflect.Method;
 import java.text.SimpleDateFormat;
 import java.util.Map;
 
@@ -19,7 +20,7 @@ import org.coffee.spring.ioc.annotation.Resource;
  * 总的控制器 
  * @author wangtao
  */
-public abstract class Action extends HttpServlet {
+public abstract class Action extends HttpServlet implements Constant {
 
 	/**
 	 * 
@@ -63,18 +64,28 @@ public abstract class Action extends HttpServlet {
 		// 参数映射
 		this.paramsReflect(null, this.getClass(), request, response);
 		// 请求转发
-		String method = request.getParameter("method");
-		if(method != null){
-			
-		}else{
-			this.execute();
-		}
+		this.dispatchRequest(request);
 	}
 	// post 请求
 	public void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		this.doGet(request, response);
 	}
+	// 转发请求
+	private void dispatchRequest(HttpServletRequest request){
+		String targetMathod = request.getParameter("method");
+		if(targetMathod != null){
+			try {
+				Method method = this.getClass().getMethod(targetMathod, new Class[]{});
+				method.invoke(this, new Object[]{});
+			} catch (Exception e) {
+				e.printStackTrace();
+			} 
+		}else{
+			this.execute();
+		}
+	}
+	
 	/**
 	 * 参数映射
 	 * @param preName 参数前缀名：如  user.username 此时preName=user 
