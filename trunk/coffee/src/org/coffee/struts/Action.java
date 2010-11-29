@@ -28,7 +28,7 @@ public abstract class Action extends HttpServlet {
 
 	@Override
 	public void init() throws ServletException {
-		System.out.println("xxx只执行一次xxxx");
+		System.out.println("IOC..创建对象....");
 		// 创建IOC对象
 		try {
 			ObjectManager.createObject(null);
@@ -54,7 +54,6 @@ public abstract class Action extends HttpServlet {
 	}
 	/**
 	 * 该方法没有任何作用；运行时将会有其子类覆盖，并执行之
-	 * @return
 	 */
 	public abstract String execute();
 	/**
@@ -75,7 +74,7 @@ public abstract class Action extends HttpServlet {
 	 * 参数映射
 	 * @param preName 参数前缀名：如  user.username 此时preName=user 
 	 **/ 
-	public Object paramsReflect(String preName, Class<?> clazz,
+	private Object paramsReflect(String preName, Class<?> clazz,
 			HttpServletRequest request, HttpServletResponse response) {
 		try {
 			BeanInfo bi = null;
@@ -106,10 +105,7 @@ public abstract class Action extends HttpServlet {
 				String paramValue = request.getParameter(fieldName);
 				// 将参数值映射成适当的类型
 				Object fieldValue = null;
-//				// 如果从表单获取的值 为null，则不进行映射；
-//				if(valStr == null){
-//					continue;
-//				}
+
 				if (fieldType.contains("string")) {
 					fieldValue = paramValue;
 				} else if (fieldType.contains("int") || fieldType.contains("long")) {
