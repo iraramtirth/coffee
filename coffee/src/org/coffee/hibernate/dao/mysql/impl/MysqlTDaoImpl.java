@@ -14,6 +14,7 @@ import javax.sql.rowset.CachedRowSet;
 
 import org.coffee.hibernate.SqlConnection;
 import org.coffee.hibernate.dao.TDao;
+import org.coffee.hibernate.dao.util.MysqlTDaoUtil;
 import org.coffee.hibernate.dao.util.TDaoUtil;
 import org.coffee.spring.ioc.annotation.Repository;
 
@@ -27,11 +28,11 @@ import com.sun.rowset.CachedRowSetImpl;
  * @version 1.0
  */
 @Repository(name="dao")
-public class MysqlDaoImpl implements TDao {
+public class MysqlTDaoImpl implements TDao {
 
 	private Connection conn;
 
-	public MysqlDaoImpl() {
+	public MysqlTDaoImpl() {
 		conn = new SqlConnection().getConnection();
 	}
  
@@ -53,7 +54,7 @@ public class MysqlDaoImpl implements TDao {
 			throw new SQLException("插入数据失败，实体为null");
 		}
 		try {
-			String sql = TDaoUtil.getInsertSql(t);
+			String sql = MysqlTDaoUtil.getInsertSql(t);
 			Statement stmt = conn.createStatement();
 			stmt.executeUpdate(sql.toString());
 			stmt.close();
@@ -65,7 +66,7 @@ public class MysqlDaoImpl implements TDao {
 	@Override
 	public <T> void update(T t) throws SQLException {
 		try{	
-			String sql = TDaoUtil.getUpdateSql(t); 
+			String sql = MysqlTDaoUtil.getUpdateSql(t); 
 			Statement stmt = conn.createStatement();
 			stmt.executeUpdate(sql);
 			stmt.close();
