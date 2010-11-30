@@ -7,17 +7,15 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.sql.rowset.CachedRowSet;
 
 import org.coffee.hibernate.SqlConnection;
-import org.coffee.hibernate.annotation.Column;
-import org.coffee.hibernate.annotation.Entity;
-import org.coffee.hibernate.annotation.Table;
 import org.coffee.hibernate.dao.TDao;
+import org.coffee.hibernate.dao.util.OracleTDaoUtil;
+import org.coffee.hibernate.dao.util.TDaoUtil;
 
 import com.sun.rowset.CachedRowSetImpl;
 
@@ -28,29 +26,13 @@ import com.sun.rowset.CachedRowSetImpl;
  * 
  * @version 1.0
  */
-public class OracleDaoImpl implements TDao {
+public class OracleTDaoImpl implements TDao {
 
 	private Connection conn;
 
-	private String tableName = ""; 	//表名
-	private String sequenceName = "";// 表对应的序列
-	public OracleDaoImpl() {
+	public OracleTDaoImpl() {
 		
 	}
-	
-	// 反射获取实体的注解信息：表名、序列号
-	private <T> void setTableNameOrSequenceName(T t){
-		//Class<?> clazz = Class.forName(t.getClass().getName());
-		if(t.getClass().getAnnotation(Entity.class) != null 
-				&& t.getClass().getAnnotation(Table.class) != null){
-			Table tableAnno = t.getClass().getAnnotation(Table.class); 
-			tableName = tableAnno.name().toLowerCase();
-			sequenceName = tableAnno.sequence().toLowerCase();
-		}else{
-			tableName = t.getClass().getSimpleName().toLowerCase(); 
-		}
-	}
-	
 	/**
 	 * 删除实体
 	 */
@@ -58,8 +40,7 @@ public class OracleDaoImpl implements TDao {
 	public <T> void delete(Class<T> clazz, long id) throws SQLException {
 		try {
 			conn = new SqlConnection().getConnection();
-			this.setTableNameOrSequenceName(clazz.newInstance());
-			String sql = "delete from " + this.tableName + " where id = " + id;
+			String sql = "delete from " + TDaoUtil.getTableName(clazz) + " where id = " + id;
 			Statement stmt = conn.createStatement();
 			stmt.executeUpdate(sql);
 			stmt.close();
@@ -78,88 +59,9 @@ public class OracleDaoImpl implements TDao {
 		if(t == null){
 			throw new SQLException("插入数据失败，实体为null");
 		}
-		/**
-		 * 如果实体通过 Entity 跟 Table同时注解了(二者缺一不可)
-		 */
 		try {
-			// 获取Java泛型的注解信息(表名，序列号)
-			this.setTableNameOrSequenceName(t);
-			
-			StringBuffer sql = new StringBuffer("insert into ").append(tableName).append(" ");
-			
-			BeanInfo bi = Introspector.getBeanInfo(t.getClass(), Object.class);
-			PropertyDescriptor[] props = bi.getPropertyDescriptors();
-			
-			sql.append(" (");
-			for (int i = 0; i < props.length; i++) {
-				Column column = props[i].getReadMethod().getAnnotation(Column.class);
-				// 通过注解配置字段信息
-//				Column column = clazz.getField(props[i].getName()).getAnnotation(Column.class);
-				if(column != null){
-					sql.append(column.name());
-				}else{
-					sql.append(props[i].getName());
-				}
-				if (i + 1 < props.length) {
-					sql.append(",");
-				}
-			}
-			sql.append(") values (");
-			for (int i = 0; i < props.length; i++) {
-				try {
-					if ("Integer".equals(props[i].getPropertyType().getSimpleName())
-							|| "Long".equals(props[i].getPropertyType().getSimpleName())) {
-						// 处理 ID 主键
-						if ("id".equals(props[i].getName())) {
-							sql.append(this.sequenceName+".nextval");
-						} else {
-							sql.append(props[i].getReadMethod().invoke(t,
-									(Object[]) null));
-						}
-					} else if (props[i].getPropertyType().getCanonicalName()
-							.endsWith("Date")) {
-						SimpleDateFormat sdf = new SimpleDateFormat(
-								"yyyy-MM-dd HH:mm:ss");
-						String value = "";
-						try {
-							value = sdf.format(props[i].getReadMethod().invoke(
-									t, (Object[]) null));
-						} catch (Exception e) {
-							value = "null";
-						}// 如果时间为空
-						if ("null".equals(value)) {
-							sql.append(value);
-						} else { //HH:mi:ss
-							/**
-							 * 可能是像Java那样指定日期格式，比如：
-								to_date('2006-06-01 18:00:00' 'yyyy-mm-dd hh:MM:ss')
-								而在Oracle中的日期格式是不区分大小写的,所以 mm 出现了两次。
-								正确的写法是：
-								to_date('2006-06-01 18:00:00' 'yyyy-mm-dd hh:mi:ss')
-							 */
-							sql.append(" to_date('").append(value).append("','yyyy-MM-dd HH24:mi:ss') ");
-						}
-					} else {
-						Object value = props[i].getReadMethod().invoke(t,
-								(Object[]) null);
-						if (value == null) {
-							sql.append("null");
-						} else {
-							sql.append(" '").append(value.toString()).append(
-									"' ");
-						}
-					}
-					if (i + 1 < props.length) {
-						sql.append(",");
-					}
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-			sql.append(" )");
 			Statement stmt = conn.createStatement();
-			System.out.println(sql.toString());
-			stmt.executeUpdate(sql.toString());
+			stmt.executeUpdate(OracleTDaoUtil.getInsertSql(t));
 			stmt.close();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -171,77 +73,10 @@ public class OracleDaoImpl implements TDao {
 	@Override
 	public <T> void update(T t) throws SQLException {
 		conn = new SqlConnection().getConnection();
-		
-		this.setTableNameOrSequenceName(t);
-		
-		StringBuffer sql = new StringBuffer("update ").append(
-				this.tableName).append(" set ");
-		long id = 0;
-		try {
-			BeanInfo bi = Introspector.getBeanInfo(t.getClass(), Object.class);
-			PropertyDescriptor[] props = bi.getPropertyDescriptors();
-			for (int i = 0; i < props.length; i++) {
-				try {
-					Object value = null;
-					if ("Integer".equals(props[i].getPropertyType().getSimpleName())
-							|| "Long".equals(props[i].getPropertyType().getSimpleName())) {
-						// 处理 ID 主键
-						if ("id".equals(props[i].getName())) {
-							id = Long.valueOf(props[i].getReadMethod().invoke(
-									t, (Object[]) null).toString());
-						} else {
-							value = props[i].getReadMethod().invoke(t,
-									(Object[]) null);
-							if (value != null) {
-								sql.append(props[i].getName()).append(" = ")
-										.append(value);
-							} else {
-								continue;
-							}
-						}
-					} else if (props[i].getPropertyType().getCanonicalName()
-							.endsWith("Date")) {
-						SimpleDateFormat sdf = new SimpleDateFormat(
-								"yyyy-MM-dd HH:mm:ss");
-						try {
-							value = sdf.format(props[i].getReadMethod().invoke(
-									t, (Object[]) null));
-						} catch (Exception e) {
-							value = "null";
-						}
-						if ("null".equals(value) || null == value) {
-							continue;
-						} else {// mysql
-//							sql.append(props[i].getName()).append(" = '")
-//									.append(value).append("' ");
-							sql.append(props[i].getName()).append(" = ").append("to_date('").append(value).append("','yyyy-MM-dd HH24:mi:ss') ");
-						}
-					} else {
-						value = props[i].getReadMethod().invoke(t,
-								(Object[]) null);
-						if (value == null) {
-							continue;
-						} else {
-							sql.append(props[i].getName()).append(" = '")
-									.append(value.toString()).append("' ");
-						}
-					}
-					if (value != null && i + 1 < props.length) {
-						sql.append(",");
-					}
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-			String str = sql.toString().trim();
-			// 出去去 末尾的 ,
-			while (str.trim().endsWith(",")) {
-				str = str.substring(0, str.length() - 1);
-			}
-			str += " where id = " + id;
-			System.out.println(str);
+		try{
+			String sql = OracleTDaoUtil.getUpdateSql(t);
 			Statement stmt = conn.createStatement();
-			stmt.executeUpdate(str);
+			stmt.executeUpdate(sql);
 			stmt.close();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -300,10 +135,8 @@ public class OracleDaoImpl implements TDao {
 	public <T> T queryForObject(Class<T> clazz, long id) throws SQLException {
 		try {
 			conn = new SqlConnection().getConnection();
-			this.setTableNameOrSequenceName(clazz.newInstance());
-			String sql = "select * from " + this.tableName + " where id = " + id;
+			String sql = "select * from " + OracleTDaoUtil.getTableName(clazz) + " where id = " + id;
 			Statement stmt = conn.createStatement();
-			System.out.println(sql);
 			ResultSet rs = stmt.executeQuery(sql);
 			T t = this.processresultSetToObject(rs,clazz);
 			rs.close();
@@ -446,7 +279,7 @@ public class OracleDaoImpl implements TDao {
 	}
 	public static void main(String[] args) throws Exception {
 		String sql = "select * from activities";
-		OracleDaoImpl tdao = new OracleDaoImpl();
+		OracleTDaoImpl tdao = new OracleTDaoImpl();
 		CachedRowSet rs = tdao.queryForResultSet(sql);
 		tdao.conn.setAutoCommit(false);
 		if(rs.next()){
