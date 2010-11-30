@@ -64,9 +64,6 @@ public class TDaoImpl implements TDao {
 		if(t == null){
 			throw new SQLException("插入数据失败，实体为null");
 		}
-		/**
-		 * 如果实体通过 Entity 跟 Table同时注解了(二者缺一不可)
-		 */
 		try {
 			if(t.getClass().getAnnotation(Entity.class) != null 
 					&& t.getClass().getAnnotation(Table.class) != null){
@@ -370,6 +367,13 @@ public class TDaoImpl implements TDao {
 		}
 		rs.acceptChanges(tdao.getConnection());
 		rs.close();
+	}
+
+	@Override
+	public <T> List<T> queryForList(String sql, long start, int size,
+			Class<T> clazz) throws SQLException {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }
