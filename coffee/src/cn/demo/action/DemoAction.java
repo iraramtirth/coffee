@@ -3,8 +3,9 @@ package cn.demo.action;
 import javax.servlet.annotation.WebServlet;
 
 import org.coffee.struts.Action;
+import org.coffee.struts.annotation.Path;
 
-@WebServlet("/demo")
+@WebServlet("/demo/*")
 public class DemoAction extends Action {
 
 	/**
@@ -17,7 +18,7 @@ public class DemoAction extends Action {
 		System.out.println("xxxxxx");
 		return null;
 	}
-	
+	@Path("/insert")
 	public String insert(){
 		System.out.println("插入数据。。。。");
 		return SUCCESS;
