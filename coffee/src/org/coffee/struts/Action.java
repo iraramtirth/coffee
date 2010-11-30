@@ -64,7 +64,12 @@ public abstract class Action extends HttpServlet implements Constant {
 		// 参数映射
 		this.paramsReflect(null, this.getClass(), request, response);
 		// 请求转发
-		this.dispatchRequest(request);
+		String targetMathod = request.getParameter("method");
+		targetMathod = request.getRemoteAddr(); 
+		System.out.println("ss "+targetMathod);
+		
+		//this.dispatchRequest(targetMathod);
+		// 
 	}
 	// post 请求
 	public void doPost(HttpServletRequest request, HttpServletResponse response)
@@ -72,8 +77,8 @@ public abstract class Action extends HttpServlet implements Constant {
 		this.doGet(request, response);
 	}
 	// 转发请求
-	private void dispatchRequest(HttpServletRequest request){
-		String targetMathod = request.getParameter("method");
+	private void dispatchRequest(String targetMathod){
+		
 		if(targetMathod != null){
 			try {
 				Method method = this.getClass().getMethod(targetMathod, new Class[]{});
