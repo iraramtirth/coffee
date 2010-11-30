@@ -9,7 +9,7 @@ import org.coffee.struts.annotation.Path;
 public class DemoAction extends Action {
 
 	/**
-	 * 
+	 *  
 	 */
 	private static final long serialVersionUID = 1L;
 
@@ -20,7 +20,7 @@ public class DemoAction extends Action {
 	}
 	@Path("/insert")
 	public String insert(){
-		System.out.println("插入数据。。。。");
+		System.out.println("鎻掑叆鏁版嵁銆傘�銆傘�");
 		return SUCCESS;
 	}
 }
