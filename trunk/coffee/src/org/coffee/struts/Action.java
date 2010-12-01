@@ -8,13 +8,16 @@ import java.lang.reflect.Method;
 import java.text.SimpleDateFormat;
 import java.util.Map;
 
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.coffee.spring.ObjectManager;
 import org.coffee.spring.ioc.annotation.Resource;
+import org.coffee.struts.annotation.Result;
 /**
  * action 的公共父类 
  * 总的控制器 
@@ -26,7 +29,12 @@ public abstract class Action extends HttpServlet implements Constants {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-
+	
+	protected HttpServletRequest request;
+	protected HttpServletResponse response;
+	protected HttpSession session;
+	protected ServletContext application;
+	
 	@Override
 	public void init() throws ServletException {
 		System.out.println("IOC..创建对象....");
@@ -53,6 +61,16 @@ public abstract class Action extends HttpServlet implements Constants {
 		super.init();
 	}
 	/**
+	 *  初始化 .....
+	 */
+	private void init(HttpServletRequest request, HttpServletResponse response){
+		this.request = request;
+		this.response = response;
+		this.session = request.getSession();
+		this.application = request.getServletContext();
+	}
+	
+	/**
 	 * 该方法没有任何作用；运行时将会有其子类覆盖，并执行之
 	 */
 	public abstract String execute();
@@ -61,13 +79,13 @@ public abstract class Action extends HttpServlet implements Constants {
 	 */
 	public void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
+		this.init(request, response);
 		// 参数映射
 		this.paramsReflect(null, this.getClass(), request, response);
 		// 请求转发 按照url参数method指定的值，反射执行
 		String targetMathod = request.getParameter("method");
 		String uri = request.getRequestURI();
 		targetMathod = uri.substring(uri.lastIndexOf("/") + 1);
-		System.out.println("ss "+targetMathod);
 		this.dispatchRequest(targetMathod);
 	}
 	// post 请求
@@ -77,18 +95,26 @@ public abstract class Action extends HttpServlet implements Constants {
 	}
 	// 转发请求
 	private void dispatchRequest(String targetMathod){
-		
 		if(targetMathod != null){
 			try {
 				Method method = this.getClass().getMethod(targetMathod, new Class[]{});
 				method.invoke(this, new Object[]{});
+				Result result = method.getAnnotation(Result.class);
+				// 跳转的页面
+				String page = result.page();
+				// 请求转发类型
+				Result.Type type = result.type();
+				if(type.equals(Result.Type.DISPATCHER)){
+					this.request.getRequestDispatcher(page).forward(this.request, this.response);
+				}else{
+					this.response.sendRedirect(page);
+				}
+				return; // 停止继续执行
 			} catch (Exception e) {
-				// 如果方法不存在或者抛出其他异常
-				this.execute();
 			} 
-		}else{
-			this.execute();
 		}
+		// 如果抛出异常；或者没有指定相应的method；则执行默认的execute方法
+		this.dispatchRequest("execute");
 	}
 	
 	/**
