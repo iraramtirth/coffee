@@ -20,7 +20,7 @@ import org.coffee.spring.ioc.annotation.Resource;
  * 总的控制器 
  * @author wangtao
  */
-public abstract class Action extends HttpServlet implements Constant {
+public abstract class Action extends HttpServlet implements Constants {
 
 	/**
 	 * 
