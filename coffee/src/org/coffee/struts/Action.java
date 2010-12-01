@@ -63,13 +63,12 @@ public abstract class Action extends HttpServlet implements Constant {
 			throws ServletException, IOException {
 		// 参数映射
 		this.paramsReflect(null, this.getClass(), request, response);
-		// 请求转发
+		// 请求转发 按照url参数method指定的值，反射执行
 		String targetMathod = request.getParameter("method");
-		targetMathod = request.getRemoteAddr(); 
+		String uri = request.getRequestURI();
+		targetMathod = uri.substring(uri.lastIndexOf("/") + 1);
 		System.out.println("ss "+targetMathod);
-		
-		//this.dispatchRequest(targetMathod);
-		// 
+		this.dispatchRequest(targetMathod);
 	}
 	// post 请求
 	public void doPost(HttpServletRequest request, HttpServletResponse response)
@@ -84,7 +83,8 @@ public abstract class Action extends HttpServlet implements Constant {
 				Method method = this.getClass().getMethod(targetMathod, new Class[]{});
 				method.invoke(this, new Object[]{});
 			} catch (Exception e) {
-				e.printStackTrace();
+				// 如果方法不存在或者抛出其他异常
+				this.execute();
 			} 
 		}else{
 			this.execute();
