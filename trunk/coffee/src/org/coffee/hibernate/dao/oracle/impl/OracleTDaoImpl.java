@@ -26,6 +26,7 @@ import com.sun.rowset.CachedRowSetImpl;
  * 
  * @version 1.0
  */
+@SuppressWarnings("restriction")
 public class OracleTDaoImpl implements TDao {
 
 	private Connection conn;
