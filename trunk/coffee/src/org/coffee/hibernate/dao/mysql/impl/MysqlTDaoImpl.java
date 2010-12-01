@@ -27,7 +27,6 @@ import com.sun.rowset.CachedRowSetImpl;
  * 
  * @version 1.0
  */
-@SuppressWarnings("restriction")
 @Repository(name="dao")
 public class MysqlTDaoImpl implements TDao {
 
