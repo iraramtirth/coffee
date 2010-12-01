@@ -20,7 +20,7 @@ public class DemoAction extends Action {
 	}
 	@Path("/insert")
 	public String insert(){
-		System.out.println("鎻掑叆鏁版嵁銆傘�銆傘�");
+		System.out.println("insert....");
 		return SUCCESS;
 	}
 }
