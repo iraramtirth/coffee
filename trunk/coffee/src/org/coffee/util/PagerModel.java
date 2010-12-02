@@ -7,9 +7,12 @@ import java.util.List;
  * @param <T>
  */
 public class PagerModel<T>{
-	private int total;       // 总记录数
-	private int size = 10;	 // 单页条数
-	private List<T> items;   // 单页记录列表
+	private int total;      // 总记录数
+	private int size = 10;	// 单页条数
+	private List<T> items;  // 单页记录列表
+	
+	private int curpage;	// 当面页数
+	private int offset;		// 偏移量
 	
 	public int getTotal() {
 		return total;
@@ -28,5 +31,17 @@ public class PagerModel<T>{
 	}
 	public void setItems(List<T> items) {
 		this.items = items;
-	}    
+	}
+	public int getCurpage() {
+		return curpage;
+	}
+	public void setCurpage(int curpage) {
+		this.curpage = curpage;
+	}
+	public int getOffset() {
+		return offset;
+	}
+	public void setOffset(int offset) {
+		this.offset = offset;
+	} 
 }
