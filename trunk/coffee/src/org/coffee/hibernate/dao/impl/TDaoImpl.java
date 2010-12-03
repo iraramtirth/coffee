@@ -18,6 +18,7 @@ import org.coffee.hibernate.annotation.Column;
 import org.coffee.hibernate.annotation.Entity;
 import org.coffee.hibernate.annotation.Table;
 import org.coffee.hibernate.dao.TDao;
+import org.coffee.hibernate.dao.mysql.impl.MysqlDaoImpl;
 import org.coffee.spring.ioc.annotation.Repository;
 
 import com.sun.rowset.CachedRowSetImpl;
@@ -31,12 +32,10 @@ import com.sun.rowset.CachedRowSetImpl;
  */
 @SuppressWarnings("restriction")
 @Repository(name="dao")
-public class TDaoImpl implements TDao {
+public abstract class TDaoImpl implements TDao {
  
-	private Connection conn;
+	protected Connection conn;
 
-	private String tableName = "";
-	
 	public TDaoImpl() {
 		conn = new SqlConnection().getConnection();
 	}
@@ -57,172 +56,7 @@ public class TDaoImpl implements TDao {
 		}
 	}
 
-	/**
-	 *  插入实体
-	 */
-	@Override
-	public <T> void insert(T t) throws SQLException {
-		if(t == null){
-			throw new SQLException("插入数据失败，实体为null");
-		}
-		try {
-			if(t.getClass().getAnnotation(Entity.class) != null 
-					&& t.getClass().getAnnotation(Table.class) != null){
-				// mysql 数据库对数据表名大小写敏感
-				tableName = t.getClass().getAnnotation(Table.class).name().toLowerCase();
-			}else{
-				tableName = t.getClass().getSimpleName().toLowerCase(); 
-			}
-			
-			StringBuffer sql = new StringBuffer("insert into ").append(tableName).append(" ");
-			
-			BeanInfo bi = Introspector.getBeanInfo(t.getClass(), Object.class);
-			PropertyDescriptor[] props = bi.getPropertyDescriptors();
-			
-			sql.append(" (");
-			for (int i = 0; i < props.length; i++) {
-				Column column = props[i].getReadMethod().getAnnotation(Column.class);
-				if(column != null){
-					sql.append(column.name());
-				}else{
-					sql.append(props[i].getName());
-				}
-				if (i + 1 < props.length) {
-					sql.append(",");
-				}
-			}
-			sql.append(") values (");
-			for (int i = 0; i < props.length; i++) {
-				try {
-					if ("int".equals(props[i].getPropertyType()
-							.getCanonicalName())
-							|| "long".equals(props[i].getPropertyType()
-									.getCanonicalName())) {
-						// 处理 ID 主键
-						if ("id".equals(props[i].getName())) {
-							sql.append("null");
-						} else {
-							sql.append(props[i].getReadMethod().invoke(t,
-									(Object[]) null));
-						}
-					} else if (props[i].getPropertyType().getCanonicalName()
-							.endsWith("Date")) {
-						SimpleDateFormat sdf = new SimpleDateFormat(
-								"yyyy-MM-dd HH:mm:ss");
-						String value = "";
-						try {
-							value = sdf.format(props[i].getReadMethod().invoke(
-									t, (Object[]) null));
-						} catch (Exception e) {
-							value = "null";
-						}// 如果时间为空
-						if ("null".equals(value)) {
-							sql.append(value);
-						} else {
-							sql.append(" '").append(value).append("' ");
-						}
-					} else {
-						Object value = props[i].getReadMethod().invoke(t,
-								(Object[]) null);
-						if (value == null) {
-							sql.append("null");
-						} else {
-							sql.append(" '").append(value.toString()).append(
-									"' ");
-						}
-					}
-					if (i + 1 < props.length) {
-						sql.append(",");
-					}
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-			sql.append(" )");
-			Statement stmt = conn.createStatement();
-			stmt.executeUpdate(sql.toString());
-			stmt.close();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
-
-	@Override
-	public <T> void update(T t) throws SQLException {
-		StringBuffer sql = new StringBuffer("update ").append(
-				t.getClass().getSimpleName().toLowerCase()).append(" set ");
-		long id = 0;
-		try {
-			BeanInfo bi = Introspector.getBeanInfo(t.getClass(), Object.class);
-			PropertyDescriptor[] props = bi.getPropertyDescriptors();
-			for (int i = 0; i < props.length; i++) {
-				try {
-					Object value = null;
-					if (props[i].getPropertyType().getCanonicalName().endsWith(
-							"Integer")
-							|| props[i].getPropertyType().getCanonicalName()
-									.endsWith("Long")) {
-						// 处理 ID 主键
-						if ("id".equals(props[i].getName())) {
-							id = Long.valueOf(props[i].getReadMethod().invoke(
-									t, (Object[]) null).toString());
-						} else {
-							value = props[i].getReadMethod().invoke(t,
-									(Object[]) null);
-							if (value != null) {
-								sql.append(props[i].getName()).append(" = ")
-										.append(value);
-							} else {
-								continue;
-							}
-						}
-					} else if (props[i].getPropertyType().getCanonicalName()
-							.endsWith("Date")) {
-						SimpleDateFormat sdf = new SimpleDateFormat(
-								"yyyy-MM-dd HH:mm:ss");
-						try {
-							value = sdf.format(props[i].getReadMethod().invoke(
-									t, (Object[]) null));
-						} catch (Exception e) {
-							value = "null";
-						}
-						if ("null".equals(value) || null == value) {
-							continue;
-						} else {
-							sql.append(props[i].getName()).append(" = '")
-									.append(value).append("' ");
-						}
-					} else {
-						value = props[i].getReadMethod().invoke(t,
-								(Object[]) null);
-						if (value == null) {
-							continue;
-						} else {
-							sql.append(props[i].getName()).append(" = '")
-									.append(value.toString()).append("' ");
-						}
-					}
-					if (value != null && i + 1 < props.length) {
-						sql.append(",");
-					}
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-			String str = sql.toString().trim();
-			// 出去去 末尾的 ,
-			while (str.trim().endsWith(",")) {
-				str = str.substring(0, str.length() - 1);
-			}
-			str += " where id = " + id;
-			System.out.println(str);
-			Statement stmt = conn.createStatement();
-			stmt.executeUpdate(str);
-			stmt.close();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
+	
 	/**
 	 *  返回离线数据集
 	 */
@@ -326,10 +160,6 @@ public class TDaoImpl implements TDao {
 
 	/**
 	 * 执行指定sql语句
-	 * 
-	 * @param sql
-	 * @return
-	 * @throws SQLException
 	 */
 	@Override
 	public int executeUpdate(String sql) throws SQLException {
@@ -357,23 +187,23 @@ public class TDaoImpl implements TDao {
 		return conn;
 	}
 	public static void main(String[] args) throws Exception {
-		String sql = "select * from activities";
-		TDaoImpl tdao = new TDaoImpl();
-		CachedRowSet rs = tdao.queryForResultSet(sql);
-		tdao.conn.setAutoCommit(false);
-		if(rs.next()){
-			System.out.println(rs.getString(2));
-			rs.updateString(2, "sddssd");
-			rs.updateRow();
-		}
-		rs.acceptChanges(tdao.getConnection());
-		rs.close();
+//		String sql = "select * from activities";
+//		TDaoImpl tdao = new TDaoImpl();
+//		CachedRowSet rs = tdao.queryForResultSet(sql);
+//		tdao.conn.setAutoCommit(false);
+//		if(rs.next()){
+//			System.out.println(rs.getString(2));
+//			rs.updateString(2, "sddssd");
+//			rs.updateRow();
+//		}
+//		rs.acceptChanges(tdao.getConnection());
+//		rs.close();
 	}
 
 	@Override
 	public <T> List<T> queryForList(String sql, long start, int size,
 			Class<T> clazz) throws SQLException {
-		// TODO Auto-generated method stub
+		
 		return null;
 	}
 

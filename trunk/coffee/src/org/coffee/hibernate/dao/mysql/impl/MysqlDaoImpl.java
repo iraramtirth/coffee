@@ -13,8 +13,8 @@ import java.util.List;
 import javax.sql.rowset.CachedRowSet;
 
 import org.coffee.hibernate.SqlConnection;
-import org.coffee.hibernate.dao.TDao;
-import org.coffee.hibernate.dao.util.MysqlTDaoUtil;
+import org.coffee.hibernate.dao.impl.TDaoImpl;
+import org.coffee.hibernate.dao.util.MysqlDaoUtil;
 import org.coffee.hibernate.dao.util.TDaoUtil;
 import org.coffee.spring.ioc.annotation.Repository;
 
@@ -28,8 +28,7 @@ import com.sun.rowset.CachedRowSetImpl;
  * @version 1.0
  */
 @Repository(name="dao")
-public class MysqlDaoImpl extends TDao {
-
+public class MysqlDaoImpl extends TDaoImpl {
 	private Connection conn;
 
 	public MysqlDaoImpl() {
@@ -37,24 +36,12 @@ public class MysqlDaoImpl extends TDao {
 	}
  
 	@Override
-	public <T> void delete(Class<T> clazz, long id) throws SQLException {
-		try {
-			String sql = "delete from " + clazz.getSimpleName().toLowerCase() + " where id = " + id;
-			Statement stmt = conn.createStatement();
-			stmt.executeUpdate(sql);
-			stmt.close();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
-
-	@Override
 	public <T> void insert(T t) throws SQLException {
 		if(t == null){
 			throw new SQLException("插入数据失败，实体为null");
 		}
 		try {
-			String sql = MysqlTDaoUtil.getInsertSql(t);
+			String sql = MysqlDaoUtil.getInsertSql(t);
 			Statement stmt = conn.createStatement();
 			stmt.executeUpdate(sql.toString());
 			stmt.close();
@@ -66,7 +53,7 @@ public class MysqlDaoImpl extends TDao {
 	@Override
 	public <T> void update(T t) throws SQLException {
 		try{	
-			String sql = MysqlTDaoUtil.getUpdateSql(t); 
+			String sql = MysqlDaoUtil.getUpdateSql(t); 
 			Statement stmt = conn.createStatement();
 			stmt.executeUpdate(sql);
 			stmt.close();
@@ -179,23 +166,7 @@ public class MysqlDaoImpl extends TDao {
 		return null;
 	}
 
-	/**
-	 * 执行指定sql语句
-	 */
-	@Override
-	public int executeUpdate(String sql) throws SQLException {
-		int count = 0;
-		try {
-			Statement stmt = conn.createStatement();
-			count = stmt.executeUpdate(sql);
-			stmt.close();
-			return count;
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		return 0;
-	}
-
+	 
 	/**
 	 * 关闭数据库连接
 	 */
