@@ -3,7 +3,7 @@ package org.coffee.hibernate.service.impl;
 import java.util.List;
 
 import org.coffee.hibernate.dao.TDao;
-import org.coffee.hibernate.dao.impl.TDaoImpl;
+import org.coffee.hibernate.dao.mysql.impl.MysqlDaoImpl;
 import org.coffee.hibernate.service.TService;
 import org.coffee.util.PagerModel;
 /**
@@ -16,7 +16,7 @@ public class TServiceImpl implements TService {
 	private TDao dao;
 
 	public TServiceImpl(){
-		this.dao = new TDaoImpl();
+		this.dao = new MysqlDaoImpl();
 	}
 	public void setDao(TDao dao) {
 		this.dao = dao;
