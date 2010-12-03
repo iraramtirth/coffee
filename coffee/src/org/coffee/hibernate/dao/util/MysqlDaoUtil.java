@@ -12,7 +12,7 @@ import org.coffee.hibernate.annotation.Column;
  * 
  * @author wangtao
  */
-public class MysqlTDaoUtil {
+public class MysqlDaoUtil {
 	/**
 	 * 获取数据表的 表名
 	 */
