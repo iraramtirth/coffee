@@ -24,13 +24,13 @@ public class MysqlTDaoUtil {
 
 		BeanInfo bi = Introspector.getBeanInfo(t.getClass(), Object.class);
 		PropertyDescriptor[] props = bi.getPropertyDescriptors();
-		sql.append(" (");
+		sql.append("(");
 		for (int i = 0; i < props.length; i++) {
 			Column column = props[i].getReadMethod().getAnnotation(Column.class);
 			if (column != null) {
-				sql.append(column.name());
+				sql.append("`").append(column.name()).append("`");
 			} else {
-				sql.append(props[i].getName());
+				sql.append("`").append(props[i].getName()).append("`");
 			}
 			if (i + 1 < props.length) {
 				sql.append(",");
@@ -67,7 +67,7 @@ public class MysqlTDaoUtil {
 				e.printStackTrace();
 			}
 		}
-		sql.append(" )");
+		sql.append(")");
 		System.out.println(sql.toString());
 		return sql.toString();
 	}
