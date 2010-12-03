@@ -3,7 +3,7 @@ package org.coffee.hibernate.service.impl;
 import java.util.List;
 
 import org.coffee.hibernate.dao.TDao;
-import org.coffee.hibernate.dao.mysql.impl.TDaoImpl;
+import org.coffee.hibernate.dao.impl.TDaoImpl;
 import org.coffee.hibernate.service.TService;
 import org.coffee.util.PagerModel;
 /**
