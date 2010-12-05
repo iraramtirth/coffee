@@ -7,5 +7,11 @@
 </head>
 <body>
 	hello world
+	
+	<form action="demo/insert" method="post">
+		<input type="text" name="test" value="111">		
+		<input type="file" name="file">
+		<input type="submit" value="提交">
+	</form>
 </body>
 </html>
