@@ -27,7 +27,7 @@ import com.sun.rowset.CachedRowSetImpl;
  * 
  * @version 1.0
  */
-@Repository(name="dao")
+@Repository(name="mysqlDao")
 public class MysqlDaoImpl extends TDaoImpl {
 	private Connection conn;
 
