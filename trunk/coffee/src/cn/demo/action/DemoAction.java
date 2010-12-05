@@ -1,5 +1,7 @@
 package cn.demo.action;
 
+import java.io.InputStream;
+
 import javax.servlet.annotation.WebServlet;
 
 import org.coffee.struts.Action;
@@ -24,8 +26,11 @@ public class DemoAction extends Action {
 	
 	@Path("/insert")
 	@Result(page="/index.jsp",type=Type.DISPATCHER)
-	public String insert(){
+	public String insert()throws Exception{
 		System.out.println("insert....");
+		System.out.println(request.getParameter("test"));
+		InputStream ins = request.getInputStream();
+		System.out.println(ins.available());
 		return SUCCESS;
 	}
 }
