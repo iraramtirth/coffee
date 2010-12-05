@@ -99,10 +99,7 @@ public class ObjectManager {
 	 */
 	private static String[] getClassNameByBasePackage(String base)
 			throws IOException {
-		// 在 web 服务器中 一下 输出 null
-		//System.out.println(ClassLoader.getSystemResource("."));
-		// web工程的跟目录
-		String rootFile = ObjectManager.class.getClassLoader().getResource("/").getPath();
+		String rootFile = ObjectManager.class.getClassLoader().getResource("").getPath();
 		rootFile = rootFile.replace("%20", " ");
 		// 获取工程中所有的class文件
 		if (base == null || "".equals(base) || "/".equals(base)) {
@@ -129,12 +126,15 @@ public class ObjectManager {
 				try {
 					if (pathname.isFile()
 							&& pathname.getCanonicalPath().contains(finalBase)) {
+						//判断是否是class文件
+						if(pathname.getPath().endsWith(".class") == false){
+							return false;
+						}
 						String filename = pathname.getPath().substring(
 								pathname.getPath().indexOf(finalBase));
 						// cn\ioc\xxx.class 转换成 cn.ioc.xxx.class 格式
 						filename = filename.replace("\\", ".");
-						filename = filename.substring(0, filename
-								.lastIndexOf(".class"));
+						filename = filename.substring(0, filename.lastIndexOf(".class"));
 						classNameList.add(filename);
 						return true;
 					} else {// 如果不符合；则遍历其子类
@@ -166,6 +166,9 @@ public class ObjectManager {
 				getFiles(file);
 			} else {
 				String path = file.getCanonicalPath();
+				if(file.getPath().endsWith("class") == false){
+					continue;
+				}
 				String clazz = path.substring(path.indexOf("classes") + 8);
 				classNameList.add(clazz.replace("\\", ".").substring(0,
 						clazz.lastIndexOf(".")));
