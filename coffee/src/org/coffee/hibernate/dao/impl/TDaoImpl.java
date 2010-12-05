@@ -7,19 +7,13 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.sql.rowset.CachedRowSet;
 
 import org.coffee.hibernate.SqlConnection;
-import org.coffee.hibernate.annotation.Column;
-import org.coffee.hibernate.annotation.Entity;
-import org.coffee.hibernate.annotation.Table;
 import org.coffee.hibernate.dao.TDao;
-import org.coffee.hibernate.dao.mysql.impl.MysqlDaoImpl;
-import org.coffee.spring.ioc.annotation.Repository;
 
 import com.sun.rowset.CachedRowSetImpl;
 
@@ -31,7 +25,6 @@ import com.sun.rowset.CachedRowSetImpl;
  * @version 1.0
  */
 @SuppressWarnings("restriction")
-@Repository(name="dao")
 public abstract class TDaoImpl implements TDao {
  
 	protected Connection conn;

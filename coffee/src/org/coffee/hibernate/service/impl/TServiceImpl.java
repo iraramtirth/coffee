@@ -2,6 +2,8 @@ package org.coffee.hibernate.service.impl;
 
 import java.util.List;
 
+import javax.annotation.Resource;
+
 import org.coffee.hibernate.dao.TDao;
 import org.coffee.hibernate.dao.mysql.impl.MysqlDaoImpl;
 import org.coffee.hibernate.service.TService;
@@ -18,6 +20,7 @@ public class TServiceImpl implements TService {
 	public TServiceImpl(){
 		this.dao = new MysqlDaoImpl();
 	}
+	@Resource(name="mysqlDao")
 	public void setDao(TDao dao) {
 		this.dao = dao;
 	}

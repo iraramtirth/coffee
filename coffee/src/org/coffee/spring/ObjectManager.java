@@ -44,8 +44,7 @@ public class ObjectManager {
 			if (service != null) {
 				if ("null".equals(service.name())) {
 					String key = clazz.getSimpleName();
-					key = key.replaceFirst(".", key.substring(0, 1)
-							.toLowerCase());
+					key = key.replaceFirst(".", key.substring(0, 1).toLowerCase());
 					iocObjs.put(key, clazz.newInstance());
 				} else {
 					iocObjs.put(service.name(), clazz.newInstance());
@@ -57,14 +56,13 @@ public class ObjectManager {
 				// 默认首字母小写
 				if ("null".equals(repository.name())) {
 					String key = clazz.getSimpleName();
-					key = key.replaceFirst(".", key.substring(0, 1)
-							.toLowerCase());
+					key = key.replaceFirst(".", key.substring(0, 1).toLowerCase());
 					iocObjs.put(key, clazz.newInstance());
 				} else {
 					iocObjs.put(repository.name(), clazz.newInstance());
 				}
 			}
-		}
+		}   
 		// 创建完所有的对象之后进行注入
 		for (String key : iocObjs.keySet()) {
 			setterByIoc(iocObjs.get(key));
@@ -155,9 +153,7 @@ public class ObjectManager {
 
 	/**
 	 * 获取工程中的所有类文件
-	 * 
 	 * @param rootFile
-	 * @return
 	 */
 	private static String[] getFiles(File rootFile) throws IOException {
 		File[] allFiles = rootFile.listFiles();
