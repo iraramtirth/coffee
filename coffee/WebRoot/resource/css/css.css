@@ -1,0 +1,86 @@
+@charset "utf-8";
+/* CSS Document */
+
+.top_line{
+    width:440px;
+	background:#95D6F1;
+	height:3px;
+	overflow:hidden;
+}
+.center_box{
+    width:440px;
+	border:1px solid #A1C5D3;
+	border-top:none;
+	background:#fff;
+}
+.titiel_bg{
+    width:100%;
+	background:url(../img/uers_bg.gif);
+}
+.titiel_bg td{
+    line-height:64px;
+	padding:0 20px 3px 20px;
+	color:#0075A9;
+	font-size:14px;
+	font-weight:bold;
+}
+.titiel_bg td span{
+    color:#FF0000;
+	font-size:12px;
+	font-weight:100;
+}
+.button{
+    width:420px;
+	border-top:1px dashed #ccc;
+	margin:0 9px;
+	text-align:center;
+	padding-top:15px;
+	padding-bottom:15px;
+}
+.button input{
+    background:url(../img/button.gif);
+	width:91px;
+	height:31px;
+	border:none;
+	color:#0075A9;
+	font-size:14px;
+	font-weight:bold;
+	margin:0 5px;
+}
+.text_uers{
+    width:100%;
+}
+.text_uers td{
+    color:#666666;
+	font-size:12px;
+	letter-spacing:1px;
+	line-height:30px;
+}
+.input{
+    border-left:2px solid #404040;
+    border-top:2px solid #404040;
+	border-right:1px solid #D4D0C8;
+	border-bottom:1px solid #D4D0C8;
+	padding-left:2px;
+	width:110px;
+}
+.input2{
+    border-left:2px solid #404040;
+    border-top:2px solid #404040;
+	border-right:1px solid #D4D0C8;
+	border-bottom:1px solid #D4D0C8;
+	padding-left:2px;
+	width:50px;
+}
+
+.ma{
+    width:60px;
+	height:20px;
+}
+.foot_line{
+    width:430px;
+	background:#D5E7F5;
+	height:3px;
+	overflow:hidden;
+	margin-left:4px;
+}
