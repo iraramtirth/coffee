@@ -27,7 +27,7 @@ public class TServiceImpl implements TService {
 		this.dao.insert(t);
 		this.dao.close();
 	}
-
+	
 	@Override
 	public <T> List<T> query(String sql, Class<T> t) throws Exception{
 		List<T> ls = this.dao.queryForList(sql, t);
