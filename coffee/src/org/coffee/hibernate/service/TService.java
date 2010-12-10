@@ -26,5 +26,4 @@ public interface TService {
 	 */
 	public <T> PagerModel<T> queryForPagerModel(String sql,int start,int size,Class<T> clazz) throws Exception;
 	public int getCount(String sql) throws Exception;
-	
 }
