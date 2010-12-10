@@ -33,4 +33,8 @@ public class DemoAction extends Action {
 		System.out.println(ins.available());
 		return SUCCESS;
 	}
+	public String list()throws Exception{
+		System.out.println("xxx");
+		return SUCCESS;
+	}
 }
