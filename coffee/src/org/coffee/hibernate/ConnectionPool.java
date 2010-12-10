@@ -8,7 +8,13 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Enumeration;
 import java.util.Vector;
-
+/**
+ * 数据库连接池的自定义实现
+ * 
+ * 由tomcat配置的数据源代替
+ * 
+ * @author wangtao
+ */
 public class ConnectionPool {
 	private String jdbcDriver = ""; // 数据库驱动
 	private String dbUrl = ""; // 数据 URL
@@ -121,7 +127,6 @@ public class ConnectionPool {
 	public  synchronized Connection getConnection() throws SQLException {
 		// 确保连接池己被创建
 		if (connections == null) {
-			// wangtao
 			try {
 				createPool();
 			} catch (Exception e) {

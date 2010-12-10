@@ -1,11 +1,11 @@
-package com.ccibs.service.impl;
+package org.coffee.hibernate.service.impl;
 
 import java.util.List;
 
-import com.ccibs.dao.PagerModel;
-import com.ccibs.dao.TDao;
-import com.ccibs.dao.impl.TDaoImpl;
-import com.ccibs.service.TService;
+import org.coffee.hibernate.dao.TDao;
+import org.coffee.hibernate.dao.impl.TDaoImpl;
+import org.coffee.hibernate.service.TService;
+import org.coffee.util.PagerModel;
 /**
  * service层通用父类接口实现类
  * 

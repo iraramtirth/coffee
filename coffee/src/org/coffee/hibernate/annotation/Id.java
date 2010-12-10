@@ -5,8 +5,12 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-@Retention(RetentionPolicy.RUNTIME) 
-@Target(ElementType.TYPE)
-public @interface Entity {
-	public String name() default "";
+/**
+ * 主键
+ * @author wangtao
+ */
+@Retention(RetentionPolicy.RUNTIME)
+@Target(ElementType.FIELD)
+public @interface Id {
+	public String column() default "";
 }

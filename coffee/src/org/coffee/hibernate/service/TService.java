@@ -1,8 +1,8 @@
-package com.ccibs.service;
+package org.coffee.hibernate.service;
 
 import java.util.List;
 
-import com.ccibs.dao.PagerModel;
+import org.coffee.util.PagerModel;
 /**
  * service层通用父类接口
  * @author wangtao

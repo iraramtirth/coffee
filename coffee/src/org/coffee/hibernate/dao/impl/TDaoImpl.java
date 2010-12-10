@@ -1,121 +1,131 @@
 package org.coffee.hibernate.dao.impl;
 
-import java.beans.BeanInfo;
-import java.beans.Introspector;
-import java.beans.PropertyDescriptor;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.sql.rowset.CachedRowSet;
 
-import org.coffee.hibernate.SqlConnection;
 import org.coffee.hibernate.dao.TDao;
+import org.coffee.hibernate.dao.util.Configuration;
+import org.coffee.hibernate.dao.util.TDaoUtil;
+import org.coffee.util.SqlConnection;
 
-import com.sun.rowset.CachedRowSetImpl;
+//import com.sun.rowset.CachedRowSetImpl;
 
-/**
- * 系统DAO的公共/通用父类接口 实现类
- * 
- * @author wangtao
- * 
- * @version 1.0
- */
-@SuppressWarnings("restriction")
-public abstract class TDaoImpl implements TDao {
- 
+public class TDaoImpl implements TDao{
 	protected Connection conn;
-
-	public TDaoImpl() {
+	private static Logger logger = Logger.getLogger("jdbc");
+	
+	static{
+		logger.setLevel(Level.INFO);
+	}
+	public TDaoImpl(){
 		conn = new SqlConnection().getConnection();
 	}
-
-	/**
-	 * 删除实体
-	 */
+	
+	// 删除
 	@Override
 	public <T> void delete(Class<T> clazz, long id) throws SQLException {
+		String sql = "delete from " + TDaoUtil.getTableName(clazz) + " where id=" + id;
+		Statement stmt = conn.createStatement();
+		stmt.executeUpdate(sql);
+		stmt.close();
+	}
+	// 批量删除
+	@Override
+	public <T> void deleteBatch(Class<T> clazz,String[] ids) throws SQLException{
 		try {
-			String sql = "delete from " + clazz.getSimpleName().toLowerCase()
-					+ " where id = " + id;
-			Statement stmt = conn.createStatement();
-			stmt.executeUpdate(sql);
-			stmt.close();
-		} catch (Exception e) {
+			String sql = "delete from "+TDaoUtil.getTableName(clazz) +" where id=?";
+			conn.setAutoCommit(false);
+			PreparedStatement pstmt = conn.prepareStatement(sql);
+			for(String id : ids){
+				pstmt.setInt(1, Integer.parseInt(id));
+				pstmt.addBatch();
+			}
+			pstmt.executeBatch();
+			conn.commit();
+			pstmt.close();
+		} catch (NumberFormatException e) {
 			e.printStackTrace();
 		}
 	}
-
-	
-	/**
-	 *  返回离线数据集
-	 */
+	// 获取离线数据集
 	@Override
 	public CachedRowSet queryForResultSet(String sql) throws SQLException {
-		CachedRowSet crs = new CachedRowSetImpl();
-		try {
-			Statement stmt = conn.createStatement();
-			ResultSet rs = stmt.executeQuery(sql);
-			crs.populate(rs);
-			rs.close();
-			stmt.close();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return crs;
+//		CachedRowSet crs = new CachedRowSetImpl();
+//		Statement stmt = conn.createStatement();
+//		ResultSet rs = stmt.executeQuery(sql);
+//		crs.populate(rs);
+//		rs.close();
+//		stmt.close();
+		return null;
 	}
+	 
 	/**
-	 *  查询总记录数
-	 *  sql = "select count(*) from ..."
+	 * 执行指定sql语句
 	 */
 	@Override
-	public int queryForCount(String sql) throws SQLException {
-		int count = 0;
+	public int executeUpdate(String sql) throws SQLException {
+		int value = 0;
+		Statement stmt = conn.createStatement();
+		value = stmt.executeUpdate(sql);
+		return value;
+	}
+	
+	/**
+	 *  返回 Integer Long  String 等基本数据类型的包装类型 
+	 */
+	@SuppressWarnings("unchecked")
+	@Override
+	public <T> T queryForObject(Class<T> clazz, String sql) throws SQLException {
+		T t = null;;
 		try {
 			Statement stmt = conn.createStatement();
 			ResultSet rs = stmt.executeQuery(sql);
 			while (rs.next()) {
-				count = rs.getInt(1);
+				if(clazz.getSimpleName().equals("Integer")){
+					t = (T)Integer.valueOf(rs.getInt(1));
+				}
+				else{
+					t = (T)rs.getString(1);
+				}
 			}
-			rs.close();
-			stmt.close();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		return count;
+		return t;
 	}
 	/**
-	 * 查询单个实体
+	 *   查询，返回自定义对象
 	 */
 	@Override
 	public <T> T queryForObject(Class<T> clazz, long id) throws SQLException {
+		T t = null;
 		try {
-			BeanInfo bi = Introspector.getBeanInfo(clazz, Object.class);
-			PropertyDescriptor[] props = bi.getPropertyDescriptors();
-			String sql = "select * from " + clazz.getSimpleName().toLowerCase()
-					+ " where id = " + id;
+			t = clazz.newInstance();
+			String sql = "select * from " + TDaoUtil.getTableName(clazz) + " where id = " + id;
 			Statement stmt = conn.createStatement();
-			System.out.println(sql);
 			ResultSet rs = stmt.executeQuery(sql);
-			T t = clazz.newInstance();
-			if (rs.next()) {
-				for (PropertyDescriptor p : props) {
-					p.getWriteMethod().invoke(t,
-							new Object[] { rs.getObject(p.getName()) });
-				}
+			List<T> ls = TDaoUtil.processResultSetToList(rs, clazz);
+			if(ls == null || ls.size() == 0){
+				t = null;
+			}else{
+				t = ls.get(0);
 			}
 			rs.close();
 			stmt.close();
-			return t;
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		return null;
+		return t;
 	}
-
 	/**
 	 *  查询返回list
 	 */
@@ -124,80 +134,78 @@ public abstract class TDaoImpl implements TDao {
 			throws SQLException {
 		List<T> ls = new ArrayList<T>();
 		try {
-			BeanInfo bi = Introspector.getBeanInfo(clazz, Object.class);
-			PropertyDescriptor[] props = bi.getPropertyDescriptors();
 			Statement stmt = conn.createStatement();
 			ResultSet rs = stmt.executeQuery(sql);
-			while (rs.next()) {
-				T tt = clazz.newInstance();
-				for (PropertyDescriptor p : props) {
-					try {
-						p.getWriteMethod().invoke(tt,
-								new Object[] { rs.getObject(p.getName()) });
-					} catch (IllegalArgumentException e) {
-						e.printStackTrace();
-					} catch (IllegalAccessException e) {
-						e.printStackTrace();
-					}
-				}
-				ls.add(tt);
-			}
+			ls = TDaoUtil.processResultSetToList(rs, clazz);
 			rs.close();
 			stmt.close();
-			return ls;
 		} catch (Exception e) {
 			e.printStackTrace();
-		}
-		return null;
+		} 
+		return ls;
 	}
-
-	/**
-	 * 执行指定sql语句
-	 */
-	@Override
-	public int executeUpdate(String sql) throws SQLException {
-		try {
-			Statement stmt = conn.createStatement();
-			return stmt.executeUpdate(sql);
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		return 0;
-	}
-
-	/**
-	 * 关闭数据库连接
-	 */
-	public void close() {
-		try {
-			this.conn.close();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-	}
-
-	public Connection getConnection(){
-		return conn;
-	}
-	public static void main(String[] args) throws Exception {
-//		String sql = "select * from activities";
-//		TDaoImpl tdao = new TDaoImpl();
-//		CachedRowSet rs = tdao.queryForResultSet(sql);
-//		tdao.conn.setAutoCommit(false);
-//		if(rs.next()){
-//			System.out.println(rs.getString(2));
-//			rs.updateString(2, "sddssd");
-//			rs.updateRow();
-//		}
-//		rs.acceptChanges(tdao.getConnection());
-//		rs.close();
-	}
-
+	//分页查询
 	@Override
 	public <T> List<T> queryForList(String sql, long start, int size,
 			Class<T> clazz) throws SQLException {
-		
-		return null;
+		List<T> ls = new ArrayList<T>();
+		try {
+			Statement stmt = conn.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,ResultSet.CONCUR_READ_ONLY);
+			stmt.setMaxRows((int)(start + size));
+			ResultSet rs = stmt.executeQuery(sql);
+			// 设置分页
+			rs.first();
+			rs.relative((int)start - 1);
+			// 处理resultSet 实现分页查询
+			ls = TDaoUtil.processResultSetToList(rs,clazz);
+			rs.close();
+			stmt.close();
+		} catch (Exception e) {
+			System.out.println(sql);
+			e.printStackTrace();
+		} 
+		return ls;
+	}
+
+	@Override
+	public <T> void insert(T t) throws SQLException {
+		if(t == null){
+			throw new SQLException("插入数据失败，实体为null");
+		}
+		try {
+			String sql = TDaoUtil.getInsertSql(t,Configuration.DIALECT);
+			Statement stmt = conn.createStatement();
+			System.out.println(sql);
+			stmt.executeUpdate(sql);
+			stmt.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	//更新
+	@Override
+	public <T> void update(T t) throws SQLException {
+		try{
+			String sql = TDaoUtil.getUpdateSql(t,Configuration.DIALECT);
+			Statement stmt = conn.createStatement();
+			stmt.executeUpdate(sql);
+			stmt.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		} 
+	}
+	
+	@Override
+	public void close() throws SQLException{
+		try{
+			this.conn.close();
+		}catch(Exception e){
+			e.printStackTrace();
+		}finally{
+			if(conn != null){
+				conn.close();				
+			}
+		}
 	}
 
 }
