@@ -1,6 +1,8 @@
 package org.coffee.util;
 
 import java.util.List;
+
+import cn.demo.bean.User;
 /**
  * 分页 
  * @author wangtao
@@ -11,6 +13,11 @@ public class PagerModel<T>{
 	private int size = 10;	// 单页条数
 	private List<T> items;  // 单页记录列表
 	
+	/**
+	 * 解决pager-taglib 在 struts2 中的如下异常信息
+	 * ognl.OgnlException: target is null for 
+	 * setProperty(null, "offset", [Ljava.lang.String;@1e09e6a)
+	 */
 	private int curpage;	// 当面页数
 	private int offset;		// 偏移量
 	
@@ -44,4 +51,9 @@ public class PagerModel<T>{
 	public void setOffset(int offset) {
 		this.offset = offset;
 	} 
+	
+	public static void main(String[] args) {
+		PagerModel<User> pager = new PagerModel<User>();
+		System.out.println(pager.getSize());
+	}
 }
