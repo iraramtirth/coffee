@@ -6,6 +6,7 @@ import java.beans.PropertyDescriptor;
 import java.io.IOException;
 import java.lang.reflect.Method;
 import java.text.SimpleDateFormat;
+import java.util.Map;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
@@ -72,7 +73,7 @@ public abstract class Action extends HttpServlet implements Constants {
 			throws ServletException, IOException {
 		this.init(request, response);
 		// 参数映射
-		this.paramsReflect(null, this.getClass(), request, response);
+		this.paramsReflect(null, this.getClass(), request);
 		// 请求转发 按照url参数method指定的值，反射执行
 		String targetMathod = request.getParameter("method");
 		String uri = request.getRequestURI();
@@ -90,7 +91,6 @@ public abstract class Action extends HttpServlet implements Constants {
 	}
 	// 转发请求
 	private void dispatchRequest(String targetMathod){
-		System.out.println(targetMathod);
 		if(targetMathod != null){
 			try {
 				Method method = this.getClass().getMethod(targetMathod, new Class[]{});
@@ -122,10 +122,10 @@ public abstract class Action extends HttpServlet implements Constants {
 	
 	/**
 	 * 参数映射
+	 * 按照class中的属性查找映射
 	 * @param preName 参数前缀名：如  user.username 此时preName=user 
 	 **/ 
-	private Object paramsReflect(String preName, Class<?> clazz,
-			HttpServletRequest request, HttpServletResponse response) {
+	private Object paramsReflect(String preName, Class<?> clazz, HttpServletRequest request) {
 		try {
 			BeanInfo bi = null;
 			Object targetObj = null;
@@ -155,7 +155,6 @@ public abstract class Action extends HttpServlet implements Constants {
 				String paramValue = request.getParameter(fieldName);
 				// 将参数值映射成适当的类型
 				Object fieldValue = null;
-
 				if (fieldType.contains("string")) {
 					fieldValue = paramValue;
 				} else if (fieldType.contains("int") || fieldType.contains("long")) {
@@ -183,13 +182,12 @@ public abstract class Action extends HttpServlet implements Constants {
 							}
 						}
 					}
-				} else {   /**
-							*	type 自定义对象类型
-							*	递归
-						    **/	
+				} else {/**
+						 *	type 自定义对象类型
+						 *	递归
+						 **/	
 					Class<?> fieldClazz = prop.getPropertyType();
-					fieldValue = this.paramsReflect(fieldType, fieldClazz, request,
-							response);
+					fieldValue = this.paramsReflect(fieldName, fieldClazz, request);
 				}
 				/**
 				 *  当 fieldValue == null 的时候。 有可能会将通过IOC方式注入的对象重置为null
@@ -203,7 +201,23 @@ public abstract class Action extends HttpServlet implements Constants {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		return null;
+		return  null;
 	}
 
+	public Object paramsReflect(){
+		Map<String, String[]> map = request.getParameterMap();
+		for(String key : map.keySet()){
+			String value = null;
+			for(String val : map.get(key)){
+				if(map.get(key).length > 1){
+					value += val;
+				}else{
+					value = val;
+				}
+			}
+			System.out.print(key+"\t"+value);	
+		}
+		return null;
+	}
+	
 }
