@@ -18,7 +18,7 @@ import org.coffee.hibernate.annotation.Entity;
 import org.coffee.hibernate.annotation.Id;
 import org.coffee.hibernate.annotation.NullMap;
 import org.coffee.hibernate.annotation.Table;
-import org.coffee.hibernate.dao.util.Configuration.MappedType;
+import org.coffee.util.TypeUtils;
 
 /**
  * 数据库的通用工具类
@@ -122,7 +122,7 @@ public class TDaoUtil {
 					 * 也会抛出该异常
 					 */ 
 					Object value = null;
-					switch(getMappedType(prop)){
+					switch(TypeUtils.getMappedType(prop)){
 						case Long : 
 							value = Long.valueOf(rs.getLong(TDaoUtil.getColumnName(clazz, prop)));
 							break;
@@ -146,19 +146,6 @@ public class TDaoUtil {
 	}
 	
 	
-	// 获取Field被映射的类型
-	public static <T> MappedType getMappedType(PropertyDescriptor prop) throws Exception{
-		if(prop.getPropertyType().getSimpleName().equals("Long")){
-			return MappedType.Long;
-		}
-		if(prop.getPropertyType().getSimpleName().equals("Integer")){
-			return MappedType.Integer;
-		}
-		if(prop.getPropertyType().getSimpleName().equals("Date")){
-			return MappedType.Date;
-		}
-		return MappedType.String;
-	}
 	/**
 	 * 判断某Class的某字段是不是主键
 	 * @param clazz
@@ -194,7 +181,7 @@ public class TDaoUtil {
 			if(TDaoUtil.isPrimaryKey(t.getClass(), props[i])){
 				id = Long.valueOf(props[i].getReadMethod().invoke(t,(Object[]) null).toString());
 			}else{
-				switch(TDaoUtil.getMappedType( props[i])){
+				switch(TypeUtils.getMappedType( props[i])){
 					case Integer :
 					case Long : 
 						value = props[i].getReadMethod().invoke(t,(Object[]) null);
@@ -281,7 +268,7 @@ public class TDaoUtil {
 					sql.append(TDaoUtil.getSequenceName(t)+".nextval");
 				}
 			}else{
-				switch(TDaoUtil.getMappedType(prop)){
+				switch(TypeUtils.getMappedType(prop)){
 					case Integer :
 					case Long :
 						sql.append(prop.getReadMethod().invoke(t,(Object[]) null));
