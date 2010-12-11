@@ -14,6 +14,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.coffee.spring.ObjectManager;
+import org.coffee.spring.ioc.annotation.Resource;
 import org.coffee.struts.annotation.Result;
 /**
  * action 的公共父类 
@@ -34,6 +36,19 @@ public abstract class Action extends HttpServlet implements Constants {
 	
 	@Override
 	public void init() throws ServletException {
+		try {
+			// 为Action提供注入对象
+			BeanInfo bi = Introspector.getBeanInfo(this.getClass(), Action.class);
+			PropertyDescriptor[] props = bi.getPropertyDescriptors();
+			for (PropertyDescriptor prop : props) {
+				Resource resource = prop.getWriteMethod().getAnnotation(Resource.class);
+				if (resource != null) {
+					prop.getWriteMethod().invoke(this, ObjectManager.getIocObject().get(prop.getName()));
+				}
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		super.init();
 	}
 	/**
