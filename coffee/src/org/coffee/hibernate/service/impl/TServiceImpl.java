@@ -3,21 +3,24 @@ package org.coffee.hibernate.service.impl;
 import java.util.List;
 
 import org.coffee.hibernate.dao.TDao;
-import org.coffee.hibernate.dao.impl.TDaoImpl;
 import org.coffee.hibernate.service.TService;
-import org.coffee.util.PagerModel;
+import org.coffee.spring.ioc.annotation.Resource;
+import org.coffee.spring.ioc.annotation.Service;
+import org.coffee.struts.PagerModel;
 /**
  * service层通用父类接口实现类
  * 
  * @author wangtao
  */
+@Service(name="service")
 public class TServiceImpl implements TService {
 
 	private TDao dao;
 
 	public TServiceImpl(){
-		this.dao = new TDaoImpl();
+//		this.dao = new TDaoImpl();
 	}
+	@Resource(name="dao")
 	public void setDao(TDao dao) {
 		this.dao = dao;
 	}
