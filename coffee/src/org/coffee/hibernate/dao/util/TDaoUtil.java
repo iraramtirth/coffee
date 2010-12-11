@@ -5,7 +5,6 @@ import java.beans.Introspector;
 import java.beans.PropertyDescriptor;
 import java.lang.reflect.Field;
 import java.sql.ResultSet;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -74,17 +73,7 @@ public class TDaoUtil {
 		} 
 		return id;
 	}
-	/**
-	 *  格式化日期类型 
-	 */
-	public static String parseDate(Object value){
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-		try {
-			return sdf.format(value);
-		} catch (Exception e) {
-			return null;
-		}
-	}
+
 	
 	/**
 	 * 判断指定class指定prop是否被映射到数据库
@@ -192,7 +181,7 @@ public class TDaoUtil {
 						}
 						break;
 					case Date :
-						value = TDaoUtil.parseDate(props[i].getReadMethod().invoke(t,(Object[]) null));
+						value = TypeUtils.parseDate(props[i].getReadMethod().invoke(t,(Object[]) null));
 					case String :
 						value = props[i].getReadMethod().invoke(t,(Object[]) null);
 						if ("null".equals(value) || null == value) {
@@ -274,7 +263,7 @@ public class TDaoUtil {
 						sql.append(prop.getReadMethod().invoke(t,(Object[]) null));
 						break;
 					case Date :
-						value = TDaoUtil.parseDate(prop.getReadMethod().invoke(t,(Object[]) null));
+						value = TypeUtils.parseDate(prop.getReadMethod().invoke(t,(Object[]) null));
 						sql.append(null == value ? "null" : "'" + value.toString() + "'");
 						break;
 					case String :
