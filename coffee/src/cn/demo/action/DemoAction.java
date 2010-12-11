@@ -49,13 +49,13 @@ public class DemoAction extends Action {
 		return SUCCESS;
 	}
 	
-	@Path("/demo/insert.jsp")
+	@Result(page="/demo/insert.jsp")
 	public String toInsert(){
 		
 		return SUCCESS;
 	}
 	 
-	@Path("/demo/update.jsp")
+	@Result(page="/demo/update.jsp")
 	public String toUpdate()throws Exception{
 		User user = this.service.queryForObject(model.getClass(), model.getId());
 		this.setModel(user);
