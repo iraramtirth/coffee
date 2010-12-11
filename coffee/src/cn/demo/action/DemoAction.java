@@ -13,7 +13,7 @@ import org.coffee.util.PagerModel;
 
 import cn.demo.bean.User;
 
-@WebServlet("/demo/*")
+@WebServlet("/user/*")
 public class DemoAction extends Action {
 
 	/**
