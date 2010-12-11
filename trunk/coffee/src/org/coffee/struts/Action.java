@@ -124,7 +124,7 @@ public abstract class Action extends HttpServlet implements Constants {
 			} catch (Exception e) {
 				e.printStackTrace();
 				// 如果抛出异常；或者没有指定相应的method；则执行默认的execute方法
-				this.dispatchRequest("execute");
+				//this.dispatchRequest("execute");
 			} 
 		}
 	}
@@ -184,8 +184,12 @@ public abstract class Action extends HttpServlet implements Constants {
 							sdf = new SimpleDateFormat("yyyy-MM-dd");
 							fieldValue = sdf.parse(paramValue);
 						} catch (Exception e1) {
-							sdf = new SimpleDateFormat("HH:mm:ss");
-							fieldValue = sdf.parse(paramValue);
+							try {
+								sdf = new SimpleDateFormat("HH:mm:ss");
+								fieldValue = sdf.parse(paramValue);
+							} catch (Exception e2) {
+								fieldValue = null;
+							}
 						}
 					}
 				} else {   /**
