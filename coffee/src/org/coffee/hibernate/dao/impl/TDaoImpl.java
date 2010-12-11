@@ -12,13 +12,15 @@ import java.util.logging.Logger;
 
 import javax.sql.rowset.CachedRowSet;
 
+import org.coffee.hibernate.SqlConnection;
 import org.coffee.hibernate.dao.TDao;
 import org.coffee.hibernate.dao.util.Configuration;
 import org.coffee.hibernate.dao.util.TDaoUtil;
-import org.coffee.util.SqlConnection;
+import org.coffee.spring.ioc.annotation.Service;
 
 //import com.sun.rowset.CachedRowSetImpl;
 
+@Service(name="dao")
 public class TDaoImpl implements TDao{
 	protected Connection conn;
 	private static Logger logger = Logger.getLogger("jdbc");
@@ -27,21 +29,29 @@ public class TDaoImpl implements TDao{
 		logger.setLevel(Level.INFO);
 	}
 	public TDaoImpl(){
-		conn = new SqlConnection().getConnection();
+//		conn = new SqlConnection().getConnection();
 	}
 	
 	// 删除
 	@Override
 	public <T> void delete(Class<T> clazz, long id) throws SQLException {
-		String sql = "delete from " + TDaoUtil.getTableName(clazz) + " where id=" + id;
-		Statement stmt = conn.createStatement();
-		stmt.executeUpdate(sql);
-		stmt.close();
+		try {
+			conn = SqlConnection.get();
+			String sql = "delete from " + TDaoUtil.getTableName(clazz) + " where id=" + id;
+			Statement stmt = conn.createStatement();
+			stmt.executeUpdate(sql);
+			stmt.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally{
+			conn.close();
+		}
 	}
 	// 批量删除
 	@Override
 	public <T> void deleteBatch(Class<T> clazz,String[] ids) throws SQLException{
 		try {
+			conn = SqlConnection.get();
 			String sql = "delete from "+TDaoUtil.getTableName(clazz) +" where id=?";
 			conn.setAutoCommit(false);
 			PreparedStatement pstmt = conn.prepareStatement(sql);
@@ -54,6 +64,7 @@ public class TDaoImpl implements TDao{
 			pstmt.close();
 		} catch (NumberFormatException e) {
 			e.printStackTrace();
+			conn.close();
 		}
 	}
 	// 获取离线数据集
@@ -74,8 +85,14 @@ public class TDaoImpl implements TDao{
 	@Override
 	public int executeUpdate(String sql) throws SQLException {
 		int value = 0;
-		Statement stmt = conn.createStatement();
-		value = stmt.executeUpdate(sql);
+		try {
+			conn = SqlConnection.get();
+			Statement stmt = conn.createStatement();
+			value = stmt.executeUpdate(sql);
+		} catch (Exception e) {
+			e.printStackTrace();
+			conn.close();
+		}
 		return value;
 	}
 	
@@ -87,6 +104,7 @@ public class TDaoImpl implements TDao{
 	public <T> T queryForObject(Class<T> clazz, String sql) throws SQLException {
 		T t = null;;
 		try {
+			conn = SqlConnection.get();
 			Statement stmt = conn.createStatement();
 			ResultSet rs = stmt.executeQuery(sql);
 			while (rs.next()) {
@@ -99,6 +117,8 @@ public class TDaoImpl implements TDao{
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
+		} finally{
+			conn.close();
 		}
 		return t;
 	}
@@ -150,6 +170,7 @@ public class TDaoImpl implements TDao{
 			Class<T> clazz) throws SQLException {
 		List<T> ls = new ArrayList<T>();
 		try {
+			conn = SqlConnection.get();
 			Statement stmt = conn.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,ResultSet.CONCUR_READ_ONLY);
 			stmt.setMaxRows((int)(start + size));
 			ResultSet rs = stmt.executeQuery(sql);
