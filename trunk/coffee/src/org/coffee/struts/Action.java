@@ -6,7 +6,6 @@ import java.beans.PropertyDescriptor;
 import java.io.IOException;
 import java.lang.reflect.Method;
 import java.text.SimpleDateFormat;
-import java.util.Map;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
@@ -15,8 +14,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import org.coffee.spring.ObjectManager;
-import org.coffee.spring.ioc.annotation.Resource;
 import org.coffee.struts.annotation.Result;
 /**
  * action 的公共父类 
@@ -37,27 +34,6 @@ public abstract class Action extends HttpServlet implements Constants {
 	
 	@Override
 	public void init() throws ServletException {
-		System.out.println("IOC..创建对象....");
-		try {
-			// IOC 创建对象(单例)
-			ObjectManager.createObject(null);
-			Map<String,Object> iocObjs = ObjectManager.getIocObject();
-			// 保设置对象的生命周期：application
-			for(String key : iocObjs.keySet()){
-				super.getServletContext().setAttribute(key, iocObjs.get(key));
-			}
-			// 为Action提供注入对象
-			BeanInfo bi = Introspector.getBeanInfo(this.getClass(), Action.class);
-			PropertyDescriptor[] props = bi.getPropertyDescriptors();
-			for (PropertyDescriptor prop : props) {
-				Resource resource = prop.getWriteMethod().getAnnotation(Resource.class);
-				if (resource != null) {
-					prop.getWriteMethod().invoke(this, iocObjs.get(prop.getName()));
-				}
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
 		super.init();
 	}
 	/**

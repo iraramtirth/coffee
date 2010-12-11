@@ -5,11 +5,11 @@ import java.io.InputStream;
 import javax.servlet.annotation.WebServlet;
 
 import org.coffee.hibernate.service.TService;
+import org.coffee.spring.ioc.annotation.Resource;
 import org.coffee.struts.Action;
+import org.coffee.struts.PagerModel;
 import org.coffee.struts.annotation.Path;
 import org.coffee.struts.annotation.Result;
-import org.coffee.struts.annotation.Result.Type;
-import org.coffee.util.PagerModel;
 
 import cn.demo.bean.User;
 
@@ -25,15 +25,15 @@ public class DemoAction extends Action {
 	private TService service;
 	private String info;
 	private User model;
+	
 	@Override
-	@Result(page="index.jsp")
 	public String execute() {
 		System.out.println("xxxxxx");
 		return SUCCESS;
 	}
 	
-	@Path("/insert")
-	@Result(page="/index.jsp",type=Type.DISPATCHER)
+	
+	@Path("/user/list.action")
 	public String insert()throws Exception{
 		System.out.println("insert....");
 		System.out.println(request.getParameter("test"));
@@ -41,22 +41,21 @@ public class DemoAction extends Action {
 		System.out.println(ins.available());
 		return SUCCESS;
 	}
-	@Result(page="/admin/list.jsp")
+	@Result(page="/demo/list.jsp")
 	public String list()throws Exception{
 		String sql = "select * from users order by ID desc";
 		PagerModel<User> pager = this.service.queryForPagerModel(sql, this.pager.getOffset(), 10, User.class);
 		request.setAttribute("pager", pager);
-		request.setAttribute("pager", pager);
 		return SUCCESS;
 	}
 	
-	@Path("/admin/insert.jsp")
+	@Path("/demo/insert.jsp")
 	public String toInsert(){
 		
 		return SUCCESS;
 	}
 	 
-	
+	@Path("/demo/update.jsp")
 	public String toUpdate()throws Exception{
 		User user = this.service.queryForObject(model.getClass(), model.getId());
 		this.setModel(user);
@@ -99,6 +98,7 @@ public class DemoAction extends Action {
 	
 	
 	// setter getter
+	@Resource(name="service")
 	public void setService(TService service) {
 		this.service = service;
 	}
