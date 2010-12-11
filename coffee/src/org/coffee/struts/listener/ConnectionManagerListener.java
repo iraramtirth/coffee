@@ -9,6 +9,7 @@ import java.util.Properties;
 
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
+import javax.servlet.annotation.WebListener;
 
 import org.coffee.hibernate.ConnectionPool;
 import org.coffee.hibernate.SqlConnection;
@@ -19,6 +20,7 @@ import org.coffee.hibernate.dao.util.Configuration;
  * 管理数据库连接
  * @author wangtao
  */
+@WebListener
 public class ConnectionManagerListener implements ServletContextListener {
 
 
@@ -61,14 +63,14 @@ public class ConnectionManagerListener implements ServletContextListener {
 	}
 	
 	@Override
-	public void contextDestroyed(ServletContextEvent event){
+	public void contextInitialized(ServletContextEvent event){
 		// 初始化数据库参数
 		intiParam();
 		// 创建数据库连接池
-		ConnectionPool cp = new ConnectionPool(driver, url, username, password);
+		SqlConnection.cp = new ConnectionPool(driver, url, username, password);
 		// 初始化数据库数据
 		try {
-			conn = cp.getConnection();
+			conn = SqlConnection.cp.getConnection();
 			String tableName = "users";
 			ResultSet rs = conn.getMetaData().getTables(null, null,	tableName.toUpperCase(), null);
 			if (rs.next()) {
@@ -102,7 +104,7 @@ public class ConnectionManagerListener implements ServletContextListener {
 	}
 
 	@Override
-	public void contextInitialized(ServletContextEvent arg0) {
+	public void contextDestroyed(ServletContextEvent event) {
 		try {
 			conn = SqlConnection.get();
 			Statement stmt = conn.createStatement();
