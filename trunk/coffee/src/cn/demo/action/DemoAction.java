@@ -8,6 +8,9 @@ import org.coffee.struts.Action;
 import org.coffee.struts.annotation.Path;
 import org.coffee.struts.annotation.Result;
 import org.coffee.struts.annotation.Result.Type;
+import org.coffee.util.PagerModel;
+
+import cn.demo.bean.User;
 
 @WebServlet("/demo/*")
 public class DemoAction extends Action {
@@ -17,6 +20,9 @@ public class DemoAction extends Action {
 	 */
 	private static final long serialVersionUID = 1L;
 
+	private PagerModel<User> pager = new PagerModel<User>();
+	
+	
 	@Override
 	@Result(page="index.jsp")
 	public String execute() {
@@ -33,8 +39,10 @@ public class DemoAction extends Action {
 		System.out.println(ins.available());
 		return SUCCESS;
 	}
+	@Result(page="/admin/list.jsp")
 	public String list()throws Exception{
-		System.out.println("xxx");
+		System.out.println(pager.getSize());
+		request.setAttribute("pager", pager);
 		return SUCCESS;
 	}
 }

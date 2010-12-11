@@ -1,7 +1,6 @@
 package org.coffee.hibernate;
 
 import java.io.FileInputStream;
-import java.io.IOException;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -25,10 +24,6 @@ public class SqlConnection {
 		Properties prop = new Properties();
 		try {
 			prop.load(new FileInputStream(SqlConnection.class.getClassLoader().getResource("/").getPath()+"jdbc.properties"));
-		}catch (IOException e) {
-			e.printStackTrace();
-		}
-		try {
 			url = prop.getProperty("url");
 			username = prop.getProperty("username");
 			password = prop.getProperty("password");
@@ -41,6 +36,8 @@ public class SqlConnection {
 				Configuration.setDialect("HSQLDB");
 			}
 		} catch (Exception e) {
+			System.out.println(e.getStackTrace()[0].getClassName());
+			//java.io.FileNotFoundException:
 			// 默认采用Hsqldb数据库
 			String[]  args = "--database.0 file:mydb --dbname.0 xdb".split(" ");   
 		    org.hsqldb.server.Server.main(args);

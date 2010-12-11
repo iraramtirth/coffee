@@ -86,6 +86,10 @@ public abstract class Action extends HttpServlet implements Constants {
 		String targetMathod = request.getParameter("method");
 		String uri = request.getRequestURI();
 		targetMathod = uri.substring(uri.lastIndexOf("/") + 1);
+		//去后缀
+		if(targetMathod.endsWith(".action")){
+			targetMathod = targetMathod.substring(0,targetMathod.indexOf(".action"));
+		}
 		this.dispatchRequest(targetMathod);
 	}
 	// post 请求
@@ -95,26 +99,34 @@ public abstract class Action extends HttpServlet implements Constants {
 	}
 	// 转发请求
 	private void dispatchRequest(String targetMathod){
+		System.out.println(targetMathod);
 		if(targetMathod != null){
 			try {
 				Method method = this.getClass().getMethod(targetMathod, new Class[]{});
 				method.invoke(this, new Object[]{});
 				Result result = method.getAnnotation(Result.class);
 				// 跳转的页面
-				String page = result.page();
+				String page =  result.page(); // 注意该路径以工程的contextPath为根路径
 				// 请求转发类型
 				Result.Type type = result.type();
-				if(type.equals(Result.Type.DISPATCHER)){
+				/**
+				 * 	注意请求转发时候的路径
+				 *	转发：相对于向前请求的上下路径为根路径
+				 *	重定义相当于主机的跟主机的
+				 **/
+				if(type.equals(Result.Type.REDIRECT)){
 					this.request.getRequestDispatcher(page).forward(this.request, this.response);
 				}else{
+					page = request.getContextPath() + page;
 					this.response.sendRedirect(page);
 				}
 				return; // 停止继续执行
 			} catch (Exception e) {
+				e.printStackTrace();
+				// 如果抛出异常；或者没有指定相应的method；则执行默认的execute方法
+				this.dispatchRequest("execute");
 			} 
 		}
-		// 如果抛出异常；或者没有指定相应的method；则执行默认的execute方法
-		this.dispatchRequest("execute");
 	}
 	
 	/**
