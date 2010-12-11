@@ -19,7 +19,7 @@ public class SqlConnection {
 	private static String username = null;
 	private static String password = null;
 
-	private static ConnectionPool cp;
+	public static ConnectionPool cp;
 
 	
 	private static void initConnectionPool() throws SQLException {
