@@ -2,7 +2,7 @@ package org.coffee.hibernate.service;
 
 import java.util.List;
 
-import org.coffee.util.PagerModel;
+import org.coffee.struts.PagerModel;
 /**
  * service层通用父类接口
  * @author wangtao
