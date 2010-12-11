@@ -75,7 +75,8 @@ public class TServiceImpl implements TService {
 	@Override
 	public <T> PagerModel<T> queryForPagerModel(String sql, int offset, int size,
 			Class<T> clazz) throws Exception {
-		String countSql = sql.replaceAll("select\\s*.*? from", "select count(*) from");
+		String countSql = sql.replaceAll("select\\s*.*? from", "select count(*) from")
+		.replaceAll("\\s?order\\s+?by.+", "");
 		if(offset < 0){
 			offset = 0;
 		}
