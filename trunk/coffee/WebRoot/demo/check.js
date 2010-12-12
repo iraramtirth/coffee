@@ -2,10 +2,10 @@
 		  if(checkForm() == false){
 			  return;
 		  }
-		  if($("#info").val() != "true"){
-				setInfo();
-				return false;
-		  }
+//		  if($("#info").val() != "true"){
+//				setInfo();
+//				return false;
+//		  }
 		  document.getElementById('f1').submit();
 	}
 	// 检查网站名称存不存在

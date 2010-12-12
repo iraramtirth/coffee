@@ -8,7 +8,6 @@ import org.coffee.hibernate.service.TService;
 import org.coffee.spring.ioc.annotation.Resource;
 import org.coffee.struts.Action;
 import org.coffee.struts.PagerModel;
-import org.coffee.struts.annotation.Path;
 import org.coffee.struts.annotation.Result;
 
 import cn.demo.bean.User;
@@ -33,12 +32,11 @@ public class DemoAction extends Action {
 	}
 	
 	
-	@Path("/user/list.action")
+	@Result(page="/user/list.action")
 	public String insert()throws Exception{
-		System.out.println("insert....");
-		System.out.println(request.getParameter("test"));
 		InputStream ins = request.getInputStream();
 		System.out.println(ins.available());
+		this.service.insert(model);
 		return SUCCESS;
 	}
 	@Result(page="/demo/list.jsp")

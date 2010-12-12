@@ -2,8 +2,12 @@ package cn.demo.bean;
 
 import java.util.Date;
 
+import org.coffee.hibernate.annotation.Entity;
 import org.coffee.hibernate.annotation.Id;
+import org.coffee.hibernate.annotation.Table;
 
+@Entity
+@Table(name="users")
 public class User {
 	@Id	// 主键
 	private Integer id;
