@@ -17,7 +17,8 @@
 	<script type="text/javascript" src="<%=path%>/demo/check.js"></script>
   </head>
   <body class="right_body">
-  <form action="<%=path%>/user/insert.action" method="post" id="f1" enctype="multipart/form-data">
+  <!-- enctype="multipart/form-data" -->
+  <form action="<%=path%>/user/insert.action" method="post" id="f1">
   <input type="hidden" name="info" id="info" value="">
 <div class="active"><span></span></div>
 <!-- 内容开始 -->
@@ -26,7 +27,7 @@
       <tr>
         <td width="41%" class="left_best" >用户名：</td>
         <td width="59%">
-        	<input type="text" name="model.username" id="username" class="required" onchange="check_username()">
+        	<input type="text" name="model.username" id="username" class="required">
         	<span id="usernameError"></span>
         </td>
       </tr>
