@@ -18,7 +18,7 @@
   </head>
   <body class="right_body">
   <!-- enctype="multipart/form-data" -->
-  <form action="<%=path%>/user/insert.action" method="post" id="f1">
+  <form action="<%=path%>/user/insert.action" method="post" id="f1" enctype="multipart/form-data">
   <input type="hidden" name="info" id="info" value="">
 <div class="active"><span></span></div>
 <!-- 内容开始 -->
