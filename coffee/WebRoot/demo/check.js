@@ -1,7 +1,7 @@
 	function goSub(){
-		  if(checkForm() == false){
-			  return;
-		  }
+//		  if(checkForm() == false){
+//			  return;
+//		  }
 //		  if($("#info").val() != "true"){
 //				setInfo();
 //				return false;
