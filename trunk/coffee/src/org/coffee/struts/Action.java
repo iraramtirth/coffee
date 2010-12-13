@@ -3,15 +3,15 @@ package org.coffee.struts;
 import java.beans.BeanInfo;
 import java.beans.Introspector;
 import java.beans.PropertyDescriptor;
-import java.io.BufferedWriter;
+import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.OutputStreamWriter;
 import java.lang.reflect.Method;
 import java.text.SimpleDateFormat;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -50,7 +50,9 @@ public abstract class Action extends HttpServlet implements Constants {
 	@Override
 	public void init() throws ServletException {
 		try {
-			// 为Action提供注入对象
+			/**
+			 * 为Action中被Resource注解的对象进行注入
+			 */ 
 			BeanInfo bi = Introspector.getBeanInfo(this.getClass(), Action.class);
 			PropertyDescriptor[] props = bi.getPropertyDescriptors();
 			for (PropertyDescriptor prop : props) {
@@ -89,6 +91,9 @@ public abstract class Action extends HttpServlet implements Constants {
 		 *  则parameterMap.size == 0
 		 */
 		if(request.getParameterMap().size() > 0){
+			for(String key : request.getParameterMap().keySet()){
+				this.parameterMap.put(key, request.getParameterMap().get(key));
+			}
 			this.paramsReflect(null, this.getClass(), request);	
 		}else{
 			request.setCharacterEncoding(charset);
@@ -190,14 +195,14 @@ public abstract class Action extends HttpServlet implements Constants {
 				// JavaBean的 Field 类型
 				String fieldType = prop.getPropertyType().getSimpleName().toLowerCase();
 				// 参数值 ：String类型
-				String paramValue = request.getParameter(fieldName);
+				Object paramValue = this.parameterMap.get(fieldName);//request.getParameter(fieldName);
 				// 将参数值映射成适当的类型
 				Object fieldValue = null;
 				if (fieldType.contains("string")) {
 					fieldValue = paramValue;
 				} else if (fieldType.contains("int") || fieldType.contains("long")) {
 					try {
-						fieldValue = Integer.valueOf(paramValue);
+						fieldValue = Integer.valueOf(paramValue.toString());
 					} catch (Exception e) {
 						fieldValue = 0;
 					}
@@ -206,21 +211,23 @@ public abstract class Action extends HttpServlet implements Constants {
 					SimpleDateFormat sdf = null;
 					try {
 						sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-						fieldValue = sdf.parse(paramValue);
+						fieldValue = sdf.parse(paramValue.toString());
 					} catch (Exception e) {
 						try {// 如果不符合 yyyy-MM-dd HH:mm:ss 则重新parser字符串
 							sdf = new SimpleDateFormat("yyyy-MM-dd");
-							fieldValue = sdf.parse(paramValue);
+							fieldValue = sdf.parse(paramValue.toString());
 						} catch (Exception e1) {
 							try {
 								sdf = new SimpleDateFormat("HH:mm:ss");
-								fieldValue = sdf.parse(paramValue);
+								fieldValue = sdf.parse(paramValue.toString());
 							} catch (Exception e2) {
 								fieldValue = null;
 							}
 						}
 					}
-				} else {/**
+				}else if(fieldType.contains("FormFile")){
+					fieldValue = paramValue;
+				}	else {/**
 						 *	type 自定义对象类型
 						 *	递归
 						 **/	
@@ -246,7 +253,9 @@ public abstract class Action extends HttpServlet implements Constants {
 	 * @param content : 流的内容
 	 */
 	private void parserInputStream(String content){
-		String spt = "-----------------------------";
+		System.out.println(content);
+		String contentType = request.getHeader("Content-type");
+		String spt = contentType.substring(contentType.indexOf("boundary=")+"boundary=".length());
 		String[] items = content.split(spt);
 		// 用于文本域的正则
 		String textRegex = "name=\"(.+?)\"([\\s\\S]+)";
@@ -266,20 +275,29 @@ public abstract class Action extends HttpServlet implements Constants {
 					parameterMap.put(textMat.group(1).trim(), textMat.group(2).trim());
 				}
 			}else{
+				
 				Matcher fileMat = filePat.matcher(item);
+				System.out.println(item);
 				while(fileMat.find()){
 					FormFile formFile = new FormFile();
-					formFile.setFileName(fileMat.group(2));
-					formFile.setContentType(fileMat.group(3));
 					String fileContent = fileMat.group(4);
-					try {
-						File file = new File(System.getProperty("java.io.tmpdir"));
-						BufferedWriter bufOut = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(file)));
-						bufOut.write(fileContent);
-						bufOut.close();
-						formFile.setFile(file);
-					} catch (IOException e) {
-						e.printStackTrace();
+					//若文件存在，则
+					if(fileContent.trim().length() > 0){
+						formFile.setFileName(fileMat.group(2));
+						formFile.setContentType(fileMat.group(3));
+						try {
+							//System.getProperty("catalina.home")
+							File file = new File("c:/");
+							if(file.exists() == false){
+								file.mkdirs();
+							}
+							BufferedOutputStream bufOut = new BufferedOutputStream(new FileOutputStream(file + UUID.randomUUID().toString() + ".jpg"));
+							bufOut.write(fileContent.substring(0,fileContent.length()-2).trim().getBytes(charset));
+							bufOut.close();
+							formFile.setFile(file);
+						} catch (IOException e) {
+							e.printStackTrace();
+						}
 					}
 					parameterMap.put(fileMat.group(1),formFile);
 				}
