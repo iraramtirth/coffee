@@ -52,14 +52,8 @@
       </tr>
       <tr>
         <td width="41%" class="left_best" >头像1：</td>
-        <td width="59%"><input type="file" name="model.photo.file" id="photo1">
+        <td width="59%"><input type="file" name="model.photo.file1" id="photo1">
       		<span id="photo1Error"></span>
-        </td>
-      </tr>
-      <tr>
-        <td width="41%" class="left_best" >头像2：</td>
-        <td width="59%"><input type="file" name="model.photo.file" id="photo2">
-      		<span id="photo2Error"></span>
         </td>
       </tr>
       <tr>
