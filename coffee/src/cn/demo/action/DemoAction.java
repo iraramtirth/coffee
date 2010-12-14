@@ -34,9 +34,8 @@ public class DemoAction extends Action {
 	
 	@Result(page="/user/list.action")
 	public String insert()throws Exception{
-		InputStream ins = request.getInputStream();
-		System.out.println(ins.available());
-		this.service.insert(model);
+		System.out.println("开始插入数据。。。。。。。。");
+		//this.service.insert(model);
 		return SUCCESS;
 	}
 	@Result(page="/demo/list.jsp")
