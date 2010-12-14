@@ -1,7 +1,5 @@
 package cn.demo.action;
 
-import java.io.InputStream;
-
 import javax.servlet.annotation.WebServlet;
 
 import org.coffee.hibernate.service.TService;
@@ -31,11 +29,10 @@ public class DemoAction extends Action {
 		return SUCCESS;
 	}
 	
-	
 	@Result(page="/user/list.action")
 	public String insert()throws Exception{
 		System.out.println("开始插入数据。。。。。。。。");
-		//this.service.insert(model);
+		this.service.insert(model);
 		return SUCCESS;
 	}
 	@Result(page="/demo/list.jsp")
@@ -62,11 +59,13 @@ public class DemoAction extends Action {
 		this.service.update(this.model);
 		return UPDATE;
 	}
+	@Result(page="/user/list.action")
 	public String delete() throws Exception{
 		this.service.delete(model.getClass(), this.model.getId());
 		return DELETE;
 	}
 	// 批量删除
+	
 	public String deleteBatch() throws Exception{
 		String ids = request.getParameter("ids");
 		if(ids != null){

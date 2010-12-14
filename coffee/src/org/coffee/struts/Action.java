@@ -18,7 +18,6 @@ import java.util.regex.Pattern;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
-import javax.servlet.ServletInputStream;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -101,29 +100,18 @@ public abstract class Action extends HttpServlet implements Constants {
 			for (String key : request.getParameterMap().keySet()) {
 				this.parameterMap.put(key, request.getParameterMap().get(key));
 			}
-			this.paramsReflect(null, this.getClass(), request);
+			this.paramsReflect(null, this.getClass());
 		} else {
-//			request.setCharacterEncoding(charset);
 			/**
 			 *  注意 ServletInputStream 流只能读取一次，第二次便取不到其中的内容了
 			 */
-			ServletInputStream in = request.getInputStream();
 			// 文件上传
 			if (MultipartStream.isMultipartContent(request)) {
-//				byte[] data = new byte[256];
-//				int len = 0;
-//				String streamContent = "";
-//				while (true) {
-//					len = in.readLine(data, 0, data.length);
-//					if(len == -1){
-//						break;
-//					}
-//					streamContent += new String(data,0,len);
-//				}
-//				this.parserInputStream(streamContent);
-//				uploadFile(request.getInputStream());
 				try {
 					this.parameterMap = new MultipartStream(request).parser();
+					if(this.parameterMap.size() > 0){
+						this.paramsReflect(null, this.getClass());
+					}
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -187,8 +175,7 @@ public abstract class Action extends HttpServlet implements Constants {
 	 * @param preName
 	 *            参数前缀名：如 user.username 此时preName=user
 	 **/
-	private Object paramsReflect(String preName, Class<?> clazz,
-			HttpServletRequest request) {
+	private Object paramsReflect(String preName, Class<?> clazz) {
 		try {
 			BeanInfo bi = null;
 			Object targetObj = null;
@@ -212,6 +199,9 @@ public abstract class Action extends HttpServlet implements Constants {
 			for (PropertyDescriptor prop : props) {
 				// JavaBean的 Field 名
 				String fieldName = preName + prop.getName();
+				if(fieldName.contains("describe")){
+					System.out.println();
+				}
 				// JavaBean的 Field 类型
 				String fieldType = prop.getPropertyType().getSimpleName()
 						.toLowerCase();
@@ -254,8 +244,7 @@ public abstract class Action extends HttpServlet implements Constants {
 					 * type 自定义对象类型 递归
 					 **/
 					Class<?> fieldClazz = prop.getPropertyType();
-					fieldValue = this.paramsReflect(fieldName, fieldClazz,
-							request);
+					fieldValue = this.paramsReflect(fieldName, fieldClazz);
 				}
 				/**
 				 * 当 fieldValue == null 的时候。 有可能会将通过IOC方式注入的对象重置为null
