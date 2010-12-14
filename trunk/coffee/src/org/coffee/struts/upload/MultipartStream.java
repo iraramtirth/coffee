@@ -130,6 +130,7 @@ public class MultipartStream {
 			 */
 			this.readLine();
 			String nextLine  = this.readLine();
+			System.out.println(nextLine);
 			if(nextLine.trim().length() > 0){
 				parameterMap.put(paramName, nextLine.trim());
 			}
