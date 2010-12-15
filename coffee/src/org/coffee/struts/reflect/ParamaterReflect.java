@@ -5,7 +5,9 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.coffee.util.DateUtils;
 import org.coffee.util.StringManager;
+import org.coffee.util.TypeUtils;
 
 import cn.demo.bean.User;
 
@@ -70,10 +72,11 @@ public class ParamaterReflect {
 	 * @param target
 	 * @param value
 	 */
-	public void invoke(Object action){
+	public void invoke(Object action) throws Exception{
 		if(this.parameterMap.size() == 0){
 			return;
 		}
+		String paramName = "";
 		try {
 			for(String key : this.parameterMap.keySet()){
 				Object base = action;
@@ -83,7 +86,7 @@ public class ParamaterReflect {
 					method.invoke(base, new Object[]{this.parameterMap.get(key)});
 				}else{
 					Class<?> clazz = base.getClass();
-					String paramName = "";
+					paramName = "";
 					Object objValue = null;
 					int i = 0;
 					for(String field : key.split("\\.")){
@@ -105,7 +108,27 @@ public class ParamaterReflect {
 							Class<?> paramType = clazz.getDeclaredField(field).getType();
 							Method method = clazz.getDeclaredMethod("set"+StringManager.toUpperCaseFirstChar(field),
 									new Class[]{paramType});
-							method.invoke(base, new Object[]{this.parameterMap.get(key)});
+							Object paramValue;
+							Object mapVal = this.parameterMap.get(key);
+							System.out.println(key+"\t"+mapVal);
+							if(mapVal == null){
+								continue;
+							}
+							switch(TypeUtils.getMappedType(clazz.getDeclaredField(field))){
+								case Integer :
+									paramValue = Integer.valueOf(mapVal+"");
+									break;
+								case Long :
+									paramValue = Long.valueOf(mapVal+"");
+									break;
+								case Date :
+									paramValue = DateUtils.parse(mapVal);
+									break;
+								default:
+									paramValue = mapVal;
+									break;
+							}
+							method.invoke(base, new Object[]{paramValue});
 						}
 						clazz = objValue.getClass();
 						paramName += ".";
@@ -113,13 +136,16 @@ public class ParamaterReflect {
 					}
 				}
 			}
-			System.out.println();
+		
 		} catch (Exception e) {
 			e.printStackTrace();
+			if(e.getMessage().contains("NoSuchMethodException")){
+				throw new Exception("属性"+paramName+"没有发现");
+			}
 		}
 	}
 	
-	public static void main(String[] args) {
+	public static void main(String[] args) throws Exception {
 		Map<String,Object> map = new HashMap<String, Object>();
 		map.put("username", "111");
 		map.put("user.username", "222");

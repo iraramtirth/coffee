@@ -17,6 +17,7 @@ import org.coffee.hibernate.annotation.Entity;
 import org.coffee.hibernate.annotation.Id;
 import org.coffee.hibernate.annotation.NullMap;
 import org.coffee.hibernate.annotation.Table;
+import org.coffee.util.DateUtils;
 import org.coffee.util.TypeUtils;
 
 /**
@@ -181,7 +182,7 @@ public class TDaoUtil {
 						}
 						break;
 					case Date :
-						value = TypeUtils.parseDate(props[i].getReadMethod().invoke(t,(Object[]) null));
+						value = DateUtils.format(props[i].getReadMethod().invoke(t,(Object[]) null));
 					case String :
 						value = props[i].getReadMethod().invoke(t,(Object[]) null);
 						if ("null".equals(value) || null == value) {
@@ -263,7 +264,7 @@ public class TDaoUtil {
 						sql.append(prop.getReadMethod().invoke(t,(Object[]) null));
 						break;
 					case Date :
-						value = TypeUtils.parseDate(prop.getReadMethod().invoke(t,(Object[]) null));
+						value = DateUtils.format(prop.getReadMethod().invoke(t,(Object[]) null));
 						sql.append(null == value ? "null" : "'" + value.toString() + "'");
 						break;
 					case String :
