@@ -6,7 +6,6 @@ import org.coffee.struts.PagerModel;
 /**
  * service层通用父类接口
  * @author wangtao
- *
  */
 public interface TService {
 	public <T> void insert(T t) throws Exception;
