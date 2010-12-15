@@ -36,11 +36,4 @@ public class Configuration {
 		return DIALECT;
 	}
 	
-	public enum MappedType {
-		Long,			// java.lang.Long
-		Integer,		// java.lang.Integer
-		Date,			// java.util.Date
-		String			// java.util.String
-	}
-
 }

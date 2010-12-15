@@ -9,7 +9,6 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.lang.reflect.Method;
-import java.text.SimpleDateFormat;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -48,6 +47,7 @@ public abstract class Action extends HttpServlet implements Constants {
 	protected ServletContext application;
 
 	public final String charset = "UTF-8";
+	
 	protected Map<String, Object> parameterMap = new HashMap<String, Object>();
 
 	@Override
@@ -98,8 +98,16 @@ public abstract class Action extends HttpServlet implements Constants {
 		this.init(request, response);
 		boolean bool = false;
 		if (request.getParameterMap().size() > 0) {
+			StringBuffer buf = new StringBuffer();
 			for (String key : request.getParameterMap().keySet()) {
-				this.parameterMap.put(key, request.getParameterMap().get(key));
+				String[] vals = request.getParameterMap().get(key);
+				for(int i=0; i<vals.length; i++){
+					buf.append(vals[i]);
+					if(i+1 < vals.length){
+						buf.append(",");
+					}
+				}
+				this.parameterMap.put(key, buf);
 			}
 			bool = true;
 		} else {
@@ -111,9 +119,13 @@ public abstract class Action extends HttpServlet implements Constants {
 			} 
 		}
 		if(bool){
-			ParamaterReflect pr = new ParamaterReflect();
-			pr.parserParameter(parameterMap, this);
-			pr.invoke(this);
+			try {
+				ParamaterReflect pr = new ParamaterReflect();
+				pr.parserParameter(parameterMap, this);
+				pr.invoke(this);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 		}
 		
 		// 请求转发 按照url参数method指定的值，反射执行
@@ -173,92 +185,92 @@ public abstract class Action extends HttpServlet implements Constants {
 	 * @param preName
 	 *            参数前缀名：如 user.username 此时preName=user
 	 **/
-	@Deprecated
-	public Object paramsReflect(String preName, Class<?> clazz) {
-		try {
-			BeanInfo bi = null;
-			Object targetObj = null;
-			// 处理 Servlet 里面的属性
-			if (preName == null) {
-				preName = "";
-				bi = Introspector.getBeanInfo(clazz, Action.class);
-				targetObj = this;
-			} else {// 处理Model中的属性
-				preName += ".";
-				try {
-					bi = Introspector.getBeanInfo(clazz, Object.class);
-				} catch (Exception e) {
-					// java.lang.Object not superclass of ....
-					// 说明 Action 中的Field不需要映射
-					return null;
-				}
-				targetObj = clazz.newInstance();
-			}
-			PropertyDescriptor[] props = bi.getPropertyDescriptors();
-			for (PropertyDescriptor prop : props) {
-				// JavaBean的 Field 名
-				String fieldName = preName + prop.getName();
-				if(fieldName.contains("describe")){
-					System.out.println();
-				}
-				// JavaBean的 Field 类型
-				String fieldType = prop.getPropertyType().getSimpleName()
-						.toLowerCase();
-				// 参数值 ：String类型
-				Object paramValue = this.parameterMap.get(fieldName);// request.getParameter(fieldName);
-				// 将参数值映射成适当的类型
-				Object fieldValue = null;
-				if (fieldType.contains("string")) {
-					fieldValue = paramValue;
-				} else if (fieldType.contains("int")
-						|| fieldType.contains("long")) {
-					try {
-						fieldValue = Integer.valueOf(paramValue.toString());
-					} catch (Exception e) {
-						fieldValue = 0;
-					}
-				}// 映射时间类型
-				else if (fieldType.contains("date")) {
-					SimpleDateFormat sdf = null;
-					try {
-						sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-						fieldValue = sdf.parse(paramValue.toString());
-					} catch (Exception e) {
-						try {// 如果不符合 yyyy-MM-dd HH:mm:ss 则重新parser字符串
-							sdf = new SimpleDateFormat("yyyy-MM-dd");
-							fieldValue = sdf.parse(paramValue.toString());
-						} catch (Exception e1) {
-							try {
-								sdf = new SimpleDateFormat("HH:mm:ss");
-								fieldValue = sdf.parse(paramValue.toString());
-							} catch (Exception e2) {
-								fieldValue = null;
-							}
-						}
-					}
-				} else if (fieldType.contains("FormFile")) {
-					fieldValue = paramValue;
-				} else {
-					/**
-					 * type 自定义对象类型 递归
-					 **/
-					Class<?> fieldClazz = prop.getPropertyType();
-					fieldValue = this.paramsReflect(fieldName, fieldClazz);
-				}
-				/**
-				 * 当 fieldValue == null 的时候。 有可能会将通过IOC方式注入的对象重置为null
-				 **/
-				if (fieldValue != null) {
-					prop.getWriteMethod().invoke(targetObj,
-							new Object[] { fieldValue });
-				}
-			}
-			return targetObj;
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return null;
-	}
+//	@Deprecated
+//	public Object paramsReflect(String preName, Class<?> clazz) {
+//		try {
+//			BeanInfo bi = null;
+//			Object targetObj = null;
+//			// 处理 Servlet 里面的属性
+//			if (preName == null) {
+//				preName = "";
+//				bi = Introspector.getBeanInfo(clazz, Action.class);
+//				targetObj = this;
+//			} else {// 处理Model中的属性
+//				preName += ".";
+//				try {
+//					bi = Introspector.getBeanInfo(clazz, Object.class);
+//				} catch (Exception e) {
+//					// java.lang.Object not superclass of ....
+//					// 说明 Action 中的Field不需要映射
+//					return null;
+//				}
+//				targetObj = clazz.newInstance();
+//			}
+//			PropertyDescriptor[] props = bi.getPropertyDescriptors();
+//			for (PropertyDescriptor prop : props) {
+//				// JavaBean的 Field 名
+//				String fieldName = preName + prop.getName();
+//				if(fieldName.contains("describe")){
+//					System.out.println();
+//				}
+//				// JavaBean的 Field 类型
+//				String fieldType = prop.getPropertyType().getSimpleName()
+//						.toLowerCase();
+//				// 参数值 ：String类型
+//				Object paramValue = this.parameterMap.get(fieldName);// request.getParameter(fieldName);
+//				// 将参数值映射成适当的类型
+//				Object fieldValue = null;
+//				if (fieldType.contains("string")) {
+//					fieldValue = paramValue;
+//				} else if (fieldType.contains("int")
+//						|| fieldType.contains("long")) {
+//					try {
+//						fieldValue = Integer.valueOf(paramValue.toString());
+//					} catch (Exception e) {
+//						fieldValue = 0;
+//					}
+//				}// 映射时间类型
+//				else if (fieldType.contains("date")) {
+//					SimpleDateFormat sdf = null;
+//					try {
+//						sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+//						fieldValue = sdf.parse(paramValue.toString());
+//					} catch (Exception e) {
+//						try {// 如果不符合 yyyy-MM-dd HH:mm:ss 则重新parser字符串
+//							sdf = new SimpleDateFormat("yyyy-MM-dd");
+//							fieldValue = sdf.parse(paramValue.toString());
+//						} catch (Exception e1) {
+//							try {
+//								sdf = new SimpleDateFormat("HH:mm:ss");
+//								fieldValue = sdf.parse(paramValue.toString());
+//							} catch (Exception e2) {
+//								fieldValue = null;
+//							}
+//						}
+//					}
+//				} else if (fieldType.contains("FormFile")) {
+//					fieldValue = paramValue;
+//				} else {
+//					/**
+//					 * type 自定义对象类型 递归
+//					 **/
+//					Class<?> fieldClazz = prop.getPropertyType();
+//					fieldValue = this.paramsReflect(fieldName, fieldClazz);
+//				}
+//				/**
+//				 * 当 fieldValue == null 的时候。 有可能会将通过IOC方式注入的对象重置为null
+//				 **/
+//				if (fieldValue != null) {
+//					prop.getWriteMethod().invoke(targetObj,
+//							new Object[] { fieldValue });
+//				}
+//			}
+//			return targetObj;
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//		}
+//		return null;
+//	}
 
 	/**
 	 * 解析InputStream流

@@ -2,7 +2,6 @@ package org.coffee.util;
 
 import java.beans.PropertyDescriptor;
 import java.lang.reflect.Field;
-import java.text.SimpleDateFormat;
 
 public class TypeUtils {
 	public enum Type {
@@ -18,7 +17,11 @@ public class TypeUtils {
 		Date
 	}
 	
-	// 获取Field被映射的类型
+	/**
+	 * 获取Field的数据类型
+	 * @param prop : 	
+	 * @return  : 返回一个 Type的数据类型
+	 */
 	public static Type getMappedType(PropertyDescriptor prop) throws Exception{
 		return getMappedType(prop.getPropertyType().getSimpleName());
 	}
@@ -39,18 +42,6 @@ public class TypeUtils {
 			return Type.Date;
 		}
 		return Type.String;
-	}
-	
-	/**
-	 *  格式化日期类型 
-	 */
-	public static String parseDate(Object value){
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-		try {
-			return sdf.format(value);
-		} catch (Exception e) {
-			return null;
-		}
 	}
 	
 }

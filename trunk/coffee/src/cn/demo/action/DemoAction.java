@@ -101,5 +101,10 @@ public class DemoAction extends Action {
 	public void setModel(User model) {
 		this.model = model;
 	}
-	
+	public User getModel() {
+		return model;
+	}
+	public PagerModel<User> getPager() {
+		return pager;
+	}
 }

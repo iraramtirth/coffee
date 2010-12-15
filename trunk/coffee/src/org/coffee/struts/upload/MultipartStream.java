@@ -58,7 +58,6 @@ public class MultipartStream {
 	public Map<String, Object> parser(){
 		String line = null;
 		while ((line = readLine()) != null) {
-			System.out.println(line);
 			// 文件流
 			if (line.startsWith("Content-Disposition: form-data;")) {
 				int i = line.indexOf("filename=");
@@ -134,7 +133,6 @@ public class MultipartStream {
 			 */
 			this.readLine();
 			String nextLine  = this.readLine();
-			System.out.println(nextLine);
 			if(nextLine.trim().length() > 0){
 				parameterMap.put(paramName, nextLine.trim());
 			}

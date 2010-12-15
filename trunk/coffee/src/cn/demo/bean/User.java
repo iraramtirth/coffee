@@ -4,7 +4,9 @@ import java.util.Date;
 
 import org.coffee.hibernate.annotation.Entity;
 import org.coffee.hibernate.annotation.Id;
+import org.coffee.hibernate.annotation.NullMap;
 import org.coffee.hibernate.annotation.Table;
+import org.coffee.struts.upload.FormFile;
 
 @Entity
 @Table(name="users")
@@ -16,8 +18,11 @@ public class User {
 	private Integer age;
 	private Date birthday;
 	private String describe;
-	
+	@NullMap
+	private FormFile photo;
+	@NullMap
 	private User child;
+	
 	public User getChild() {
 		return child;
 	}
@@ -61,4 +66,11 @@ public class User {
 	public void setDescribe(String describe) {
 		this.describe = describe;
 	}
+	public FormFile getPhoto() {
+		return photo;
+	}
+	public void setPhoto(FormFile photo) {
+		this.photo = photo;
+	}
+	
 }
