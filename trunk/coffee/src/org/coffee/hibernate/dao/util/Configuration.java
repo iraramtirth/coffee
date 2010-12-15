@@ -18,7 +18,9 @@ public class Configuration {
 		DIALECT = dialect;
 	}
 	
-	//
+	/**
+	 *  获取 
+	 */
 	public static String getToken(String dialect){
 		try {
 			if(dialect.toUpperCase().contains("ORACLE")){
