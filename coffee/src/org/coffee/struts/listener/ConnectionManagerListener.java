@@ -23,7 +23,6 @@ import org.coffee.hibernate.dao.util.Configuration;
 @WebListener
 public class ConnectionManagerListener implements ServletContextListener {
 
-
 	private static String driver = null;
 	private static String url = null;
 	private static String username = null;
