@@ -4,7 +4,6 @@ import java.sql.SQLException;
 import java.util.List;
 
 import javax.sql.rowset.CachedRowSet;
-
 /**
  * 系统DAO的公共/通用父类接口 
  * @author wangtao
