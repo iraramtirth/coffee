@@ -3,7 +3,11 @@ package org.coffee.util;
 import java.beans.PropertyDescriptor;
 
 import org.coffee.hibernate.dao.util.Configuration.MappedType;
-
+/**
+ * 
+ * @author wangtao
+ *
+ */
 public class ClassUtils {
 	/**
 	 * 获取指定属性的Field类型 
