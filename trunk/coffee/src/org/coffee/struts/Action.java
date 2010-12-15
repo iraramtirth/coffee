@@ -96,12 +96,15 @@ public abstract class Action extends HttpServlet implements Constants {
 	/**
 	 * get请求
 	 * 
-	 *  注意 ServletInputStream 流只能读取一次，第二次便取不到其中的内容了
+	 * 注意 ServletInputStream 流只能读取一次，第二次便取不到其中的内容了
 	 */
 	public void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		this.init(request, response);
 		boolean bool = false;
+		/**
+		 * 从parameterMap中分析参数
+		 */
 		if (request.getParameterMap().size() > 0) {
 			StringBuffer buf = null;
 			for (String key : request.getParameterMap().keySet()) {
@@ -116,7 +119,9 @@ public abstract class Action extends HttpServlet implements Constants {
 				this.parameterMap.put(key, buf);
 			}
 			bool = true;
-		} else {
+		} else {/**
+				 * 从InputStrean流中解析的参数
+				 **/
 			if (MultipartStream.isMultipartContent(request)) {
 				this.parameterMap = new MultipartStream(request).parser();
 				if(this.parameterMap.size() > 0){

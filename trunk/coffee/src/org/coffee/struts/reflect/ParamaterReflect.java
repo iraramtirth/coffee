@@ -89,9 +89,14 @@ public class ParamaterReflect {
 					paramName = "";
 					Object objValue = null;
 					int i = 0;
-					for(String field : key.split("\\.")){
+					String[] fields = key.split("\\.");
+					for(String field : fields){
 						i++;
-						paramName += field;
+						if(field.equals("file") && i == fields.length - 1){
+							//none
+						}else{
+							paramName += field;
+						}
 						if(i < key.split("\\.").length){
 							Method readMethod = clazz.getDeclaredMethod("get"+StringManager.toUpperCaseFirstChar(field), new Class[]{});
 							objValue = readMethod.invoke(base, new Object[]{});
