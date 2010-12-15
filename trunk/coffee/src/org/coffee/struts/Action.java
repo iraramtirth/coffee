@@ -60,11 +60,16 @@ public abstract class Action extends HttpServlet implements Constants {
 					Action.class);
 			PropertyDescriptor[] props = bi.getPropertyDescriptors();
 			for (PropertyDescriptor prop : props) {
-				Resource resource = prop.getWriteMethod().getAnnotation(
-						Resource.class);
-				if (resource != null) {
-					prop.getWriteMethod().invoke(this,
-							ObjectManager.getIocObject().get(prop.getName()));
+				/**
+				 *  若该属性不存在writeMethod，则不对该属性进行依赖注入
+				 */
+				if(prop.getWriteMethod() != null){
+					Resource resource = prop.getWriteMethod().getAnnotation(
+							Resource.class);
+					if (resource != null) {
+						prop.getWriteMethod().invoke(this,
+								ObjectManager.getIocObject().get(prop.getName()));
+					}
 				}
 			}
 		} catch (Exception e) {
@@ -98,8 +103,9 @@ public abstract class Action extends HttpServlet implements Constants {
 		this.init(request, response);
 		boolean bool = false;
 		if (request.getParameterMap().size() > 0) {
-			StringBuffer buf = new StringBuffer();
+			StringBuffer buf = null;
 			for (String key : request.getParameterMap().keySet()) {
+				buf = new StringBuffer();
 				String[] vals = request.getParameterMap().get(key);
 				for(int i=0; i<vals.length; i++){
 					buf.append(vals[i]);
