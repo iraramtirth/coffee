@@ -53,5 +53,4 @@ public class User {
 	public void setDescribe(String describe) {
 		this.describe = describe;
 	}
-	
 }
