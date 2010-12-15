@@ -124,16 +124,18 @@ public abstract class Action extends HttpServlet implements Constants {
 				}
 			} 
 		}
+		// 为真则说明parameterMap中参数不为空
 		if(bool){
 			try {
 				ParamaterReflect pr = new ParamaterReflect();
+				//解析参数
 				pr.parserParameter(parameterMap, this);
+				//参数反射
 				pr.invoke(this);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
 		}
-		
 		// 请求转发 按照url参数method指定的值，反射执行
 		String targetMathod = request.getParameter("method");
 		String uri = request.getRequestURI();
