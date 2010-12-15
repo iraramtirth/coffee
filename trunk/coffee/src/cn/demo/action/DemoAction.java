@@ -91,8 +91,6 @@ public class DemoAction extends Action {
 		return SUCCESS;
 	}
 
-	
-	
 	// setter getter
 	@Resource(name="service")
 	public void setService(TService service) {
