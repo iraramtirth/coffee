@@ -17,6 +17,14 @@ public class User {
 	private Date birthday;
 	private String describe;
 	
+	private User child;
+	public User getChild() {
+		return child;
+	}
+	public void setChild(User child) {
+		this.child = child;
+	}
+	
 	public Integer getId() {
 		return id;
 	}
