@@ -83,6 +83,8 @@ public class MultipartStream {
 				// 解析 ：参数名称、文件名
 				FormFile formFile = new FormFile();
 				String paramName = fileMat.group(1);
+				// 截取末尾的.file后缀
+				paramName = paramName.substring(0,paramName.lastIndexOf("."));
 				formFile.setFileName(fileMat.group(2));
 				// 下一行：解析content-Type
 				String nextLine =  readLine();
