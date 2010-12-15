@@ -9,7 +9,6 @@ import org.coffee.spring.ioc.annotation.Service;
 import org.coffee.struts.PagerModel;
 /**
  * service层通用父类接口实现类
- * 
  * @author wangtao
  */
 @Service(name="service")
