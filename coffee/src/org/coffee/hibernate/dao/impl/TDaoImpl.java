@@ -16,8 +16,6 @@ import org.coffee.hibernate.dao.TDao;
 import org.coffee.hibernate.dao.util.Configuration;
 import org.coffee.hibernate.dao.util.TDaoUtil;
 
-//import com.sun.rowset.CachedRowSetImpl;
-
 public class TDaoImpl implements TDao{
 	protected Connection conn;
 	
