@@ -110,7 +110,7 @@ public class ParamaterReflect {
 									new Class[]{paramType});
 							Object paramValue;
 							Object mapVal = this.parameterMap.get(key);
-							System.out.println(key+"\t"+mapVal);
+//							System.out.println(key+"\t"+mapVal);
 							if(mapVal == null){
 								continue;
 							}
