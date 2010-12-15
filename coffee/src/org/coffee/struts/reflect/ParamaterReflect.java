@@ -62,15 +62,13 @@ public class ParamaterReflect {
 					}
 				}
 			}
-			System.out.println();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
 	/**
 	 * 执行参数反射
-	 * @param target
-	 * @param value
+	 * @param action ：当前正在执行的action对象
 	 */
 	public void invoke(Object action) throws Exception{
 		if(this.parameterMap.size() == 0){
