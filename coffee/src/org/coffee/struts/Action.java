@@ -26,6 +26,7 @@ import javax.servlet.http.HttpSession;
 import org.coffee.spring.ObjectManager;
 import org.coffee.spring.ioc.annotation.Resource;
 import org.coffee.struts.annotation.Result;
+import org.coffee.struts.reflect.ParamaterReflect;
 import org.coffee.struts.upload.FormFile;
 import org.coffee.struts.upload.MultipartStream;
 
@@ -89,33 +90,30 @@ public abstract class Action extends HttpServlet implements Constants {
 
 	/**
 	 * get请求
+	 * 
+	 *  注意 ServletInputStream 流只能读取一次，第二次便取不到其中的内容了
 	 */
 	public void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		this.init(request, response);
-		/**
-		 * 参数映射 ：如果表单 enctype="multipart/form-data" 则parameterMap.size == 0
-		 */
+		boolean bool = false;
 		if (request.getParameterMap().size() > 0) {
 			for (String key : request.getParameterMap().keySet()) {
 				this.parameterMap.put(key, request.getParameterMap().get(key));
 			}
-			this.paramsReflect(null, this.getClass());
+			bool = true;
 		} else {
-			/**
-			 *  注意 ServletInputStream 流只能读取一次，第二次便取不到其中的内容了
-			 */
-			// 文件上传
 			if (MultipartStream.isMultipartContent(request)) {
-				try {
-					this.parameterMap = new MultipartStream(request).parser();
-					if(this.parameterMap.size() > 0){
-						this.paramsReflect(null, this.getClass());
-					}
-				} catch (Exception e) {
-					e.printStackTrace();
+				this.parameterMap = new MultipartStream(request).parser();
+				if(this.parameterMap.size() > 0){
+					bool = true;
 				}
 			} 
+		}
+		if(bool){
+			ParamaterReflect pr = new ParamaterReflect();
+			pr.parserParameter(parameterMap, this);
+			pr.invoke(this);
 		}
 		
 		// 请求转发 按照url参数method指定的值，反射执行
@@ -175,7 +173,8 @@ public abstract class Action extends HttpServlet implements Constants {
 	 * @param preName
 	 *            参数前缀名：如 user.username 此时preName=user
 	 **/
-	private Object paramsReflect(String preName, Class<?> clazz) {
+	@Deprecated
+	public Object paramsReflect(String preName, Class<?> clazz) {
 		try {
 			BeanInfo bi = null;
 			Object targetObj = null;
@@ -267,7 +266,8 @@ public abstract class Action extends HttpServlet implements Constants {
 	 * @param content
 	 *            : 流的内容
 	 */
-	private void parserInputStream(String content) {
+	@Deprecated
+	public void parserInputStream(String content) {
 		if(content == null || content.trim().equals("")){
 			return;
 		}

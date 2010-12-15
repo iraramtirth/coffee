@@ -55,7 +55,7 @@ public class MultipartStream {
 	/**
 	 *  解析流的内容
 	 */
-	public Map<String, Object> parser() throws Exception{
+	public Map<String, Object> parser(){
 		String line = null;
 		while ((line = readLine()) != null) {
 			System.out.println(line);
@@ -77,42 +77,46 @@ public class MultipartStream {
 	 * 解析file域
 	 * @param line : 从流中读取的流内容（一行）
 	 */
-	private void  parserFileStream(String line) throws IOException{
-		Matcher fileMat = filePat.matcher(line);
-		while(fileMat.find()){
-			// 解析 ：参数名称、文件名
-			FormFile formFile = new FormFile();
-			String paramName = fileMat.group(1);
-			formFile.setFileName(fileMat.group(2));
-			// 下一行：解析content-Type
-			String nextLine =  readLine();
-			fileMat = filePat.matcher(nextLine);
-			Matcher typeMat = typePat.matcher(nextLine);
-			if(typeMat.find()){
-				String fileType = typeMat.group(1);
-				formFile.setContentType(fileType);
-				if (fileType.trim().equals("application/octet-stream")) {
-					// 文件内容为空
-					continue;
-				}else{// 文件内容非空， 则继续解析文件(内容)
-					while ((line = readLine()) != null) {
-						if (line.length() <= 2) {
-							break;
+	private void  parserFileStream(String line){
+		try{
+			Matcher fileMat = filePat.matcher(line);
+			while(fileMat.find()){
+				// 解析 ：参数名称、文件名
+				FormFile formFile = new FormFile();
+				String paramName = fileMat.group(1);
+				formFile.setFileName(fileMat.group(2));
+				// 下一行：解析content-Type
+				String nextLine =  readLine();
+				fileMat = filePat.matcher(nextLine);
+				Matcher typeMat = typePat.matcher(nextLine);
+				if(typeMat.find()){
+					String fileType = typeMat.group(1);
+					formFile.setContentType(fileType);
+					if (fileType.trim().equals("application/octet-stream")) {
+						// 文件内容为空
+						continue;
+					}else{// 文件内容非空， 则继续解析文件(内容)
+						while ((line = readLine()) != null) {
+							if (line.length() <= 2) {
+								break;
+							}
 						}
-					}
-					File file = new File("c:/11.jpg");
-					FileOutputStream dos = new FileOutputStream(file);
-					while ((line = readLine()) != null) {
-						if (line.indexOf(this.boundary) != -1) {
-							break;
+						File file = new File("c:/11.jpg");
+						FileOutputStream dos = new FileOutputStream(file);
+						while ((line = readLine()) != null) {
+							if (line.indexOf(this.boundary) != -1) {
+								break;
+							}
+							dos.write(buffer, 0, len);
 						}
-						dos.write(buffer, 0, len);
+						dos.close();
+						formFile.setFile(file);
+						this.parameterMap.put(paramName, formFile);
 					}
-					dos.close();
-					formFile.setFile(file);
-					this.parameterMap.put(paramName, formFile);
 				}
 			}
+		}catch(Exception e){
+			e.printStackTrace();
 		}
 	}
 	/**
