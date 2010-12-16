@@ -44,7 +44,10 @@ public class MultipartStream {
 	public MultipartStream(HttpServletRequest request){
 		try {
 			this.in = request.getInputStream();
-			this.charset = request.getCharacterEncoding();
+			// 默认是UTF-8
+			if(request.getCharacterEncoding() != null){
+				this.charset = request.getCharacterEncoding();
+			}
 			this.boundary = request.getContentType();
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -104,7 +107,7 @@ public class MultipartStream {
 						}
 						File file = new File("c:/11.jpg");
 						FileOutputStream dos = new FileOutputStream(file);
-						while ((line = readLine()) != null) {
+						while ((line = readLine(charset)) != null) {
 							if (line.indexOf(this.boundary) != -1) {
 								break;
 							}
@@ -133,26 +136,43 @@ public class MultipartStream {
 			 * 因为表单域的名称跟值之间有一个换行即之间多了一个\n\r
 			 * 所以多读取一行
 			 */
-			this.readLine();
-			String nextLine  = this.readLine();
-			if(nextLine.trim().length() > 0){
-				parameterMap.put(paramName, nextLine.trim());
-			}
+			this.readLine(charset);
+			String nextLine = this.readLine(charset);
+				if(nextLine.trim().length() > 0){
+					parameterMap.put(paramName, nextLine.trim());
+				}
 		}
 	}
 	/**
 	 * 从ServletInputStream流中读取一行内容
 	 * @param data 
-	 * @return :
+	 * @return : 
 	 */
-	private String readLine() {
+	private String readLine(String charset) {
 		String bufferTemp = "";
 		try {
 			len = in.readLine(this.buffer, 0, this.buffer.length);
 			if (len == -1) {
 				return null;
 			}
-			bufferTemp = new String(this.buffer, 0, len);
+			//text流 ：解析InputStream流的
+			bufferTemp = new String(this.buffer, 0, len, charset);				
+		} catch (Exception ex) {
+			bufferTemp = null;
+		}
+		return bufferTemp;
+	}
+	/**
+	 *  读取未经过编码的流 
+	 */
+	private String readLine(){
+		String bufferTemp = "";
+		try {
+			len = in.readLine(this.buffer, 0, this.buffer.length);
+			if (len == -1) {
+				return null;
+			}
+			bufferTemp = new String(this.buffer, 0, len);				
 		} catch (Exception ex) {
 			bufferTemp = null;
 		}
