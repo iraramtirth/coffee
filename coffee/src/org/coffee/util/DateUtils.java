@@ -2,8 +2,18 @@ package org.coffee.util;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
-
+import java.util.logging.Logger;
+/**
+ * 日期工具类
+ * 主要负责处理时间java.util.Date与String类型的转换
+ * @author wangtao
+ */
 public class DateUtils {
+	private static Logger log = Logger.getLogger(DateUtils.class.toString());
+	/**
+	 * 默认的格式化格式为
+	 * yyyy-MM-dd HH:mm:ss
+	 */
 	private static SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 	/**
 	 *  格式化日期类型 
@@ -34,7 +44,8 @@ public class DateUtils {
 					sdf = new SimpleDateFormat("HH:mm:ss");
 					return sdf.parse(value.toString());
 				} catch(Exception exc){
-					exc.printStackTrace();
+					//exc.printStackTrace();
+					log.warning("不能格式化指定的值: "+value);
 				}
 			} 
 			return null;

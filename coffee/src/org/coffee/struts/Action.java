@@ -109,6 +109,7 @@ public abstract class Action extends HttpServlet implements Constants {
 	 */
 	public void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
+		request.setCharacterEncoding("UTF-8");
 		this.init(request, response);
 		boolean bool = false;
 		/**
@@ -149,6 +150,7 @@ public abstract class Action extends HttpServlet implements Constants {
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
+			bool = false;
 		}
 		// 请求转发 按照url参数method指定的值，反射执行
 		String targetMathod = request.getParameter("method");

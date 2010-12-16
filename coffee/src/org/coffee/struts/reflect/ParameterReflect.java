@@ -63,7 +63,8 @@ public class ParameterReflect {
 		}
 	}
 	/**
-	 * 执行参数反射
+	 * 执行参数反射：
+	 * 将action中的属性赋于从form/url取得的值
 	 * @param action ：当前正在执行的action对象
 	 */
 	public void invoke(Object action){
@@ -129,7 +130,12 @@ public class ParameterReflect {
 								case Date :
 									paramValue = DateUtils.parse(mapVal);
 									break;
-								default:
+								case String :
+									paramValue = mapVal.toString();
+									break;
+								case FormFile : // 不处理FormFile类型
+									continue;
+								default :
 									paramValue = mapVal;
 									break;
 							}

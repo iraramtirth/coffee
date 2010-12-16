@@ -14,7 +14,9 @@ public class TypeUtils {
 		Double,
 		Boolean,
 		String,
-		Date
+		Date,
+		FormFile,	//该类型用于文件上传
+		Object
 	}
 	
 	/**
@@ -29,19 +31,23 @@ public class TypeUtils {
 	public static  Type getMappedType(Field field) throws Exception{
 		return getMappedType(field.getType().getSimpleName());
 	}
-	// 支持基本数据类型以及其封装类型
+	/**
+	 * 支持基本数据类型以及其封装类型
+	 */
 	public static Type getMappedType(String name) throws Exception{
 		name = name.toLowerCase();
 		if(name.contains("long")){
 			return Type.Long;
-		}
-		if(name.contains("int")){
+		}else if(name.contains("int")){
 			return Type.Integer;
-		}
-		if(name.equals("date")){
+		}else if(name.contains("date")){
 			return Type.Date;
+		}else if(name.contains("string")){
+			return Type.String;
+		} else if(name.contains("formfile")){
+			return Type.FormFile;
 		}
-		return Type.String;
+		return Type.Object;
 	}
 	
 }
