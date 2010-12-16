@@ -23,33 +23,33 @@ public class SqlConnection {
 
 	
 	private static void initConnectionPool() throws SQLException {
-			Properties prop = new Properties();
-			try {
-				prop.load(new FileInputStream(SqlConnection.class.getClassLoader()
-						.getResource("/").getPath()	+ "jdbc.properties"));
-				url = prop.getProperty("url");
-				username = prop.getProperty("username");
-				password = prop.getProperty("password");
-				driver = prop.getProperty("driver");
-				if (driver.toUpperCase().contains("ORACLE")) {
-					Configuration.setDialect("ORACLE");
-				} else if (driver.toUpperCase().contains("MYSQL")) {
-					Configuration.setDialect("MYSQL");
-				} else {
-					Configuration.setDialect("HSQLDB");
-				}
-			} catch (Exception e) {
-				System.out.println(e.getClass()+"...."+e.getStackTrace()[0].getClassName());
-				// 默认采用Hsqldb数据库
-				String[] args = "--database.0 file:mydb --dbname.0 xdb".split(" ");
-				// 启动hsqldb数据库
-				org.hsqldb.server.Server.main(args);
-				url = "jdbc:hsqldb:hsql://localhost/xdb";
-				driver = "org.hsqldb.jdbc.JDBCDriver";
-				username = "SA";
-				password = "";
+		Properties prop = new Properties();
+		try {
+			prop.load(new FileInputStream(SqlConnection.class.getClassLoader()
+					.getResource("/").getPath()	+ "jdbc.properties"));
+			url = prop.getProperty("url");
+			username = prop.getProperty("username");
+			password = prop.getProperty("password");
+			driver = prop.getProperty("driver");
+			if (driver.toUpperCase().contains("ORACLE")) {
+				Configuration.setDialect("ORACLE");
+			} else if (driver.toUpperCase().contains("MYSQL")) {
+				Configuration.setDialect("MYSQL");
+			} else {
 				Configuration.setDialect("HSQLDB");
 			}
+		} catch (Exception e) {
+			System.out.println(e.getClass()+"...."+e.getStackTrace()[0].getClassName());
+			// 默认采用Hsqldb数据库
+			String[] args = "--database.0 file:mydb --dbname.0 xdb".split(" ");
+			// 启动hsqldb数据库
+			org.hsqldb.server.Server.main(args);
+			url = "jdbc:hsqldb:hsql://localhost/xdb";
+			driver = "org.hsqldb.jdbc.JDBCDriver";
+			username = "SA";
+			password = "";
+			Configuration.setDialect("HSQLDB");
+		}
 		cp = new ConnectionPool(driver, url, username, password);
 	}
 

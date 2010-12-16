@@ -1,7 +1,5 @@
 package org.coffee.struts;
 
-import java.beans.BeanInfo;
-import java.beans.Introspector;
 import java.beans.PropertyDescriptor;
 import java.io.BufferedOutputStream;
 import java.io.DataOutputStream;
@@ -25,7 +23,9 @@ import javax.servlet.http.HttpSession;
 import org.coffee.spring.ObjectManager;
 import org.coffee.spring.ioc.annotation.Resource;
 import org.coffee.struts.annotation.Result;
+import org.coffee.struts.introspector.BeanUtils;
 import org.coffee.struts.reflect.ParameterReflect;
+import org.coffee.struts.reflect.RequestUtils;
 import org.coffee.struts.upload.FormFile;
 import org.coffee.struts.upload.MultipartStream;
 
@@ -56,22 +56,14 @@ public abstract class Action extends HttpServlet implements Constants {
 			/**
 			 * 为Action中被Resource注解的对象进行注入
 			 */
-			BeanInfo bi = Introspector.getBeanInfo(this.getClass(),
-					Action.class);
-			PropertyDescriptor[] props = bi.getPropertyDescriptors();
-			for (PropertyDescriptor prop : props) {
+			for (PropertyDescriptor prop : BeanUtils.getPropertyDescriptors(this)) {
 				/**
 				 *  若该属性不存在writeMethod，则不对该属性进行依赖注入
 				 */
 				if(prop.getWriteMethod() != null){
-					Resource resource = prop.getWriteMethod().getAnnotation(
-							Resource.class);
+					Resource resource = prop.getWriteMethod().getAnnotation(Resource.class);
 					if (resource != null) {
-						prop.getWriteMethod().invoke(this,
-								ObjectManager.getIocObject().get(prop.getName()));
-					}else{
-						//将属性初始化为null
-						prop.getWriteMethod().invoke(this, new Object[]{null});
+						prop.getWriteMethod().invoke(this,ObjectManager.getIocObject().get(prop.getName()));
 					}
 				}
 			}
@@ -89,6 +81,20 @@ public abstract class Action extends HttpServlet implements Constants {
 		this.response = response;
 		this.session = request.getSession();
 		this.application = request.getServletContext();
+		try {
+			//初始化属性为null
+			for (PropertyDescriptor prop : BeanUtils.getPropertyDescriptors(this)) {
+				if(prop.getWriteMethod() != null){
+					Resource resource = prop.getWriteMethod().getAnnotation(Resource.class);
+					// 如果该属性被注解/注入；则不进行初始化工作
+					if(resource == null){
+						prop.getWriteMethod().invoke(this, new Object[]{null});
+					}
+				}
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 	/**
@@ -163,14 +169,23 @@ public abstract class Action extends HttpServlet implements Constants {
 	}
 
 	/**
-	 * 转发请求
+	 * 调用相应的action方法  ：insert query update 等方法
+	 * 并执行响应的页面跳转：底层调用的是request的sendRedirect | getRequestDispatcher
 	 */
 	private void dispatchRequest(String targetMathod) {
 		if (targetMathod != null) {
 			try {
 				Method method = this.getClass().getMethod(targetMathod,
 						new Class[] {});
-				method.invoke(this, new Object[] {});
+				/**
+				 * 此行代码将执行到相应action的方法（execute）中
+				 */
+				method.invoke(this, new Object[]{});
+				/**
+				 * 设置request属性 ：将Action的属性以及其值设置到request的attribute中
+				 * request.setAttribute
+				 */
+				RequestUtils.setAttribute(this,request);
 				Result result = method.getAnnotation(Result.class);
 				// 跳转的页面
 				String page = result.page(); // 注意该路径以工程的contextPath为根路径
