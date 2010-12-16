@@ -39,6 +39,9 @@ public class TDaoImpl implements TDao{
 	// 批量删除
 	@Override
 	public <T> void deleteBatch(Class<T> clazz,String[] ids) throws SQLException{
+		if(ids == null || ids.length == 0){
+			return;
+		}
 		try {
 			String sql = "delete from "+TDaoUtil.getTableName(clazz) +" where id=?";
 			conn.setAutoCommit(false);
