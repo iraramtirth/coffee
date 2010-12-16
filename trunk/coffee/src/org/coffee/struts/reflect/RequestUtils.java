@@ -17,12 +17,19 @@ public class RequestUtils{
 	 */
 	public static void setAttribute(Action thiz,HttpServletRequest request){
 		try {
-			BeanInfo bi = Introspector.getBeanInfo(thiz.getClass());
+			BeanInfo bi = Introspector.getBeanInfo(thiz.getClass(),Action.class);
 			PropertyDescriptor[] props = bi.getPropertyDescriptors();
 			for(PropertyDescriptor prop : props){
 				try {
-					Object value = prop.getReadMethod().invoke(thiz, new Object[]{});
-					request.setAttribute(prop.getName(), value);
+					/**
+					 * 如果该Action中存在read方法；则
+					 */
+					if(prop.getReadMethod() != null){
+						Object value = prop.getReadMethod().invoke(thiz, new Object[]{});
+						if(value != null){
+							request.setAttribute(prop.getName(), value);
+						}
+					}
 				}  catch (Exception e) {
 					e.printStackTrace();
 					continue;

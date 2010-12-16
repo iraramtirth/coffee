@@ -38,8 +38,7 @@ public class DemoAction extends Action {
 	@Result(page="/demo/list.jsp")
 	public String list()throws Exception{
 		String sql = "select * from users order by ID desc";
-		PagerModel<User> pager = this.service.queryForPagerModel(sql, this.pager.getOffset(), 10, User.class);
-		request.setAttribute("pager", pager);
+		pager = this.service.queryForPagerModel(sql, this.pager.getOffset(), 10, User.class);
 		return SUCCESS;
 	}
 	
@@ -55,6 +54,7 @@ public class DemoAction extends Action {
 		this.setModel(user);
 		return SUCCESS;
 	}
+	@Result(page="/user/list.action")
 	public String update()throws Exception{
 		this.service.update(this.model);
 		return UPDATE;
