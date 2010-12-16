@@ -25,7 +25,7 @@ import javax.servlet.http.HttpSession;
 import org.coffee.spring.ObjectManager;
 import org.coffee.spring.ioc.annotation.Resource;
 import org.coffee.struts.annotation.Result;
-import org.coffee.struts.reflect.ParamaterReflect;
+import org.coffee.struts.reflect.ParameterReflect;
 import org.coffee.struts.upload.FormFile;
 import org.coffee.struts.upload.MultipartStream;
 
@@ -69,6 +69,9 @@ public abstract class Action extends HttpServlet implements Constants {
 					if (resource != null) {
 						prop.getWriteMethod().invoke(this,
 								ObjectManager.getIocObject().get(prop.getName()));
+					}else{
+						//将属性初始化为null
+						prop.getWriteMethod().invoke(this, new Object[]{null});
 					}
 				}
 			}
@@ -132,7 +135,7 @@ public abstract class Action extends HttpServlet implements Constants {
 		// 为真则说明parameterMap中参数不为空
 		if(bool){
 			try {
-				ParamaterReflect pr = new ParamaterReflect();
+				ParameterReflect pr = new ParameterReflect();
 				//解析参数
 				pr.parserParameter(parameterMap, this);
 				//参数反射
