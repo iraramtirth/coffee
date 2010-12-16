@@ -4,6 +4,7 @@ import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.logging.Logger;
 
 import org.coffee.util.DateUtils;
 import org.coffee.util.StringManager;
@@ -17,6 +18,7 @@ import org.coffee.util.TypeUtils;
  * @author wangtao
  */
 public class ParameterReflect {
+	private Logger log = Logger.getLogger(this.toString());
 	/**
 	 * 存放的是从表单获取的参数map
 	 */
@@ -28,7 +30,6 @@ public class ParameterReflect {
 	 * 那么targetMap.put("model",model.getClass().newInstance());
 	 */
 	private Map<String, Object> targetMap = new HashMap<String, Object>();
-	
 	/**
 	 * 解析参数
 	 * 初始化对象
@@ -65,31 +66,38 @@ public class ParameterReflect {
 	 * 执行参数反射
 	 * @param action ：当前正在执行的action对象
 	 */
-	public void invoke(Object action) throws Exception{
+	public void invoke(Object action){
 		if(this.parameterMap.size() == 0){
 			return;
 		}
 		String paramName = "";
-		try {
-			for(String key : this.parameterMap.keySet()){
-				Object base = action;
-				if(key.lastIndexOf(".") == -1){
+		for(String key : this.parameterMap.keySet()){
+			Object base = action;
+			if(key.lastIndexOf(".") == -1){
+				try {
 					Class<?> paramType = base.getClass().getDeclaredField(key).getType();
-					Method method = base.getClass().getDeclaredMethod("set"+StringManager.toUpperCaseFirstChar(key), new Class[]{paramType});
+					Method method = base.getClass().getDeclaredMethod("set"+StringManager
+							.toUpperCaseFirstChar(key), new Class[]{paramType});
 					method.invoke(base, new Object[]{this.parameterMap.get(key)});
-				}else{
-					Class<?> clazz = base.getClass();
-					paramName = "";
-					Object objValue = null;
-					int i = 0;
-					String[] fields = key.split("\\.");
-					for(String field : fields){
-						i++;
-						if(field.equals("file") && i == fields.length - 1){
-							//none
-						}else{
-							paramName += field;
-						}
+				} catch (NoSuchFieldException e) {
+					log.warning("Action中的字段["+key+"]不存在,无法进行参数映射...");
+				} catch (Exception e) {
+					e.printStackTrace();
+				}  
+			}else{
+				Class<?> clazz = base.getClass();
+				paramName = "";
+				Object objValue = null;
+				int i = 0;
+				String[] fields = key.split("\\.");
+				for(String field : fields){
+					i++;
+					if(field.equals("file") && i == fields.length - 1){
+						//none
+					}else{
+						paramName += field;
+					}
+					try {
 						if(i < key.split("\\.").length){
 							Method readMethod = clazz.getDeclaredMethod("get"+StringManager.toUpperCaseFirstChar(field), new Class[]{});
 							objValue = readMethod.invoke(base, new Object[]{});
@@ -108,7 +116,6 @@ public class ParameterReflect {
 									new Class[]{paramType});
 							Object paramValue;
 							Object mapVal = this.parameterMap.get(key);
-//							System.out.println(key+"\t"+mapVal);
 							if(mapVal == null){
 								continue;
 							}
@@ -128,17 +135,17 @@ public class ParameterReflect {
 							}
 							method.invoke(base, new Object[]{paramValue});
 						}
-						clazz = objValue.getClass();
-						paramName += ".";
-						base = objValue;
+					} catch (NoSuchMethodException e) {
+						e.printStackTrace();
+					} catch (NoSuchFieldException e) {
+						e.printStackTrace();
+					} catch (Exception e) {
+						e.printStackTrace();
 					}
+					clazz = objValue.getClass();
+					paramName += ".";
+					base = objValue;
 				}
-			}
-		
-		} catch (Exception e) {
-			e.printStackTrace();
-			if(e.getMessage().contains("NoSuchMethodException")){
-				throw new Exception("属性"+paramName+"没有发现");
 			}
 		}
 	}

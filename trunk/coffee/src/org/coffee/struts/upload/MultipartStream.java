@@ -52,7 +52,6 @@ public class MultipartStream {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		System.out.println(this.charset);
 	}
 	
 	/**
@@ -144,9 +143,9 @@ public class MultipartStream {
 		}
 	}
 	/**
-	 * 从ServletInputStream流中读取一行内容
-	 * @param data 
-	 * @return : 
+	 * 从ServletInputStream流中[按照指定编码方式]读取一行内容
+	 * @param charset : 按照指定的编码方式读取文件 
+	 * @return : 读取的内容
 	 */
 	private String readLine(String charset) {
 		String bufferTemp = "";
@@ -163,7 +162,7 @@ public class MultipartStream {
 		return bufferTemp;
 	}
 	/**
-	 *  读取未经过编码的流 
+	 *  读取未经过编码的流 ：按行读取
 	 */
 	private String readLine(){
 		String bufferTemp = "";
@@ -180,8 +179,8 @@ public class MultipartStream {
 	}
 	/**
 	 * 判断该request请求是否是MULTIPART
-	 * @param request
-	 * @return
+	 * @param request : servlet中的request请求
+	 * @return : true - 表单按照二进制流方式提交 ；false 普通方式(字符串)提交
 	 */
 	 public static final boolean isMultipartContent(
 	            HttpServletRequest request) {

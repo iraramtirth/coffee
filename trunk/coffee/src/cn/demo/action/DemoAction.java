@@ -65,7 +65,7 @@ public class DemoAction extends Action {
 		return DELETE;
 	}
 	// 批量删除
-	
+	@Result(page="/user/list.action")
 	public String deleteBatch() throws Exception{
 		String ids = request.getParameter("ids");
 		if(ids != null){
