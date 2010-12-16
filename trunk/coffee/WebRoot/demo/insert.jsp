@@ -15,6 +15,8 @@
 	<script type="text/javascript" src="<%=path%>/resource/js/jquery.js"></script>
 	<script type="text/javascript" src="<%=path%>/resource/js/validate.js"></script>
 	<script type="text/javascript" src="<%=path%>/demo/check.js"></script>
+	<script type="text/javascript" src="<%=path%>/resource/js/My97DatePicker/WdatePicker.js"></script>
+	
   </head>
   <body class="right_body">
   <!-- enctype="multipart/form-data" -->
@@ -46,7 +48,7 @@
       </tr>
       <tr>
         <td width="41%" class="left_best" >出生年月：</td>
-        <td width="59%"><input type="text" name="model.birthday" id="birthday">
+        <td width="59%"><input type="text" name="model.birthday" id="birthday" onclick="WdatePicker()" readonly="readonly">
       		<span id="birthdayError"></span>
         </td>
       </tr>
