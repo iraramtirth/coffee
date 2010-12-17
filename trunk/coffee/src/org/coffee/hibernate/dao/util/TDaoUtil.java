@@ -138,6 +138,7 @@ public class TDaoUtil {
 	
 	/**
 	 * 判断某Class的某字段是不是主键
+	 * 如果该注解被Id属性注解了；或者字段名为Id，则是主键
 	 * @param clazz
 	 * @param prop
 	 * @return ：若是则返回true;否则返回false
@@ -146,6 +147,10 @@ public class TDaoUtil {
 		Id id = clazz.getDeclaredField(prop.getName()).getAnnotation(Id.class);
 		if(id != null){
 			return true;
+		}else{//如果没有被Id注解过；则查看判断该字段名字是否是Id
+			if("id".equals(prop.getName().toLowerCase())){
+				return true;
+			}
 		}
 		return false;
 	}
@@ -171,6 +176,7 @@ public class TDaoUtil {
 			if(TDaoUtil.isPrimaryKey(t.getClass(), props[i])){
 				id = Long.valueOf(props[i].getReadMethod().invoke(t,(Object[]) null).toString());
 			}else{
+				boolean bool = false;
 				switch(TypeUtils.getMappedType( props[i])){
 					case Integer :
 					case Long : 
@@ -183,15 +189,20 @@ public class TDaoUtil {
 						break;
 					case Date :
 						value = DateUtils.format(props[i].getReadMethod().invoke(t,(Object[]) null));
+						bool = true;
+						break;
 					case String :
 						value = props[i].getReadMethod().invoke(t,(Object[]) null);
-						if ("null".equals(value) || null == value) {
-							continue;
-						} else {
-							sql.append(token).append(TDaoUtil.getColumnName(t.getClass(), props[i]).toUpperCase()).append(token)
-								.append("='").append(value.toString()).append("'");
-						}
+						bool = true;
 						break;
+				}
+				if(bool){
+					if ("null".equals(value) || null == value) {
+						continue;
+					} else {
+						sql.append(token).append(TDaoUtil.getColumnName(t.getClass(), props[i]).toUpperCase()).append(token)
+							.append("='").append(value.toString()).append("'");
+					}
 				}
 			}
 			if (value != null && i+1 < props.length) {
