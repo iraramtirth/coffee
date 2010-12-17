@@ -2,6 +2,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://jsptags.com/tags/navigation/pager" prefix="pg"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <%
 String path = request.getContextPath();
 String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
@@ -79,6 +80,7 @@ pageContext.setAttribute("path",path);
 	        <td width="13%">${item.password}&nbsp; </td>
 	        <td width="14%">${item.age}&nbsp; </td>
 	        <td width="13%">
+	         	<fmt:formatDate value="${item.birthday}" pattern="yyyy-MM-dd"/>
 	        	&nbsp;
 	        </td>
             <td width="13%" class="hover">
