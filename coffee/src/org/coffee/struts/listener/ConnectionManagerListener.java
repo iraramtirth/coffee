@@ -30,6 +30,8 @@ public class ConnectionManagerListener implements ServletContextListener {
 
 	private Connection conn;
 	
+	private boolean isHsqldb = false;
+	
 	// 初始化数据库参数 param
 	private void intiParam() {
 		Properties prop = new Properties();
@@ -48,6 +50,7 @@ public class ConnectionManagerListener implements ServletContextListener {
 				Configuration.setDialect("HSQLDB");
 			}
 		} catch (Exception e) {
+			this.isHsqldb = true;
 			System.out.println(e.getClass()+"...."+e.getStackTrace()[0].getClassName());
 			// 默认采用Hsqldb数据库
 			String[] args = "--database.0 file:mydb --dbname.0 xdb".split(" ");
@@ -104,19 +107,21 @@ public class ConnectionManagerListener implements ServletContextListener {
 
 	@Override
 	public void contextDestroyed(ServletContextEvent event) {
-		try {
-			conn = SqlConnection.get();
-			Statement stmt = conn.createStatement();
-			//关闭HsqlDB数据库
-			stmt.executeUpdate("SHUTDOWN");
-			stmt.close();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally{
-			try{
-				conn.close();
-			}catch(SQLException e){
+		if(isHsqldb){
+			try {
+				conn = SqlConnection.get();
+				Statement stmt = conn.createStatement();
+				//关闭HsqlDB数据库
+				stmt.executeUpdate("SHUTDOWN");
+				stmt.close();
+			} catch (SQLException e) {
 				e.printStackTrace();
+			} finally{
+				try{
+					conn.close();
+				}catch(SQLException e){
+					e.printStackTrace();
+				}
 			}
 		}
 	}
