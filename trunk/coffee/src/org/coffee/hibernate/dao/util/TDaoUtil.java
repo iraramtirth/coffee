@@ -119,7 +119,7 @@ public class TDaoUtil {
 						case Integer :
 							value = Integer.valueOf(rs.getInt(TDaoUtil.getColumnName(clazz, prop)));
 							break;
-						case String :
+						default :
 							value = rs.getObject(TDaoUtil.getColumnName(clazz, prop));
 							break;
 					}
