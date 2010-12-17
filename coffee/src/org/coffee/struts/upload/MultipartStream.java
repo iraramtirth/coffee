@@ -5,6 +5,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Hashtable;
 import java.util.Map;
+import java.util.UUID;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -41,6 +42,12 @@ public class MultipartStream {
 	private Pattern filePat = Pattern.compile("name=\"(.+?)\";\\s+filename=\"(.*?)\"");
 	// 文件类型
 	private Pattern typePat = Pattern.compile("Content-Type:\\s(.+)");
+	
+	private transient File tmpFile;
+	/**
+	 * 初始化上传参数
+	 * @param request
+	 */
 	public MultipartStream(HttpServletRequest request){
 		try {
 			this.in = request.getInputStream();
@@ -48,7 +55,13 @@ public class MultipartStream {
 			if(request.getCharacterEncoding() != null){
 				this.charset = request.getCharacterEncoding();
 			}
-			this.boundary = request.getContentType();
+			/**
+			 * request.getContentType()
+			 * multipart/form-data; boundary=---------------------------7da8c2d50206
+			 * 
+			 */
+			this.boundary = request.getContentType().replaceAll(".+boundary=", "--");
+			this.tmpFile = (File)request.getServletContext().getAttribute("javax.servlet.context.tempdir");
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -59,6 +72,9 @@ public class MultipartStream {
 	 */
 	public Map<String, Object> parser(){
 		String line = null;
+		/**
+		 * 开始读取流内容；按行读取
+		 */
 		while ((line = readLine()) != null) {
 			// 文件流
 			if (line.startsWith("Content-Disposition: form-data;")) {
@@ -104,8 +120,7 @@ public class MultipartStream {
 								break;
 							}
 						}
-						File file = new File("c:/11.jpg");
-						FileOutputStream dos = new FileOutputStream(file);
+						FileOutputStream dos = new FileOutputStream(new File(tmpFile,UUID.randomUUID().toString()+".tmp"));
 						while ((line = readLine(charset)) != null) {
 							if (line.indexOf(this.boundary) != -1) {
 								break;
@@ -113,7 +128,7 @@ public class MultipartStream {
 							dos.write(buffer, 0, len);
 						}
 						dos.close();
-						formFile.setFile(file);
+						formFile.setFile(tmpFile);
 						this.parameterMap.put(paramName, formFile);
 					}
 				}
@@ -137,9 +152,9 @@ public class MultipartStream {
 			 */
 			this.readLine(charset);
 			String nextLine = this.readLine(charset);
-				if(nextLine.trim().length() > 0){
-					parameterMap.put(paramName, nextLine.trim());
-				}
+			if(nextLine.trim().length() > 0){
+				parameterMap.put(paramName, nextLine.trim());
+			}
 		}
 	}
 	/**
