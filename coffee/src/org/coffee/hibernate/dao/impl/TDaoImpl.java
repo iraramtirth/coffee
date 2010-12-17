@@ -47,8 +47,16 @@ public class TDaoImpl implements TDao{
 			conn.setAutoCommit(false);
 			PreparedStatement pstmt = conn.prepareStatement(sql);
 			for(String id : ids){
-				pstmt.setInt(1, Integer.parseInt(id));
-				pstmt.addBatch();
+				int idInt = 0;
+				try{
+					idInt = Integer.parseInt(id);
+				}catch(Exception e){
+					continue;
+				}
+				if(idInt != 0){
+					pstmt.setInt(1, idInt);
+					pstmt.addBatch();
+				}
 			}
 			pstmt.executeBatch();
 			conn.commit();
