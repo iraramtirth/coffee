@@ -6,9 +6,9 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Logger;
 
-import org.coffee.util.DateUtils;
-import org.coffee.util.StringManager;
-import org.coffee.util.TypeUtils;
+import org.coffee.common.util.DateUtils;
+import org.coffee.common.util.StringManager;
+import org.coffee.common.util.TypeUtils;
 
 /**
  * 参数反射 
