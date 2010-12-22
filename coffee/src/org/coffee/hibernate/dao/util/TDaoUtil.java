@@ -12,13 +12,13 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import org.coffee.common.util.DateUtils;
+import org.coffee.common.util.TypeUtils;
 import org.coffee.hibernate.annotation.Column;
 import org.coffee.hibernate.annotation.Entity;
 import org.coffee.hibernate.annotation.Id;
 import org.coffee.hibernate.annotation.NullMap;
 import org.coffee.hibernate.annotation.Table;
-import org.coffee.util.DateUtils;
-import org.coffee.util.TypeUtils;
 
 /**
  * 数据库的通用工具类
