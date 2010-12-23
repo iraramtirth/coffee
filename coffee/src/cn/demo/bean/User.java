@@ -2,25 +2,29 @@ package cn.demo.bean;
 
 import java.util.Date;
 
-import org.coffee.hibernate.annotation.Entity;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Table;
+import javax.persistence.Transient;
+
 import org.coffee.hibernate.annotation.Id;
-import org.coffee.hibernate.annotation.NullMap;
-import org.coffee.hibernate.annotation.Table;
 import org.coffee.struts.upload.FormFile;
 
 @Entity
 @Table(name="users")
 public class User {
 	@Id	// 主键
+//	@GeneratedValue(strategy=GenerationType.AUTO)
 	private Integer id;
 	private String username;
 	private String password;
 	private Integer age;
 	private Date birthday;
+	@Column(name="describ")
 	private String describe;
-	@NullMap
+	@Transient
 	private FormFile photo;
-	@NullMap
+	@Transient
 	private User child;
 	
 	public User getChild() {
