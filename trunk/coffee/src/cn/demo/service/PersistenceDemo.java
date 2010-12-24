@@ -15,8 +15,9 @@ public class PersistenceDemo {
 		EntityManager em = emf.createEntityManager();
 		System.out.println(em);
 		em.getTransaction().begin();
-		List<User> ls = em.createNativeQuery("select * from user",User.class).getResultList();
+		List<User> ls = em.createNativeQuery("select * from users",User.class).getResultList();
 		System.out.println(ls.size());
 		em.getTransaction().commit();
+		em.close();
 	}
 }

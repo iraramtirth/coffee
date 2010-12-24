@@ -187,7 +187,7 @@ public class EntityManagerExtImpl implements EntityManagerExt{
 
 	@Override
 	public Query createNativeQuery(String sqlString, Class<?> resultClass) {
-		Query query = new QueryImpl(this.conn,sqlString,resultClass);
+		Query query = new CoffeeQueryImpl(this.conn,sqlString,resultClass);
 		return query;
 	}
 
@@ -328,6 +328,9 @@ public class EntityManagerExtImpl implements EntityManagerExt{
 		
 	}
 
+	/**
+	 * 关闭数据库连接
+	 */
 	@Override
 	public void close() {
 		try {
