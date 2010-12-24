@@ -136,24 +136,7 @@ public class EntityManagerExtImpl implements EntityManagerExt{
 		return t;
 	}
 	 
-	/**
-	 *  查询返回list
-	 */
 	
-	public <T> List<T> queryForList(String sql, Class<T> clazz)
-			throws SQLException {
-		List<T> ls = new ArrayList<T>();
-		try {
-			Statement stmt = conn.createStatement();
-			ResultSet rs = stmt.executeQuery(sql);
-			ls = EntityManagerExtUtils.processResultSetToList(rs, clazz);
-			rs.close();
-			stmt.close();
-		} catch (Exception e) {
-			e.printStackTrace();
-		} 
-		return ls;
-	}
 	//分页查询
 	
 	public <T> List<T> queryForList(String sql, long start, int size,
@@ -204,9 +187,8 @@ public class EntityManagerExtImpl implements EntityManagerExt{
 
 	@Override
 	public Query createNativeQuery(String sqlString, Class<?> resultClass) {
-		Query query = new QueryImpl();
-		
-		return null;
+		Query query = new QueryImpl(this.conn,sqlString,resultClass);
+		return query;
 	}
 
 	@Override
