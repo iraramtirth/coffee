@@ -4,13 +4,15 @@ import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
+
 /**
- * 
- * @author wangtao
- *
+ * 作用于字段；Field级别  
  */
 @Retention(RetentionPolicy.RUNTIME) 
-@Target(ElementType.FIELD) // 适用于方法;作用于field
+@Target(ElementType.FIELD) 
 public @interface Column {
-	public String value(); //数据库对应的数据表的列名
+	/**
+	 * 对应的数据表的列名
+	 */
+	public String value(); 
 }

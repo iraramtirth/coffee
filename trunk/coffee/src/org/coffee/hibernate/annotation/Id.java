@@ -6,8 +6,8 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * 主键
- * @author wangtao
+ * 作用于Field
+ * 被Id注解的属性，说明对应的字段是数据库中的主键
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.FIELD)
