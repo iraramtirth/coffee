@@ -20,6 +20,7 @@ public class TDaoImpl implements TDao{
 	protected Connection conn;
 	
 	private static Logger logger = Logger.getLogger("jdbc");
+	
 	static{
 		logger.setLevel(Level.INFO);
 	}
@@ -99,7 +100,7 @@ public class TDaoImpl implements TDao{
 	 */
 	@SuppressWarnings("unchecked")
 	@Override
-	public <T> T queryForObject(Class<T> clazz, String sql) throws SQLException {
+	public <T> T queryForColumn(Class<T> clazz, String sql) throws SQLException {
 		T t = null;;
 		try {
 			Statement stmt = conn.createStatement();
@@ -118,10 +119,10 @@ public class TDaoImpl implements TDao{
 		return t;
 	}
 	/**
-	 *   查询，返回自定义对象
+	 *   查询，返回实体对象
 	 */
 	@Override
-	public <T> T queryForObject(Class<T> clazz, long id) throws SQLException {
+	public <T> T queryForEntity(Class<T> clazz, long id) throws SQLException {
 		T t = null;
 		try {
 			t = clazz.newInstance();
@@ -221,6 +222,23 @@ public class TDaoImpl implements TDao{
 				conn.close();				
 			}
 		}
+	}
+	@Override
+	public <T> void insert(List<T> ts) throws SQLException {
+		try {
+			conn.setAutoCommit(false);
+			Statement stmt = conn.createStatement();
+			for(T t : ts){
+				String sql = TDaoUtil.getInsertSql(t);
+				stmt.addBatch(sql);
+			}
+			stmt.executeBatch();
+			conn.commit();
+			stmt.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+			conn.rollback();
+		} 
 	}
 
 }
