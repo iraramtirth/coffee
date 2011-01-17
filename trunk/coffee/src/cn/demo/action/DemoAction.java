@@ -2,7 +2,8 @@ package cn.demo.action;
 
 import javax.servlet.annotation.WebServlet;
 
-import org.coffee.hibernate.service.TService;
+import org.coffee.jdbc.service.TService;
+import org.coffee.jdbc.service.impl.Session;
 import org.coffee.spring.ioc.annotation.Resource;
 import org.coffee.struts.Action;
 import org.coffee.struts.PagerModel;
@@ -19,7 +20,7 @@ public class DemoAction extends Action {
 	private static final long serialVersionUID = 1L;
 
 	private PagerModel<User> pager = new PagerModel<User>();
-	private TService service;
+	private Session service;
 	private String info;
 	private User model;
 	
@@ -50,7 +51,7 @@ public class DemoAction extends Action {
 	 
 	@Result(page="/demo/update.jsp")
 	public String toUpdate()throws Exception{
-		User user = this.service.queryForObject(model.getClass(), model.getId());
+		User user = this.service.queryForEntity(model.getClass(), model.getId());
 		this.setModel(user);
 		return SUCCESS;
 	}
@@ -69,7 +70,7 @@ public class DemoAction extends Action {
 	public String deleteBatch() throws Exception{
 		String ids = request.getParameter("ids");
 		if(ids != null){
-			this.service.deleteBatch(User.class, ids);			
+			this.service.deleteBatch(User.class, ids.split(","));			
 		}
 		return DELETE;
 	}
@@ -78,7 +79,7 @@ public class DemoAction extends Action {
 	public String checkUsername()throws Exception{
 		try {
 			String sql = "select count(*) from users where username ='"+this.model.getUsername()+"'";;
-			Integer user = this.service.queryForObject(Integer.class,sql);
+			Integer user = this.service.queryForColumn(Integer.class,sql);
 			if(user == 0){
 				this.info = "恭喜！可以注册";
 			}else{
@@ -93,7 +94,7 @@ public class DemoAction extends Action {
 
 	// setter getter
 	@Resource(name="service")
-	public void setService(TService service) {
+	public void setService(Session service) {
 		this.service = service;
 	}
 	public void setModel(User model) {
