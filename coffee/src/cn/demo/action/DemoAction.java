@@ -2,7 +2,6 @@ package cn.demo.action;
 
 import javax.servlet.annotation.WebServlet;
 
-import org.coffee.jdbc.service.TService;
 import org.coffee.jdbc.service.impl.Session;
 import org.coffee.spring.ioc.annotation.Resource;
 import org.coffee.struts.Action;
