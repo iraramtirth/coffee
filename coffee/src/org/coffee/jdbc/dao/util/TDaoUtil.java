@@ -5,6 +5,7 @@ import java.beans.Introspector;
 import java.beans.PropertyDescriptor;
 import java.lang.reflect.Field;
 import java.sql.ResultSet;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -12,13 +13,19 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
+import javax.persistence.Transient;
+
 import org.coffee.common.util.DateUtils;
 import org.coffee.common.util.TypeUtils;
-import org.coffee.jdbc.annotation.Column;
-import org.coffee.jdbc.annotation.Entity;
-import org.coffee.jdbc.annotation.Id;
-import org.coffee.jdbc.annotation.NullMap;
-import org.coffee.jdbc.annotation.Table;
+import org.coffee.jdbc.dao.util.Configuration.MappedType;
+
 
 /**
  * 数据库的通用工具类
@@ -50,29 +57,10 @@ public class TDaoUtil {
 		Field field = clazz.getDeclaredField(prop.getName());
 		Column column = field.getAnnotation(Column.class);
 		if(column != null){
-			return column.value();
+			return column.name();
 		}else{
 			return prop.getName();
 		}
-	}
-	/**
-	 *  获取T的id
-	 */
-	public static <T> Object getObjectId(T t){
-		Object id = null;
-		try {
-			BeanInfo bi = Introspector.getBeanInfo(t.getClass(), Object.class);
-			PropertyDescriptor[] props = bi.getPropertyDescriptors();
-			for (PropertyDescriptor p : props) {
-				if (p.getName().equals("id")) {
-					id = p.getReadMethod().invoke(t, (Object[]) null);
-					break;
-				}
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		} 
-		return id;
 	}
 
 	
@@ -82,7 +70,7 @@ public class TDaoUtil {
 	 */
 	public static <T> boolean isNullMap(Class<T> clazz, PropertyDescriptor prop) throws Exception{
 		Field field = clazz.getDeclaredField(prop.getName());
-		NullMap nullMap = field.getAnnotation(NullMap.class);
+		Transient nullMap = field.getAnnotation(Transient.class);
 		if(nullMap != null){
 			return true;
 		}
@@ -168,7 +156,7 @@ public class TDaoUtil {
 		PropertyDescriptor[] props = bi.getPropertyDescriptors();
 		for (int i = 0; i < props.length; i++) {
 			Field field = t.getClass().getDeclaredField(props[i].getName());
-			NullMap nullMap = field.getAnnotation(NullMap.class);
+			Transient nullMap = field.getAnnotation(Transient.class);
 			if(nullMap != null){
 				continue;
 			}
@@ -234,7 +222,7 @@ public class TDaoUtil {
 		for (int i = 0; i < props.length; i++) {
 			Field field = t.getClass().getDeclaredField(props[i].getName());
 			Column column = field.getAnnotation(Column.class);
-			NullMap nullMap = field.getAnnotation(NullMap.class);
+			Transient nullMap = field.getAnnotation(Transient.class);
 			if(nullMap != null){
 				continue;
 			}
@@ -245,8 +233,8 @@ public class TDaoUtil {
 				}
 			}
 			if (column != null) {// 数字 1 键旁边的反引号；处理关键字
-				sql.append(token).append(column.value().toUpperCase()).append(token);
-				propMap.put(column.value(), props[i]);
+				sql.append(token).append(column.name().toUpperCase()).append(token);
+				propMap.put(column.name(), props[i]);
 			} else {
 				sql.append(token).append(props[i].getName().toUpperCase()).append(token);
 				propMap.put(props[i].getName(), props[i]);
@@ -264,9 +252,9 @@ public class TDaoUtil {
 					sql.append("null");	
 				}
 				else if(dialect.toUpperCase().contains("ORACLE")){
-					sql.append(TDaoUtil.getSequenceName(t)+".nextval");
+					sql.append(TDaoUtil.getSequenceName(t,prop)+".nextval");
 				}else{
-					sql.append(TDaoUtil.getSequenceName(t)+".nextval");
+					sql.append(TDaoUtil.getSequenceName(t,prop)+".nextval");
 				}
 			}else{
 				switch(TypeUtils.getMappedType(prop)){
@@ -294,13 +282,202 @@ public class TDaoUtil {
 		return sql.toString();
 	}
 	
-	public static <T> String getSequenceName(T t){
-		if(t.getClass().getAnnotation(Entity.class) != null 
-				&& t.getClass().getAnnotation(Table.class) != null){
-			Table tableAnno = t.getClass().getAnnotation(Table.class); 
-			return tableAnno.sequence().toLowerCase();
-		}else{
-			return ""; 
+	
+	/**
+	 * 组装update Sql语句
+	 * @param t : 实体
+	 * @param dialect ： 指定该数据库的方言 {@link Configuration}
+	 */
+	public static <T> String getUpdateSql(T t) throws Exception{
+		StringBuffer sql = new StringBuffer("update ").append(TDaoUtil.getTableName(t.getClass())).append(" set ");
+		long id = 0;
+		BeanInfo bi = Introspector.getBeanInfo(t.getClass(), Object.class);
+		PropertyDescriptor[] props = bi.getPropertyDescriptors();
+		for (int i = 0; i < props.length; i++) {
+			Field field = t.getClass().getDeclaredField(props[i].getName());
+			Transient nullMap = field.getAnnotation(Transient.class);
+			if(nullMap != null){
+				continue;
+			}
+			Object value = null;
+			if(TDaoUtil.isPrimaryKey(t.getClass(), props[i])){
+				id = Long.valueOf(props[i].getReadMethod().invoke(t,(Object[]) null).toString());
+			}else{
+				switch(TDaoUtil.getMappedType( props[i])){
+					case Integer :
+					case Long : 
+						value = props[i].getReadMethod().invoke(t,(Object[]) null);
+						if (value != null) {
+							sql.append(props[i].getName().toUpperCase()).append("=").append(value);
+						} else {
+							continue;
+						}
+						break;
+					case Date :
+						value = TDaoUtil.parseDate(props[i].getReadMethod().invoke(t,(Object[]) null));
+						 if ("null".equals(value) || null == value) {
+								continue;
+						 } else {
+								sql.append(TDaoUtil.getColumnName(t.getClass(), props[i]))
+									.append("='").append(value.toString()).append("'");
+						 }
+						 break;
+					case String :
+						value = props[i].getReadMethod().invoke(t,(Object[]) null);
+						 if ("null".equals(value) || null == value) {
+							continue;
+						} else {
+							sql.append(TDaoUtil.getColumnName(t.getClass(), props[i]).toUpperCase())
+								.append("='").append(value.toString()).append("'");
+						}
+						break;
+				}
+			}
+			if (value != null && i+1 < props.length) {
+				sql.append(",");
+			}
+		}
+		sql = new StringBuffer(sql.toString().trim());
+		while (sql.toString().endsWith(",")) {// 除去末尾的 ,
+			sql.deleteCharAt(sql.length());
+		}
+		sql.append(" where id = ").append(id);
+		System.out.println(sql);
+		return sql.toString();
+	}
+	
+	/**
+	 * 获取插入记录的sql语句
+	 * @param t : 实体
+	 */ 
+	public static <T> String getInsertSql(T t) throws Exception {
+		long start = System.currentTimeMillis();
+		StringBuffer sql = new StringBuffer("insert into ").append(
+				TDaoUtil.getTableName(t.getClass())).append(" ");
+		
+		BeanInfo bi = Introspector.getBeanInfo(t.getClass(), Object.class);
+		PropertyDescriptor[] props = bi.getPropertyDescriptors();
+		//k-v 映射的column名字 : 属性  LinkedHashMap 按照插入的顺序排序
+		Map<String,PropertyDescriptor> propMap = new LinkedHashMap<String, PropertyDescriptor>();
+		sql.append("(");
+		
+		GenerationType generationType = null;
+		String seqName = null;
+		for (int i = 0; i < props.length; i++) {
+			Field field = t.getClass().getDeclaredField(props[i].getName());
+			Column column = field.getAnnotation(Column.class);
+			Transient nullMap = field.getAnnotation(Transient.class);
+			if(nullMap != null){
+				continue;
+			}
+			Id id = field.getAnnotation(Id.class);
+			if(id != null){//主键
+				//如果是自增主键则不对其进行处理
+				GeneratedValue gv = field.getAnnotation(GeneratedValue.class);
+				if(gv == null){
+					throw new Exception("未指定主键生成策略");
+				}
+				generationType = gv.strategy();
+				switch(generationType){
+				case IDENTITY : continue;
+				case SEQUENCE :
+					SequenceGenerator generator = field.getAnnotation(SequenceGenerator.class);
+					seqName = generator.sequenceName();
+					continue;
+				}
+			}
+			if (column != null) {// 数字 1 键旁边的反引号；处理关键字
+				sql.append(column.name());
+				propMap.put(column.name(), props[i]);
+			} else {
+				sql.append(props[i].getName());
+				propMap.put(props[i].getName(), props[i]);
+			}
+			if (i + 1 < props.length) {
+				sql.append(",");
+			}
+		}
+		sql.append(")values(");
+		for (String column : propMap.keySet()) {
+			PropertyDescriptor prop = propMap.get(column);
+			Object value = "";
+			if(TDaoUtil.isPrimaryKey(t.getClass(), prop)){
+				
+				switch(generationType){
+				case AUTO: sql.append("null"); break;
+				case IDENTITY : break;
+				case SEQUENCE :	sql.append(seqName+".nextval"); break;
+				}
+			}else{
+				switch(TDaoUtil.getMappedType(prop)){
+					case Integer :
+					case Long :
+						sql.append(prop.getReadMethod().invoke(t,(Object[]) null));
+						break;
+					case Date :
+						value = TDaoUtil.parseDate(prop.getReadMethod().invoke(t,(Object[]) null));
+						sql.append(null == value ? "null" : "'" + value.toString() + "'");
+						break;
+					case String :
+						value = prop.getReadMethod().invoke(t,(Object[]) null);
+						sql.append(null == value ? "null" : "'" + value.toString() + "'");
+						break;
+				}
+			}
+			sql.append(",");
+		}
+		sql.deleteCharAt(sql.length()-1);// 除去sql语句后面最后一个 逗号
+		sql.append(")");
+		long end = System.currentTimeMillis();
+		logger.info("生成sql耗时 " + (end - start) + " ms");
+		logger.info(sql.toString());
+		//写到文件中
+//		String path = TDaoUtil.class.getResource("").getPath();
+//		File file = new File(path,"insertSql.sql");
+//		
+//		tao.test.FileWriter.append(sql.append(";\r\n").toString());
+		return sql.toString();
+	}
+	
+	public static <T> String getSequenceName(T t,PropertyDescriptor prop){
+		String seqName = "";
+		try {
+			SequenceGenerator generator =  t.getClass().getDeclaredField(prop.getName())
+						.getAnnotation(SequenceGenerator.class);
+			seqName = generator.sequenceName();
+		} catch (SecurityException e) {
+			e.printStackTrace();
+		} catch (NoSuchFieldException e) {
+			e.printStackTrace();
+		}
+		return seqName;
+	}
+	/**
+	 * 获取Field的类型
+	 */ 
+	public static <T> MappedType getMappedType(PropertyDescriptor prop) throws Exception{
+		if(prop.getPropertyType().getSimpleName().equals("Long")){
+			return MappedType.Long;
+		}
+		if(prop.getPropertyType().getSimpleName().equals("Integer")){
+			return MappedType.Integer;
+		}
+		if(prop.getPropertyType().getSimpleName().equals("Date")){
+			return MappedType.Date;
+		}
+		return MappedType.String;
+	}
+	/**
+	 *  格式化日期类型 
+	 */
+	public static String parseDate(Object value){
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		try {
+			return sdf.format(value);
+		} catch (Exception e) {
+			e.printStackTrace();
+			//如果发生异常则回返null
+			return null;
 		}
 	}
 }

@@ -18,9 +18,7 @@ public class Configuration {
 		DIALECT = dialect;
 	}
 	
-	/**
-	 *  获取 
-	 */
+	
 	public static String getToken(String dialect){
 		try {
 			if(dialect.toUpperCase().contains("ORACLE")){
@@ -36,4 +34,27 @@ public class Configuration {
 		return DIALECT;
 	}
 	
+	public enum MappedType {
+		/**
+		 *	java.lang.Long
+		 */
+		Long,
+		/**
+		 *  java.lang.Integer
+		 */
+		Integer,		
+		/**
+		 *  java.util.Date
+		 */
+		Date,			
+		/**
+		 * java.util.String
+		 */
+		String,
+		/**
+		 * 无意义枚举，为了支持switch中 continue + label 的使用
+		 */
+		Default
+	}
+
 }
