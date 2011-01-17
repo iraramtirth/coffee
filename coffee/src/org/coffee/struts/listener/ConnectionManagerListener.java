@@ -11,9 +11,9 @@ import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 import javax.servlet.annotation.WebListener;
 
-import org.coffee.hibernate.ConnectionPool;
-import org.coffee.hibernate.SqlConnection;
-import org.coffee.hibernate.dao.util.Configuration;
+import org.coffee.jdbc.ConnectionPool;
+import org.coffee.jdbc.SqlConnection;
+import org.coffee.jdbc.dao.util.Configuration;
 
 /**
  * 初始化数据库
