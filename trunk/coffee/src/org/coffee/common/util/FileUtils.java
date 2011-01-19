@@ -55,7 +55,7 @@ public class FileUtils {
 	}
 	
 	/**
-	 * 创建指定路径的[文件] 针对于文件而不是文件夹
+	 * 创建指定路径的[文件]
 	 * @param path : 路径
 	 * @return : 返回结果  ：true - 创建成功
 	 */
