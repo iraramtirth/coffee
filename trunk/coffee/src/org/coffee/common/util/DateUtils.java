@@ -16,7 +16,7 @@ public class DateUtils {
 	 */
 	private static SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 	/**
-	 *  格式化日期类型 
+	 *  格式化日期类型 ，返回字符串
 	 *  @param : 传入参数
 	 *  @return 返回一个字符串
 	 */
@@ -28,7 +28,7 @@ public class DateUtils {
 		}
 	}
 	/**
-	 * 解析字符串
+	 * 解析字符串,返回日期
 	 * @param 
 	 * @return 返回日期
 	 */
