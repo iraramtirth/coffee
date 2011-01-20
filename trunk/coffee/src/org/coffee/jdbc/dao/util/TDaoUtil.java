@@ -62,8 +62,21 @@ public class TDaoUtil {
 			return prop.getName();
 		}
 	}
-
-	
+	/**
+	 * 获取序列名；只适用于oracle数据库
+	 * @param t
+	 * @return 
+	 */
+	public static <T> String getSequenceName(Class<T> clazz){
+		Field[] fields = clazz.getDeclaredFields();
+		for(Field field : fields){
+			SequenceGenerator seq = field.getAnnotation(SequenceGenerator.class);
+			if(seq != null){
+				return seq.sequenceName();
+			}
+		}
+		return null;
+	}
 	/**
 	 * 判断指定class指定prop是否被映射到数据库
 	 * @return 如果被映射，返回true  ； 没被映射， 即 nullMap != null 返回false
@@ -142,8 +155,9 @@ public class TDaoUtil {
 		}
 		return false;
 	}
+	
 	/**
-	 * 
+	 * 返回更新实体的命令语句
 	 * @param <T>
 	 * @param t
 	 * @param token
@@ -252,9 +266,9 @@ public class TDaoUtil {
 					sql.append("null");	
 				}
 				else if(dialect.toUpperCase().contains("ORACLE")){
-					sql.append(TDaoUtil.getSequenceName(t,prop)+".nextval");
+					sql.append(TDaoUtil.getSequenceName(t.getClass())+".nextval");
 				}else{
-					sql.append(TDaoUtil.getSequenceName(t,prop)+".nextval");
+					sql.append(TDaoUtil.getSequenceName(t.getClass())+".nextval");
 				}
 			}else{
 				switch(TypeUtils.getMappedType(prop)){
@@ -265,6 +279,7 @@ public class TDaoUtil {
 					case Date :
 						value = DateUtils.format(prop.getReadMethod().invoke(t,(Object[]) null));
 						sql.append(null == value ? "null" : "'" + value.toString() + "'");
+//						sql.append(" to_date('").append(value).append("','yyyy-MM-dd HH24:mi:ss') ");
 						break;
 					case String :
 						value = prop.getReadMethod().invoke(t,(Object[]) null);
@@ -313,7 +328,7 @@ public class TDaoUtil {
 							continue;
 						}
 						break;
-					case Date :
+					case Date : // 对应java.util.Date类型
 						value = TDaoUtil.parseDate(props[i].getReadMethod().invoke(t,(Object[]) null));
 						 if ("null".equals(value) || null == value) {
 								continue;
@@ -383,7 +398,7 @@ public class TDaoUtil {
 				case SEQUENCE :
 					SequenceGenerator generator = field.getAnnotation(SequenceGenerator.class);
 					seqName = generator.sequenceName();
-					continue;
+					break;
 				}
 			}
 			if (column != null) {// 数字 1 键旁边的反引号；处理关键字
@@ -438,7 +453,7 @@ public class TDaoUtil {
 //		tao.test.FileWriter.append(sql.append(";\r\n").toString());
 		return sql.toString();
 	}
-	
+	/**
 	public static <T> String getSequenceName(T t,PropertyDescriptor prop){
 		String seqName = "";
 		try {

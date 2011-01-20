@@ -1,6 +1,9 @@
 package org.coffee.jdbc.dao.util;
 
-
+/**
+ * 设定数据库中的一些配置信息，主要用来给TDao服务的
+ * @author wangtao
+ */
 public class Configuration {
 	/**
 	 * 对SQL语句关键字的处理
@@ -18,7 +21,13 @@ public class Configuration {
 		DIALECT = dialect;
 	}
 	
-	
+	/**
+	 * 主要用于处理sql语句中的关键字
+	 * 比如说 order 在mysql中用 `order` ; 即用`处理
+	 * 而在oracle中用"order" : 即用 "处理
+	 * @param dialect ：方言
+	 * @return 返回
+	 */
 	public static String getToken(String dialect){
 		try {
 			if(dialect.toUpperCase().contains("ORACLE")){
@@ -55,6 +64,16 @@ public class Configuration {
 		 * 无意义枚举，为了支持switch中 continue + label 的使用
 		 */
 		Default
+	}
+	/**
+	 * 数据库方言；用于指定数据库类型；
+	 * 主要用来处理不同数据库对sql命令中的时间类型的处理存在差异 
+	 * @author wangtao
+	 */
+	public enum Dialect{
+		ORACLE,
+		MYSQL,
+		HSQLDB
 	}
 
 }

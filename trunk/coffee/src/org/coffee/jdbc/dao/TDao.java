@@ -31,6 +31,8 @@ public interface TDao {
 	public <T> T queryForEntity(Class<T> clazz, long id) throws SQLException;
 	//执行指定SQL
 	public int executeUpdate(String sql) throws SQLException;
+	//执行指定路径的sql脚本,sql命令以';'分割
+	public void executeScript(String scriptPath) throws SQLException;
 	//关闭Connection对象
 	public void close() throws SQLException;
 }
