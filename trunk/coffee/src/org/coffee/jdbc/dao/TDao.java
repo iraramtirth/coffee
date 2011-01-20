@@ -1,5 +1,6 @@
 package org.coffee.jdbc.dao;
 
+import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.List;
 
@@ -9,6 +10,8 @@ import javax.sql.rowset.CachedRowSet;
  * @author wangtao
  */
 public interface TDao {
+	//获取当前数据库连接
+	public Connection currentConnection();
 	//新增
 	public <T> void insert(T t) throws SQLException;
 	//批量插入
@@ -28,7 +31,9 @@ public interface TDao {
 	//分页查询记录
 	public <T> List<T> queryForList(String sql, long start, int size,Class<T> clazz) throws SQLException;
 	//查询单个实体
-	public <T> T queryForEntity(Class<T> clazz, long id) throws SQLException;
+	public <T> T queryForEntity(Class<T> clazz, Object id) throws SQLException;
+	//加载实体；第一次家在完成之后将缓存该记录
+	public <T> T loadForEntity(Class<T> clazz, Object id);
 	//执行指定SQL
 	public int executeUpdate(String sql) throws SQLException;
 	//执行指定路径的sql脚本,sql命令以';'分割

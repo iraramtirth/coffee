@@ -14,12 +14,20 @@ import java.util.logging.Logger;
 
 import javax.sql.rowset.CachedRowSet;
 
+import net.sf.ehcache.Cache;
+import net.sf.ehcache.CacheManager;
+import net.sf.ehcache.Element;
+
 import org.coffee.jdbc.dao.TDao;
 import org.coffee.jdbc.dao.util.Configuration;
 import org.coffee.jdbc.dao.util.TDaoUtil;
+import org.coffee.jdbc.dao.util.Configuration.Dialect;
 
 public class TDaoImpl implements TDao{
 	protected Connection conn;
+	protected CacheManager cm;
+	
+	private Dialect dialect;
 	
 	private static Logger log = Logger.getLogger("jdbc");
 	
@@ -27,12 +35,21 @@ public class TDaoImpl implements TDao{
 		log.setLevel(Level.INFO);
 	}
 	
-	protected void setDialect(){
-		
+	protected void setDialect(Dialect dialect){
+		this.dialect = dialect;
 	}
-	
-	
-	// 删除
+	/**
+	 *  获取当前的connection链接
+	 */
+	@Override
+	public Connection currentConnection() {
+		return conn;
+	}
+	/**
+	 *  删除实体
+	 *  @param clazz ： 实体类型
+	 *  @param id ： 主键Id
+	 */
 	@Override
 	public <T> void delete(Class<T> clazz, long id) throws SQLException {
 		try {
@@ -44,7 +61,11 @@ public class TDaoImpl implements TDao{
 			e.printStackTrace();
 		} 
 	}
-	// 批量删除
+	/**
+	 *  批量删除实体
+	 *  @param clazz ： 实体类型
+	 *  @param ids ：主键数据
+	 */
 	@Override
 	public <T> void deleteBatch(Class<T> clazz,String[] ids) throws SQLException{
 		if(ids == null || ids.length == 0){
@@ -95,9 +116,9 @@ public class TDaoImpl implements TDao{
 		try {
 			Statement stmt = conn.createStatement();
 			value = stmt.executeUpdate(sql);
+			stmt.close();
 		} catch (Exception e) {
 			e.printStackTrace();
-			conn.close();
 		}
 		return value;
 	}
@@ -133,6 +154,32 @@ public class TDaoImpl implements TDao{
 		}
 	}
 	/**
+	 * 查询实体；首次查询的时候缓存
+	 */
+	@SuppressWarnings("unchecked")
+	@Override
+	public <T> T loadForEntity(Class<T> clazz, Object id) {
+		Object t = null;
+		try {
+			String cacheName = clazz.getName();
+			// 创建缓存 cacheName
+			System.out.println("创建缓存..."+cacheName);
+			Cache cache = cm.getCache(cacheName);
+			//cache = new Memory
+			if(cache != null){
+				System.out.println("从缓存中获取实体...");
+				t =  cache.get(id).getObjectValue();
+			}else{
+				t = this.queryForEntity(clazz, id);
+				cm.addCache(cacheName);
+				cm.getCache(cacheName).put(new Element(id, t));
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return (T)t;
+	}
+	/**
 	 *  返回 Integer Long  String 等基本数据类型的包装类型 
 	 */
 	@SuppressWarnings("unchecked")
@@ -150,6 +197,8 @@ public class TDaoImpl implements TDao{
 					t = (T)rs.getString(1);
 				}
 			}
+			rs.close();
+			stmt.close();
 		} catch (Exception e) {
 			e.printStackTrace();
 		} 
@@ -159,7 +208,7 @@ public class TDaoImpl implements TDao{
 	 *   查询，返回实体对象
 	 */
 	@Override
-	public <T> T queryForEntity(Class<T> clazz, long id) throws SQLException {
+	public <T> T queryForEntity(Class<T> clazz, Object id) throws SQLException {
 		T t = null;
 		try {
 			t = clazz.newInstance();
@@ -230,9 +279,9 @@ public class TDaoImpl implements TDao{
 		try {
 			String sql = TDaoUtil.getInsertSql(t,Configuration.DIALECT);
 			Statement stmt = conn.createStatement();
-			System.out.println(sql);
 			stmt.executeUpdate(sql);
 			stmt.close();
+			log.info(sql);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -248,7 +297,7 @@ public class TDaoImpl implements TDao{
 			throw new SQLException("插入数据失败，实体为null");
 		}
 		try {
-			String sql = TDaoUtil.getInsertSql(t);
+			String sql = TDaoUtil.getInsertSql(t,this.dialect);
 			Statement stmt = conn.createStatement();
 			stmt.executeUpdate(sql, Statement.RETURN_GENERATED_KEYS);
 			sql = "select "+TDaoUtil.getSequenceName(t.getClass()) +".currval from dual";
@@ -269,7 +318,30 @@ public class TDaoImpl implements TDao{
 		}
 		return pk.toString();
 	}
-	//更新
+	/**
+	 * 批量插入
+	 * @param entities : 实体列表 
+	 */
+	@Override
+	public <T> void insert(List<T> entities) throws SQLException {
+		try {
+			conn.setAutoCommit(false);
+			Statement stmt = conn.createStatement();
+			for(T t : entities){
+				String sql = TDaoUtil.getInsertSql(t,this.dialect);
+				stmt.addBatch(sql);
+			}
+			stmt.executeBatch();
+			conn.commit();
+			stmt.close();
+		} catch (Exception e) {
+			conn.rollback();
+			e.printStackTrace();
+		} 
+	}
+	/**
+	 * 更新实体
+	 */
 	@Override
 	public <T> void update(T t) throws SQLException {
 		try{
@@ -281,7 +353,9 @@ public class TDaoImpl implements TDao{
 			e.printStackTrace();
 		} 
 	}
-	
+	/**
+	 * 关闭数据库连接
+	 */
 	@Override
 	public void close() throws SQLException{
 		try{
@@ -294,22 +368,6 @@ public class TDaoImpl implements TDao{
 			}
 		}
 	}
-	@Override
-	public <T> void insert(List<T> ts) throws SQLException {
-		try {
-			conn.setAutoCommit(false);
-			Statement stmt = conn.createStatement();
-			for(T t : ts){
-				String sql = TDaoUtil.getInsertSql(t);
-				stmt.addBatch(sql);
-			}
-			stmt.executeBatch();
-			conn.commit();
-			stmt.close();
-		} catch (Exception e) {
-			e.printStackTrace();
-			conn.rollback();
-		} 
-	}
+	
 
 }

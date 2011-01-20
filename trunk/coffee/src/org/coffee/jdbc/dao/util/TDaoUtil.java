@@ -24,6 +24,7 @@ import javax.persistence.Transient;
 
 import org.coffee.common.util.DateUtils;
 import org.coffee.common.util.TypeUtils;
+import org.coffee.jdbc.dao.util.Configuration.Dialect;
 import org.coffee.jdbc.dao.util.Configuration.MappedType;
 
 
@@ -365,7 +366,7 @@ public class TDaoUtil {
 	 * 获取插入记录的sql语句
 	 * @param t : 实体
 	 */ 
-	public static <T> String getInsertSql(T t) throws Exception {
+	public static <T> String getInsertSql(T t, Dialect dialect) throws Exception {
 		long start = System.currentTimeMillis();
 		StringBuffer sql = new StringBuffer("insert into ").append(
 				TDaoUtil.getTableName(t.getClass())).append(" ");
@@ -431,7 +432,11 @@ public class TDaoUtil {
 						break;
 					case Date :
 						value = TDaoUtil.parseDate(prop.getReadMethod().invoke(t,(Object[]) null));
-						sql.append(null == value ? "null" : "'" + value.toString() + "'");
+						if(dialect == Dialect.ORACLE){
+							sql.append(" to_date('").append(value).append("','yyyy-MM-dd HH24:mi:ss') ");
+						}else{
+							sql.append(null == value ? "null" : "'" + value.toString() + "'");
+						}
 						break;
 					case String :
 						value = prop.getReadMethod().invoke(t,(Object[]) null);
@@ -446,11 +451,6 @@ public class TDaoUtil {
 		long end = System.currentTimeMillis();
 		logger.info("生成sql耗时 " + (end - start) + " ms");
 		logger.info(sql.toString());
-		//写到文件中
-//		String path = TDaoUtil.class.getResource("").getPath();
-//		File file = new File(path,"insertSql.sql");
-//		
-//		tao.test.FileWriter.append(sql.append(";\r\n").toString());
 		return sql.toString();
 	}
 	/**
