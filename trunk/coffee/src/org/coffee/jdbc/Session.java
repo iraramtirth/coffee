@@ -3,6 +3,7 @@ package org.coffee.jdbc;
 import java.sql.SQLException;
 
 import org.coffee.jdbc.dao.impl.TDaoImpl;
+import org.coffee.jdbc.dao.util.Configuration.Dialect;
 import org.coffee.spring.ioc.annotation.Repository;
 /**
  * 相对于TDaoImpl
@@ -13,9 +14,14 @@ import org.coffee.spring.ioc.annotation.Repository;
 public class Session extends TDaoImpl{
 	/**
 	 * 创建Connection
+	 * 设置数据库dialect
+	 * 进行数据库操作之前必须open连接
 	 */
 	public void open(){
 		super.conn = SqlConnection.get();
+		if(conn.getClass().toString().contains("mysql")){
+			this.setDialect(Dialect.MYSQL);
+		}
 	}
 	/**
 	 * 开启事务
