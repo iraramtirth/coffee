@@ -27,8 +27,12 @@ public class TypeUtils {
 	public static Type getMappedType(PropertyDescriptor prop) throws Exception{
 		return getMappedType(prop.getPropertyType().getSimpleName());
 	}
-	
-	public static  Type getMappedType(Field field) throws Exception{
+	/**
+	 * 返回字段的类型
+	 * @param field
+	 * @return
+	 */
+	public static Type getMappedType(Field field) throws Exception{
 		return getMappedType(field.getType().getSimpleName());
 	}
 	/**

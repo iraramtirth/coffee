@@ -2,7 +2,7 @@ package org.coffee.common.util;
 
 public class StringManager {
 	/**
-	 * ����ĸСд
+	 * 首字母小写
 	 * @param str
 	 * @return
 	 */
@@ -13,6 +13,11 @@ public class StringManager {
 		str = str.replaceFirst(".", str.substring(0, 1).toLowerCase());
 		return str;
 	}
+	/**
+	 * 首字母大写
+	 * @param str
+	 * @return
+	 */
 	public static String toUpperCaseFirstChar(String str){
 		if(str == null){
 			return null;
