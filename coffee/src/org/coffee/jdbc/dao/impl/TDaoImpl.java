@@ -149,6 +149,7 @@ public class TDaoImpl implements TDao{
 				this.conn.rollback();
 			}
 			stmt.close();
+			in.close();
 		}  catch (Exception e) {
 			e.printStackTrace();
 		}
