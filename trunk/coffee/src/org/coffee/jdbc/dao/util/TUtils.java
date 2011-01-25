@@ -1,6 +1,7 @@
 package org.coffee.jdbc.dao.util;
 
 import java.beans.BeanInfo;
+import java.beans.IntrospectionException;
 import java.beans.Introspector;
 import java.beans.PropertyDescriptor;
 import java.lang.reflect.Field;
@@ -33,9 +34,10 @@ import org.coffee.jdbc.dao.util.Configuration.MappedType;
  * 适用于  mysql Oracle等数据库 
  * @author wangtao
  */
-public class TDaoUtil {
+public class TUtils {
 
 	private static Logger logger = Logger.getLogger("jdbc");
+	
 	static{
 		logger.setLevel(Level.INFO);
 	}
@@ -54,9 +56,8 @@ public class TDaoUtil {
 	/**
 	 *  获取列名 
 	 */
-	public static <T> String getColumnName(Class<T> clazz,PropertyDescriptor prop) throws Exception{
-		Field field = clazz.getDeclaredField(prop.getName());
-		Column column = field.getAnnotation(Column.class);
+	public static <T> String getColumnName(Class<T> clazz,PropertyDescriptor prop){
+		Column column = getColumn(clazz,prop);
 		if(column != null){
 			return column.name();
 		}else{
@@ -66,7 +67,6 @@ public class TDaoUtil {
 	/**
 	 * 获取序列名；只适用于oracle数据库
 	 * @param t
-	 * @return 
 	 */
 	public static <T> String getSequenceName(Class<T> clazz){
 		Field[] fields = clazz.getDeclaredFields();
@@ -79,10 +79,58 @@ public class TDaoUtil {
 		return null;
 	}
 	/**
-	 * 判断指定class指定prop是否被映射到数据库
+	 * 获取列的长度
+	 * @param clazz : 类
+	 * @param prop	: 属性
+	 */
+	public static <T> int getColumnLength(Class<T> clazz,PropertyDescriptor prop){
+		return getColumn(clazz, prop).length();
+	}
+	
+	private static <T> Column getColumn(Class<T> clazz,PropertyDescriptor prop){
+		Field field = null;
+		try {
+			field = clazz.getDeclaredField(prop.getName());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		Column column = field.getAnnotation(Column.class);
+		return column;
+	}
+	
+	/**
+	 * 判断列是否可为空
+	 * return : false-不可为空 ; true-可为空
+	 */
+	public static <T> boolean isNull(Class<T> clazz,PropertyDescriptor prop){
+		Column column = getColumn(clazz, prop);
+		if(column != null){
+			return column.nullable();
+		}else{
+			return true;
+		}
+	}
+	
+	/**
+	 * 获取PropertyDescriptor[]对象
+	 * @param clazz : 对象
+	 */
+	public static <T> PropertyDescriptor[] getPropertyDescriptor(Class<T> clazz){
+		BeanInfo bi = null;
+		try {
+			bi = Introspector.getBeanInfo(clazz, Object.class);
+		} catch (IntrospectionException e) {
+			e.printStackTrace();
+		}
+		PropertyDescriptor[] props = bi.getPropertyDescriptors();
+		return props;
+	}
+	
+	/**
+	 * 判断指定class的prop是否被映射到数据库
 	 * @return 如果被映射，返回true  ； 没被映射， 即 nullMap != null 返回false
 	 */
-	public static <T> boolean isNullMap(Class<T> clazz, PropertyDescriptor prop) throws Exception{
+	public static <T> boolean isTransient(Class<T> clazz, PropertyDescriptor prop) throws Exception{
 		Field field = clazz.getDeclaredField(prop.getName());
 		Transient nullMap = field.getAnnotation(Transient.class);
 		if(nullMap != null){
@@ -100,7 +148,7 @@ public class TDaoUtil {
 			T tt = clazz.newInstance();
 			for (PropertyDescriptor prop : props) {
 				try {
-					if(isNullMap(clazz, prop)){
+					if(isTransient(clazz, prop)){
 						continue;
 					}
 					/**
@@ -116,19 +164,19 @@ public class TDaoUtil {
 					Object value = null;
 					switch(TypeUtils.getMappedType(prop)){
 						case Long : 
-							value = Long.valueOf(rs.getLong(TDaoUtil.getColumnName(clazz, prop)));
+							value = Long.valueOf(rs.getLong(TUtils.getColumnName(clazz, prop)));
 							break;
 						case Integer :
-							value = Integer.valueOf(rs.getInt(TDaoUtil.getColumnName(clazz, prop)));
+							value = Integer.valueOf(rs.getInt(TUtils.getColumnName(clazz, prop)));
 							break;
 						default :
-							value = rs.getObject(TDaoUtil.getColumnName(clazz, prop));
+							value = rs.getObject(TUtils.getColumnName(clazz, prop));
 							break;
 					}
 					prop.getWriteMethod().invoke(tt, new Object[] {value});
 				} catch (IllegalArgumentException e) {
 					System.out.print(prop.getName()+" ----	");
-					System.out.println(rs.getInt(TDaoUtil.getColumnName(clazz, prop)));
+					System.out.println(rs.getInt(TUtils.getColumnName(clazz, prop)));
 					e.printStackTrace();
 				} 
 			}
@@ -165,7 +213,7 @@ public class TDaoUtil {
 	 */
 	public static <T> String getUpdateSql(T t,String dialect) throws Exception{
 		String token = Configuration.getToken(dialect);
-		StringBuffer sql = new StringBuffer("update ").append(TDaoUtil.getTableName(t.getClass())).append(" set ");
+		StringBuffer sql = new StringBuffer("update ").append(TUtils.getTableName(t.getClass())).append(" set ");
 		long id = 0;
 		BeanInfo bi = Introspector.getBeanInfo(t.getClass(), Object.class);
 		PropertyDescriptor[] props = bi.getPropertyDescriptors();
@@ -176,7 +224,7 @@ public class TDaoUtil {
 				continue;
 			}
 			Object value = null;
-			if(TDaoUtil.isPrimaryKey(t.getClass(), props[i])){
+			if(TUtils.isPrimaryKey(t.getClass(), props[i])){
 				id = Long.valueOf(props[i].getReadMethod().invoke(t,(Object[]) null).toString());
 			}else{
 				boolean bool = false;
@@ -203,7 +251,7 @@ public class TDaoUtil {
 					if ("null".equals(value) || null == value) {
 						continue;
 					} else {
-						sql.append(token).append(TDaoUtil.getColumnName(t.getClass(), props[i]).toUpperCase()).append(token)
+						sql.append(token).append(TUtils.getColumnName(t.getClass(), props[i]).toUpperCase()).append(token)
 							.append("='").append(value.toString()).append("'");
 					}
 				}
@@ -226,7 +274,7 @@ public class TDaoUtil {
 		String token = Configuration.getToken(dialect);
 		long start = System.currentTimeMillis();
 		StringBuffer sql = new StringBuffer("insert into ").append(
-				TDaoUtil.getTableName(t.getClass())).append(" ");
+				TUtils.getTableName(t.getClass())).append(" ");
 		
 		BeanInfo bi = Introspector.getBeanInfo(t.getClass(), Object.class);
 		PropertyDescriptor[] props = bi.getPropertyDescriptors();
@@ -262,14 +310,14 @@ public class TDaoUtil {
 		for (String column : propMap.keySet()) {
 			PropertyDescriptor prop = propMap.get(column);
 			Object value = "";
-			if(TDaoUtil.isPrimaryKey(t.getClass(), prop)){
+			if(TUtils.isPrimaryKey(t.getClass(), prop)){
 				if(dialect.toUpperCase().contains("MYSQL")){
 					sql.append("null");	
 				}
 				else if(dialect.toUpperCase().contains("ORACLE")){
-					sql.append(TDaoUtil.getSequenceName(t.getClass())+".nextval");
+					sql.append(TUtils.getSequenceName(t.getClass())+".nextval");
 				}else{
-					sql.append(TDaoUtil.getSequenceName(t.getClass())+".nextval");
+					sql.append(TUtils.getSequenceName(t.getClass())+".nextval");
 				}
 			}else{
 				switch(TypeUtils.getMappedType(prop)){
@@ -305,7 +353,7 @@ public class TDaoUtil {
 	 * @param dialect ： 指定该数据库的方言 {@link Configuration}
 	 */
 	public static <T> String getUpdateSql(T t) throws Exception{
-		StringBuffer sql = new StringBuffer("update ").append(TDaoUtil.getTableName(t.getClass())).append(" set ");
+		StringBuffer sql = new StringBuffer("update ").append(TUtils.getTableName(t.getClass())).append(" set ");
 		long id = 0;
 		BeanInfo bi = Introspector.getBeanInfo(t.getClass(), Object.class);
 		PropertyDescriptor[] props = bi.getPropertyDescriptors();
@@ -316,10 +364,10 @@ public class TDaoUtil {
 				continue;
 			}
 			Object value = null;
-			if(TDaoUtil.isPrimaryKey(t.getClass(), props[i])){
+			if(TUtils.isPrimaryKey(t.getClass(), props[i])){
 				id = Long.valueOf(props[i].getReadMethod().invoke(t,(Object[]) null).toString());
 			}else{
-				switch(TDaoUtil.getMappedType( props[i])){
+				switch(TUtils.getMappedType( props[i])){
 					case Integer :
 					case Long : 
 						value = props[i].getReadMethod().invoke(t,(Object[]) null);
@@ -330,11 +378,11 @@ public class TDaoUtil {
 						}
 						break;
 					case Date : // 对应java.util.Date类型
-						value = TDaoUtil.parseDate(props[i].getReadMethod().invoke(t,(Object[]) null));
+						value = TUtils.parseDate(props[i].getReadMethod().invoke(t,(Object[]) null));
 						 if ("null".equals(value) || null == value) {
 								continue;
 						 } else {
-								sql.append(TDaoUtil.getColumnName(t.getClass(), props[i]))
+								sql.append(TUtils.getColumnName(t.getClass(), props[i]))
 									.append("='").append(value.toString()).append("'");
 						 }
 						 break;
@@ -343,7 +391,7 @@ public class TDaoUtil {
 						 if ("null".equals(value) || null == value) {
 							continue;
 						} else {
-							sql.append(TDaoUtil.getColumnName(t.getClass(), props[i]).toUpperCase())
+							sql.append(TUtils.getColumnName(t.getClass(), props[i]).toUpperCase())
 								.append("='").append(value.toString()).append("'");
 						}
 						break;
@@ -369,7 +417,7 @@ public class TDaoUtil {
 	public static <T> String getInsertSql(T t, Dialect dialect) throws Exception {
 		long start = System.currentTimeMillis();
 		StringBuffer sql = new StringBuffer("insert into ").append(
-				TDaoUtil.getTableName(t.getClass())).append(" ");
+				TUtils.getTableName(t.getClass())).append(" ");
 		
 		BeanInfo bi = Introspector.getBeanInfo(t.getClass(), Object.class);
 		PropertyDescriptor[] props = bi.getPropertyDescriptors();
@@ -417,7 +465,7 @@ public class TDaoUtil {
 		for (String column : propMap.keySet()) {
 			PropertyDescriptor prop = propMap.get(column);
 			Object value = "";
-			if(TDaoUtil.isPrimaryKey(t.getClass(), prop)){
+			if(TUtils.isPrimaryKey(t.getClass(), prop)){
 				
 				switch(generationType){
 				case AUTO: sql.append("null"); break;
@@ -425,13 +473,13 @@ public class TDaoUtil {
 				case SEQUENCE :	sql.append(seqName+".nextval"); break;
 				}
 			}else{
-				switch(TDaoUtil.getMappedType(prop)){
+				switch(TUtils.getMappedType(prop)){
 					case Integer :
 					case Long :
 						sql.append(prop.getReadMethod().invoke(t,(Object[]) null));
 						break;
 					case Date :
-						value = TDaoUtil.parseDate(prop.getReadMethod().invoke(t,(Object[]) null));
+						value = TUtils.parseDate(prop.getReadMethod().invoke(t,(Object[]) null));
 						if(dialect == Dialect.ORACLE){
 							sql.append(" to_date('").append(value).append("','yyyy-MM-dd HH24:mi:ss') ");
 						}else{
@@ -470,7 +518,7 @@ public class TDaoUtil {
 	/**
 	 * 获取Field的类型
 	 */ 
-	public static <T> MappedType getMappedType(PropertyDescriptor prop) throws Exception{
+	public static <T> MappedType getMappedType(PropertyDescriptor prop){
 		if(prop.getPropertyType().getSimpleName().equals("Long")){
 			return MappedType.Long;
 		}
@@ -483,7 +531,7 @@ public class TDaoUtil {
 		return MappedType.String;
 	}
 	/**
-	 *  格式化日期类型 
+	 *  解析日期，返回string 
 	 */
 	public static String parseDate(Object value){
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
