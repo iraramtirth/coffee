@@ -18,10 +18,8 @@ public class Session extends TDaoImpl{
 	 * 进行数据库操作之前必须open连接
 	 */
 	public void open(){
+		//创建一个新连接
 		super.conn = SqlConnection.get();
-		if(conn.getClass().toString().contains("mysql")){
-			this.setDialect(Dialect.MYSQL);
-		}
 	}
 	/**
 	 * 开启事务
