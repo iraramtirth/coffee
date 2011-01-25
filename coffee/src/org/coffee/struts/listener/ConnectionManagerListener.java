@@ -14,6 +14,7 @@ import javax.servlet.annotation.WebListener;
 import org.coffee.jdbc.ConnectionPool;
 import org.coffee.jdbc.SqlConnection;
 import org.coffee.jdbc.dao.util.Configuration;
+import org.coffee.jdbc.dao.util.Configuration.Dialect;
 
 /**
  * 初始化数据库
@@ -43,11 +44,11 @@ public class ConnectionManagerListener implements ServletContextListener {
 			password = prop.getProperty("password");
 			driver = prop.getProperty("driver");
 			if (driver.toUpperCase().contains("ORACLE")) {
-				Configuration.setDialect("ORACLE");
+				Configuration.setDialect(Dialect.ORACLE);
 			} else if (driver.toUpperCase().contains("MYSQL")) {
-				Configuration.setDialect("MYSQL");
+				Configuration.setDialect(Dialect.MYSQL);
 			} else {
-				Configuration.setDialect("HSQLDB");
+				Configuration.setDialect(Dialect.HSQLDB);
 			}
 		} catch (Exception e) {
 			this.isHsqldb = true;
@@ -60,7 +61,7 @@ public class ConnectionManagerListener implements ServletContextListener {
 			driver = "org.hsqldb.jdbc.JDBCDriver";
 			username = "SA";
 			password = "";
-			Configuration.setDialect("HSQLDB");
+			Configuration.setDialect(Dialect.HSQLDB);
 		}
 	}
 	
