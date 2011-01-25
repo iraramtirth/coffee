@@ -24,9 +24,17 @@ import org.coffee.jdbc.dao.util.TUtils;
 import org.coffee.jdbc.dao.util.Configuration.Dialect;
 
 public class TDaoImpl implements TDao{
+	/**
+	 * 当前数据库连接
+	 */
 	protected Connection conn;
+	/**
+	 * 缓存管理器
+	 */
 	protected CacheManager cm;
-	
+	/**
+	 * 数据库方言
+	 */
 	private Dialect dialect;
 	
 	private static Logger log = Logger.getLogger("jdbc");
@@ -278,7 +286,7 @@ public class TDaoImpl implements TDao{
 			throw new SQLException("插入数据失败，实体为null");
 		}
 		try {
-			String sql = TUtils.getInsertSql(t,Configuration.DIALECT);
+			String sql = TUtils.getInsertSql(t,Configuration.dialect);
 			Statement stmt = conn.createStatement();
 			stmt.executeUpdate(sql);
 			stmt.close();
@@ -346,7 +354,7 @@ public class TDaoImpl implements TDao{
 	@Override
 	public <T> void update(T t) throws SQLException {
 		try{
-			String sql = TUtils.getUpdateSql(t,Configuration.DIALECT);
+			String sql = TUtils.getUpdateSql(t,Configuration.dialect);
 			Statement stmt = conn.createStatement();
 			stmt.executeUpdate(sql);
 			stmt.close();
