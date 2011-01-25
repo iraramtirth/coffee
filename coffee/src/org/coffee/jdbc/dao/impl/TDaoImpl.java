@@ -20,7 +20,7 @@ import net.sf.ehcache.Element;
 
 import org.coffee.jdbc.dao.TDao;
 import org.coffee.jdbc.dao.util.Configuration;
-import org.coffee.jdbc.dao.util.TDaoUtil;
+import org.coffee.jdbc.dao.util.TUtils;
 import org.coffee.jdbc.dao.util.Configuration.Dialect;
 
 public class TDaoImpl implements TDao{
@@ -53,7 +53,7 @@ public class TDaoImpl implements TDao{
 	@Override
 	public <T> void delete(Class<T> clazz, long id) throws SQLException {
 		try {
-			String sql = "delete from " + TDaoUtil.getTableName(clazz) + " where id=" + id;
+			String sql = "delete from " + TUtils.getTableName(clazz) + " where id=" + id;
 			Statement stmt = conn.createStatement();
 			stmt.executeUpdate(sql);
 			stmt.close();
@@ -72,7 +72,7 @@ public class TDaoImpl implements TDao{
 			return;
 		}
 		try {
-			String sql = "delete from "+TDaoUtil.getTableName(clazz) +" where id=?";
+			String sql = "delete from "+TUtils.getTableName(clazz) +" where id=?";
 			conn.setAutoCommit(false);
 			PreparedStatement pstmt = conn.prepareStatement(sql);
 			for(String id : ids){
@@ -213,10 +213,10 @@ public class TDaoImpl implements TDao{
 		T t = null;
 		try {
 			t = clazz.newInstance();
-			String sql = "select * from " + TDaoUtil.getTableName(clazz) + " where id = " + id;
+			String sql = "select * from " + TUtils.getTableName(clazz) + " where id = " + id;
 			Statement stmt = conn.createStatement();
 			ResultSet rs = stmt.executeQuery(sql);
-			List<T> ls = TDaoUtil.processResultSetToList(rs, clazz);
+			List<T> ls = TUtils.processResultSetToList(rs, clazz);
 			if(ls == null || ls.size() == 0){
 				t = null;
 			}else{
@@ -239,7 +239,7 @@ public class TDaoImpl implements TDao{
 		try {
 			Statement stmt = conn.createStatement();
 			ResultSet rs = stmt.executeQuery(sql);
-			ls = TDaoUtil.processResultSetToList(rs, clazz);
+			ls = TUtils.processResultSetToList(rs, clazz);
 			rs.close();
 			stmt.close();
 		} catch (Exception e) {
@@ -260,7 +260,7 @@ public class TDaoImpl implements TDao{
 			rs.first();
 			rs.relative((int)start - 1);
 			// 处理resultSet 实现分页查询
-			ls = TDaoUtil.processResultSetToList(rs,clazz);
+			ls = TUtils.processResultSetToList(rs,clazz);
 			rs.close();
 			stmt.close();
 		} catch (Exception e) {
@@ -278,7 +278,7 @@ public class TDaoImpl implements TDao{
 			throw new SQLException("插入数据失败，实体为null");
 		}
 		try {
-			String sql = TDaoUtil.getInsertSql(t,Configuration.DIALECT);
+			String sql = TUtils.getInsertSql(t,Configuration.DIALECT);
 			Statement stmt = conn.createStatement();
 			stmt.executeUpdate(sql);
 			stmt.close();
@@ -298,10 +298,10 @@ public class TDaoImpl implements TDao{
 			throw new SQLException("插入数据失败，实体为null");
 		}
 		try {
-			String sql = TDaoUtil.getInsertSql(t,this.dialect);
+			String sql = TUtils.getInsertSql(t,this.dialect);
 			Statement stmt = conn.createStatement();
 			stmt.executeUpdate(sql, Statement.RETURN_GENERATED_KEYS);
-			sql = "select "+TDaoUtil.getSequenceName(t.getClass()) +".currval from dual";
+			sql = "select "+TUtils.getSequenceName(t.getClass()) +".currval from dual";
 			stmt.close();
 			// 新创建一个连接 ： 如果直接用stmt(未关闭)，
 			// 则会报出一个 bind variable does not exist
@@ -329,7 +329,7 @@ public class TDaoImpl implements TDao{
 			conn.setAutoCommit(false);
 			Statement stmt = conn.createStatement();
 			for(T t : entities){
-				String sql = TDaoUtil.getInsertSql(t,this.dialect);
+				String sql = TUtils.getInsertSql(t,this.dialect);
 				stmt.addBatch(sql);
 			}
 			stmt.executeBatch();
@@ -346,7 +346,7 @@ public class TDaoImpl implements TDao{
 	@Override
 	public <T> void update(T t) throws SQLException {
 		try{
-			String sql = TDaoUtil.getUpdateSql(t,Configuration.DIALECT);
+			String sql = TUtils.getUpdateSql(t,Configuration.DIALECT);
 			Statement stmt = conn.createStatement();
 			stmt.executeUpdate(sql);
 			stmt.close();
