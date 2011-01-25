@@ -6,6 +6,7 @@ import java.sql.SQLException;
 import java.util.Properties;
 
 import org.coffee.jdbc.dao.util.Configuration;
+import org.coffee.jdbc.dao.util.Configuration.Dialect;
 
 /**
  * 数据链连接
@@ -32,11 +33,11 @@ public class SqlConnection {
 			password = prop.getProperty("password");
 			driver = prop.getProperty("driver");
 			if (driver.toUpperCase().contains("ORACLE")) {
-				Configuration.setDialect("ORACLE");
+				Configuration.setDialect(Dialect.ORACLE);
 			} else if (driver.toUpperCase().contains("MYSQL")) {
-				Configuration.setDialect("MYSQL");
+				Configuration.setDialect(Dialect.MYSQL);
 			} else {
-				Configuration.setDialect("HSQLDB");
+				Configuration.setDialect(Dialect.HSQLDB);
 			}
 		} catch (Exception e) {
 			System.out.println(e.getClass()+"...."+e.getStackTrace()[0].getClassName());
@@ -48,7 +49,7 @@ public class SqlConnection {
 			driver = "org.hsqldb.jdbc.JDBCDriver";
 			username = "SA";
 			password = "";
-			Configuration.setDialect("HSQLDB");
+			Configuration.setDialect(Dialect.HSQLDB);
 		}
 		cp = new ConnectionPool(driver, url, username, password);
 	}
