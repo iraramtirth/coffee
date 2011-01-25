@@ -211,7 +211,7 @@ public class TUtils {
 	 * @param t
 	 * @param token
 	 */
-	public static <T> String getUpdateSql(T t,String dialect) throws Exception{
+	public static <T> String getUpdateSql(T t,Dialect dialect) throws Exception{
 		String token = Configuration.getToken(dialect);
 		StringBuffer sql = new StringBuffer("update ").append(TUtils.getTableName(t.getClass())).append(" set ");
 		long id = 0;
@@ -270,7 +270,7 @@ public class TUtils {
 	}
 	
 	// 获取插入记录的sql语句
-	public static <T> String getInsertSql(T t,String dialect) throws Exception {
+	public static <T> String getInsertSql(T t,Dialect dialect) throws Exception {
 		String token = Configuration.getToken(dialect);
 		long start = System.currentTimeMillis();
 		StringBuffer sql = new StringBuffer("insert into ").append(
@@ -291,7 +291,7 @@ public class TUtils {
 			}
 			Id id = field.getAnnotation(Id.class);
 			if(id != null){//主键
-				if(Configuration.getDialect().contains("HSQLDB")){
+				if(Configuration.getDialect() == Dialect.HSQLDB){
 					continue;
 				}
 			}
@@ -311,13 +311,13 @@ public class TUtils {
 			PropertyDescriptor prop = propMap.get(column);
 			Object value = "";
 			if(TUtils.isPrimaryKey(t.getClass(), prop)){
-				if(dialect.toUpperCase().contains("MYSQL")){
+				switch(dialect){
+				case MYSQL:
 					sql.append("null");	
-				}
-				else if(dialect.toUpperCase().contains("ORACLE")){
+					break;
+				case ORACLE:
 					sql.append(TUtils.getSequenceName(t.getClass())+".nextval");
-				}else{
-					sql.append(TUtils.getSequenceName(t.getClass())+".nextval");
+					break;
 				}
 			}else{
 				switch(TypeUtils.getMappedType(prop)){
@@ -414,7 +414,7 @@ public class TUtils {
 	 * 获取插入记录的sql语句
 	 * @param t : 实体
 	 */ 
-	public static <T> String getInsertSql(T t, Dialect dialect) throws Exception {
+	public static <T> String getInsertSql(T t) throws Exception {
 		long start = System.currentTimeMillis();
 		StringBuffer sql = new StringBuffer("insert into ").append(
 				TUtils.getTableName(t.getClass())).append(" ");
@@ -480,7 +480,7 @@ public class TUtils {
 						break;
 					case Date :
 						value = TUtils.parseDate(prop.getReadMethod().invoke(t,(Object[]) null));
-						if(dialect == Dialect.ORACLE){
+						if(Configuration.getDialect() == Dialect.ORACLE){
 							sql.append(" to_date('").append(value).append("','yyyy-MM-dd HH24:mi:ss') ");
 						}else{
 							sql.append(null == value ? "null" : "'" + value.toString() + "'");
