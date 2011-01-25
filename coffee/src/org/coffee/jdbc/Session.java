@@ -3,7 +3,6 @@ package org.coffee.jdbc;
 import java.sql.SQLException;
 
 import org.coffee.jdbc.dao.impl.TDaoImpl;
-import org.coffee.jdbc.dao.util.Configuration.Dialect;
 import org.coffee.spring.ioc.annotation.Repository;
 /**
  * 相对于TDaoImpl
