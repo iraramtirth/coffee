@@ -8,5 +8,6 @@
 			<attribute name="owner.project.facets" value="java"/>
 		</attributes>
 	</classpathentry>
+	<classpathentry kind="lib" path="WebRoot/WEB-INF/lib/ehcache-core-2.3.0.jar"/>
 	<classpathentry kind="output" path="build/classes"/>
 </classpath>
