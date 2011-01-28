@@ -94,6 +94,14 @@ public class FileUtils {
 		}
 		return path;
 	}
+	/**
+	 * 获取文件的绝对路径 
+	 * 
+	 */
+	public String getAbslotePath(String path){
+		
+		return "";
+	}
 	
 	public static void main(String[] args) {
 		String path = "E:/2010登记全部导入表";

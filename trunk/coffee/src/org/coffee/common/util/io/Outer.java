@@ -28,7 +28,7 @@ public class Outer {
 	/**
 	 * 是否显示时间
 	 */
-	private static boolean showTime = true;
+	private static boolean showTime = false;
 	/**
 	 * 时间格式化模式
 	 */
@@ -44,9 +44,16 @@ public class Outer {
 	 * @param path_ : 文件路径 | 如果不存在将自动创建 
 	 * @param append_ : true追加 |false不追加
 	 */
-	public static void setPath(String path_,boolean append_){
+	public static void setPath(String path_,boolean append_,boolean delete){
 		path = path_;
 		append = append_;
+		//删除
+		if(delete){
+			File file = new File(path);
+			if(file.exists()){
+				file.delete();
+			}
+		}
 	}
 	
 	/**
@@ -119,7 +126,7 @@ public class Outer {
 	
 	public static void main(String[] args) {
 		String path = "c:/dd/d.txt";
-		setPath(path, true);
+		setPath(path, true, true);
 		pl("ssd");
 		pl("sd");
 	}
