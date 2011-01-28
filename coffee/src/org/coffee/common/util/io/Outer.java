@@ -43,6 +43,7 @@ public class Outer {
 	 * 设置文件输出流的路径
 	 * @param path_ : 文件路径 | 如果不存在将自动创建 
 	 * @param append_ : true追加 |false不追加
+	 * @param delete : 是否清空(删除)文件
 	 */
 	public static void setPath(String path_,boolean append_,boolean delete){
 		path = path_;

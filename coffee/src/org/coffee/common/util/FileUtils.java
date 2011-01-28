@@ -94,14 +94,32 @@ public class FileUtils {
 		}
 		return path;
 	}
+	
+	/**
+	 * 获取一个类的绝对路径
+	 * 适用于web工程,java工程
+	 * @param Clazz 
+	 */
+	public static <T> String getAbsolutePath(Class<T> clazz){
+		return clazz.getResource("").getPath();
+	}
+	/**
+	 * 获取工程的根目录 
+	 * 可以在web/java工程中调用
+	 */
+	public static String getProjectBasePath(){
+		return FileUtils.class.getClassLoader().getResource("/").getPath();
+	}
 	/**
 	 * 获取文件的绝对路径 
-	 * 
+	 * 适用于web工程  
+	 * @param page : 相对于webRoot的页面
 	 */
-	public String getAbslotePath(String path){
-		
-		return "";
+	public static String getAbsolutePath(String page){
+		String base = getProjectBasePath();
+		return base + "/WebRoot" + page; 
 	}
+	
 	
 	public static void main(String[] args) {
 		String path = "E:/2010登记全部导入表";
