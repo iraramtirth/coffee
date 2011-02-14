@@ -277,6 +277,37 @@ public class TDaoImpl implements TDao{
 		} 
 		return ls;
 	}
+	
+	/**
+	 *	 
+	 */
+	@Override
+	public Object[][] queryForArray(String sql){
+		Object[][] arr = null;
+		try {
+			Statement stmt = conn.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,ResultSet.CONCUR_READ_ONLY);
+			System.out.println(sql);
+			ResultSet rs = stmt.executeQuery(sql);
+			rs.last();
+			//记录总数
+			int recordCount = rs.getRow();
+			int columnCount = rs.getMetaData().getColumnCount();
+			arr = new Object[recordCount][columnCount];
+			rs.beforeFirst();
+			while(rs.next()){
+				for(int i=0; i<arr.length; i++){
+					for (int j = 0; j < columnCount; j++) {
+						System.out.println(rs.getObject(j+1));
+						arr[i][j] = rs.getObject(j+1);
+					}
+				}
+			}
+			rs.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return arr;
+	}
 	/**
 	 * 插入实体
 	 */
