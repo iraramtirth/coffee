@@ -7,6 +7,7 @@ import static org.coffee.jdbc.dao.util.TUtils.getTableName;
 
 import java.beans.PropertyDescriptor;
 
+import cn.demo.bean.Fans;
 import cn.demo.bean.User;
 
 
@@ -17,7 +18,7 @@ import cn.demo.bean.User;
 public class Creater {
 	
 	public static void main(String[] args) {
-		Class<User> clazz = User.class;
+		Class<Fans> clazz = Fans.class;
 		PropertyDescriptor[] props = getPropertyDescriptor(clazz);
 		StringBuilder sql = new StringBuilder();
 		sql.append("create table "+getTableName(clazz)+"(\n");
