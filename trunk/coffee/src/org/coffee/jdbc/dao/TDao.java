@@ -32,6 +32,8 @@ public interface TDao {
 	public <T> List<T> queryForList(String sql, long start, int size,Class<T> clazz) throws SQLException;
 	//查询单个实体
 	public <T> T queryForEntity(Class<T> clazz, Object id) throws SQLException;
+	//查二维数组
+	public Object[][] queryForArray(String sql) throws SQLException;
 	//加载实体；第一次家在完成之后将缓存该记录
 	public <T> T loadForEntity(Class<T> clazz, Object id);
 	//执行指定SQL
