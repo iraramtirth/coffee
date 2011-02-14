@@ -519,13 +519,16 @@ public class TUtils {
 	 * 获取Field的类型
 	 */ 
 	public static <T> MappedType getMappedType(PropertyDescriptor prop){
-		if(prop.getPropertyType().getSimpleName().equals("Long")){
+		System.out.println(prop.getPropertyType().getSimpleName());
+		String typeName = prop.getPropertyType().getSimpleName().toLowerCase();
+		
+		if(typeName.contains("long")){
 			return MappedType.Long;
 		}
-		if(prop.getPropertyType().getSimpleName().equals("Integer")){
+		if(typeName.contains("int")){
 			return MappedType.Integer;
 		}
-		if(prop.getPropertyType().getSimpleName().equals("Date")){
+		if(typeName.equals("date")){
 			return MappedType.Date;
 		}
 		return MappedType.String;
