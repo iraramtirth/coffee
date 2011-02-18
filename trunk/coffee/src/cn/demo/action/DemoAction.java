@@ -2,11 +2,11 @@ package cn.demo.action;
 
 import javax.servlet.annotation.WebServlet;
 
+import org.coffee.controller.Action;
+import org.coffee.controller.Pager;
+import org.coffee.controller.annotation.Result;
 import org.coffee.jdbc.service.impl.Session;
 import org.coffee.spring.ioc.annotation.Resource;
-import org.coffee.struts.Action;
-import org.coffee.struts.PagerModel;
-import org.coffee.struts.annotation.Result;
 
 import cn.demo.bean.User;
 
@@ -18,7 +18,7 @@ public class DemoAction extends Action {
 	 */
 	private static final long serialVersionUID = 1L;
 
-	private PagerModel<User> pager = new PagerModel<User>();
+	private Pager<User> pager = new Pager<User>();
 	private Session service;
 	private String info;
 	private User model;
@@ -102,7 +102,7 @@ public class DemoAction extends Action {
 	public User getModel() {
 		return model;
 	}
-	public PagerModel<User> getPager() {
+	public Pager<User> getPager() {
 		return pager;
 	}
 }
