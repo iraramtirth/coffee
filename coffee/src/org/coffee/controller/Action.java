@@ -1,17 +1,10 @@
 package org.coffee.controller;
 
 import java.beans.PropertyDescriptor;
-import java.io.BufferedOutputStream;
-import java.io.DataOutputStream;
-import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.UUID;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
@@ -22,7 +15,6 @@ import javax.servlet.http.HttpSession;
 
 import org.coffee.controller.annotation.Result;
 import org.coffee.controller.util.BeanUtils;
-import org.coffee.controller.util.FormFile;
 import org.coffee.controller.util.MultipartStream;
 import org.coffee.controller.util.ParameterReflect;
 import org.coffee.controller.util.RequestUtils;
@@ -208,168 +200,6 @@ public abstract class Action extends HttpServlet implements Constants {
 				e.printStackTrace();
 				// 如果抛出异常；或者没有指定相应的method；则执行默认的execute方法
 				// this.dispatchRequest("execute");
-			}
-		}
-	}
-
-	/**
-	 * 参数映射 按照class中的属性查找映射
-	 * 
-	 * @param preName
-	 *            参数前缀名：如 user.username 此时preName=user
-	 **/
-//	@Deprecated
-//	public Object paramsReflect(String preName, Class<?> clazz) {
-//		try {
-//			BeanInfo bi = null;
-//			Object targetObj = null;
-//			// 处理 Servlet 里面的属性
-//			if (preName == null) {
-//				preName = "";
-//				bi = Introspector.getBeanInfo(clazz, Action.class);
-//				targetObj = this;
-//			} else {// 处理Model中的属性
-//				preName += ".";
-//				try {
-//					bi = Introspector.getBeanInfo(clazz, Object.class);
-//				} catch (Exception e) {
-//					// java.lang.Object not superclass of ....
-//					// 说明 Action 中的Field不需要映射
-//					return null;
-//				}
-//				targetObj = clazz.newInstance();
-//			}
-//			PropertyDescriptor[] props = bi.getPropertyDescriptors();
-//			for (PropertyDescriptor prop : props) {
-//				// JavaBean的 Field 名
-//				String fieldName = preName + prop.getName();
-//				if(fieldName.contains("describe")){
-//					System.out.println();
-//				}
-//				// JavaBean的 Field 类型
-//				String fieldType = prop.getPropertyType().getSimpleName()
-//						.toLowerCase();
-//				// 参数值 ：String类型
-//				Object paramValue = this.parameterMap.get(fieldName);// request.getParameter(fieldName);
-//				// 将参数值映射成适当的类型
-//				Object fieldValue = null;
-//				if (fieldType.contains("string")) {
-//					fieldValue = paramValue;
-//				} else if (fieldType.contains("int")
-//						|| fieldType.contains("long")) {
-//					try {
-//						fieldValue = Integer.valueOf(paramValue.toString());
-//					} catch (Exception e) {
-//						fieldValue = 0;
-//					}
-//				}// 映射时间类型
-//				else if (fieldType.contains("date")) {
-//					SimpleDateFormat sdf = null;
-//					try {
-//						sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-//						fieldValue = sdf.parse(paramValue.toString());
-//					} catch (Exception e) {
-//						try {// 如果不符合 yyyy-MM-dd HH:mm:ss 则重新parser字符串
-//							sdf = new SimpleDateFormat("yyyy-MM-dd");
-//							fieldValue = sdf.parse(paramValue.toString());
-//						} catch (Exception e1) {
-//							try {
-//								sdf = new SimpleDateFormat("HH:mm:ss");
-//								fieldValue = sdf.parse(paramValue.toString());
-//							} catch (Exception e2) {
-//								fieldValue = null;
-//							}
-//						}
-//					}
-//				} else if (fieldType.contains("FormFile")) {
-//					fieldValue = paramValue;
-//				} else {
-//					/**
-//					 * type 自定义对象类型 递归
-//					 **/
-//					Class<?> fieldClazz = prop.getPropertyType();
-//					fieldValue = this.paramsReflect(fieldName, fieldClazz);
-//				}
-//				/**
-//				 * 当 fieldValue == null 的时候。 有可能会将通过IOC方式注入的对象重置为null
-//				 **/
-//				if (fieldValue != null) {
-//					prop.getWriteMethod().invoke(targetObj,
-//							new Object[] { fieldValue });
-//				}
-//			}
-//			return targetObj;
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//		}
-//		return null;
-//	}
-
-	/**
-	 * 解析InputStream流
-	 * 
-	 * @param content
-	 *            : 流的内容
-	 */
-	@Deprecated
-	public void parserInputStream(String content) {
-		if(content == null || content.trim().equals("")){
-			return;
-		}
-		System.out.println(content);
-		String contentType = request.getContentType();
-		String spt = "--"+contentType.substring(contentType.indexOf("boundary=")
-				+ "boundary=".length());
-		String[] items = content.split(spt);
-		// 用于文本域的正则
-		String textRegex = "name=\"(.+?)\"([\\s\\S]+)";
-		Pattern textPat = Pattern.compile(textRegex);
-		// 用于file流的正则
-		String fileRegex = "name=\"(.+?)\";\\s+filename=\"(.*?)\"[\\r\\n]+?Content-Type:\\s(.+)\\r\\n([\\s\\S]+)";
-		Pattern filePat = Pattern.compile(fileRegex);
-		// 遍历：解析流
-		for (String item : items) {
-			if (item == null || "".equals(item.trim())) {
-				continue;
-			}
-			// 解析文本流
-			if (item.contains("Content-Type") == false) {
-				Matcher textMat = textPat.matcher(item);
-				while (textMat.find()) {
-					parameterMap.put(textMat.group(1).trim(), textMat.group(2)
-							.trim());
-				}
-			} else {// 文件流
-				Matcher fileMat = filePat.matcher(item);
-				while (fileMat.find()) {
-					String fileType = fileMat.group(3);
-					System.out.println(fileType);
-					FormFile formFile = new FormFile();
-					String fileContent = fileMat.group(4);
-					// 判断文件内容是否为空
-					if (fileType.trim().equals("application/octet-stream") == false) {
-						System.out.println("文件流的内容\n"+item);
-						
-						formFile.setFileName(fileMat.group(2));
-						formFile.setContentType(fileMat.group(3));
-						try {
-							// System.getProperty("catalina.home")
-							File file = new File("c:/");
-							if (file.exists() == false) {
-								file.mkdirs();
-							}
-							DataOutputStream bufOut = new DataOutputStream(
-									new BufferedOutputStream(new FileOutputStream(file + UUID.randomUUID().toString() + ".jpg")));
-							
-							bufOut.write(fileContent.getBytes());
-							bufOut.close();
-							formFile.setFile(file);
-						} catch (IOException e) {
-							e.printStackTrace();
-						}
-					}
-					parameterMap.put(fileMat.group(1), formFile);
-				}
 			}
 		}
 	}
