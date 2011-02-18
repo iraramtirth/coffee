@@ -1,4 +1,4 @@
-package org.coffee.struts;
+package org.coffee.controller;
 
 /**
  * struts 中的常量
