@@ -2,7 +2,7 @@ package org.coffee.jdbc.service.impl;
 
 import java.sql.SQLException;
 
-import org.coffee.controller.PagerModel;
+import org.coffee.controller.Pager;
 import org.coffee.jdbc.SqlConnection;
 import org.coffee.jdbc.dao.impl.TDaoImpl;
 import org.coffee.jdbc.service.TService;
@@ -37,7 +37,7 @@ public class Session extends TDaoImpl implements TService {
 	 *  分页查询
 	 */
 	@Override
-	public <T> PagerModel<T> queryForPagerModel(String sql, int offset, int size,
+	public <T> Pager<T> queryForPagerModel(String sql, int offset, int size,
 			Class<T> clazz) throws Exception {
 		this.session.open();
 		String countSql = sql.replaceAll("select\\s*.*? from", "select count(*) from")
@@ -45,7 +45,7 @@ public class Session extends TDaoImpl implements TService {
 		if(offset < 0){
 			offset = 0;
 		}
-		PagerModel<T> pager = new PagerModel<T>();
+		Pager<T> pager = new Pager<T>();
 		pager.setItems(this.session.queryForList(sql,offset,size,clazz));
 		pager.setTotal(this.queryForColumn(Integer.class, countSql));
 		pager.setCurpage(offset/size + 1);
