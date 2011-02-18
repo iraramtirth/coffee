@@ -1,6 +1,6 @@
 package org.coffee.jdbc.service;
 
-import org.coffee.struts.PagerModel;
+import org.coffee.controller.PagerModel;
 /**
  * service层通用父类接口
  * @author wangtao

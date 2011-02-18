@@ -2,12 +2,12 @@ package org.coffee.jdbc.service.impl;
 
 import java.sql.SQLException;
 
+import org.coffee.controller.PagerModel;
 import org.coffee.jdbc.SqlConnection;
 import org.coffee.jdbc.dao.impl.TDaoImpl;
 import org.coffee.jdbc.service.TService;
 import org.coffee.spring.ioc.annotation.Resource;
 import org.coffee.spring.ioc.annotation.Service;
-import org.coffee.struts.PagerModel;
 /**
  * service层通用父类接口实现类
  * @author wangtao
