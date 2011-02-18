@@ -1,4 +1,4 @@
-package org.coffee.struts.listener;
+package org.coffee.controller.listener;
 
 import java.util.Map;
 

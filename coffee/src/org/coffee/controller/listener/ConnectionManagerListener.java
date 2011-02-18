@@ -1,4 +1,4 @@
-package org.coffee.struts.listener;
+package org.coffee.controller.listener;
 
 import java.io.FileInputStream;
 import java.sql.Connection;
