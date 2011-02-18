@@ -2,10 +2,6 @@ package org.coffee.controller.util;
 
 import java.io.File;
 
-/**
- * 文件上传组件
- * @author wangtao
- */
 public class FormFile {
 	private String fileName;
 	private String ContentType;
