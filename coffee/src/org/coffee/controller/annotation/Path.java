@@ -1,4 +1,4 @@
-package org.coffee.struts.annotation;
+package org.coffee.controller.annotation;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
