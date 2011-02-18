@@ -1,11 +1,11 @@
-package org.coffee.struts.introspector;
+package org.coffee.controller.introspector;
 
 import java.beans.BeanInfo;
 import java.beans.IntrospectionException;
 import java.beans.Introspector;
 import java.beans.PropertyDescriptor;
 
-import org.coffee.struts.Action;
+import org.coffee.controller.Action;
 
 /**
  * BeanInfo 工具类
