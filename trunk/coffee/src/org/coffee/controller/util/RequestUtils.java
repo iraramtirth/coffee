@@ -11,7 +11,7 @@ import org.coffee.controller.Action;
 
 public class RequestUtils{
 	/**
-	 * 将Action中的属性以及其值保存到
+	 * 将Action中的属性以及其值保存到request的attribute中
 	 * @param thiz : 当前正在执行的action对象
 	 * @param request : action中【当前】的request请求
 	 */
@@ -39,4 +39,5 @@ public class RequestUtils{
 			e1.printStackTrace();
 		}
 	}
+	
 }

@@ -66,7 +66,7 @@ public class MultipartStream {
 			e.printStackTrace();
 		}
 	}
-	
+
 	/**
 	 *  解析流的内容
 	 */
