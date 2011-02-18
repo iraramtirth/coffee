@@ -21,7 +21,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.coffee.controller.annotation.Result;
-import org.coffee.controller.introspector.BeanUtils;
+import org.coffee.controller.util.BeanUtils;
 import org.coffee.controller.util.FormFile;
 import org.coffee.controller.util.MultipartStream;
 import org.coffee.controller.util.ParameterReflect;
