@@ -1,4 +1,4 @@
-package org.coffee.struts;
+package org.coffee.controller;
 
 import java.beans.PropertyDescriptor;
 import java.io.BufferedOutputStream;
@@ -20,14 +20,14 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.coffee.controller.annotation.Result;
+import org.coffee.controller.introspector.BeanUtils;
+import org.coffee.controller.util.FormFile;
+import org.coffee.controller.util.MultipartStream;
+import org.coffee.controller.util.ParameterReflect;
+import org.coffee.controller.util.RequestUtils;
 import org.coffee.spring.ObjectManager;
 import org.coffee.spring.ioc.annotation.Resource;
-import org.coffee.struts.annotation.Result;
-import org.coffee.struts.introspector.BeanUtils;
-import org.coffee.struts.reflect.ParameterReflect;
-import org.coffee.struts.reflect.RequestUtils;
-import org.coffee.struts.upload.FormFile;
-import org.coffee.struts.upload.MultipartStream;
 
 /**
  * action 的公共父类 总的控制器
@@ -80,7 +80,7 @@ public abstract class Action extends HttpServlet implements Constants {
 		this.request = request;
 		this.response = response;
 		this.session = request.getSession();
-		this.application = request.getServletContext();
+		this.application = request.getSession().getServletContext();
 		try {
 			//初始化属性为null
 			for (PropertyDescriptor prop : BeanUtils.getPropertyDescriptors(this)) {
