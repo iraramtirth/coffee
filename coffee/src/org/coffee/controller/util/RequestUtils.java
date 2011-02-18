@@ -1,4 +1,4 @@
-package org.coffee.struts.reflect;
+package org.coffee.controller.util;
 
 import java.beans.BeanInfo;
 import java.beans.IntrospectionException;
@@ -7,7 +7,7 @@ import java.beans.PropertyDescriptor;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.coffee.struts.Action;
+import org.coffee.controller.Action;
 
 public class RequestUtils{
 	/**
