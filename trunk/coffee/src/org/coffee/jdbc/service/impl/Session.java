@@ -2,7 +2,7 @@ package org.coffee.jdbc.service.impl;
 
 import java.sql.SQLException;
 
-import org.coffee.controller.Pager;
+import org.coffee.jdbc.Pager;
 import org.coffee.jdbc.SqlConnection;
 import org.coffee.jdbc.dao.impl.TDaoImpl;
 import org.coffee.jdbc.service.TService;
