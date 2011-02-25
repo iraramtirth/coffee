@@ -37,7 +37,7 @@ public class Session extends TDaoImpl implements TService {
 	 *  分页查询
 	 */
 	@Override
-	public <T> Pager<T> queryForPagerModel(String sql, int offset, int size,
+	public <T> Pager<T> queryForPager(String sql, int offset, int size,
 			Class<T> clazz) throws Exception {
 		this.session.open();
 		String countSql = sql.replaceAll("select\\s*.*? from", "select count(*) from")
