@@ -3,8 +3,8 @@ package cn.demo.action;
 import javax.servlet.annotation.WebServlet;
 
 import org.coffee.controller.Action;
-import org.coffee.controller.Pager;
 import org.coffee.controller.annotation.Result;
+import org.coffee.jdbc.Pager;
 import org.coffee.jdbc.service.impl.Session;
 import org.coffee.spring.ioc.annotation.Resource;
 
@@ -38,7 +38,7 @@ public class DemoAction extends Action {
 	@Result(page="/demo/list.jsp")
 	public String list()throws Exception{
 		String sql = "select * from users order by ID desc";
-		pager = this.service.queryForPagerModel(sql, this.pager.getOffset(), 10, User.class);
+		pager = this.service.queryForPager(sql, this.pager.getOffset(), 10, User.class);
 		return SUCCESS;
 	}
 	

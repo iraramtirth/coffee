@@ -1,6 +1,6 @@
 package org.coffee.jdbc.service;
 
-import org.coffee.controller.Pager;
+import org.coffee.jdbc.Pager;
 
 /**
  * service层通用父类接口
@@ -13,5 +13,5 @@ public interface TService {
 	 * @param start　: 偏移量
 	 * @param size : 分页条数 
 	 */
-	public <T> Pager<T> queryForPagerModel(String sql,int start,int size,Class<T> clazz) throws Exception;
+	public <T> Pager<T> queryForPager(String sql,int start,int size,Class<T> clazz) throws Exception;
 }
