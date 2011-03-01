@@ -13,8 +13,8 @@ import org.coffee.common.util.TypeUtils;
 /**
  * 参数反射 
  * 该类是一个工具类；
- * 在使用的过程中应该先执行 parserParameter 将从request获取的参数map进行解析
- * 然后调用 invoke 进行参数值的反射
+ * 在使用的过程中应该先执行 invoke方法，传入俩参数： 将从request获取的参数map进行解析
+ * 并进行参数值的反射
  * @author wangtao
  */
 public class ParameterReflect {
@@ -24,7 +24,7 @@ public class ParameterReflect {
 	 */
 	private Map<String, Object> parameterMap = new HashMap<String, Object>();
 	/**
-	 * 存放的是Action中的属性以及其实例化对象
+	 * 存放的是Action中的[非primitive]属性以及其实例化对象
 	 * 例如：
 	 * private User madel;
 	 * 那么targetMap.put("model",model.getClass().newInstance());
@@ -34,16 +34,17 @@ public class ParameterReflect {
 	 * 解析参数
 	 * 初始化对象
 	 */
-	public void parserParameter(Map<String, Object> parameterMap,Object thiz){
+	private void init(Map<String, Object> parameterMap,Object thiz){
 		this.parameterMap = parameterMap;
 		try {
+			Class<?> clazz = thiz.getClass();
 			for(String key : this.parameterMap.keySet()){
 				String[] params = key.split("\\.");
 				if(params.length > 1){
-					Class<?> clazz = thiz.getClass();
 					String paramName = "";
 					/**
 					 * 剔除最后一个元素
+					 * user.username ==> user
 					 */
 					String[] newParams = Arrays.copyOf(params, params.length-1);
 					for(int i=0; i<newParams.length; i++){
@@ -65,48 +66,46 @@ public class ParameterReflect {
 	/**
 	 * 执行参数反射：
 	 * 将action中的属性赋于从form/url取得的值
-	 * @param action ：当前正在执行的action对象
+	 * @param action ：当前正在执行的action，或者带有setter | getter 的对象
 	 */
-	public void invoke(Object action){
+	public <T> T invoke(Map<String, Object> parameterMap, T actionOrModel){
+		this.init(parameterMap, actionOrModel);
 		if(this.parameterMap.size() == 0){
-			return;
+			return null;
 		}
-		String paramName = "";
+		Class<?> clazz = actionOrModel.getClass();
+		
 		for(String key : this.parameterMap.keySet()){
-			Object base = action;
+			//primitive属性
 			if(key.lastIndexOf(".") == -1){
 				try {
-					Class<?> paramType = base.getClass().getDeclaredField(key).getType();
-					Method method = base.getClass().getDeclaredMethod("set"+StringManager
+					Class<?> paramType = actionOrModel.getClass().getDeclaredField(key).getType();
+					Method method = actionOrModel.getClass().getDeclaredMethod("set"+StringManager
 							.toUpperCaseFirstChar(key), new Class[]{paramType});
-					method.invoke(base, new Object[]{this.parameterMap.get(key)});
+					method.invoke(actionOrModel, new Object[]{this.parameterMap.get(key)});
 				} catch (NoSuchFieldException e) {
 					log.warning("Action中的字段["+key+"]不存在,无法进行参数映射...");
 				} catch (Exception e) {
 					e.printStackTrace();
 				}  
-			}else{
-				Class<?> clazz = base.getClass();
-				paramName = "";
+			}else{//非private属性; 处理user.username之类的属性
+				String paramName = "";
 				Object objValue = null;
 				int i = 0;
 				String[] fields = key.split("\\.");
 				for(String field : fields){
 					i++;
-					if(field.equals("file") && i == fields.length - 1){
-						//none
-					}else{
-						paramName += field;
-					}
+					paramName += field;
 					try {
 						if(i < key.split("\\.").length){
 							Method readMethod = clazz.getDeclaredMethod("get"+StringManager.toUpperCaseFirstChar(field), new Class[]{});
-							objValue = readMethod.invoke(base, new Object[]{});
+							objValue = readMethod.invoke(actionOrModel, new Object[]{});
 							if(objValue == null){
 								objValue = targetMap.get(paramName);
 								Method writeMethod = clazz.getDeclaredMethod("set"+StringManager.toUpperCaseFirstChar(field),
 										new Class[]{objValue.getClass()});
-								writeMethod.invoke(base, new Object[]{objValue});
+								//关联actionOrModel与其中的非primitive属性
+								writeMethod.invoke(actionOrModel, new Object[]{objValue});
 								if(objValue == null){
 									throw new Exception("出错了。。。。");
 								}
@@ -115,31 +114,12 @@ public class ParameterReflect {
 							Class<?> paramType = clazz.getDeclaredField(field).getType();
 							Method method = clazz.getDeclaredMethod("set"+StringManager.toUpperCaseFirstChar(field),
 									new Class[]{paramType});
-							Object paramValue;
 							Object mapVal = this.parameterMap.get(key);
 							if(mapVal == null){
 								continue;
 							}
-							switch(TypeUtils.getMappedType(clazz.getDeclaredField(field))){
-								case Integer :
-									paramValue = Integer.valueOf(mapVal+"");
-									break;
-								case Long :
-									paramValue = Long.valueOf(mapVal+"");
-									break;
-								case Date :
-									paramValue = DateUtils.parse(mapVal);
-									break;
-								case String :
-									paramValue = mapVal.toString();
-									break;
-								case FormFile : // 不处理FormFile类型
-									continue;
-								default :
-									paramValue = mapVal;
-									break;
-							}
-							method.invoke(base, new Object[]{paramValue});
+							//将mapVal中的值转换为适当的类型
+							method.invoke(objValue, new Object[]{handleParamValue(clazz,field,mapVal)});
 						}
 					} catch (NoSuchMethodException e) {
 						e.printStackTrace();
@@ -150,25 +130,71 @@ public class ParameterReflect {
 					}
 					clazz = objValue.getClass();
 					paramName += ".";
-					base = objValue;
 				}
 			}
 		}
+		return actionOrModel;
 	}
 	
+	/**
+	 * 处理参数值
+	 */ 
+	private Object handleParamValue(Class<?> clazz,String field,Object mapVal){
+		Object paramValue = null;
+		try {
+			switch(TypeUtils.getMappedType(clazz.getDeclaredField(field))){
+				case Integer :
+					paramValue = Integer.valueOf(mapVal+"");
+					break;
+				case Long :
+					paramValue = Long.valueOf(mapVal+"");
+					break;
+				case Date :
+					paramValue = DateUtils.parse(mapVal);
+					break;
+				case String :
+					paramValue = mapVal.toString();
+					break;
+				default :
+					paramValue = mapVal;
+					break;
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return paramValue;
+	}
 	
 	
 	public static void main(String[] args) throws Exception {
 		Map<String,Object> map = new HashMap<String, Object>();
 		map.put("username", "111");
 		map.put("user.username", "222");
-		map.put("user.child.username", "333");
+		//map.put("user.child.username", "333");
 		System.out.println();
 		ParameterReflect pr = new ParameterReflect();
-		//先解析参数
-		pr.parserParameter(map, pr);
-		//
-		pr.invoke(pr);
+		User user = new User();
+		user = pr.invoke(map, user);
+		System.out.println(".......");
 	}
 	 
+}
+
+class User{
+	
+	private String username;
+	private User user;
+	
+	public String getUsername() {
+		return username;
+	}
+	public void setUsername(String username) {
+		this.username = username;
+	}
+	public User getUser() {
+		return user;
+	}
+	public void setUser(User user) {
+		this.user = user;
+	}
 }
