@@ -135,10 +135,8 @@ public abstract class Action extends HttpServlet implements Constants {
 		if(bool){
 			try {
 				ParameterReflect pr = new ParameterReflect();
-				//解析参数
-				pr.parserParameter(parameterMap, this);
-				//参数反射
-				pr.invoke(this);
+				//解析参数并执行参数反射
+				pr.invoke(parameterMap,this);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
