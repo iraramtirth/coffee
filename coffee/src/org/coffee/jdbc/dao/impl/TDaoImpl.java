@@ -18,6 +18,7 @@ import net.sf.ehcache.Cache;
 import net.sf.ehcache.CacheManager;
 import net.sf.ehcache.Element;
 
+import org.coffee.jdbc.Pager;
 import org.coffee.jdbc.dao.TDao;
 import org.coffee.jdbc.dao.util.Configuration;
 import org.coffee.jdbc.dao.util.TUtils;
@@ -392,6 +393,21 @@ public class TDaoImpl implements TDao{
 		} catch (Exception e) {
 			e.printStackTrace();
 		} 
+	}
+	@Override
+	public <T> Pager<T> queryForPager(String sql, int offset, int size,
+			Class<T> clazz) throws SQLException {
+		String countSql = sql.replaceAll("select\\s*.*? from", "select count(*) from")
+		.replaceAll("\\s?order\\s+?by.+", "");
+		if(offset < 0){
+			offset = 0;
+		}
+		Pager<T> pager = new Pager<T>();
+		pager.setItems(this.queryForList(sql,offset,size,clazz));
+		pager.setTotal(this.queryForColumn(Integer.class, countSql));
+		pager.setCurpage(offset/size + 1);
+		pager.setOffset(offset);
+		return pager;
 	}
 	/**
 	 * 关闭数据库连接
