@@ -5,7 +5,7 @@ import javax.servlet.annotation.WebServlet;
 import org.coffee.controller.Action;
 import org.coffee.controller.annotation.Result;
 import org.coffee.jdbc.Pager;
-import org.coffee.jdbc.service.impl.Session;
+import org.coffee.jdbc.Session;
 import org.coffee.spring.ioc.annotation.Resource;
 
 import cn.demo.bean.User;
