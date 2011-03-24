@@ -26,7 +26,7 @@ public class SqlConnection {
 	private static void initConnectionPool() throws SQLException {
 		Properties prop = new Properties();
 		try {
-			prop.load(new FileInputStream(SqlConnection.class.getClassLoader()
+			prop.load(new FileInputStream(SqlConnection.class.getClass()
 					.getResource("/").getPath()	+ "jdbc.properties"));
 			url = prop.getProperty("url");
 			username = prop.getProperty("username");
@@ -40,6 +40,7 @@ public class SqlConnection {
 				Configuration.setDialect(Dialect.HSQLDB);
 			}
 		} catch (Exception e) {
+			e.printStackTrace();
 			System.out.println(e.getClass()+"...."+e.getStackTrace()[0].getClassName());
 			// 默认采用Hsqldb数据库
 			String[] args = "--database.0 file:mydb --dbname.0 xdb".split(" ");
