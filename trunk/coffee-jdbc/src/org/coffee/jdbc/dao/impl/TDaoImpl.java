@@ -163,23 +163,7 @@ public class TDaoImpl implements TDao{
 	@Override
 	public <T> T loadForEntity(Class<T> clazz, Object id) {
 		Object t = null;
-		try {
-			String cacheName = clazz.getName();
-			// 创建缓存 cacheName
-			System.out.println("创建缓存..."+cacheName);
-			Cache cache = cm.getCache(cacheName);
-			//cache = new Memory
-			if(cache != null){
-				System.out.println("从缓存中获取实体...");
-				t =  cache.get(id).getObjectValue();
-			}else{
-				t = this.queryForEntity(clazz, id);
-				cm.addCache(cacheName);
-				cm.getCache(cacheName).put(new Element(id, t));
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
+		
 		return (T)t;
 	}
 	/**
