@@ -2,7 +2,7 @@ package org.coffee.jdbc;
 
 import java.util.List;
 
-import cn.demo.bean.User;
+import javax.xml.registry.infomodel.User;
 /**
  * 分页 
  * @author wangtao

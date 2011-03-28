@@ -41,16 +41,6 @@ public class SqlConnection {
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
-			System.out.println(e.getClass()+"...."+e.getStackTrace()[0].getClassName());
-			// 默认采用Hsqldb数据库
-			String[] args = "--database.0 file:mydb --dbname.0 xdb".split(" ");
-			// 启动hsqldb数据库
-			org.hsqldb.server.Server.main(args);
-			url = "jdbc:hsqldb:hsql://localhost/xdb";
-			driver = "org.hsqldb.jdbc.JDBCDriver";
-			username = "SA";
-			password = "";
-			Configuration.setDialect(Dialect.HSQLDB);
 		}
 		cp = new ConnectionPool(driver, url, username, password);
 	}
