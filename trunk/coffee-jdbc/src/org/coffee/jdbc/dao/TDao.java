@@ -6,7 +6,6 @@ import java.util.List;
 
 import javax.sql.rowset.CachedRowSet;
 
-import org.coffee.jdbc.Pager;
 /**
  * 系统DAO的公共/通用父类接口 
  * @author wangtao
@@ -42,8 +41,6 @@ public interface TDao {
 	public int executeUpdate(String sql) throws SQLException;
 	//执行指定路径的sql脚本,sql命令以';'分割
 	public void executeScript(String scriptPath) throws SQLException;
-	public <T> Pager<T> queryForPager(String sql, int offset, int size,
-			Class<T> clazz) throws SQLException;
 	//关闭Connection对象
 	public void close() throws SQLException;
 }
