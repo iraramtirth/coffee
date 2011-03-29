@@ -6,7 +6,7 @@ package org.coffee.jdbc.table;
  * 自动生成sql语句 
  * @author wangtao
  */
-public class Creater {
+public class TableCreator {
 	
 	public static void main(String[] args) {
 //		Class<Fans> clazz = Fans.class;
