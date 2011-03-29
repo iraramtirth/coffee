@@ -279,7 +279,8 @@ public class TUtils {
 		//k-v 映射的column名字 : 属性  LinkedHashMap 按照插入的顺序排序
 		Map<String,PropertyDescriptor> propMap = new LinkedHashMap<String, PropertyDescriptor>();
 		sql.append("(");
-		
+		String seqName = null;
+		GenerationType generationType = null;
 		for (int i = 0; i < props.length; i++) {
 			Field field = t.getClass().getDeclaredField(props[i].getName());
 			Column column = field.getAnnotation(Column.class);
@@ -289,10 +290,20 @@ public class TUtils {
 			}
 			Id id = field.getAnnotation(Id.class);
 			if(id != null){//主键
-				if(Configuration.getDialect() == Dialect.HSQLDB){
-					continue;
+				//如果是自增主键则不对其进行处理
+				GeneratedValue gv = field.getAnnotation(GeneratedValue.class);
+				if(gv != null){
+					generationType = gv.strategy();
+					switch(generationType){
+					case IDENTITY : continue;
+					case SEQUENCE :
+						SequenceGenerator generator = field.getAnnotation(SequenceGenerator.class);
+						seqName = generator.sequenceName();
+						break;
+					}
 				}
 			}
+			
 			if (column != null) {// 数字 1 键旁边的反引号；处理关键字
 				sql.append(token).append(column.name().toUpperCase()).append(token);
 				propMap.put(column.name(), props[i]);
@@ -308,15 +319,12 @@ public class TUtils {
 		for (String column : propMap.keySet()) {
 			PropertyDescriptor prop = propMap.get(column);
 			Object value = "";
-			if(TUtils.isPrimaryKey(t.getClass(), prop)){
-				switch(dialect){
-				case MYSQL:
-					sql.append("null");	
-					break;
-				case ORACLE:
-					sql.append(TUtils.getSequenceName(t.getClass())+".nextval");
-					break;
-				}
+			if(TUtils.isPrimaryKey(t.getClass(), prop) && generationType != null){
+					switch(generationType){
+						case AUTO: sql.append("null"); break;
+						case IDENTITY : break;
+						case SEQUENCE :	sql.append(seqName+".nextval"); break;
+					}
 			}else{
 				switch(TypeUtils.getMappedType(prop)){
 					case Integer :
@@ -423,8 +431,6 @@ public class TUtils {
 		Map<String,PropertyDescriptor> propMap = new LinkedHashMap<String, PropertyDescriptor>();
 		sql.append("(");
 		
-		GenerationType generationType = null;
-		String seqName = null;
 		for (int i = 0; i < props.length; i++) {
 			Field field = t.getClass().getDeclaredField(props[i].getName());
 			Column column = field.getAnnotation(Column.class);
@@ -432,22 +438,7 @@ public class TUtils {
 			if(nullMap != null){
 				continue;
 			}
-			Id id = field.getAnnotation(Id.class);
-			if(id != null){//主键
-				//如果是自增主键则不对其进行处理
-				GeneratedValue gv = field.getAnnotation(GeneratedValue.class);
-				if(gv == null){
-					throw new Exception("未指定主键生成策略");
-				}
-				generationType = gv.strategy();
-				switch(generationType){
-				case IDENTITY : continue;
-				case SEQUENCE :
-					SequenceGenerator generator = field.getAnnotation(SequenceGenerator.class);
-					seqName = generator.sequenceName();
-					break;
-				}
-			}
+			//.....cut
 			if (column != null) {// 数字 1 键旁边的反引号；处理关键字
 				sql.append(column.name());
 				propMap.put(column.name(), props[i]);
@@ -464,12 +455,8 @@ public class TUtils {
 			PropertyDescriptor prop = propMap.get(column);
 			Object value = "";
 			if(TUtils.isPrimaryKey(t.getClass(), prop)){
+				//....cut
 				
-				switch(generationType){
-				case AUTO: sql.append("null"); break;
-				case IDENTITY : break;
-				case SEQUENCE :	sql.append(seqName+".nextval"); break;
-				}
 			}else{
 				switch(TUtils.getMappedType(prop)){
 					case Integer :
