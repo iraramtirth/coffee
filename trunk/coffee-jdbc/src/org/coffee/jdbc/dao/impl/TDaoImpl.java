@@ -288,19 +288,14 @@ public class TDaoImpl implements TDao{
 	 * 插入实体
 	 */
 	@Override
-	public <T> void insert(T t) throws SQLException {
+	public <T> void insert(T t) throws Exception {
 		if(t == null){
 			throw new SQLException("插入数据失败，实体为null");
 		}
-		try {
 			String sql = TUtils.getInsertSql(t,Configuration.dialect);
 			Statement stmt = conn.createStatement();
 			stmt.executeUpdate(sql);
 			stmt.close();
-			log.info(sql);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
 	}
 	/**
 	 * 插入实体；以String形式返回生成的主键
