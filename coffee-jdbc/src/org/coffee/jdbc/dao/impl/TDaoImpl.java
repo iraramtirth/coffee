@@ -262,7 +262,6 @@ public class TDaoImpl implements TDao{
 		Object[][] arr = null;
 		try {
 			Statement stmt = conn.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,ResultSet.CONCUR_READ_ONLY);
-			System.out.println(sql);
 			ResultSet rs = stmt.executeQuery(sql);
 			rs.last();
 			//记录总数
@@ -270,10 +269,9 @@ public class TDaoImpl implements TDao{
 			int columnCount = rs.getMetaData().getColumnCount();
 			arr = new Object[recordCount][columnCount];
 			rs.beforeFirst();
-			while(rs.next()){
-				for(int i=0; i<arr.length; i++){
+			for(int i=0; i<arr.length; i++){
+				if(rs.next()){
 					for (int j = 0; j < columnCount; j++) {
-						System.out.println(rs.getObject(j+1));
 						arr[i][j] = rs.getObject(j+1);
 					}
 				}
