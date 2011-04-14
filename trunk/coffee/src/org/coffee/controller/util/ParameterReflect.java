@@ -6,6 +6,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Logger;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.coffee.common.util.DateUtils;
 import org.coffee.common.util.StringManager;
 import org.coffee.common.util.TypeUtils;
@@ -63,6 +65,38 @@ public class ParameterReflect {
 			e.printStackTrace();
 		}
 	}
+	/**
+	 * 重载方法：主要是在 action 中用
+	 * @param request
+	 * @param actionOrModel
+	 * @return
+	 */
+	public Object invoke(HttpServletRequest request, Class<?> actionOrModel){
+		// string - string[]
+		Map<String, String[]> params = request.getParameterMap();
+		Map<String, Object> newParams = new HashMap<String, Object>();
+		for(String key : params.keySet()){
+			String[] values = (String[]) params.get(key);
+			String value = "";
+			for (int i = 0; i < values.length; i++) {
+				value += values[i];
+				if((i+1) < values.length){
+					value += ",";
+				}
+			}
+			newParams.put(key,value);
+		}
+		Object obj = null;
+		try {
+			obj = actionOrModel.newInstance();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		this.init(newParams, obj);
+		return this.invoke(newParams, obj);
+	}
+	
+	
 	/**
 	 * 执行参数反射：
 	 * 将action中的属性赋于从form/url取得的值
