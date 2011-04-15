@@ -260,7 +260,7 @@ public class TUtils {
 		}
 		sql = new StringBuffer(sql.toString().trim());
 		while (sql.toString().endsWith(",")) {// 除去末尾的 ,
-			sql.deleteCharAt(sql.length());
+			sql.deleteCharAt(sql.length()-1);
 		}
 		sql.append(" where id = ").append(id);
 		System.out.println(sql);
@@ -303,7 +303,6 @@ public class TUtils {
 					}
 				}
 			}
-			
 			if (column != null) {// 数字 1 键旁边的反引号；处理关键字
 				sql.append(token).append(column.name().toUpperCase()).append(token);
 				propMap.put(column.name(), props[i]);
@@ -409,7 +408,7 @@ public class TUtils {
 		}
 		sql = new StringBuffer(sql.toString().trim());
 		while (sql.toString().endsWith(",")) {// 除去末尾的 ,
-			sql.deleteCharAt(sql.length());
+			sql.deleteCharAt(sql.length()-1);
 		}
 		sql.append(" where id = ").append(id);
 		System.out.println(sql);
