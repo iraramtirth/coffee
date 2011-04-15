@@ -221,6 +221,7 @@ public class TUtils {
 			if(nullMap != null){
 				continue;
 			}
+			String columnName = TUtils.getColumnName(t.getClass(), props[i]);
 			Object value = null;
 			if(TUtils.isPrimaryKey(t.getClass(), props[i])){
 				id = Long.valueOf(props[i].getReadMethod().invoke(t,(Object[]) null).toString());
@@ -231,7 +232,7 @@ public class TUtils {
 					case Long : 
 						value = props[i].getReadMethod().invoke(t,(Object[]) null);
 						if (value != null) {
-							sql.append(token).append(props[i].getName().toUpperCase()).append(token).append("=").append(value);
+							sql.append(token).append(columnName).append(token).append("=").append(value);
 						} else {
 							continue;
 						}
@@ -249,7 +250,7 @@ public class TUtils {
 					if ("null".equals(value) || null == value) {
 						continue;
 					} else {
-						sql.append(token).append(TUtils.getColumnName(t.getClass(), props[i]).toUpperCase()).append(token)
+						sql.append(token).append(columnName.toUpperCase()).append(token)
 							.append("='").append(value.toString()).append("'");
 					}
 				}
@@ -350,141 +351,7 @@ public class TUtils {
 		logger.info(sql.toString());
 		return sql.toString();
 	}
-	
-	
-	/**
-	 * 组装update Sql语句
-	 * @param t : 实体
-	 * @param dialect ： 指定该数据库的方言 {@link Configuration}
-	 */
-	public static <T> String getUpdateSql(T t) throws Exception{
-		StringBuffer sql = new StringBuffer("update ").append(TUtils.getTableName(t.getClass())).append(" set ");
-		long id = 0;
-		BeanInfo bi = Introspector.getBeanInfo(t.getClass(), Object.class);
-		PropertyDescriptor[] props = bi.getPropertyDescriptors();
-		for (int i = 0; i < props.length; i++) {
-			Field field = t.getClass().getDeclaredField(props[i].getName());
-			Transient nullMap = field.getAnnotation(Transient.class);
-			if(nullMap != null){
-				continue;
-			}
-			Object value = null;
-			if(TUtils.isPrimaryKey(t.getClass(), props[i])){
-				id = Long.valueOf(props[i].getReadMethod().invoke(t,(Object[]) null).toString());
-			}else{
-				switch(TUtils.getMappedType( props[i])){
-					case Integer :
-					case Long : 
-						value = props[i].getReadMethod().invoke(t,(Object[]) null);
-						if (value != null) {
-							sql.append(props[i].getName().toUpperCase()).append("=").append(value);
-						} else {
-							continue;
-						}
-						break;
-					case Date : // 对应java.util.Date类型
-						value = TUtils.parseDate(props[i].getReadMethod().invoke(t,(Object[]) null));
-						 if ("null".equals(value) || null == value) {
-								continue;
-						 } else {
-								sql.append(TUtils.getColumnName(t.getClass(), props[i]))
-									.append("='").append(value.toString()).append("'");
-						 }
-						 break;
-					case String :
-						value = props[i].getReadMethod().invoke(t,(Object[]) null);
-						 if ("null".equals(value) || null == value) {
-							continue;
-						} else {
-							sql.append(TUtils.getColumnName(t.getClass(), props[i]).toUpperCase())
-								.append("='").append(value.toString()).append("'");
-						}
-						break;
-				}
-			}
-			if (value != null && i+1 < props.length) {
-				sql.append(",");
-			}
-		}
-		sql = new StringBuffer(sql.toString().trim());
-		while (sql.toString().endsWith(",")) {// 除去末尾的 ,
-			sql.deleteCharAt(sql.length()-1);
-		}
-		sql.append(" where id = ").append(id);
-		System.out.println(sql);
-		return sql.toString();
-	}
-	
-	/**
-	 * 获取插入记录的sql语句
-	 * @param t : 实体
-	 */ 
-	public static <T> String getInsertSql(T t) throws Exception {
-		long start = System.currentTimeMillis();
-		StringBuffer sql = new StringBuffer("insert into ").append(
-				TUtils.getTableName(t.getClass())).append(" ");
-		
-		BeanInfo bi = Introspector.getBeanInfo(t.getClass(), Object.class);
-		PropertyDescriptor[] props = bi.getPropertyDescriptors();
-		//k-v 映射的column名字 : 属性  LinkedHashMap 按照插入的顺序排序
-		Map<String,PropertyDescriptor> propMap = new LinkedHashMap<String, PropertyDescriptor>();
-		sql.append("(");
-		
-		for (int i = 0; i < props.length; i++) {
-			Field field = t.getClass().getDeclaredField(props[i].getName());
-			Column column = field.getAnnotation(Column.class);
-			Transient nullMap = field.getAnnotation(Transient.class);
-			if(nullMap != null){
-				continue;
-			}
-			//.....cut
-			if (column != null) {// 数字 1 键旁边的反引号；处理关键字
-				sql.append(column.name());
-				propMap.put(column.name(), props[i]);
-			} else {
-				sql.append(props[i].getName());
-				propMap.put(props[i].getName(), props[i]);
-			}
-			if (i + 1 < props.length) {
-				sql.append(",");
-			}
-		}
-		sql.append(")values(");
-		for (String column : propMap.keySet()) {
-			PropertyDescriptor prop = propMap.get(column);
-			Object value = "";
-			if(TUtils.isPrimaryKey(t.getClass(), prop)){
-				//....cut
-				
-			}else{
-				switch(TUtils.getMappedType(prop)){
-					case Integer :
-					case Long :
-						sql.append(prop.getReadMethod().invoke(t,(Object[]) null));
-						break;
-					case Date :
-						value = TUtils.parseDate(prop.getReadMethod().invoke(t,(Object[]) null));
-						if(Configuration.getDialect() == Dialect.ORACLE){
-							sql.append(" to_date('").append(value).append("','yyyy-MM-dd HH24:mi:ss') ");
-						}else{
-							sql.append(null == value ? "null" : "'" + value.toString() + "'");
-						}
-						break;
-					case String :
-						value = prop.getReadMethod().invoke(t,(Object[]) null);
-						sql.append(null == value ? "null" : "'" + value.toString() + "'");
-						break;
-				}
-			}
-			sql.append(",");
-		}
-		sql.deleteCharAt(sql.length()-1);// 除去sql语句后面最后一个 逗号
-		sql.append(")");
-		long end = System.currentTimeMillis();
-		logger.info("生成sql耗时 " + (end - start) + " ms");
-		logger.info(sql.toString());
-		return sql.toString();
-	}
+	 
 	/**
 	public static <T> String getSequenceName(T t,PropertyDescriptor prop){
 		String seqName = "";
