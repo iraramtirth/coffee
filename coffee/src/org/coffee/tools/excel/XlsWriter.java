@@ -34,7 +34,7 @@ public class XlsWriter {
 	/**
 	 * 追加
 	 * @param columns ：待追加的数据
-	 * @param x ：骑士列
+	 * @param x ：起始列
 	 */
 	public void append(String[] columns, int y) {
 		HSSFRow row=sheet.getRow(0); 
@@ -44,6 +44,14 @@ public class XlsWriter {
 		}
 	}
 
+	/**
+	 * 重载
+	 * @Overload 
+	 */
+	public void append(String[] columns) {
+		this.append(columns,0);
+	}
+	
 	public void close(){
 		try {
 			out.flush();
