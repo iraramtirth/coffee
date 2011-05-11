@@ -100,7 +100,7 @@ public class XlsWriter {
 		this.append(columns);
 	}
 	
-	//关闭
+	//关闭 IO 流
 	public void close(){
 		try {
 			out.flush();
