@@ -8,9 +8,13 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class CrawlerUtils {
 
+	private static String encode = "UTF-8";
+	
 	/**
 	 * ====================
 	 * [只尝试一次,不成功则返回空]
@@ -20,14 +24,14 @@ public class CrawlerUtils {
 	 * @param linkUrl : 监控页面的URL
 	 * @throws IOException
 	 */
-	public synchronized static String getDocumentHtml(String linkUrl)
+	private synchronized static String getDocumentHtml(String linkUrl)
 			{
 		StringBuilder doc = new StringBuilder();
 		try {
 			URL url = new URL(linkUrl);
 			URLConnection uc = url.openConnection();
 			BufferedReader in = new BufferedReader(new InputStreamReader(uc
-					.getInputStream(), "UTF-8"));
+					.getInputStream(), encode));
 			String line = null;
 			while ((line = in.readLine()) != null) {
 				//处理特殊字符
@@ -49,27 +53,31 @@ public class CrawlerUtils {
 	 * @return : 返回问道的源码
 	 */
 	public synchronized static String getDocumentHtml(String linkUrl,int tryCount){
-		String srcDoc = "";
+		String docHtml = "";
 		try {
 			//最低尝试一次
 			if(tryCount < 1){
 				tryCount = 1;
 			}
-			srcDoc = CrawlerUtils.getDocumentHtml(linkUrl);
+			docHtml = CrawlerUtils.getDocumentHtml(linkUrl);
+			//设置编码
+			String regex = "content=\".+?charset=(.+)\"";
+			Pattern ptn = Pattern.compile(regex);
+			Matcher mat = ptn.matcher(docHtml);
+			if(mat.find()){
+				encode = mat.group(1);
+			}
 		} finally {
-			if(srcDoc == null || srcDoc.trim().length() == 0){
-				for(int i=0;;i++){
-					srcDoc = CrawlerUtils.getDocumentHtml(linkUrl);
-					if(srcDoc != null && srcDoc.length() > 0){
+			if(docHtml == null || docHtml.trim().length() == 0){
+				for(int i=0;i<tryCount-1;i++){
+					docHtml = CrawlerUtils.getDocumentHtml(linkUrl);
+					if(docHtml != null && docHtml.length() > 0){
 						break;//成功
-					}
-					if(i == tryCount){//尝试十次
-						break;//失败
 					}
 				}//for end
 			}//if  end
 		}//finally end
-		return srcDoc;
+		return docHtml;
 	}
 
 	/**
