@@ -3,7 +3,6 @@ package org.coffee.tools.crawl;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.HashMap;
@@ -24,7 +23,7 @@ public class CrawlerUtils {
 	 * @param linkUrl : 监控页面的URL
 	 * @throws IOException
 	 */
-	private synchronized static String getDocumentHtml(String linkUrl)
+	private static String getDocumentHtml(String linkUrl)
 			{
 		StringBuilder doc = new StringBuilder();
 		try {
@@ -38,9 +37,7 @@ public class CrawlerUtils {
 				line = line.replace("&amp;", "&");
 				doc.append(line);
 			}
-		} catch (MalformedURLException e) {
 		} catch(IOException ioe){
-			
 		}
 		return doc.toString();
 	}
@@ -52,7 +49,7 @@ public class CrawlerUtils {
 	 * @param count : 失败后尝试的次数,最小为1
 	 * @return : 返回问道的源码
 	 */
-	public synchronized static String getDocumentHtml(String linkUrl,int tryCount){
+	public static String getDocumentHtml(String linkUrl,int tryCount){
 		String docHtml = "";
 		try {
 			//最低尝试一次
@@ -81,16 +78,6 @@ public class CrawlerUtils {
 	}
 
 	/**
-	 * 去除html标记的文本
-	 * @param linkUrl
-	 * @return
-	 */
-	public static String getDocumentText(String linkUrl){
-		String html = getDocumentHtml(linkUrl);
-		String text = html.replaceAll("<[^>]*?>", "");
-		return text;
-	}
-	/**
 	 * 去除了html标记
 	 * 详见 {@link getDocumentHtml(String linkUrl, int tryCount)}
 	 * @param linkUrl
@@ -115,9 +102,6 @@ public class CrawlerUtils {
 		return  linksMap;
 	}
 	
+
 	
-	public static void main(String[] args) {
-//		String pc = generatePcNo();
-//		System.out.println(pc);
-	}
 }
