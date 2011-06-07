@@ -56,7 +56,7 @@ public class XlsReader {
 		for (int i = 0; i < columns.length; i++) {
 			for (int j = 0; j < hr.getLastCellNum(); j++) {
 				HSSFCell cell = hr.getCell(j);
-				String cellValue = getCellValue(cell);
+				String cellValue = XlsUtils.getCellValue(cell);
 				if(columns[i].equals(cellValue)){
 					columnsIndex[i] = j;
 				}
@@ -69,7 +69,7 @@ public class XlsReader {
 				Map<String,String> item = new HashMap<String,String>();
 				for (int j = 0; j < columnsIndex.length; j++) {
 					// 注意：当取某一行中的数据的时候，需要判断数据类型，否则会报错
-					item.put(columns[j], getCellValue(row.getCell(columnsIndex[j])));
+					item.put(columns[j], XlsUtils.getCellValue(row.getCell(columnsIndex[j])));
 				}
 				if(item.size() > 0){
 					items.add(item);
@@ -97,31 +97,11 @@ public class XlsReader {
 			String value = "";
 			columns = new String[row.getLastCellNum()];
 			for (int j = cy; j < row.getLastCellNum(); j++) {
-				value = this.getCellValue(row.getCell(j));
+				value = XlsUtils.getCellValue(row.getCell(j));
 				columns[j-cy] = value;
 			}
 		}
 		return query(columns,x,y);
-	}
-	
-	private String getCellValue(HSSFCell cell){
-		String cellValue = "";
-		switch(cell.getCellType()){
-		case HSSFCell.CELL_TYPE_NUMERIC:
-			try{
-				cellValue = (int)cell.getNumericCellValue() + "";
-			} catch(Exception e){
-				cellValue = cell.getNumericCellValue() + "";
-			}
-			break;
-		default:
-			cellValue = cell.getStringCellValue();
-			break;
-		}//
-		if(cellValue.toLowerCase().matches("\\(null\\)|null")){
-			cellValue = "";
-		}
-		return cellValue.trim();
 	}
 	
 	
