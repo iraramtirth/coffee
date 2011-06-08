@@ -1,6 +1,8 @@
 package com.wangtao.test.jdbc.service;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.coffee.jdbc.Session;
 
@@ -11,11 +13,13 @@ public class UserService {
 	public static void main(String[] args) {
 		Session session = new Session();
 		session.open();
-		User user = new User();
-		user.setUsername("test_name");
-		user.setPassword("test_pwd");
+		String sql = "select username from users";
 		try {
-			session.insert(user);
+			List<User> usersList = new ArrayList<User>();
+			usersList = session.queryForList(sql, User.class);
+			for(User user : usersList){
+				System.out.println(user.getUsername());
+			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally{
