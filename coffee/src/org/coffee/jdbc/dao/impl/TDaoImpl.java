@@ -368,9 +368,14 @@ public class TDaoImpl implements TDao{
 		try {
 			conn.setAutoCommit(false);
 			Statement stmt = conn.createStatement();
+			int index = 0;
 			for(T t : entities){
 				String sql = TUtils.getInsertSql(t,this.dialect);
 				stmt.addBatch(sql);
+				if(index++ > 10000){
+					stmt.executeBatch();
+					index = 0;
+				}
 			}
 			stmt.executeBatch();
 			conn.commit();
