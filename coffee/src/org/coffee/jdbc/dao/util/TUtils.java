@@ -160,16 +160,29 @@ public class TUtils {
 					 * 也会抛出该异常
 					 */ 
 					Object value = null;
-					switch(TypeUtils.getMappedType(prop)){
-						case Long : 
-							value = Long.valueOf(rs.getLong(TUtils.getColumnName(clazz, prop)));
-							break;
-						case Integer :
-							value = Integer.valueOf(rs.getInt(TUtils.getColumnName(clazz, prop)));
-							break;
-						default :
-							value = rs.getObject(TUtils.getColumnName(clazz, prop));
-							break;
+					try{
+						switch(TypeUtils.getMappedType(prop)){
+							case Long : 
+								value = Long.valueOf(rs.getLong(TUtils.getColumnName(clazz, prop)));
+								break;
+							case Integer :
+								value = Integer.valueOf(rs.getInt(TUtils.getColumnName(clazz, prop)));
+								break;
+							default :
+								value = rs.getObject(TUtils.getColumnName(clazz, prop));
+								break;
+						}
+					}catch(Exception e){//如果仅仅查询Class的部分字段
+						if(e.getMessage().matches("Column\\s+'.+?'\\s+not\\s+found.")){
+							switch(TypeUtils.getMappedType(prop)){
+								case Long : 
+								case Integer: 
+									value = 0; break;
+								default :
+									value = null;
+									break;
+							}
+						}
 					}
 					prop.getWriteMethod().invoke(tt, new Object[] {value});
 				} catch (IllegalArgumentException e) {

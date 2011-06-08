@@ -22,7 +22,6 @@ import org.coffee.jdbc.Pager;
 import org.coffee.jdbc.dao.TDao;
 import org.coffee.jdbc.dao.util.Configuration;
 import org.coffee.jdbc.dao.util.TUtils;
-import org.coffee.jdbc.dao.util.Configuration.DialectType;
 
 public class TDaoImpl implements TDao{
 	/**
@@ -33,10 +32,6 @@ public class TDaoImpl implements TDao{
 	 * 缓存管理器
 	 */
 	protected CacheManager cm;
-	/**
-	 * 数据库方言
-	 */
-	private DialectType dialect;
 	
 	private static Logger log = Logger.getLogger("jdbc");
 	
@@ -44,9 +39,6 @@ public class TDaoImpl implements TDao{
 		log.setLevel(Level.INFO);
 	}
 	
-	protected void setDialect(DialectType dialect){
-		this.dialect = dialect;
-	}
 	/**
 	 *  获取当前的connection链接
 	 */
@@ -338,7 +330,7 @@ public class TDaoImpl implements TDao{
 			throw new SQLException("插入数据失败，实体为null");
 		}
 		try {
-			String sql = TUtils.getInsertSql(t,this.dialect);
+			String sql = TUtils.getInsertSql(t,Configuration.dialect);
 			Statement stmt = conn.createStatement();
 			stmt.executeUpdate(sql, Statement.RETURN_GENERATED_KEYS);
 			sql = "select "+TUtils.getSequenceName(t.getClass()) +".currval from dual";
@@ -370,7 +362,7 @@ public class TDaoImpl implements TDao{
 			Statement stmt = conn.createStatement();
 			int index = 0;
 			for(T t : entities){
-				String sql = TUtils.getInsertSql(t,this.dialect);
+				String sql = TUtils.getInsertSql(t,Configuration.dialect);
 				stmt.addBatch(sql);
 				if(index++ > 10000){
 					stmt.executeBatch();
