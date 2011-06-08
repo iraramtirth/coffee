@@ -22,7 +22,7 @@ import org.coffee.jdbc.Pager;
 import org.coffee.jdbc.dao.TDao;
 import org.coffee.jdbc.dao.util.Configuration;
 import org.coffee.jdbc.dao.util.TUtils;
-import org.coffee.jdbc.dao.util.Configuration.Dialect;
+import org.coffee.jdbc.dao.util.Configuration.DialectType;
 
 public class TDaoImpl implements TDao{
 	/**
@@ -36,7 +36,7 @@ public class TDaoImpl implements TDao{
 	/**
 	 * 数据库方言
 	 */
-	private Dialect dialect;
+	private DialectType dialect;
 	
 	private static Logger log = Logger.getLogger("jdbc");
 	
@@ -44,7 +44,7 @@ public class TDaoImpl implements TDao{
 		log.setLevel(Level.INFO);
 	}
 	
-	protected void setDialect(Dialect dialect){
+	protected void setDialect(DialectType dialect){
 		this.dialect = dialect;
 	}
 	/**

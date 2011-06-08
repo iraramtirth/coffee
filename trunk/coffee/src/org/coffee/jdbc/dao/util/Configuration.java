@@ -13,18 +13,7 @@ public class Configuration {
 	private static final String TABLE_TOKEN_MYSQL = "`";
 	private static final String TABLE_TOKEN_HSQLDB = "";
 	// 数据库方言；默认是 mysql
-	public static Dialect dialect = Dialect.MYSQL;
-
-	public static Dialect getDialect() {
-		return dialect;
-	}
-	/**
-	 * Dialect在创建数据库连接Connection的时候被设置
-	 * @param dialect_
-	 */
-	public static void setDialect(Dialect dialect_) {
-		dialect = dialect_;
-	}
+	public static DialectType dialect = DialectType.MYSQL;
 
 	/**
 	 * 主要用于处理sql语句中的关键字 比如说 order 在mysql中用 `order` ; 即用`处理 而在oracle中用"order" :
@@ -34,7 +23,7 @@ public class Configuration {
 	 *            ：方言
 	 * @return 返回
 	 */
-	public static String getToken(Dialect dialect) {
+	public static String getToken(DialectType dialect) {
 		switch (dialect) {
 		case ORACLE:
 			return TABLE_TOKEN_ORACLE;
@@ -73,7 +62,7 @@ public class Configuration {
 	 * 
 	 * @author wangtao
 	 */
-	public enum Dialect {
+	public enum DialectType {
 		ORACLE, MYSQL, HSQLDB
 	}
 

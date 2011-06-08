@@ -23,7 +23,7 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
-import org.coffee.jdbc.dao.util.Configuration.Dialect;
+import org.coffee.jdbc.dao.util.Configuration.DialectType;
 import org.coffee.jdbc.dao.util.Configuration.MappedType;
 
 
@@ -209,8 +209,8 @@ public class TUtils {
 	 * @param t
 	 * @param token
 	 */
-	public static <T> String getUpdateSql(T t,Dialect dialect) throws Exception{
-		String token = Configuration.getToken(dialect);
+	public static <T> String getUpdateSql(T t,DialectType DialectType) throws Exception{
+		String token = Configuration.getToken(DialectType);
 		StringBuffer sql = new StringBuffer("update ").append(TUtils.getTableName(t.getClass())).append(" set ");
 		long id = 0;
 		BeanInfo bi = Introspector.getBeanInfo(t.getClass(), Object.class);
@@ -268,8 +268,9 @@ public class TUtils {
 	}
 	
 	// 获取插入记录的sql语句
-	public static <T> String getInsertSql(T t,Dialect dialect) throws Exception {
-		String token = Configuration.getToken(dialect);
+	@SuppressWarnings("static-access")
+	public static <T> String getInsertSql(T t, DialectType DialectType) throws Exception {
+		String token = Configuration.getToken(DialectType);
 		long start = System.currentTimeMillis();
 		StringBuffer sql = new StringBuffer("insert into ").append(
 				TUtils.getTableName(t.getClass())).append(" ");
@@ -289,7 +290,7 @@ public class TUtils {
 			}
 			Id id = field.getAnnotation(Id.class);
 			if(id != null){//主键
-				if(Configuration.getDialect() == Dialect.HSQLDB){
+				if(Configuration.dialect == DialectType.HSQLDB){
 					continue;
 				}
 			}
@@ -309,7 +310,7 @@ public class TUtils {
 			PropertyDescriptor prop = propMap.get(column);
 			Object value = "";
 			if(TUtils.isPrimaryKey(t.getClass(), prop)){
-				switch(dialect){
+				switch(DialectType){
 				case MYSQL:
 					sql.append("null");	
 					break;
@@ -348,7 +349,7 @@ public class TUtils {
 	/**
 	 * 组装update Sql语句
 	 * @param t : 实体
-	 * @param dialect ： 指定该数据库的方言 {@link Configuration}
+	 * @param DialectType ： 指定该数据库的方言 {@link Configuration}
 	 */
 	public static <T> String getUpdateSql(T t) throws Exception{
 		StringBuffer sql = new StringBuffer("update ").append(TUtils.getTableName(t.getClass())).append(" set ");
@@ -478,7 +479,7 @@ public class TUtils {
 						break;
 					case Date :
 						value = TUtils.parseDate(prop.getReadMethod().invoke(t,(Object[]) null));
-						if(Configuration.getDialect() == Dialect.ORACLE){
+						if(Configuration.dialect == DialectType.ORACLE){
 							sql.append(" to_date('").append(value).append("','yyyy-MM-dd HH24:mi:ss') ");
 						}else{
 							sql.append(null == value ? "null" : "'" + value.toString() + "'");
