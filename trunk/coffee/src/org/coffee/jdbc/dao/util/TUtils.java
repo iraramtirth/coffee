@@ -531,7 +531,6 @@ public class TUtils {
 	 * 获取Field的类型
 	 */ 
 	public static <T> MappedType getMappedType(PropertyDescriptor prop){
-		System.out.println(prop.getPropertyType().getSimpleName());
 		String typeName = prop.getPropertyType().getSimpleName().toLowerCase();
 		
 		if(typeName.contains("long")){
