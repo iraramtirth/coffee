@@ -3,8 +3,11 @@ package org.coffee.tools.excel;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import org.apache.poi.hssf.usermodel.HSSFCell;
+import org.apache.poi.hssf.usermodel.HSSFDateUtil;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 /**
  * Excel通用工具类
@@ -27,15 +30,24 @@ public class XlsUtils {
 		}
 		return true;
 	}
-	
+	private static SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 	public static String getCellValue(HSSFCell cell){
 		String cellValue = "";
+		if(cell == null){
+			return cellValue;
+		}
 		switch(cell.getCellType()){
 		case HSSFCell.CELL_TYPE_NUMERIC:
-			try{
-				cellValue = (int)cell.getNumericCellValue() + "";
-			} catch(Exception e){
-				cellValue = cell.getNumericCellValue() + "";
+			if(HSSFDateUtil.isCellDateFormatted(cell)){
+			     double d = cell.getNumericCellValue();    
+		         Date date = HSSFDateUtil.getJavaDate(d);    
+		         cellValue = sdf.format(date);
+			}else{
+				try{
+					cellValue = (int)cell.getNumericCellValue() + "";
+				} catch(Exception e){
+					cellValue = cell.getNumericCellValue() + "";
+				}
 			}
 			break;
 		default:
