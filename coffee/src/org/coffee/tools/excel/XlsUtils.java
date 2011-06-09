@@ -33,16 +33,19 @@ public class XlsUtils {
 	private static SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 	public static String getCellValue(HSSFCell cell){
 		String cellValue = "";
+		//2011-06-09修改-start
 		if(cell == null){
 			return cellValue;
 		}
+		//2011-06-09修改 end
 		switch(cell.getCellType()){
 		case HSSFCell.CELL_TYPE_NUMERIC:
+			//2011-06-09修改-start
 			if(HSSFDateUtil.isCellDateFormatted(cell)){
 			     double d = cell.getNumericCellValue();    
 		         Date date = HSSFDateUtil.getJavaDate(d);    
 		         cellValue = sdf.format(date);
-			}else{
+			}else{//2011-06-09修改-end
 				try{
 					cellValue = (int)cell.getNumericCellValue() + "";
 				} catch(Exception e){
