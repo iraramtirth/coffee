@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -66,7 +67,8 @@ public class XlsReader {
 		for (int i = x; i < sheet.getPhysicalNumberOfRows(); i++) {
 			HSSFRow row = sheet.getRow(i);
 			if (row != null) {
-				Map<String,String> item = new HashMap<String,String>();
+				// LinkedHashMap 保持key的顺序
+				Map<String,String> item = new LinkedHashMap<String, String>();
 				for (int j = 0; j < columnsIndex.length; j++) {
 					// 注意：当取某一行中的数据的时候，需要判断数据类型，否则会报错
 					item.put(columns[j], XlsUtils.getCellValue(row.getCell(columnsIndex[j])));
