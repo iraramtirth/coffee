@@ -1,5 +1,6 @@
 package org.coffee.controller.util;
 
+import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -113,10 +114,19 @@ public class ParameterReflect {
 			//primitive属性
 			if(key.lastIndexOf(".") == -1){
 				try {
-					Class<?> paramType = actionOrModel.getClass().getDeclaredField(key).getType();
+					Field field = actionOrModel.getClass().getDeclaredField(key);
+					Class<?> paramType = field.getType();
+					Object value = this.parameterMap.get(key);
+					//JDK1.4 不支持对primitive类型变量的反射
+					if(paramType.toString().equals("int")){
+						value = Integer.valueOf(value.toString());
+					}
+					if(paramType.toString().equals("double")){
+						value = Double.valueOf(value.toString());
+					}
 					Method method = actionOrModel.getClass().getDeclaredMethod("set"+StringManager
 							.toUpperCaseFirstChar(key), new Class[]{paramType});
-					method.invoke(actionOrModel, new Object[]{this.parameterMap.get(key)});
+					method.invoke(actionOrModel, new Object[]{value});
 				} catch (NoSuchFieldException e) {
 					log.warning("Action中的字段["+key+"]不存在,无法进行参数映射...");
 				} catch (Exception e) {
