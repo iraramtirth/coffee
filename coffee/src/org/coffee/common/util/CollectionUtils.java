@@ -83,6 +83,7 @@ public class CollectionUtils {
 			map.put("北京", "5");
 			map.put("bbb", "2");
 			map.put("中国", "4444");
+			map.put("郭安琪", "332");
 		
 		//System.out.println(CollectionUtils.sortMapByValue(map, SortType.BigToSmall));
 		System.out.println(CollectionUtils.sortMapByChinese(map));
