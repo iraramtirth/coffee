@@ -51,4 +51,14 @@ public class DateUtils {
 			return null;
 		}
 	}
+	
+	//获取当前日期-时间
+	public String  getCurDateTime(String format){
+		try {
+			SimpleDateFormat sdf = new SimpleDateFormat(format);
+			return sdf.format(new Date(System.currentTimeMillis()));
+		} catch (Exception e) {
+			return null;
+		}
+	}
 }
