@@ -10,7 +10,7 @@ import java.util.logging.Logger;
 import javax.servlet.http.HttpServletRequest;
 
 import org.coffee.common.util.DateUtils;
-import org.coffee.common.util.StringManager;
+import org.coffee.common.util.StringUtils;
 import org.coffee.common.util.TypeUtils;
 
 /**
@@ -124,7 +124,7 @@ public class ParameterReflect {
 					if(paramType.toString().equals("double")){
 						value = Double.valueOf(value.toString());
 					}
-					Method method = actionOrModel.getClass().getDeclaredMethod("set"+StringManager
+					Method method = actionOrModel.getClass().getDeclaredMethod("set"+StringUtils
 							.toUpperCaseFirstChar(key), new Class[]{paramType});
 					method.invoke(actionOrModel, new Object[]{value});
 				} catch (NoSuchFieldException e) {
@@ -142,11 +142,11 @@ public class ParameterReflect {
 					paramName += field;
 					try {
 						if(i < key.split("\\.").length){
-							Method readMethod = clazz.getDeclaredMethod("get"+StringManager.toUpperCaseFirstChar(field), new Class[]{});
+							Method readMethod = clazz.getDeclaredMethod("get"+StringUtils.toUpperCaseFirstChar(field), new Class[]{});
 							objValue = readMethod.invoke(actionOrModel, new Object[]{});
 							if(objValue == null){
 								objValue = targetMap.get(paramName);
-								Method writeMethod = clazz.getDeclaredMethod("set"+StringManager.toUpperCaseFirstChar(field),
+								Method writeMethod = clazz.getDeclaredMethod("set"+StringUtils.toUpperCaseFirstChar(field),
 										new Class[]{objValue.getClass()});
 								//关联actionOrModel与其中的非primitive属性
 								writeMethod.invoke(actionOrModel, new Object[]{objValue});
@@ -156,7 +156,7 @@ public class ParameterReflect {
 							}
 						}else{
 							Class<?> paramType = clazz.getDeclaredField(field).getType();
-							Method method = clazz.getDeclaredMethod("set"+StringManager.toUpperCaseFirstChar(field),
+							Method method = clazz.getDeclaredMethod("set"+StringUtils.toUpperCaseFirstChar(field),
 									new Class[]{paramType});
 							Object mapVal = this.parameterMap.get(key);
 							if(mapVal == null){

@@ -1,6 +1,6 @@
 package org.coffee.common.util;
 
-public class StringManager {
+public class StringUtils {
 	/**
 	 * 首字母小写
 	 * @param str
@@ -27,7 +27,7 @@ public class StringManager {
 	}
 	
 	public static void main(String[] args) {
-		System.out.println(StringManager.toLowerCaseFirstChar("Fser"));
-		System.out.println(StringManager.toUpperCaseFirstChar("fser"));
+		System.out.println(StringUtils.toLowerCaseFirstChar("Fser"));
+		System.out.println(StringUtils.toUpperCaseFirstChar("fser"));
 	}
 }
