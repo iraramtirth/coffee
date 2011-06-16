@@ -15,6 +15,7 @@ import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.poifs.filesystem.POIFSFileSystem;
 
+
 /**
  * 读取excel
  * 
@@ -23,20 +24,36 @@ import org.apache.poi.poifs.filesystem.POIFSFileSystem;
 public class XlsReader {
 
 	private HSSFSheet sheet;
-
-	public XlsReader(String xlsPath) throws IOException {
+	private HSSFWorkbook wb;
+	
+	public XlsReader(String xlsPath){
 		try {
 			FileInputStream fis = new FileInputStream(xlsPath);
 			POIFSFileSystem fs = new POIFSFileSystem(fis);
-			HSSFWorkbook wb = new HSSFWorkbook(fs);
-			sheet = wb.getSheetAt(0);
+			wb = new HSSFWorkbook(fs);
+			sheet = wb.getSheetAt(0);///默认读取第一个
 		} catch (IOException e) {
 			String msg = "读取文件失败...";
 			msg += e.getMessage();
-			throw new IOException(msg);
+			//throw new IOException(msg);
 		}
 	}
-
+	/**
+	 * 读取指定sheetName的Excel文档 
+	 */
+	public XlsReader(String xlsPath,String sheetName) {
+		try {
+			FileInputStream fis = new FileInputStream(xlsPath);
+			POIFSFileSystem fs = new POIFSFileSystem(fis);
+			wb = new HSSFWorkbook(fs);
+			sheet = wb.getSheet(sheetName);///读取指定name的sheet
+		} catch (IOException e) {
+			String msg = "读取文件失败...";
+			msg += e.getMessage();
+			//throw new IOException(msg);
+		}
+	}
+	
 	/**
 	 * @param columns
 	 *            ：列名称 ; 支持不连续的列
@@ -104,6 +121,34 @@ public class XlsReader {
 			}
 		}
 		return query(columns,x,y);
+	}
+	
+	
+	/**
+	 *  读取所有sheet的name
+	 */
+	public String[] getNamesOfAllSheet(){
+		int sheets = wb.getNumberOfSheets();
+		String[] sheetNames = new String[sheets];
+		for(int i=0; i<sheets; i++){
+			sheetNames[i] = wb.getSheetName(i);
+		}
+		return sheetNames;
+	}
+	/**
+	 * 读取第一行 
+	 */
+	public String[] getTitlesOfSheet() {
+		List<String> columns = new ArrayList<String>();
+		//默认从第一行读取列索引下表
+		HSSFRow hr = sheet.getRow(0);
+			for (int j = 0; j < hr.getLastCellNum(); j++) {
+				HSSFCell cell = hr.getCell(j);
+				String cellValue = XlsUtils.getCellValue(cell);
+				columns.add(cellValue);
+			}
+		 
+		return (String[])columns.toArray(new String[0]);
 	}
 	
 	
