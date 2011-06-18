@@ -54,12 +54,12 @@ public class TUtils {
 	/**
 	 *  获取列名 
 	 */
-	public static <T> String getColumnName(Class<T> clazz,PropertyDescriptor prop){
-		Column column = getColumn(clazz,prop);
+	public static <T> String getColumnName(Class<T> clazz,String fieldName){
+		Column column = getColumn(clazz,fieldName);
 		if(column != null){
 			return column.name();
 		}else{
-			return prop.getName();
+			return fieldName;
 		}
 	}
 	/**
@@ -81,14 +81,14 @@ public class TUtils {
 	 * @param clazz : 类
 	 * @param prop	: 属性
 	 */
-	public static <T> int getColumnLength(Class<T> clazz,PropertyDescriptor prop){
-		return getColumn(clazz, prop).length();
+	public static <T> int getColumnLength(Class<T> clazz,String fieldName){
+		return getColumn(clazz, fieldName).length();
 	}
 	
-	private static <T> Column getColumn(Class<T> clazz,PropertyDescriptor prop){
+	private static <T> Column getColumn(Class<T> clazz, String fieldName){
 		Field field = null;
 		try {
-			field = clazz.getDeclaredField(prop.getName());
+			field = clazz.getDeclaredField(fieldName);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -100,8 +100,8 @@ public class TUtils {
 	 * 判断列是否可为空
 	 * return : false-不可为空 ; true-可为空
 	 */
-	public static <T> boolean isNull(Class<T> clazz,PropertyDescriptor prop){
-		Column column = getColumn(clazz, prop);
+	public static <T> boolean isNull(Class<T> clazz, String fieldName){
+		Column column = getColumn(clazz, fieldName);
 		if(column != null){
 			return column.nullable();
 		}else{
@@ -161,15 +161,16 @@ public class TUtils {
 					 */ 
 					Object value = null;
 					try{
+						String fieldName = TUtils.getColumnName(clazz, prop.getName());
 						switch(TypeUtils.getMappedType(prop)){
 							case Long : 
-								value = Long.valueOf(rs.getLong(TUtils.getColumnName(clazz, prop)));
+								value = Long.valueOf(rs.getLong(fieldName));
 								break;
 							case Integer :
-								value = Integer.valueOf(rs.getInt(TUtils.getColumnName(clazz, prop)));
+								value = Integer.valueOf(rs.getInt(fieldName));
 								break;
 							default :
-								value = rs.getObject(TUtils.getColumnName(clazz, prop));
+								value = rs.getObject(fieldName);
 								break;
 						}
 					}catch(Exception e){//如果仅仅查询Class的部分字段
@@ -187,7 +188,7 @@ public class TUtils {
 					prop.getWriteMethod().invoke(tt, new Object[] {value});
 				} catch (IllegalArgumentException e) {
 					System.out.print(prop.getName()+" ----	");
-					System.out.println(rs.getInt(TUtils.getColumnName(clazz, prop)));
+					System.out.println(rs.getInt(TUtils.getColumnName(clazz, prop.getName())));
 					e.printStackTrace();
 				} 
 			}
@@ -262,7 +263,7 @@ public class TUtils {
 					if ("null".equals(value) || null == value) {
 						continue;
 					} else {
-						sql.append(token).append(TUtils.getColumnName(t.getClass(), props[i]).toUpperCase()).append(token)
+						sql.append(token).append(TUtils.getColumnName(t.getClass(), props[i].getName()).toUpperCase()).append(token)
 							.append("='").append(value.toString()).append("'");
 					}
 				}
@@ -379,7 +380,7 @@ public class TUtils {
 			if(TUtils.isPrimaryKey(t.getClass(), props[i])){
 				id = Long.valueOf(props[i].getReadMethod().invoke(t,(Object[]) null).toString());
 			}else{
-				switch(TUtils.getMappedType( props[i])){
+				switch(TUtils.getMappedType( props[i].getPropertyType())){
 					case Integer :
 					case Long : 
 						value = props[i].getReadMethod().invoke(t,(Object[]) null);
@@ -394,7 +395,7 @@ public class TUtils {
 						 if ("null".equals(value) || null == value) {
 								continue;
 						 } else {
-								sql.append(TUtils.getColumnName(t.getClass(), props[i]))
+								sql.append(TUtils.getColumnName(t.getClass(), props[i].getName()))
 									.append("='").append(value.toString()).append("'");
 						 }
 						 break;
@@ -403,7 +404,7 @@ public class TUtils {
 						 if ("null".equals(value) || null == value) {
 							continue;
 						} else {
-							sql.append(TUtils.getColumnName(t.getClass(), props[i]).toUpperCase())
+							sql.append(TUtils.getColumnName(t.getClass(), props[i].getName()).toUpperCase())
 								.append("='").append(value.toString()).append("'");
 						}
 						break;
@@ -485,7 +486,7 @@ public class TUtils {
 				case SEQUENCE :	sql.append(seqName+".nextval"); break;
 				}
 			}else{
-				switch(TUtils.getMappedType(prop)){
+				switch(TUtils.getMappedType(prop.getPropertyType())){
 					case Integer :
 					case Long :
 						sql.append(prop.getReadMethod().invoke(t,(Object[]) null));
@@ -530,8 +531,8 @@ public class TUtils {
 	/**
 	 * 获取Field的类型
 	 */ 
-	public static <T> MappedType getMappedType(PropertyDescriptor prop){
-		String typeName = prop.getPropertyType().getSimpleName().toLowerCase();
+	public static <T> MappedType getMappedType(Class<?> fieldType){
+		String typeName = fieldType.getSimpleName().toLowerCase();
 		
 		if(typeName.contains("long")){
 			return MappedType.Long;

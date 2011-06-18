@@ -1,8 +1,12 @@
 package org.coffee.jdbc.table;
 
-import java.beans.PropertyDescriptor;
+import static org.coffee.jdbc.dao.util.TUtils.getColumnName;
+import static org.coffee.jdbc.dao.util.TUtils.getMappedType;
+import static org.coffee.jdbc.dao.util.TUtils.getTableName;
 
-import static org.coffee.jdbc.dao.util.TUtils.*;
+import java.lang.reflect.Field;
+
+import cn.demo.bean.User;
 
 /**
  * 自动生成sql语句
@@ -18,12 +22,12 @@ public class TableCreator {
 	 * @return
 	 */
 	public static <T> String generateTableSql(Class<T> beanClass) {
-		PropertyDescriptor[] props = getPropertyDescriptor(beanClass);
+		Field[] fields = beanClass.getDeclaredFields();
 		StringBuilder sql = new StringBuilder();
 		sql.append("create table " + getTableName(beanClass) + "(\n");
-		for (PropertyDescriptor prop : props) {
-			sql.append("\t" + getColumnName(beanClass, prop));
-			switch (getMappedType(prop)) {
+		for (Field field : fields) {
+			sql.append("\t" + getColumnName(beanClass, field.getName()));
+			switch (getMappedType(field.getType())) {
 			case Integer:
 				sql.append(" int");
 				break;
@@ -38,31 +42,12 @@ public class TableCreator {
 		}
 		sql.deleteCharAt(sql.length() - 2);
 		sql.append(")\n");
+		System.out.println(sql.toString());
 		return sql.toString();
 	}
 
 	public static void main(String[] args) {
-		// Class<Fans> clazz = Fans.class;
-		// PropertyDescriptor[] props = getPropertyDescriptor(clazz);
-		// StringBuilder sql = new StringBuilder();
-		// sql.append("create table "+getTableName(clazz)+"(\n");
-		// for(PropertyDescriptor prop : props){
-		// sql.append("\t"+getColumnName(clazz, prop));
-		// switch(getMappedType(prop)){
-		// case Integer:
-		// sql.append(" int");
-		// break;
-		// case Date:
-		// sql.append(" datetime");
-		// break;
-		// case String:
-		// sql.append(" varchar(255)");
-		// break;
-		// }
-		// sql.append(",\n");
-		// }
-		// sql.deleteCharAt(sql.length()-2);
-		// sql.append(")\n");
-		// System.out.println(sql);
+		generateTableSql(User.class);
+		
 	}
 }
