@@ -16,9 +16,13 @@ import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
 
-
-public class WebXmlConfig {
-	private static Logger log = Logger.getLogger(WebXmlConfig.class.toString());
+/**
+ * web.xml配置信息
+ * 
+ * @author wangtao
+ */
+public class WebConfig {
+	private static Logger log = Logger.getLogger(WebConfig.class.toString());
 	/**
 	 *  将 web.xml 中的 servlet 配置映射成 JavaBean 
 	 *  String: servlet 名
