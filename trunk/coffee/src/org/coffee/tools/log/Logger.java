@@ -1,4 +1,4 @@
-package org.coffee.log;
+package org.coffee.tools.log;
 
 import java.util.logging.ConsoleHandler;
 import java.util.logging.Handler;
