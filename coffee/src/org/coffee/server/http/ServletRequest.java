@@ -9,7 +9,11 @@ import java.util.Map;
  *
  **/
 public class ServletRequest extends Request {
+	
+	private String uri;
 	private String queryString;
+	
+	//
 	private Map<String,String> paramsMap = new HashMap<String, String>();
 	
 	//
@@ -28,6 +32,12 @@ public class ServletRequest extends Request {
 				this.paramsMap.put(kv[0], kv[1]);
 			}
 		}
+	}
+	public String getUri() {
+		return uri;
+	}
+	public void setUri(String uri) {
+		this.uri = uri;
 	}
 	public Map<String, String> getParamsMap() {
 		return paramsMap;
