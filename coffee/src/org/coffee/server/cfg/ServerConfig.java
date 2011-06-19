@@ -20,12 +20,15 @@ import org.xml.sax.helpers.DefaultHandler;
  *
  */
 public class ServerConfig {
+	
+	private Logger log = Logger.getLogger(this.toString());
+	
 	/**
 	 *  http 端口
 	 */
 	private int port;
 	
-	private Logger log = Logger.getLogger(this.toString());
+	
 	
 	// 读取配置文件
 	public ServerConfig() throws ParserConfigurationException, SAXException, IOException{
@@ -45,6 +48,11 @@ public class ServerConfig {
 		return port;
 	}
 
+	
+	
+	
+	
+	////////////////////////////////////////////
 	/**
 	 * 解析server.xml
 	 * @author Administrator
@@ -55,7 +63,7 @@ public class ServerConfig {
 
 		@Override
 		public void startDocument() throws SAXException {
-			log.info("开始记载Server.xml文件");
+			log.info("开始读取Server.xml文件");
 			this.millis = System.currentTimeMillis();
 		}
 
