@@ -14,7 +14,7 @@ public class Request {
 	/**
 	 * 请求路径
 	 */
-	private String uri;
+	private String url;
 	/**
 	 *  协议版本
 	 */
@@ -51,11 +51,11 @@ public class Request {
 	public void setType(String type) {
 		this.type = type;
 	}
-	public String getUri() {
-		return uri;
+	public String getUrl() {
+		return url;
 	}
-	public void setUri(String uri) {
-		this.uri = uri;
+	public void setUrl(String url) {
+		this.url = url;
 	}
 	public String getProtocol() {
 		return protocol;

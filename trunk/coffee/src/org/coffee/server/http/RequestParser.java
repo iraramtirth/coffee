@@ -17,7 +17,7 @@ public class RequestParser {
 		StringTokenizer stk = new StringTokenizer(requestData);
 		if(stk.hasMoreTokens()){
 			request.setType(stk.nextToken());
-			request.setUri(stk.nextToken());
+			request.setUrl(stk.nextToken());
 			request.setProtocol(stk.nextToken());
 		}
 		return request;

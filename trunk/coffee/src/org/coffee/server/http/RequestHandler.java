@@ -20,15 +20,18 @@ public class RequestHandler{
 		Host: localhost:8080
 		Connection: Keep-Alive
 	 */
-	public static String handle(Request request) {
-		ServletRequest sRequest = new ServletRequest();
-		String  uri = request.getUri();
-		if(uri.contains("?")){
-			sRequest.setQueryString(uri.substring(uri.indexOf('?')+1));
+	public static String handle(Request req) {
+		ServletRequest request = new ServletRequest();
+		String  url = req.getUrl();
+		String[] strs = url.split("?");
+		request.setUri(strs[0]);
+		if(strs.length > 1){
+			request.setQueryString(strs[1]);
 		}
 		StringBuilder sb = new StringBuilder();
 		sb.append("HTTP/1.1 404 OK\n");//注意每行后面有一个 \n
 		sb.append("\n");
+		//String sql = 
 		sb.append("hello world");
 		return sb.toString();
 	}
