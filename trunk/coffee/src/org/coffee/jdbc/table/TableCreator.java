@@ -48,6 +48,5 @@ public class TableCreator {
 
 	public static void main(String[] args) {
 		generateTableSql(User.class);
-		
 	}
 }
