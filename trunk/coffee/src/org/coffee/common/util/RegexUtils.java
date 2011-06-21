@@ -27,7 +27,7 @@ public class RegexUtils {
 	public static String match(String content, String regex, int group) {
 		String str = "";
 		Matcher matcher = Pattern.compile(regex).matcher(content);
-		while (matcher.find()) {
+		if (matcher.find()) {
 			str = matcher.group(group);
 		}
 		return str;

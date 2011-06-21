@@ -5,6 +5,10 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
+import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFDateUtil;
@@ -15,7 +19,9 @@ import org.apache.poi.hssf.usermodel.HSSFWorkbook;
  * @author 王涛
  */
 public class XlsUtils {
-	//创建xls文件
+	/**
+	 * 创建xls文件
+	 */
 	public static boolean createXls(String xlsPath){
 		HSSFWorkbook wb = new HSSFWorkbook();
 		FileOutputStream out;
@@ -31,6 +37,11 @@ public class XlsUtils {
 		return true;
 	}
 	private static SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+	/**
+	 * 读取单元格的值
+	 * @param cell
+	 * @return
+	 */
 	public static String getCellValue(HSSFCell cell){
 		String cellValue = "";
 		//2011-06-09修改-start
@@ -63,7 +74,30 @@ public class XlsUtils {
 		return cellValue.trim();
 	}
 	
+	/**
+	 *  原始列名称
+	 */
+	public static String getColumnName(String srcCol){
+		String colName = srcCol.trim();
+		Matcher matcher = Pattern.compile(".+\\((.+)\\)$").matcher(colName);
+		while (matcher.find()) {
+			colName = matcher.group(1);
+		}
+		if(colName.trim().length() == 0){
+			return srcCol;
+		}
+		return colName;	
+	}
+	
+	
+	public <T> List<T> toBean(List<Map<String,String>> items, Class<T> t){
+		
+		return null;
+	}
+	
+	
 	public static void main(String[] args) {
-		createXls("c:/ttt.xls");
+		String colName = XlsUtils.getColumnName("商品名称(name)");
+		System.out.println(colName);
 	}
 }
