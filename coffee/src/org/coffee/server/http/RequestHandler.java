@@ -23,13 +23,13 @@ public class RequestHandler{
 	public static String handle(Request req) {
 		ServletRequest request = new ServletRequest();
 		String  url = req.getUrl();
-		String[] strs = url.split("?");
+		String[] strs = url.split("\\?");
 		request.setUri(strs[0]);
 		if(strs.length > 1){
 			request.setQueryString(strs[1]);
 		}
 		StringBuilder sb = new StringBuilder();
-		sb.append("HTTP/1.1 404 OK\n");//注意每行后面有一个 \n
+		sb.append("HTTP/1.1 200 OK\n");//注意每行后面有一个 \n
 		sb.append("\n");
 		//String sql = 
 		sb.append("hello world");
