@@ -30,6 +30,15 @@ public class Reader {
 		return null;
 	}
 	
+	//读取一个文件的全部内容
+	public String readAll(){
+		String line = null;
+		StringBuilder sb = new StringBuilder();
+		while((line = readLine()) != null){
+			sb.append(line);
+		}
+		return sb.toString();
+	}
 	
 	public static void main(String[] args) {
 		Reader in = new Reader("c:/mmb_access.2011-06-02");
