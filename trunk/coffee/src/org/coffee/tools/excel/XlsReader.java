@@ -13,6 +13,8 @@ import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.poifs.filesystem.POIFSFileSystem;
 
+import cn.demo.bean.User;
+
 /**
  * 读取excel
  * 
@@ -120,7 +122,7 @@ public class XlsReader {
 			for (int j = iy; j < row.getLastCellNum(); j++) {
 				value = XlsUtils.getCellValue(row.getCell(j));
 				if(value != null){
-					//value = XlsUtils.getColumnName(value);
+					value = XlsUtils.getColumnName(value);
 					columns[j-iy] = value;
 				}
 			}
@@ -172,8 +174,16 @@ public class XlsReader {
 	
 	
 	public static void main(String[] args) {
-		XlsReader reader = new XlsReader("c:/test.xls");
-		List<Map<String,String>> result = reader.query(new String[]{"价格(name)", "备注(remark)"},0, 0, 1);
-		System.out.println(result);
+//		XlsReader reader = new XlsReader("c:/test.xls");
+//		List<Map<String,String>> result = reader.query(new String[]{"价格(name)", "备注(remark)"},0, 0, 1);
+//		System.out.println(result);
+		
+	
+		XlsReader reader = new XlsReader("c:/text.xls");
+		
+		List<Map<String, String>> items = reader.query(0, 0, 1);
+		List<User> userList = XlsUtils.toBeanList(items, User.class);
+		System.out.println(userList);
+		
 	}
 }

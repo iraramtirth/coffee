@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -13,16 +14,19 @@ import java.util.regex.Pattern;
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFDateUtil;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.coffee.common.util.TUtils;
+import org.coffee.tools.excel.XlsWriter.AppendType;
+
 /**
  * Excel通用工具类
- *  
+ * 
  * @author 王涛
  */
 public class XlsUtils {
 	/**
 	 * 创建xls文件
 	 */
-	public static boolean createXls(String xlsPath){
+	public static boolean createXls(String xlsPath) {
 		HSSFWorkbook wb = new HSSFWorkbook();
 		FileOutputStream out;
 		try {
@@ -36,30 +40,33 @@ public class XlsUtils {
 		}
 		return true;
 	}
+
 	private static SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+
 	/**
 	 * 读取单元格的值
+	 * 
 	 * @param cell
 	 * @return
 	 */
-	public static String getCellValue(HSSFCell cell){
+	public static String getCellValue(HSSFCell cell) {
 		String cellValue = "";
-		//2011-06-09修改-start
-		if(cell == null){
+		// 2011-06-09修改-start
+		if (cell == null) {
 			return cellValue;
 		}
-		//2011-06-09修改 end
-		switch(cell.getCellType()){
+		// 2011-06-09修改 end
+		switch (cell.getCellType()) {
 		case HSSFCell.CELL_TYPE_NUMERIC:
-			//2011-06-09修改-start
-			if(HSSFDateUtil.isCellDateFormatted(cell)){
-			     double d = cell.getNumericCellValue();    
-		         Date date = HSSFDateUtil.getJavaDate(d);    
-		         cellValue = sdf.format(date);
-			}else{//2011-06-09修改-end
-				try{
-					cellValue = (int)cell.getNumericCellValue() + "";
-				} catch(Exception e){
+			// 2011-06-09修改-start
+			if (HSSFDateUtil.isCellDateFormatted(cell)) {
+				double d = cell.getNumericCellValue();
+				Date date = HSSFDateUtil.getJavaDate(d);
+				cellValue = sdf.format(date);
+			} else {// 2011-06-09修改-end
+				try {
+					cellValue = (int) cell.getNumericCellValue() + "";
+				} catch (Exception e) {
 					cellValue = cell.getNumericCellValue() + "";
 				}
 			}
@@ -68,36 +75,59 @@ public class XlsUtils {
 			cellValue = cell.getStringCellValue();
 			break;
 		}//
-		if(cellValue.toLowerCase().matches("\\(null\\)|null")){
+		if (cellValue.toLowerCase().matches("\\(null\\)|null")) {
 			cellValue = "";
 		}
 		return cellValue.trim();
 	}
-	
+
 	/**
-	 *  原始列名称
+	 * 原始列名称
 	 */
-	public static String getColumnName(String srcCol){
+	public static String getColumnName(String srcCol) {
 		String colName = srcCol.trim();
 		Matcher matcher = Pattern.compile(".+\\((.+)\\)$").matcher(colName);
 		while (matcher.find()) {
 			colName = matcher.group(1);
 		}
-		if(colName.trim().length() == 0){
+		if (colName.trim().length() == 0) {
 			return srcCol;
 		}
-		return colName;	
+		return colName;
 	}
-	
-	
-	public <T> List<T> toBean(List<Map<String,String>> items, Class<T> t){
-		
-		return null;
+
+	public static <T> List<T> toBeanList(List<Map<String, String>> items, Class<T> t) {
+		List<T> resultList = new  ArrayList<T>();
+		try {
+			for (Map<String, String> item : items) {
+				T obj = t.newInstance();
+				for (String key : item.keySet()) {
+					TUtils.setValue(obj, key, item.get(key), String.class);
+				}
+				resultList.add(obj );
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return resultList;
 	}
-	
-	
+
+	/**
+	 * 生产一个用于测试的xls文档
+	 */
+	public static void generateXlsDemo(String xlsPath) {
+		if (xlsPath == null) {
+			xlsPath = "c:/text.xls";
+		}
+		XlsWriter writer = new XlsWriter(xlsPath);
+		writer.append(new String[] { "ID", "用户名(username)", "密码(password)" },
+				0, AppendType.ROW);
+		writer.append(new String[] { "001", "咖啡", "1234" }, 0, AppendType.ROW);
+		writer.close();
+	}
+
 	public static void main(String[] args) {
-		String colName = XlsUtils.getColumnName("商品名称(name)");
-		System.out.println(colName);
+		// String colName = XlsUtils.getColumnName("商品名称(name)");
+		// System.out.println(colName);
 	}
 }
