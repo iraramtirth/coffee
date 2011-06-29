@@ -1,15 +1,18 @@
 package org.coffee.tools.xml;
 
-import org.coffee.tools.xml.JaxbList.XmlItem;
 
 
 public class Test {
 	public static void main(String[] args) {
-		JaxbList userList = new JaxbList();
-		userList.add(new XmlItem(1, "111", "111"));
-		userList.add(new XmlItem(2, "222", "222"));
-		JaxbUtils.marshall(userList, "c:/text.xml", null);
+		JaxbList<User> userList = new JaxbList<User>();
+		userList.add(new User(1, "111", "111"));
+		userList.add(new User(2, "222", "222"));
+		JaxbUtils.marshall(userList, "c:/text.xml", null, User.class);
 		System.out.println("ok");
+		
+		JaxbList<User> userList2= new JaxbList<User>();
+		userList2 = JaxbUtils.unmarshall("c:/text.xml", null, User.class);
+		System.out.println(userList2);
 	}
 		
 }
