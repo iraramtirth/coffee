@@ -34,7 +34,7 @@ public class JaxbUtils {
 			JAXBContext context = JAXBContext.newInstance(classArr);   
 			Marshaller ms = context.createMarshaller();   
 			//格式化输出
-			ms.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, "true");
+			ms.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
 			// 设置 xmlns:xsi属性，只让其根节点显示
 			ms.setProperty(Marshaller.JAXB_NO_NAMESPACE_SCHEMA_LOCATION, "true");
 			
@@ -69,7 +69,7 @@ public class JaxbUtils {
 			Class<?>[] classArr = new Class[classesToBeBound.length + 1];
 			classArr[0] = JaxbList.class;
 			System.arraycopy(classesToBeBound, 0, classArr, 1, classesToBeBound.length);
-			
+			//
 			JAXBContext context = JAXBContext.newInstance(classArr);   
 			Unmarshaller ums = context.createUnmarshaller();   
 			if(xsdPath != null){   
