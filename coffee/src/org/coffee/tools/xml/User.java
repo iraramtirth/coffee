@@ -1,9 +1,8 @@
 package org.coffee.tools.xml;
 
 import javax.xml.bind.annotation.XmlAttribute;
-import javax.xml.bind.annotation.XmlType;
 
-@XmlType
+
 public class User {
 	private int id;
 	private String username;
