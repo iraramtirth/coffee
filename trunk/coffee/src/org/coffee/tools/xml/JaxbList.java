@@ -28,5 +28,9 @@ public class JaxbList<T> {
 		copyList.addAll(resultList);
 		return copyList;
 	}
+
+	public void setResultList(List<T> resultList) {
+		this.resultList = resultList;
+	}
 	
 }
