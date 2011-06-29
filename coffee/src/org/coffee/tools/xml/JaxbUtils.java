@@ -20,12 +20,12 @@ public class JaxbUtils {
 	/**
 	 * 将java.util.List<T> 转化为 xml
 	 * @param <T>
-	 * @param jaxbList
-	 * @param xmlPath
-	 * @param xsdPath
+	 * @param jaxbList : 源数据
+	 * @param xmlPath ： 生成的xml文件的路径
+	 * @param xsdPath ： 如果不进行校验则为null
 	 * @param classesToBeBound
 	 */
-	public static <T> void marshall(JaxbList<T> jaxbList, String xmlPath,String xsdPath,Class<?>... classesToBeBound){   
+	public static <T> void marshall(JaxbList<T> jaxbList, String xmlPath,String xsdPath, Class<?>... classesToBeBound){   
         try {
         	Class<?>[] classArr = new Class[classesToBeBound.length + 1];
         	classArr[0] = jaxbList.getClass();
@@ -55,13 +55,13 @@ public class JaxbUtils {
     }   
   
 	/**
-	 * 将xml转换为
+	 * 将xml转换为JaxbList
+	 * 注意：JaxbList需要有setter方法 , 否则将unmarshall不到结果
 	 * @param <T>
 	 * @param clazz
 	 * @param xmlPath
-	 * @param xsdPath
+	 * @param xsdPath ： 如果不进行校验则为null
 	 * @return
-	 * @throws Exception
 	 */
 	@SuppressWarnings("unchecked")
 	public static <T> JaxbList<T> unmarshall(String xmlPath,String xsdPath, Class<?>... classesToBeBound){   
