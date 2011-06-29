@@ -17,10 +17,27 @@ import javax.xml.validation.SchemaFactory;
  */
 public class JaxbUtils {
 	
-	public static <T> void marshall(JaxbList jaxbList,String xmlPath,String xsdPath){   
+	/**
+	 * 将java.util.List<T> 转化为 xml
+	 * @param <T>
+	 * @param jaxbList
+	 * @param xmlPath
+	 * @param xsdPath
+	 * @param classesToBeBound
+	 */
+	public static <T> void marshall(JaxbList<T> jaxbList, String xmlPath,String xsdPath,Class<?>... classesToBeBound){   
         try {
-			JAXBContext context = JAXBContext.newInstance(jaxbList.getClass());   
+        	Class<?>[] classArr = new Class[classesToBeBound.length + 1];
+        	classArr[0] = jaxbList.getClass();
+        	System.arraycopy(classesToBeBound, 0, classArr, 1, classesToBeBound.length);
+        	//
+			JAXBContext context = JAXBContext.newInstance(classArr);   
 			Marshaller ms = context.createMarshaller();   
+			//格式化输出
+			ms.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, "true");
+			// 设置 xmlns:xsi属性，只让其根节点显示
+			ms.setProperty(Marshaller.JAXB_NO_NAMESPACE_SCHEMA_LOCATION, "true");
+			
 			if(xsdPath != null){   
 			    try {   
 			        File xsdFile = new File(xsdPath);   
@@ -37,21 +54,41 @@ public class JaxbUtils {
 		}   
     }   
   
-	public static <T> JaxbList unmarshall(Class<JaxbList> clazz,String xmlPath,String xsdPath) throws Exception{   
-        JAXBContext context = JAXBContext.newInstance(clazz);   
-        Unmarshaller ums = context.createUnmarshaller();   
-        if(xsdPath != null){   
-            try {   
-                File xsdFile = new File(xsdPath);   
-                Schema schema =  SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI)   
-                .newSchema(xsdFile);   
-                ums.setSchema(schema);   
-            } catch (Exception e) {   
-                e.printStackTrace();   
-            }   
-        }   
-        JaxbList jaxbList = (JaxbList) ums.unmarshal(new File(xmlPath));   
-        return jaxbList;   
+	/**
+	 * 将xml转换为
+	 * @param <T>
+	 * @param clazz
+	 * @param xmlPath
+	 * @param xsdPath
+	 * @return
+	 * @throws Exception
+	 */
+	@SuppressWarnings("unchecked")
+	public static <T> JaxbList<T> unmarshall(String xmlPath,String xsdPath, Class<?>... classesToBeBound){   
+		try {
+			Class<?>[] classArr = new Class[classesToBeBound.length + 1];
+			classArr[0] = JaxbList.class;
+			System.arraycopy(classesToBeBound, 0, classArr, 1, classesToBeBound.length);
+			
+			JAXBContext context = JAXBContext.newInstance(classArr);   
+			Unmarshaller ums = context.createUnmarshaller();   
+			if(xsdPath != null){   
+			    try {   
+			        File xsdFile = new File(xsdPath);   
+			        Schema schema =  SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI)   
+			        .newSchema(xsdFile);   
+			        ums.setSchema(schema);   
+			    } catch (Exception e) {   
+			        e.printStackTrace();   
+			    }   
+			}   
+			JaxbList<T> jaxbList = (JaxbList<T>) ums.unmarshal(new File(xmlPath));   
+			return jaxbList;
+		} catch (JAXBException e) {
+			e.printStackTrace();
+		}   
+		//默认返回一个空的List
+		return new JaxbList<T>();
     }  
 
 
