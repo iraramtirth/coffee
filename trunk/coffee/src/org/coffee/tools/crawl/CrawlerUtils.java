@@ -31,8 +31,6 @@ public class CrawlerUtils {
 					.getInputStream(), encode));
 			String line = null;
 			while ((line = in.readLine()) != null) {
-				// 处理特殊字符
-				line = line.replace("&amp;", "&");
 				doc.append(line);
 			}
 		} catch (IOException ioe) {
@@ -56,12 +54,12 @@ public class CrawlerUtils {
 			}
 			docHtml = CrawlerUtils.getDocumentHtml(linkUrl);
 			// 设置编码
-			String regex = "content=\".+?charset=(.+)\"";
-			Pattern ptn = Pattern.compile(regex);
-			Matcher mat = ptn.matcher(docHtml);
-			if (mat.find()) {
-				encode = mat.group(1);
-			}
+//			String regex = "content=\".+?charset=(.+)\"";
+//			Pattern ptn = Pattern.compile(regex);
+//			Matcher mat = ptn.matcher(docHtml);
+//			if (mat.find()) {
+//				encode = mat.group(1);
+//			}
 		} finally {
 			if (docHtml == null || docHtml.trim().length() == 0) {
 				for (int i = 0; i < tryCount - 1; i++) {

@@ -186,26 +186,38 @@ public class TDaoImpl implements TDao{
 	 */
 	@SuppressWarnings("unchecked")
 	@Override
-	public <T> T queryForColumn(Class<T> clazz, String sql) throws SQLException {
-		T t = null;;
+	public <T> List<T> queryForColumnList(Class<T> clazz, String sql) throws SQLException {
+		List<T> ls = new ArrayList<T>();
 		try {
 			Statement stmt = conn.createStatement();
 			ResultSet rs = stmt.executeQuery(sql);
 			while (rs.next()) {
+				T t = null;
 				if(clazz.getSimpleName().equals("Integer")){
 					t = (T)Integer.valueOf(rs.getInt(1));
 				}
 				else{
 					t = (T)rs.getString(1);
 				}
+				ls.add(t);
 			}
 			rs.close();
 			stmt.close();
 		} catch (Exception e) {
 			e.printStackTrace();
 		} 
-		return t;
+		return ls;
 	}
+	
+	@Override
+	public <T> T queryForColumn(Class<T> clazz, String sql) throws SQLException {
+		List<T> ls = this.queryForColumnList(clazz, sql);
+		if(ls.size() > 0){
+			return ls.get(0);
+		}
+		return null;
+	}
+	
 	/**
 	 *   查询，返回实体对象
 	 */
@@ -279,7 +291,6 @@ public class TDaoImpl implements TDao{
 		Object[][] arr = null;
 		try {
 			Statement stmt = conn.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,ResultSet.CONCUR_READ_ONLY);
-			System.out.println(sql);
 			ResultSet rs = stmt.executeQuery(sql);
 			rs.last();
 			//记录总数
@@ -290,7 +301,6 @@ public class TDaoImpl implements TDao{
 			while(rs.next()){
 				for(int i=0; i<arr.length; i++){
 					for (int j = 0; j < columnCount; j++) {
-						System.out.println(rs.getObject(j+1));
 						arr[i][j] = rs.getObject(j+1);
 					}
 				}
@@ -402,7 +412,7 @@ public class TDaoImpl implements TDao{
 		}
 		Pager<T> pager = new Pager<T>();
 		pager.setItems(this.queryForList(sql,offset,size,clazz));
-		pager.setTotal(this.queryForColumn(Integer.class, countSql));
+		pager.setTotal(this.queryForColumnList(Integer.class, countSql).get(0));
 		pager.setCurpage(offset/size + 1);
 		pager.setOffset(offset);
 		return pager;
