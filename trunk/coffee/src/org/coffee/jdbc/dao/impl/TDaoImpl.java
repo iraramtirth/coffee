@@ -354,28 +354,29 @@ public class TDaoImpl implements TDao{
 	/**
 	 * 批量插入
 	 * @param entities : 实体列表 
+	 * @throws SQLException 
 	 */
 	@Override
 	public <T> void insert(List<T> entities) throws SQLException {
-		try {
 			conn.setAutoCommit(false);
 			Statement stmt = conn.createStatement();
 			int index = 0;
 			for(T t : entities){
-				String sql = TUtils.getInsertSql(t,Configuration.dialect);
-				stmt.addBatch(sql);
-				if(index++ > 10000){
-					stmt.executeBatch();
-					index = 0;
+				String sql = null;
+				try {
+					sql = TUtils.getInsertSql(t,Configuration.dialect);
+					stmt.addBatch(sql);
+					if(index++ > 10000){
+						stmt.executeBatch();
+						index = 0;
+					}
+				} catch (Exception e) {
+					e.printStackTrace();
 				}
 			}
 			stmt.executeBatch();
 			conn.commit();
 			stmt.close();
-		} catch (Exception e) {
-			conn.rollback();
-			e.printStackTrace();
-		} 
 	}
 	/**
 	 * 更新实体
