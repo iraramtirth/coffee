@@ -36,7 +36,7 @@ public class JaxbUtils {
 			//格式化输出
 			ms.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
 			// 设置 xmlns:xsi属性，只让其根节点显示
-			ms.setProperty(Marshaller.JAXB_NO_NAMESPACE_SCHEMA_LOCATION, "true");
+			ms.setProperty(Marshaller.JAXB_NO_NAMESPACE_SCHEMA_LOCATION, "");
 			
 			if(xsdPath != null){   
 			    try {   
