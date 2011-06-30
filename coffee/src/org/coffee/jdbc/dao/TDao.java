@@ -28,6 +28,8 @@ public interface TDao {
 	public CachedRowSet queryForResultSet(String sql) throws SQLException;
 	// 返回Integer Long String 等类型
 	public <T> T queryForColumn(Class<T> clazz,String sql) throws SQLException;
+	// 返回Integer... Liet
+	public <T> List<T> queryForColumnList(Class<T> clazz,String sql) throws SQLException;
 	//查询全部记录
 	public <T> List<T> queryForList(String sql,Class<T> clazz) throws SQLException;
 	//分页查询记录
