@@ -27,6 +27,16 @@ public class User {
 	@Transient
 	private User child;
 	
+	
+	public User(){
+	}
+	
+	public User(Integer id, String username, String password) {
+		super();
+		this.id = id;
+		this.username = username;
+		this.password = password;
+	}
 	public User getChild() {
 		return child;
 	}
