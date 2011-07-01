@@ -5,9 +5,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import org.coffee.common.util.TUtils;
-import org.coffee.common.util.io.Outer;
-
 import cn.demo.bean.User;
 
 /**
@@ -24,9 +21,9 @@ public class XmlUtils {
 	 * @param items ： List结果集
 	 * @param attr : 属性
 	 */
-	public static <T> void toXml(List<T> items,String xmlPath, String...attrs){
+	public static <T> String toXml(List<T> items, String...attrs){
 		if(items.size() == 0){
-			return;
+			return "";
 		}
 		Class<?> clazz = items.get(0).getClass();
 		Field[] fields = clazz.getDeclaredFields();
@@ -41,12 +38,12 @@ public class XmlUtils {
 			tag ++;
 		}
 		classAndArrrs += ">";
-		tag = 0;
 		for(T t : items){
+			tag = 0;//重置为0
 			sb.append(classAndArrrs);
 			for(Field field : fields){
 				String fieldName = field.getName();
-				Object fieldValue = TUtils.getValue(t, fieldName);
+				Object fieldValue = getValue(t, fieldName);
 				String columnName = org.coffee.jdbc.dao.util.TUtils.getColumnName(t.getClass(), fieldName);
 				//
 				if(attrsList.contains(field.getName())){
@@ -54,7 +51,7 @@ public class XmlUtils {
 						fieldValue = "";
 					}
 					int start = sb.lastIndexOf("{"+tag+"}");
-					sb.replace(start, start + 3, fieldValue.toString());
+					sb.replace(start, start + 2 + Integer.toString(tag).length(), fieldValue.toString());
 					tag++;
 				}else{
 					//不显示值为null的字段
@@ -69,8 +66,9 @@ public class XmlUtils {
 			sb.append("</").append(clazz.getSimpleName()).append(">");
 		}//outline for
 		sb.append("</result>");
-		Outer.setPath(xmlPath, true, true);
-		Outer.p(sb.toString());
+//		Outer.setPath(xmlPath, true, true);
+//		Outer.p(sb.toString());
+		return sb.toString();
 	}
 	/**
 	 * 将xml文档转换为List
@@ -79,6 +77,17 @@ public class XmlUtils {
 	 */
 	public static void toList(String xmlDoc){
 		
+	}
+	
+	private static <T> Object getValue(T obj, String fieldName){
+		String firstChar = fieldName.charAt(0)+"";
+		try {
+			String methodName = "get" + fieldName.replaceFirst(".", firstChar.toUpperCase());
+			return obj.getClass().getMethod(methodName, new Class[]{}).invoke(obj, new Object[]{});
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
 	}
 	
 	public static void main(String[] args){
