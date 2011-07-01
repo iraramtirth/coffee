@@ -22,6 +22,8 @@ public class XlsWriter {
 	private int startY = 0 ;//默认从第1列开始追加 
 	private boolean isBold ; //是否粗体(居中)
 	
+	public static final int AppendType_COL = 0;
+	public static final int AppendType_RAW = 1;
 	
 	public interface AppendType{
 		public static int COL = 0;	//列追加
@@ -123,14 +125,13 @@ public class XlsWriter {
 	 * @param columns ：待追加的数据 
 	 * @param x ：起始列 , 从0开始
 	 */
-	public void append(Object[] columns, int startY,int type) {
+	public void append(String[] columns, int startY,int type) {
 		this.startY = startY;
 		if(type == AppendType.ROW){
 			this.appendRow(columns);
 		}else{
 			this.appendCol(columns);
 		}
-		
 	}
 	
 	/**
@@ -165,17 +166,6 @@ public class XlsWriter {
 			wb.write(out);
 			out.close();
 		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
-	public static void main(String[] args) {
-		String xlsPath = "F:\\工作任务\\test.xls";
-		String column = "名称	dffdffd  哈哈	编号";
-		try {
-			XlsWriter writer = new XlsWriter(xlsPath);
-			writer.append(column.split("\\s+"), 4, AppendType.COL );
-			writer.close();
-		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
