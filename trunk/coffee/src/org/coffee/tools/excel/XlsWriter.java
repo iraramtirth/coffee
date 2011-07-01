@@ -12,12 +12,13 @@ import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.poifs.filesystem.POIFSFileSystem;
-
+/**
+ * @author 王涛
+ */
 public class XlsWriter {
 	private HSSFWorkbook wb; 
 	private HSSFSheet sheet;
 	private FileOutputStream out;
-	
 	//
 	private int startY = 0 ;//默认从第1列开始追加 
 	private boolean isBold ; //是否粗体(居中)
