@@ -14,7 +14,6 @@ import java.util.regex.Pattern;
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFDateUtil;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
-import org.coffee.common.util.TUtils;
 import org.coffee.tools.excel.XlsWriter.AppendType;
 
 /**
@@ -102,7 +101,7 @@ public class XlsUtils {
 			for (Map<String, String> item : items) {
 				T obj = t.newInstance();
 				for (String key : item.keySet()) {
-					TUtils.setValue(obj, key, item.get(key), String.class);
+					setValue(obj, key, item.get(key), String.class);
 				}
 				resultList.add(obj );
 			}
@@ -124,6 +123,22 @@ public class XlsUtils {
 				0, AppendType.ROW);
 		writer.append(new String[] { "001", "咖啡", "1234" }, 0, AppendType.ROW);
 		writer.close();
+	}
+	
+	private static <T> Object setValue(T obj, String fieldName, T value, Class<?>... valueClass){
+		String firstChar = fieldName.charAt(0)+"";
+		try {
+			String methodName = "set" + fieldName.replaceFirst(".", firstChar.toUpperCase());
+			Class<?>[] paramClass = new Class[]{value.getClass()};
+			if(valueClass.length > 0){
+				// 对于基本数据类型，必须指定
+				paramClass = new Class[]{valueClass[0]};
+			}
+			obj.getClass().getMethod(methodName,paramClass ).invoke(obj, new Object[]{value});
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return obj;
 	}
 
 	public static void main(String[] args) {
