@@ -210,9 +210,9 @@ public class TUtils {
 		if(id != null){
 			return true;
 		}else{//如果没有被Id注解过；则查看判断该字段名字是否是Id
-			if("id".equals(prop.getName().toLowerCase())){
-				return true;
-			}
+//			if("id".equals(prop.getName().toLowerCase())){
+//				return true;
+//			}
 		}
 		return false;
 	}

@@ -116,7 +116,7 @@ public class TDaoImpl implements TDao{
 		int value = 0;
 		try {
 			Statement stmt = conn.createStatement();
-			value = stmt.executeUpdate(sql);
+			stmt.execute(sql);
 			stmt.close();
 		} catch (Exception e) {
 			e.printStackTrace();
