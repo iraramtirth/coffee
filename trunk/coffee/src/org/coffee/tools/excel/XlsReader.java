@@ -33,9 +33,7 @@ public class XlsReader {
 			wb = new HSSFWorkbook(fs);
 			sheet = wb.getSheetAt(0);///默认读取第一个
 		} catch (IOException e) {
-			String msg = "读取文件失败...";
-			msg += e.getMessage();
-			//throw new IOException(msg);
+			e.printStackTrace();
 		}
 	}
 	/**
