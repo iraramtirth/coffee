@@ -7,12 +7,16 @@ public class MakeJar {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		makeJdbc();
+		makeExcel();
 	}
 	
 	
+	public static void makeExcel(){
+		MakeJar.make("coffee-excel", "org/coffee/tools/excel");
+	}
+	
 	public static void makeJdbc(){
-		MakeJar.make("coffee-jdbc", "org/coffee/jdbc","javax.persistence");
+		MakeJar.make("coffee-jdbc", "org/coffee/jdbc","javax/persistence");
 	}
 	
 	/**
@@ -24,7 +28,7 @@ public class MakeJar {
 		String pathPersistence = MakeJar.class.getResource("/").getPath();
 		String jar = "jar cvf "+jarName+".jar ";
 		for(String pkg : pkgs){
-			jar += " -C " + pathPersistence.substring(1) + pkg;
+			jar += " -C " + pathPersistence.substring(1) + " " + pkg;
 		}
 		System.out.println(jar);
 		try {

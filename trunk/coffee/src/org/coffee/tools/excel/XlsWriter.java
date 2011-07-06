@@ -4,6 +4,8 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.lang.reflect.Field;
+import java.util.List;
 
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFCellStyle;
@@ -44,8 +46,6 @@ public class XlsWriter {
 			sheet = wb.getSheetAt(0);
 			out = new FileOutputStream(new File(xlsPath));
 		} catch (IOException e) {
-			String msg = "读取文件失败...";
-			msg += e.getMessage();
 			e.printStackTrace();
 		}
 	}
@@ -55,7 +55,7 @@ public class XlsWriter {
 	 * 默认从最左端开始追加
 	 * @Overload 
 	 */
-	private void appendRow(Object[] columns) {
+	private void appendRow(String[] columns) {
 		HSSFRow row = sheet.createRow(sheet.getLastRowNum()+1);
 		for (int i = 0; i < columns.length; i++) {
 			HSSFCell cell = row.createCell(i + startY);
@@ -79,7 +79,7 @@ public class XlsWriter {
 		}
 	}
 	
-	private void appendCol(Object[] columns) {
+	private void appendCol(String[] columns) {
 		int maxRow = sheet.getLastRowNum();
 		//HSSFRow row = sheet.getRow(maxRow);
 		//列最后一个非空的Cell的rowIndex
@@ -134,6 +134,38 @@ public class XlsWriter {
 			this.appendCol(columns);
 		}
 	}
+
+	/**
+	 * @param <T>
+	 * @param itemsList
+	 * @param startY
+	 * @param type
+	 */
+	public <T> void append(List<T> itemsList,int startY,int type){
+		if(itemsList.size() > 0){
+			Class<?> clazz = itemsList.get(0).getClass();
+			Field[] fields = clazz.getDeclaredFields();
+			String[] values = new String[fields.length];
+			int i=0;
+			for(T t : itemsList){
+				i = 0;
+				for(Field field : fields){
+					field.setAccessible(true);
+					try {
+						Object obj = field.get(t);
+						if(obj == null){
+							obj = "";
+						}
+						values[i] = obj.toString();
+						i++;
+					}catch (Exception e) {
+						e.printStackTrace();
+					}
+				}//for
+				append(values, startY, type);
+			}//for
+		}//if
+	}
 	
 	/**
 	 * 方法重载
@@ -150,6 +182,8 @@ public class XlsWriter {
 			this.appendCol(columns);
 		}
 	}
+	
+	
 	
 	public void flush(){
 		try {
