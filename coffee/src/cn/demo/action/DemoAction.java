@@ -50,7 +50,7 @@ public class DemoAction extends Action {
 	 
 	@Result(page="/demo/update.jsp")
 	public String toUpdate()throws Exception{
-		User user = this.service.queryForEntity(model.getClass(), model.getId());
+		User user = this.service.queryForEntity(model.getId(),model.getClass());
 		this.setModel(user);
 		return SUCCESS;
 	}
@@ -61,7 +61,7 @@ public class DemoAction extends Action {
 	}
 	@Result(page="/user/list.action")
 	public String delete() throws Exception{
-		this.service.delete(model.getClass(), this.model.getId());
+		this.service.delete(this.model.getId(), model.getClass());
 		return DELETE;
 	}
 	// 批量删除
@@ -69,7 +69,7 @@ public class DemoAction extends Action {
 	public String deleteBatch() throws Exception{
 		String ids = request.getParameter("ids");
 		if(ids != null){
-			this.service.deleteBatch(User.class, ids.split(","));			
+			this.service.deleteBatch(ids.split(","), User.class);			
 		}
 		return DELETE;
 	}
@@ -78,7 +78,7 @@ public class DemoAction extends Action {
 	public String checkUsername()throws Exception{
 		try {
 			String sql = "select count(*) from users where username ='"+this.model.getUsername()+"'";;
-			Integer user = this.service.queryForColumn(Integer.class,sql);
+			Integer user = this.service.queryForColumn(sql, Integer.class);
 			if(user == 0){
 				this.info = "恭喜！可以注册";
 			}else{

@@ -52,7 +52,7 @@ public class TDaoImpl implements TDao{
 	 *  @param id ： 主键Id
 	 */
 	@Override
-	public <T> void delete(Class<T> clazz, long id) throws SQLException {
+	public <T> void delete(long id, Class<T> clazz) throws SQLException {
 		try {
 			String sql = "delete from " + TUtils.getTableName(clazz) + " where id=" + id;
 			Statement stmt = conn.createStatement();
@@ -68,7 +68,7 @@ public class TDaoImpl implements TDao{
 	 *  @param ids ：主键数据
 	 */
 	@Override
-	public <T> void deleteBatch(Class<T> clazz,String[] ids) throws SQLException{
+	public <T> void deleteBatch(String[] ids, Class<T> clazz) throws SQLException{
 		if(ids == null || ids.length == 0){
 			return;
 		}
@@ -160,7 +160,7 @@ public class TDaoImpl implements TDao{
 	 */
 	@SuppressWarnings("unchecked")
 	@Override
-	public <T> T loadForEntity(Class<T> clazz, Object id) {
+	public <T> T loadForEntity(Object id, Class<T> clazz) {
 		Object t = null;
 		try {
 			String cacheName = clazz.getName();
@@ -172,7 +172,7 @@ public class TDaoImpl implements TDao{
 				System.out.println("从缓存中获取实体...");
 				t =  cache.get(id).getObjectValue();
 			}else{
-				t = this.queryForEntity(clazz, id);
+				t = this.queryForEntity(id, clazz);
 				cm.addCache(cacheName);
 				cm.getCache(cacheName).put(new Element(id, t));
 			}
@@ -186,7 +186,7 @@ public class TDaoImpl implements TDao{
 	 */
 	@SuppressWarnings("unchecked")
 	@Override
-	public <T> List<T> queryForColumnList(Class<T> clazz, String sql) throws SQLException {
+	public <T> List<T> queryForColumnList(String sql, Class<T> clazz) throws SQLException {
 		List<T> ls = new ArrayList<T>();
 		try {
 			Statement stmt = conn.createStatement();
@@ -210,8 +210,8 @@ public class TDaoImpl implements TDao{
 	}
 	
 	@Override
-	public <T> T queryForColumn(Class<T> clazz, String sql) throws SQLException {
-		List<T> ls = this.queryForColumnList(clazz, sql);
+	public <T> T queryForColumn(String sql, Class<T> clazz) throws SQLException {
+		List<T> ls = this.queryForColumnList(sql, clazz);
 		if(ls.size() > 0){
 			return ls.get(0);
 		}
@@ -222,7 +222,7 @@ public class TDaoImpl implements TDao{
 	 *   查询，返回实体对象
 	 */
 	@Override
-	public <T> T queryForEntity(Class<T> clazz, Object id) throws SQLException {
+	public <T> T queryForEntity(Object id, Class<T> clazz) throws SQLException {
 		T t = null;
 		try {
 			t = clazz.newInstance();
@@ -412,7 +412,7 @@ public class TDaoImpl implements TDao{
 		}
 		Pager<T> pager = new Pager<T>();
 		pager.setItems(this.queryForList(sql,offset,size,clazz));
-		pager.setTotal(this.queryForColumnList(Integer.class, countSql).get(0));
+		pager.setTotal(this.queryForColumnList(countSql,Integer.class).get(0));
 		pager.setCurpage(offset/size + 1);
 		pager.setOffset(offset);
 		return pager;
