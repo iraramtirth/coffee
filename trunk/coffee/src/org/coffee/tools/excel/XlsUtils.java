@@ -110,6 +110,19 @@ public class XlsUtils {
 		}
 		return resultList;
 	}
+	
+	public static List<String> toStringList(List<Map<String, String>> items) {
+		List<String> resultList = new  ArrayList<String>();
+		for (Map<String, String> itemMap : items) {
+			String value = "";
+			for (String key : itemMap.keySet()) {
+				value += itemMap.get(key) + ",";
+			}
+			value = value.replaceAll(",+?$", "");
+			resultList.add(value);
+		}
+		return resultList;
+	}
 
 	/**
 	 * 生产一个用于测试的xls文档
