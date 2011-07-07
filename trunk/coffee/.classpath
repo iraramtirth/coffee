@@ -17,5 +17,6 @@
 	<classpathentry kind="lib" path="WebRoot/WEB-INF/lib/jaxb-xjc.jar"/>
 	<classpathentry kind="lib" path="WebRoot/WEB-INF/lib/jaxb1-impl.jar"/>
 	<classpathentry kind="lib" path="WebRoot/WEB-INF/lib/jsr173_1.0_api.jar"/>
+	<classpathentry kind="lib" path="WebRoot/WEB-INF/lib/mail.jar"/>
 	<classpathentry kind="output" path="WebRoot/WEB-INF/classes"/>
 </classpath>
