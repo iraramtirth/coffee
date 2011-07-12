@@ -141,7 +141,7 @@ public class TDaoImpl implements TDao{
 			try {
 				this.conn.setAutoCommit(false);
 				for(String sql : sqls){
-					stmt.addBatch(sql.replace("phtgraphy", "phtgraph"));
+					stmt.addBatch(sql);
 				}
 				stmt.executeBatch();
 				this.conn.commit();
