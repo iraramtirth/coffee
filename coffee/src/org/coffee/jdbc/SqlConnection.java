@@ -26,8 +26,10 @@ public class SqlConnection {
 	private static void initConnectionPool() throws SQLException {
 		Properties prop = new Properties();
 		try {
-			prop.load(new FileInputStream(SqlConnection.class.getClass()
-					.getResource("/").getPath()	+ "jdbc.properties"));
+			/**
+			 * 注意不能写成**SqlConnection.class.getClass().getResource("/")
+			 */
+			prop.load(new FileInputStream(SqlConnection.class.getResource("/").getPath()	+ "jdbc.properties"));
 			url = prop.getProperty("url");
 			username = prop.getProperty("username");
 			password = prop.getProperty("password");
