@@ -5,7 +5,6 @@ import static org.coffee.persistence.impl.EntityManagerExtUtils.getInsertSql;
 import static org.coffee.persistence.impl.EntityManagerExtUtils.getPrimaryKeyColumnName;
 import static org.coffee.persistence.impl.EntityManagerExtUtils.getTableName;
 import static org.coffee.persistence.impl.EntityManagerExtUtils.getUpdateSql;
-import static org.coffee.persistence.impl.EntityManagerExtUtils.EntityProperty;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -30,6 +29,7 @@ import javax.persistence.metamodel.Metamodel;
 import javax.sql.rowset.CachedRowSet;
 
 import org.coffee.persistence.impl.EntityManagerExtUtils.EntityProperty;
+
 /**
  * 每个EntityManager关联着一个数据库连接，一个事务 
  * @author wangtao

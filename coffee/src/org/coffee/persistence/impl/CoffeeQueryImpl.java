@@ -123,7 +123,7 @@ public class CoffeeQueryImpl implements CoffeeQuery{
 		return null;
 	}
 
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings("rawtypes")
 	@Override
 	public List<?> getResultList() {
 		List<?> ls = new ArrayList();
