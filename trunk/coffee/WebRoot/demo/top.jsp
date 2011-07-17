@@ -42,7 +42,7 @@ function timenow(){
     secs="0"+secs;
     document.getElementById("timenow").innerHTML=years+"年"+mons+"月"+days+"日  "+week;
     setTimeout("timenow()",500); //毫秒 
-　　} 
+}
 
 </script>
   </head>
