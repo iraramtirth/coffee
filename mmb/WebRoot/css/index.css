@@ -1,0 +1,52 @@
+/* CSS Document */
+.center{ width:900px; clear:both;}
+#box{width:900px;
+     height:219px;
+	 position:relative;}
+#box img{ width:900px; height:219px;}
+.lvjing{ position:absolute; bottom:20px; left:25px; color:#FFFFFF;}	
+.lvjing1{ width:900px; height:30px; background:#FFF; position:absolute; bottom:0; left:0; z-index:-1px; filter:alpha(opacity=90); 
+	opacity:0.9;}
+#number{width:9oopx;
+        height:30px;
+		position:absolute;
+		right:0;
+		bottom:00px;}
+#number a{float:left;
+          width:225px;
+		  height:30px; margin:0; padding:0; color:#000; font-weight:bold; 
+		   
+		  
+		  text-align:center;
+		  line-height:30px;
+		  font-size:15px;
+		  text-decoration:none;
+		  margin-left:0px;}
+#number a:hover{ background:#F00!important; filter:alpha(opacity=80); 
+	opacity:0.8; color:#FFF!important;
+
+				}
+/*.redd{ background:#F00!important; filter:alpha(opacity=80)!important; 
+	opacity:0.8!important;
+
+                color:#FFF!important;}*/
+				#picture{filter:revealTrans;}
+
+
+.cc{ width:900px;background:url(../images/zhong.jpg) no-repeat 0 0; padding-top:10px;  clear:both;}
+.ccl{ float:left; background:url(../images/xin_03.jpg) no-repeat 0 0; width:306px; height:164px;}
+.cclh{ width:306px; height:30px;}
+.cclh h3{ float:left; margin:5px; font-family:黑体; font-size:14px;}
+.cclh span{ float:left; margin:-19px 0 0 250px; display:inline;}
+.ccl ul{ width:276px; margin:0px 15px;}
+.ccl ul li{ width:276px; text-align:left; }
+.ccl ul li span{ width:276px; height:20px; color:#CCCCCC; float:left; text-indent:1em; background:url(../images/er_14.jpg) no-repeat 0 5px; }
+.ccl ul li a{ display:block; line-height:20px; width:276px; }
+.ccc{ float:left; background:url(../images/xin_03.jpg) no-repeat 0 0; width:306px; height:164px; margin-left:10px;}
+.ccc p{ line-height:20px; margin:5px; text-align:left; text-indent:2em;}
+.ccr{ float:left; width:236px; margin-left:20px;}
+.cf{ width:900px; background:url(../images/f_06.jpg) repeat-x 0 0; position:relative; height:116px; padding-top:20px; text-align:left; clear:both;}
+.cf h2{ position:absolute; left:5px; width:79px; height:31px; top:-30px; background:url(../images/f_03.jpg) no-repeat 0 0; font-size:14px; color:#FFFFFF; text-align:center; line-height:31px; font-family:黑体;}
+.cf a{ display:block; float:left;}
+.cf a img{ margin-right:20px; margin-left:20px;}
+.dian{ padding-top:15px; display:block; float:left; margin-top:15px; margin-right:0px; }

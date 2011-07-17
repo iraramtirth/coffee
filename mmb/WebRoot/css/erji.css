@@ -1,0 +1,27 @@
+/* CSS Document */
+.center{ width:900px; clear:both; *border-bottom:1px solid #999999; _border-bottom:1px solid #999999; margin-bottom:20px;}
+.cn{ width:900px; height:34px; background:url(../images/er_06.jpg) repeat-x 0 0; clear:both; }
+.cn a{ display:block; float:left; color:#919191; background:url(../images/er_09.jpg) no-repeat 0 right; margin:8px; }
+.cr{ float:left; width:200px; padding:0px 5px; margin-top:8px;}
+.cl{ float:left; width:680px; padding:0 0px; text-align:left; margin-top:8px;}
+.cr h1{ width:190px; font-size:18px; height:30px; border-bottom:1px solid #999999; text-align:left; font-family:黑体; }
+.cr ul{ margin-top:5px; width:190px; text-align:left;}
+.cr ul li{ height:25px; line-height:25px; background:url(../images/er_14.jpg) no-repeat 0px 8px; }
+.cr ul li a{ display:block; color:#333333; text-indent:1em;}
+.red a{ color:#FF0000!important;}
+.cl h1{ width:650px; font-size:18px; height:30px; border-bottom:1px solid #999999; text-align:left; color:#c50000; font-family:黑体; }
+.cl p{ line-height:25px; color:#999999; margin:0 15px; margin-top:20px;}
+.cc{border-bottom:1px solid #999999; *border-bottom:0; _border-bottom:0; margin-bottom:30px; padding-bottom:20px;}
+.cc:after{ display:block; visibility:hidden; font-size:0; line-height:0; clear:both; content:"";}
+.cl ul{ width:650px; height:34px; background:url(../images/bar.jpg) repeat-x 0 0; line-height:34px;}
+.fen{ float:left;}
+.cl ul li{ float:left; width:24px; height:16px; margin-top:8px; margin-left:5px;}
+.gl{ background:url(../images/btn-s.jpg) no-repeat 0 0!important;}
+.cl ul li a{ display:block; background:url(../images/btn.jpg) no-repeat 0 0; width:24px; height:16px; text-align:center; line-height:16px;}
+ .fen1{ float:right; margin-left:350px; width:80px; background:#666;}
+.clear{ clear:both;}
+.coc{ width:650px; border-bottom:1px solid #999; margin-bottom:10px;}
+.coc p{ line-height:25px; height:25px; margin-top:0px;}
+.hh{ color:#333;}
+.hou{ padding-left:60px;}
+.hou1{ background:url(../images/er_14.jpg) no-repeat 50px 10px;}
