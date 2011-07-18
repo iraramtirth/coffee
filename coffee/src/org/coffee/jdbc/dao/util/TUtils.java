@@ -533,14 +533,13 @@ public class TUtils {
 	 */ 
 	public static <T> MappedType getMappedType(Class<?> fieldType){
 		String typeName = fieldType.getSimpleName().toLowerCase();
-		
 		if(typeName.contains("long")){
 			return MappedType.Long;
 		}
 		if(typeName.contains("int")){
 			return MappedType.Integer;
 		}
-		if(typeName.equals("date")){
+		if(typeName.equalsIgnoreCase("date")){
 			return MappedType.Date;
 		}
 		return MappedType.String;
