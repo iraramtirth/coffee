@@ -10,6 +10,8 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.coffee.common.util.FileUtils;
+
 public class CrawlerUtils {
 
 	private static String encode = "UTF-8";
@@ -87,12 +89,30 @@ public class CrawlerUtils {
 	}
 
 	/**
+	 * 抓取指定URL的全部链接
+	 * @param linkUrl
+	 * @return : 返回的都是绝对地址
+	 */
+	public static Map<String,String> selectA(String baseUrl){
+		String doc =getDocumentHtml(baseUrl);
+		Map<String,String> linksMap = selectA(doc, ".+?");
+		Map<String,String> newLinksMap = new HashMap<String, String>();
+		for(String linkUrl : linksMap.keySet()){
+			if(linkUrl.startsWith("http://") == false ){
+				linkUrl = baseUrl + linkUrl;
+			}
+			newLinksMap.put(linkUrl, linksMap.get(linkUrl));
+		}
+		return newLinksMap;
+	}
+	
+	/**
 	 * 获取指定页面url 符合指定regex的超链接的url以及本文
 	 * 
 	 * @param pageUrl
 	 *            : 页面的url
 	 * @param regex
-	 *            : 超链接的regex
+	 *            : 超链接的regex (*代表抓取全部链接O)
 	 * @return Map<String,String> // 超链接url,超链接文本
 	 */
 	public static Map<String, String> selectA(String doc, String keywords) {
@@ -115,4 +135,15 @@ public class CrawlerUtils {
 		return linksMap;
 	}
 
+	/**
+	 * 将指定url的文本内容写入到文件中
+	 * @param url
+	 */
+	public static void saveToFile(String url){
+		String path = url.replace("http://", "f:/");
+		FileUtils.createNewFileOrDirectory(path);
+		String fileName = path.substring(path.lastIndexOf("/")+1);
+		String doc = getDocumentHtml(url);
+		FileUtils.writeTo(path + fileName, doc);
+	}
 }

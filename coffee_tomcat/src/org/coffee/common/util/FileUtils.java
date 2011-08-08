@@ -2,6 +2,7 @@ package org.coffee.common.util;
 
 import java.io.File;
 import java.io.FileFilter;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
@@ -119,7 +120,24 @@ public class FileUtils {
 		String base = getProjectBasePath();
 		return base + "/WebRoot" + page; 
 	}
-	
+	/**
+	 * 将指定文件写入内容，原有文件将被覆盖
+	 * @param file：文件路径
+	 * @param content:内容
+	 */
+	public static void writeTo(String filePath, String content){
+		File file = new File(filePath);
+		if(file.exists() == false){
+			createNewFileOrDirectory(filePath);
+		}
+		try {
+			FileWriter writer = new FileWriter(file);
+			writer.write(content);
+			writer.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
 	
 	public static void main(String[] args) {
 		String path = "E:/2010登记全部导入表";
@@ -128,4 +146,6 @@ public class FileUtils {
 			System.out.println(file);
 		}
 	}
+	
+	
 }
