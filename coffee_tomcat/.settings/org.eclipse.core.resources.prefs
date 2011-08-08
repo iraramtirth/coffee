@@ -1,0 +1,7 @@
+#Sun Jun 19 09:51:14 CST 2011
+eclipse.preferences.version=1
+encoding//src/org/coffee/server/HttpServer.java=UTF-8
+encoding//src/org/coffee/server/cfg/ServerConfig.java=UTF-8
+encoding//src/org/coffee/server/cfg/WebConfig.java=UTF-8
+encoding//src/org/coffee/server/servlet/bean/ServletBean.java=gbk
+encoding/<project>=UTF-8
