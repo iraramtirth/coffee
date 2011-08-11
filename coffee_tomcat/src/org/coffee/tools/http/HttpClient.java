@@ -7,6 +7,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLConnection;
 import java.net.URLEncoder;
+import java.net.UnknownHostException;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.regex.Matcher;
@@ -36,7 +37,9 @@ public class HttpClient {
 				line = line.replace("&amp;", "&");
 				doc.append(line);
 			}
-		} catch (IOException ioe) {
+		}catch(UnknownHostException e){
+		}catch (IOException ioe) {
+			ioe.printStackTrace();
 		}
 		return doc.toString();
 	}
