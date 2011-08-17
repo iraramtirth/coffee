@@ -183,7 +183,13 @@ public class XlsWriter {
 		}
 	}
 	
-	
+	/**
+	 * 默认行追加
+	 */
+	public void append(String[] columns) {
+		this.startY = 0;
+		this.appendRow(columns);
+	}
 	
 	public void flush(){
 		try {

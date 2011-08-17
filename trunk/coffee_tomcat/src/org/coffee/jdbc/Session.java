@@ -11,6 +11,7 @@ import org.coffee.spring.ioc.annotation.Repository;
  */
 @Repository(name="session")
 public class Session extends TDaoImpl{
+	
 	/**
 	 * 创建Connection
 	 * 设置数据库dialect
@@ -20,6 +21,11 @@ public class Session extends TDaoImpl{
 		//创建一个新连接
 		super.conn = SqlConnection.get();
 	}
+	
+	public void open(String cfgFile){
+		super.conn = SqlConnection.get(cfgFile);
+	}
+	
 	/**
 	 * 开启事务
 	 */

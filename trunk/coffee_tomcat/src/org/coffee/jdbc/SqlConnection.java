@@ -23,13 +23,13 @@ public class SqlConnection {
 	public static ConnectionPool cp;
 
 	
-	private static void initConnectionPool() throws SQLException {
+	private static void initConnectionPool(String cfgFile) throws SQLException {
 		Properties prop = new Properties();
 		try {
 			/**
 			 * 注意不能写成**SqlConnection.class.getClass().getResource("/")
 			 */
-			prop.load(new FileInputStream(SqlConnection.class.getResource("/").getPath()	+ "jdbc.properties"));
+			prop.load(new FileInputStream(SqlConnection.class.getResource("/").getPath()+ cfgFile));
 			url = prop.getProperty("url");
 			username = prop.getProperty("username");
 			password = prop.getProperty("password");
@@ -57,10 +57,10 @@ public class SqlConnection {
 		cp = new ConnectionPool(driver, url, username, password);
 	}
 
-	public Connection getConnection() {
+	public Connection getConnection(String cfgFile) {
 		try {
 			if (cp == null) {
-				initConnectionPool();
+				initConnectionPool(cfgFile);
 			}
 			return cp.getConnection();
 		} catch (SQLException e) {
@@ -70,7 +70,10 @@ public class SqlConnection {
 	}
 
 	public static Connection get() {
-		return new SqlConnection().getConnection();
+		return new SqlConnection().getConnection("jdbc.properties");
+	}
+	public static Connection get(String cfgFile) {
+		return new SqlConnection().getConnection(cfgFile);
 	}
 
 	// 以下是使用数据源
