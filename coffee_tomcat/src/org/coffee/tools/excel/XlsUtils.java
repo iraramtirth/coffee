@@ -29,7 +29,14 @@ public class XlsUtils {
 		HSSFWorkbook wb = new HSSFWorkbook();
 		FileOutputStream out;
 		try {
-			out = new FileOutputStream(new File(xlsPath));
+			File file = new File(xlsPath);
+			if(file.exists() == false){
+				if(file.getParentFile().exists() == false){
+					file.getParentFile().mkdirs();
+				}
+				file.createNewFile();
+			}
+			out = new FileOutputStream(file);
 			wb.createSheet();
 			wb.write(out);
 			out.flush();

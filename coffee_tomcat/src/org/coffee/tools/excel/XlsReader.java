@@ -25,7 +25,6 @@ public class XlsReader {
 	private HSSFSheet sheet;
 	private HSSFWorkbook wb;
 	
-	
 	public XlsReader(String xlsPath){
 		try {
 			FileInputStream fis = new FileInputStream(xlsPath);
