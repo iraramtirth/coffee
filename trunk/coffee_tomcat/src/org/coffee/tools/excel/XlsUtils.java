@@ -3,6 +3,7 @@ package org.coffee.tools.excel;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.lang.reflect.Field;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -11,9 +12,12 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import javax.persistence.Column;
+
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFDateUtil;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.coffee.jdbc.dao.util.TUtils;
 import org.coffee.tools.excel.XlsWriter.AppendType;
 
 /**
@@ -101,14 +105,24 @@ public class XlsUtils {
 		}
 		return colName;
 	}
-
+	/**
+	 * 
+	 * @param items : 从xlsReader.query的结果
+	 * @return
+	 */
 	public static <T> List<T> toBeanList(List<Map<String, String>> items, Class<T> t) {
 		List<T> resultList = new  ArrayList<T>();
 		try {
 			for (Map<String, String> item : items) {
 				T obj = t.newInstance();
-				for (String key : item.keySet()) {
-					setValue(obj, key, item.get(key), String.class);
+//				for (String key : item.keySet()) {
+//					setValue(obj, key, item.get(key), String.class);
+//				}
+				for(Field field : obj.getClass().getDeclaredFields()){
+					//获取其映射的name
+					String fieldName =  TUtils.getColumnName(obj.getClass(), field.getName());
+					field.setAccessible(true);
+					field.set(obj, item.get(fieldName));
 				}
 				resultList.add(obj );
 			}
@@ -144,7 +158,12 @@ public class XlsUtils {
 		writer.append(new String[] { "001", "咖啡", "1234" }, 0, AppendType.ROW);
 		writer.close();
 	}
-	
+	/**
+	 * 赋值
+	 * 废弃，该方法暂且不用
+	 */
+	@SuppressWarnings("unused")
+	@Deprecated
 	private static <T> Object setValue(T obj, String fieldName, T value, Class<?>... valueClass){
 		String firstChar = fieldName.charAt(0)+"";
 		try {
@@ -161,6 +180,23 @@ public class XlsUtils {
 		return obj;
 	}
 
+	/**
+	 *  获取列名 
+	 */
+	public static <T> String getColumnName(Class<T> clazz,String fieldName){
+		Field field = null;
+		try {
+			field = clazz.getDeclaredField(fieldName);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		Column column = field.getAnnotation(Column.class);
+		if(column != null){
+			return column.name();
+		}else{
+			return fieldName;
+		}
+	}
 	public static void main(String[] args) {
 		// String colName = XlsUtils.getColumnName("商品名称(name)");
 		// System.out.println(colName);
