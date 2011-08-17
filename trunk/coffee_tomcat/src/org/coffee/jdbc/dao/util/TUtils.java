@@ -169,6 +169,9 @@ public class TUtils {
 							case Integer :
 								value = Integer.valueOf(rs.getInt(fieldName));
 								break;
+							case String :
+								value = rs.getString(fieldName);
+								break;
 							default :
 								value = rs.getObject(fieldName);
 								break;
