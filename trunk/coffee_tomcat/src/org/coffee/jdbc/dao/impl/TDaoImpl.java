@@ -12,8 +12,6 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import javax.sql.rowset.CachedRowSet;
-
 import net.sf.ehcache.Cache;
 import net.sf.ehcache.CacheManager;
 import net.sf.ehcache.Element;
@@ -98,14 +96,14 @@ public class TDaoImpl implements TDao{
 	// 获取离线数据集
 	
 	@Override
-	public CachedRowSet queryForResultSet(String sql) throws SQLException {
-//		CachedRowSet crs = new CachedRowSetImpl();
-//		Statement stmt = conn.createStatement();
-//		ResultSet rs = stmt.executeQuery(sql);
-//		crs.populate(rs);
-//		rs.close();
-//		stmt.close();
-		return null;
+	public ResultSet queryForResultSet(String sql) throws SQLException {
+		//CachedRowSet crs = new CachedRowSetImpl();
+		Statement stmt = conn.createStatement();
+		ResultSet rs = stmt.executeQuery(sql);
+		//crs.populate(rs);
+		//rs.close();
+		stmt.close();
+		return rs;
 	}
 	 
 	/**

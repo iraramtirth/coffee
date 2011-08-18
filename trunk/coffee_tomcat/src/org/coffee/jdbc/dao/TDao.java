@@ -1,10 +1,9 @@
 package org.coffee.jdbc.dao;
 
 import java.sql.Connection;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
-
-import javax.sql.rowset.CachedRowSet;
 
 import org.coffee.jdbc.Pager;
 /**
@@ -25,7 +24,7 @@ public interface TDao {
 	//批量删除
 	public <T> void deleteBatch(String[] ids, Class<T> clazz) throws SQLException;
 	//获取离线数据集
-	public CachedRowSet queryForResultSet(String sql) throws SQLException;
+	public ResultSet queryForResultSet(String sql) throws SQLException;
 	// 返回Integer Long String 等类型
 	public <T> T queryForColumn(String sql, Class<T> clazz) throws SQLException;
 	// 返回Integer... Liet
