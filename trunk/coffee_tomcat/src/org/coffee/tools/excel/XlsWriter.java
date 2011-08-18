@@ -22,7 +22,8 @@ public class XlsWriter {
 	private HSSFSheet sheet;
 	private FileOutputStream out;
 	//
-	private int startY = 0 ;//默认从第1列开始追加 
+	private int startY = 0 ;//默认从第1【列】开始追加 (行追加)
+	private int startX = 0; //..从第一【行】开始追加 (列追加)
 	private boolean isBold ; //是否粗体(居中)
 	
 	public static final int AppendType_COL = 0;
@@ -97,8 +98,9 @@ public class XlsWriter {
 		//HSSFRow row = sheet.getRow(maxRow);
 		//列最后一个非空的Cell的rowIndex
 		int lastCellIndex = 0;
+		
 		for(int i=maxRow; i>0; i--){
-			HSSFCell cell = sheet.getRow(i).getCell(startY);
+			HSSFCell cell = sheet.getRow(i).getCell(startX);
 			if(cell == null){
 				continue;
 			}
@@ -113,7 +115,7 @@ public class XlsWriter {
 			if(row == null){
 				row = sheet.createRow(lastCellIndex + i);
 			}
-			HSSFCell cell = row.createCell(startY);////////////
+			HSSFCell cell = row.createCell(startX);////////////
 			HSSFCellStyle style = wb.createCellStyle(); 
 			//设置样式
 			if(isBold){//如果设置是粗体,则默认居中
@@ -140,8 +142,8 @@ public class XlsWriter {
 	 * @param x ：起始列 , 从0开始
 	 */
 	public void append(String[] columns, int startY,int type) {
-		this.startY = startY;
 		if(type == AppendType.ROW){
+			this.startY = startY;
 			this.appendRow(columns);
 		}else{
 			this.appendCol(columns);
@@ -186,12 +188,12 @@ public class XlsWriter {
 	 * @param isBold : 字体是否是粗体
 	 */
 	public void append(String[] columns, int startY, int type, boolean isBold){
-		this.startY = startY;
 		this.isBold = isBold;
-		this.startY = startY;
 		if(type == AppendType.ROW){
+			this.startY = startY;
 			this.appendRow(columns);
 		}else{
+			this.startX = startY;
 			this.appendCol(columns);
 		}
 	}
