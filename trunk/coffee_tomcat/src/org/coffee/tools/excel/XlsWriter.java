@@ -94,28 +94,18 @@ public class XlsWriter {
 	}
 	
 	private void appendCol(String[] columns) {
-		int maxRow = sheet.getLastRowNum();
-		//HSSFRow row = sheet.getRow(maxRow);
-		//列最后一个非空的Cell的rowIndex
-		int lastCellIndex = 0;
-		
-		for(int i=maxRow; i>0; i--){
-			HSSFCell cell = sheet.getRow(i).getCell(startX);
-			if(cell == null){
-				continue;
-			}
-			String value = XlsUtils.getCellValue(cell);
-			if(value != null && value.trim().length() > 0){
-				lastCellIndex = i+1;
-				break;
-			}
+		//最大行下标，而不是最大行数
+		int maxRowIndex = sheet.getLastRowNum();
+		int maxColIndex = 0;
+		for(int i=maxRowIndex; i>0; i--){
+			maxColIndex =  Math.max(sheet.getRow(i).getLastCellNum(),maxColIndex);
 		}
 		for (int i = 0; i < columns.length; i++) {
-			HSSFRow row = sheet.getRow(lastCellIndex + i);
+			HSSFRow row = sheet.getRow(startX + i);
 			if(row == null){
-				row = sheet.createRow(lastCellIndex + i);
+				row = sheet.createRow(startX + i);
 			}
-			HSSFCell cell = row.createCell(startX);////////////
+			HSSFCell cell = row.createCell(maxColIndex);////
 			HSSFCellStyle style = wb.createCellStyle(); 
 			//设置样式
 			if(isBold){//如果设置是粗体,则默认居中
@@ -141,11 +131,12 @@ public class XlsWriter {
 	 * @param columns ：待追加的数据 
 	 * @param x ：起始列 , 从0开始
 	 */
-	public void append(String[] columns, int startY,int type) {
+	public void append(String[] columns, int startX_or_Y,int type) {
 		if(type == AppendType.ROW){
-			this.startY = startY;
+			this.startY = startX_or_Y;
 			this.appendRow(columns);
 		}else{
+			this.startX = startX_or_Y;
 			this.appendCol(columns);
 		}
 	}
@@ -156,7 +147,7 @@ public class XlsWriter {
 	 * @param startY
 	 * @param type
 	 */
-	public <T> void append(List<T> itemsList,int startY,int type){
+	public <T> void append(List<T> itemsList,int startX_or_Y,int type){
 		if(itemsList.size() > 0){
 			Class<?> clazz = itemsList.get(0).getClass();
 			Field[] fields = clazz.getDeclaredFields();
@@ -177,7 +168,7 @@ public class XlsWriter {
 						e.printStackTrace();
 					}
 				}//for
-				append(values, startY, type);
+				append(values, startX_or_Y, type);
 			}//for
 		}//if
 	}
@@ -187,13 +178,13 @@ public class XlsWriter {
 	 * @param columns
 	 * @param isBold : 字体是否是粗体
 	 */
-	public void append(String[] columns, int startY, int type, boolean isBold){
+	public void append(String[] columns, int startX_or_Y, int type, boolean isBold){
 		this.isBold = isBold;
 		if(type == AppendType.ROW){
-			this.startY = startY;
+			this.startY = startX_or_Y;
 			this.appendRow(columns);
 		}else{
-			this.startX = startY;
+			this.startX = startX_or_Y;
 			this.appendCol(columns);
 		}
 	}
@@ -229,7 +220,7 @@ public class XlsWriter {
 	
 	public static void main(String[] args) {
 		XlsWriter writer = new XlsWriter("c:/xx/ddd.xls");
-		writer.append(new String[]{"xxx"});
+		writer.append(new String[]{"xxx"},1,AppendType_COL);
 		writer.close();
 	}
 }
