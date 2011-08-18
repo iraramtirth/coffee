@@ -36,6 +36,22 @@ public class XlsWriter {
 	
 	public XlsWriter(String xlsPath) {
 		try {
+			this.init(xlsPath);
+		} catch (IOException e) {
+			if(e.getMessage().contains("Unable to read entire header; 0 bytes read; expected 32 bytes")){
+				new File(xlsPath).delete();//删除源文件
+				try {
+					this.init(xlsPath);
+				} catch (IOException e1) {
+					e1.printStackTrace();
+				};
+			}else{
+				e.printStackTrace();
+			}
+		}
+	}
+
+		private void init(String xlsPath) throws IOException{
 			File file = new File(xlsPath);
 			if(file.exists() == false){
 				XlsUtils.createXls(xlsPath);
@@ -45,11 +61,8 @@ public class XlsWriter {
 			wb = new HSSFWorkbook(ps);
 			sheet = wb.getSheetAt(0);
 			out = new FileOutputStream(new File(xlsPath));
-		} catch (IOException e) {
-			e.printStackTrace();
 		}
-	}
-
+	
 	/**
 	 * 重载
 	 * 默认从最左端开始追加
@@ -209,5 +222,12 @@ public class XlsWriter {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+	}
+	
+	
+	public static void main(String[] args) {
+		XlsWriter writer = new XlsWriter("c:/xx/ddd.xls");
+		writer.append(new String[]{"xxx"});
+		writer.close();
 	}
 }
