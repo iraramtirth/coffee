@@ -31,6 +31,7 @@ public class XlsReader {
 			POIFSFileSystem fs = new POIFSFileSystem(fis);
 			wb = new HSSFWorkbook(fs);
 			sheet = wb.getSheetAt(0);///默认读取第一个
+			fis.close();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -44,6 +45,7 @@ public class XlsReader {
 			POIFSFileSystem fs = new POIFSFileSystem(fis);
 			wb = new HSSFWorkbook(fs);
 			sheet = wb.getSheet(sheetName);///读取指定name的sheet
+			fis.close();
 		} catch (IOException e) {
 			String msg = "读取文件失败...";
 			msg += e.getMessage();
