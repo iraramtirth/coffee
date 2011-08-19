@@ -74,8 +74,8 @@ public class XlsUtils {
 				Date date = HSSFDateUtil.getJavaDate(d);
 				cellValue = sdf.format(date);
 			} else {// 2011-06-09修改-end
-				try {
-					cellValue = (int) cell.getNumericCellValue() + "";
+				try {//用int将会导致转型失败，即溢出
+					cellValue = (long) cell.getNumericCellValue() + "";
 				} catch (Exception e) {
 					cellValue = cell.getNumericCellValue() + "";
 				}
