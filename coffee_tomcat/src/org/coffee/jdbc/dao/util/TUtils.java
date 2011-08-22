@@ -358,8 +358,10 @@ public class TUtils {
 		sql.deleteCharAt(sql.length()-1);// 除去sql语句后面最后一个 逗号
 		sql.append(")");
 		long end = System.currentTimeMillis();
-		logger.info("生成sql耗时 " + (end - start) + " ms");
-		logger.info(sql.toString());
+		if(Configuration.debug){
+			logger.info("生成sql耗时 " + (end - start) + " ms");
+			logger.info(sql.toString());
+		}
 		return sql.toString();
 	}
 	
