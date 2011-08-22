@@ -11,10 +11,10 @@ import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 import javax.servlet.annotation.WebListener;
 
+import org.coffee.jdbc.Configuration;
 import org.coffee.jdbc.ConnectionPool;
 import org.coffee.jdbc.SqlConnection;
-import org.coffee.jdbc.dao.util.Configuration;
-import org.coffee.jdbc.dao.util.Configuration.DialectType;
+import org.coffee.jdbc.Configuration.DialectType;
 
 /**
  * 初始化数据库

@@ -23,8 +23,9 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
-import org.coffee.jdbc.dao.util.Configuration.DialectType;
-import org.coffee.jdbc.dao.util.Configuration.MappedType;
+import org.coffee.jdbc.Configuration;
+import org.coffee.jdbc.Configuration.DialectType;
+import org.coffee.jdbc.Configuration.MappedType;
 
 
 /**
