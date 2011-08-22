@@ -150,9 +150,6 @@ public class ParameterReflect {
 										new Class[]{objValue.getClass()});
 								//关联actionOrModel与其中的非primitive属性
 								writeMethod.invoke(actionOrModel, new Object[]{objValue});
-								if(objValue == null){
-									throw new Exception("出错了。。。。");
-								}
 							}
 						}else{
 							Class<?> paramType = clazz.getDeclaredField(field).getType();

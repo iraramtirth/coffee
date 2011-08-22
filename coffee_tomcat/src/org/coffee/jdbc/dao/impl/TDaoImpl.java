@@ -16,9 +16,9 @@ import net.sf.ehcache.Cache;
 import net.sf.ehcache.CacheManager;
 import net.sf.ehcache.Element;
 
+import org.coffee.jdbc.Configuration;
 import org.coffee.jdbc.Pager;
 import org.coffee.jdbc.dao.TDao;
-import org.coffee.jdbc.dao.util.Configuration;
 import org.coffee.jdbc.dao.util.TUtils;
 
 public class TDaoImpl implements TDao{
@@ -32,7 +32,6 @@ public class TDaoImpl implements TDao{
 	protected CacheManager cm;
 	
 	private static Logger log = Logger.getLogger("jdbc");
-	
 	static{
 		log.setLevel(Level.INFO);
 	}
@@ -94,7 +93,6 @@ public class TDaoImpl implements TDao{
 		}
 	}
 	// 获取离线数据集
-	
 	@Override
 	public ResultSet queryForResultSet(String sql) throws SQLException {
 		//CachedRowSet crs = new CachedRowSetImpl();

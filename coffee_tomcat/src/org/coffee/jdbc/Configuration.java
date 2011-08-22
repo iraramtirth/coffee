@@ -1,9 +1,9 @@
-package org.coffee.jdbc.dao.util;
+package org.coffee.jdbc;
 
 /**
+ * JDBC的全局配置
  * 设定数据库中的一些配置信息，主要用来给TDao服务的
- * 
- * @author wangtao
+ * @author coffee
  */
 public class Configuration {
 	/**
@@ -14,7 +14,11 @@ public class Configuration {
 	private static final String TABLE_TOKEN_HSQLDB = "";
 	// 数据库方言；默认是 mysql
 	public static DialectType dialect = DialectType.MYSQL;
-
+	/**
+	 * 当前运行模式
+	 */
+	public static boolean debug = false;
+	
 	/**
 	 * 主要用于处理sql语句中的关键字 比如说 order 在mysql中用 `order` ; 即用`处理 而在oracle中用"order" :
 	 * 即用 "处理

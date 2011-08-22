@@ -5,13 +5,12 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.Properties;
 
-import org.coffee.jdbc.dao.util.Configuration;
-import org.coffee.jdbc.dao.util.Configuration.DialectType;
+import org.coffee.jdbc.Configuration.DialectType;
 
 /**
  * 数据链连接
- * 
- * @author wangtao
+ * 该类不直接调用，由Session访问
+ * @author coffee
  */
 public class SqlConnection {
 
@@ -19,10 +18,13 @@ public class SqlConnection {
 	private static String url = null;
 	private static String username = null;
 	private static String password = null;
-
+	
 	public static ConnectionPool cp;
 
-	
+	/**
+	 * 初始化连接池
+	 * @param cfgFile :  配置文件路径， 默认  jdbc.properties
+	 */
 	private static void initConnectionPool(String cfgFile) throws SQLException {
 		Properties prop = new Properties();
 		try {
@@ -34,6 +36,12 @@ public class SqlConnection {
 			username = prop.getProperty("username");
 			password = prop.getProperty("password");
 			driver = prop.getProperty("driver");
+			String debugStr = prop.getProperty("debug");
+			try{
+				Configuration.debug = Boolean.valueOf(debugStr);
+			}catch(Exception e){
+				Configuration.debug = false;
+			}
 			if (driver.toUpperCase().contains("ORACLE")) {
 				Configuration.dialect = DialectType.ORACLE;
 			} else if (driver.toUpperCase().contains("MYSQL")) {
@@ -43,7 +51,6 @@ public class SqlConnection {
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
-			System.out.println(e.getClass()+"...."+e.getStackTrace()[0].getClassName());
 			// 默认采用Hsqldb数据库
 			String[] args = "--database.0 file:mydb --dbname.0 xdb".split(" ");
 			// 启动hsqldb数据库
@@ -76,9 +83,7 @@ public class SqlConnection {
 		return new SqlConnection().getConnection(cfgFile);
 	}
 
-	// 以下是使用数据源
 
-	// // tomcat 数据源
 	// private DataSource ds;
 	// // 初始化数据源
 	// private void initDataSource() {
