@@ -35,7 +35,7 @@ public class RegexUtils {
 	/**
 	 * 匹配所有的结果 
 	 */
-	public String[] matchAll(String content, String regex, int group) {
+	public static String[] matchAll(String content, String regex, int group) {
 			Matcher matcher = Pattern.compile(regex).matcher(content);
 			List<String> items = new ArrayList<String>(); 
 			String item;
