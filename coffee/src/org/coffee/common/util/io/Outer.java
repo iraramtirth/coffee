@@ -53,6 +53,9 @@ public class Outer {
 	public static void setPath(String path_,boolean append_,boolean delete){
 		path = path_;
 		append = append_;
+		if(path == null){
+			path = System.getProperty("user.dir") + "/outer.txt";
+		}
 		//删除
 		if(delete){
 			File file = new File(path);
