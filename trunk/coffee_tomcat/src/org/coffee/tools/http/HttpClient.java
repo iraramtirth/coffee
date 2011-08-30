@@ -33,8 +33,6 @@ public class HttpClient {
 					.getInputStream(), encode));
 			String line = null;
 			while ((line = in.readLine()) != null) {
-				// 处理特殊字符
-				line = line.replace("&amp;", "&");
 				doc.append(line);
 			}
 		}catch(UnknownHostException e){
