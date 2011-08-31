@@ -51,6 +51,9 @@ public class Outer {
 	 * @param delete : 是否清空(删除)文件
 	 */
 	public static void setPath(String path_,boolean append_,boolean delete){
+		if(path_ == null){
+			path_ = System.getProperty("user.dir");
+		}
 		path = path_;
 		append = append_;
 		//删除
