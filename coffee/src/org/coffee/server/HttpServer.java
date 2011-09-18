@@ -16,8 +16,6 @@ import org.coffee.server.http.Request;
 import org.coffee.server.http.RequestHandler;
 import org.coffee.server.http.RequestParser;
 
-
-
 /**
  * @author wangtao
  */
@@ -26,6 +24,15 @@ public class HttpServer {
 	private ServerSocketChannel ssc;
 	private Selector selector;
 	
+	public static void main(String[] args) {
+		HttpServer server = new HttpServer();
+		try {
+			server.start();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		System.out.println();
+	}
 	
 	/**
 	 * 服务器配置信息
