@@ -14,12 +14,12 @@ public class RequestParser {
 	public static Request parse(String requestData){
 		Request request = new Request();
 		//System.out.println(requestData);
-		StringTokenizer stk = new StringTokenizer(requestData);
-		if(stk.hasMoreTokens()){
-			request.setType(stk.nextToken());
-			request.setUrl(stk.nextToken());
-			request.setProtocol(stk.nextToken());
-		}
+//		StringTokenizer stk = new StringTokenizer(requestData);
+//		if(stk.hasMoreTokens()){
+//			request.setType(stk.nextToken());
+//			request.setUrl(stk.nextToken());
+//			request.setProtocol(stk.nextToken());
+//		}
 		return request;
 	}
 	
