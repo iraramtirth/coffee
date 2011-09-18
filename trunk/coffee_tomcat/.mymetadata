@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project-module
   type="WEB"
-  name="coffee"
+  name="coffee-tomcat"
   id="myeclipse.1298856595171"
   context-root="/coffee"
   j2ee-spec="5.0"
-  archive="coffee.war">
+  archive="coffee-tomcat.war">
   <attributes>
     <attribute name="webrootdir" value="WebRoot" />
   </attributes>
