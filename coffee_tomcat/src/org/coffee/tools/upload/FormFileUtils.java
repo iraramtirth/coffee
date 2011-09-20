@@ -12,16 +12,14 @@ import java.io.IOException;
 public class FormFileUtils {
 	/**
 	 * @param formFile
-	 * @param path
+	 * @param saveDir : 文件的保存目录
 	 */
-	public void saveFormFileTo(FormFile formFile, String path){
+	public void saveFormFileTo(FormFile formFile, String saveDir){
 		try {
-			System.out.println(formFile.getContentType());
-			
 			File file = formFile.getFile();
 			FileInputStream fin = new FileInputStream(file);
 //			String savePath = file.getname
-			FileOutputStream fout = new FileOutputStream(path + file.getName());
+			FileOutputStream fout = new FileOutputStream(saveDir + file.getName());
 			byte[] data = new byte[1024 * 10];
 			int len = 0;
 			while((len = fin.read(data)) != -1){
