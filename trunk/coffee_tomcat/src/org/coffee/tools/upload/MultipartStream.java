@@ -12,6 +12,11 @@ import java.util.regex.Pattern;
 import javax.servlet.ServletInputStream;
 import javax.servlet.http.HttpServletRequest;
 
+/**
+ * 解析二进制流  request.getInputstream
+ * @author wangtao
+ */
+@SuppressWarnings({"rawtypes","unchecked"})
 public class MultipartStream {
 	/**
 	 * 从request.getInputstream获取的待解析的流
@@ -19,8 +24,11 @@ public class MultipartStream {
 	private ServletInputStream in;
 	/**
 	 * 解析出的参数映射
+	 * k:表单的input的name属性
+	 * v:表单.......的value属性
+	 * 如果是二进制流的话 V则是FormFile
 	 */
-	private Map<String, Object> parameterMap = new Hashtable<String, Object>();
+	private Map parameterMap = new Hashtable();
 	/**
 	 * 分界符
 	 */
@@ -76,15 +84,19 @@ public class MultipartStream {
 	}
 
 	/**
-	 *  解析流的内容
+	 * 解析流的内容
+	 * ---------
+	 * @return 参数映射为
+	 * k:表单的input的name属性
+	 * v:表单.......的value属性
+	 * 如果是二进制流的话 V则是FormFile
 	 */
-	public Map<String, Object> parser(){
+	public Map parser(){
 		String line = null;
 		/**
 		 * 开始读取流内容；按行读取
 		 */
 		while ((line = readLine()) != null) {
-			// 文件流
 			if (line.startsWith("Content-Disposition: form-data;")) {
 				int i = line.indexOf("filename=");
 				if (i >= 0) { 
@@ -102,7 +114,7 @@ public class MultipartStream {
 	 * 解析file域
 	 * @param line : 从流中读取的流内容（一行）
 	 */
-	private void  parserFileStream(String line){
+	private void parserFileStream(String line){
 		try{
 			Matcher fileMat = filePat.matcher(line);
 			while(fileMat.find()){
@@ -162,7 +174,7 @@ public class MultipartStream {
 			this.readLine(charset);
 			String nextLine = this.readLine(charset);
 			if(nextLine.trim().length() > 0){
-				parameterMap.put(paramName, nextLine.trim());
+				this.parameterMap.put(paramName, nextLine.trim());
 			}
 		}
 	}
