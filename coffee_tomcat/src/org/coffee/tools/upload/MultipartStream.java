@@ -3,7 +3,9 @@ package org.coffee.tools.upload;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.lang.reflect.Field;
 import java.util.Hashtable;
+import java.util.Iterator;
 import java.util.Map;
 import java.util.UUID;
 import java.util.regex.Matcher;
@@ -86,7 +88,7 @@ public class MultipartStream {
 	/**
 	 * 解析流的内容
 	 * ---------
-	 * @return 参数映射为
+	 * @return 参数映射为Map
 	 * k:表单的input的name属性
 	 * v:表单.......的value属性
 	 * 如果是二进制流的话 V则是FormFile
@@ -108,6 +110,29 @@ public class MultipartStream {
 			}
 		}
 		return parameterMap;
+	}
+	
+	/**
+	 * 
+	 * @param map : 该map为 {@link #parser()} 后返回的结果
+	 * @return : 返回反射后的对象
+	 */
+	public <T> T toBean(Map map, Class<T> beanClass) {
+		T obj = null;
+		try {
+			obj = beanClass.newInstance();
+			for (Iterator it = map.keySet().iterator(); it.hasNext();) {
+				String fieldName = it.next() + "";
+				Field field = beanClass.getDeclaredField(fieldName);
+				if(field != null){
+					field.setAccessible(true);
+					field.set(obj, map.get(fieldName));
+				}
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return obj;
 	}
 	
 	/**
