@@ -4,6 +4,9 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.lang.reflect.Field;
+import java.lang.reflect.Method;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.Map;
@@ -119,19 +122,49 @@ public class MultipartStream {
 	 */
 	public <T> T toBean(Map map, Class<T> beanClass) {
 		T obj = null;
-		try {
+		try{
 			obj = beanClass.newInstance();
-			for (Iterator it = map.keySet().iterator(); it.hasNext();) {
-				String fieldName = it.next() + "";
-				Field field = beanClass.getDeclaredField(fieldName);
-				if(field != null){
-					field.setAccessible(true);
-					field.set(obj, map.get(fieldName));
-				}
-			}
-		} catch (Exception e) {
+		}catch(Exception e){
 			e.printStackTrace();
 		}
+		for (Iterator it = this.parameterMap.keySet().iterator(); it.hasNext();) {
+			String inputName = it.next().toString();
+			try {
+				Field field = beanClass.getDeclaredField(inputName);
+				Class paramType = field.getType();
+				Method method = beanClass.getDeclaredMethod(
+						"set" + inputName.substring(0,1).toUpperCase() + inputName.substring(1),
+						new Class[] { paramType });
+				Object value = this.parameterMap.get(inputName);
+				if(value == null || value.toString().trim().length() == 0){
+					continue;
+				}
+				Object newVal = value;
+				if(field.getType().isPrimitive()){
+					String type = field.getType().toString();
+					if(type.contains("long")){
+						newVal = Long.valueOf(value + "");
+					}
+					else if(type.contains("int")){
+						newVal = Integer.valueOf(value + "");
+					}
+					else if(type.contains("float")){
+						newVal = Float.valueOf(value + "");
+					}
+					else if(type.contains("double")){
+						newVal = Double.valueOf(value + "");
+					}
+				}
+				if(field.getType().equals("Date")){
+					newVal = parseDate(value);
+				}
+				method.invoke(obj,new Object[] {newVal});
+			} catch (NoSuchFieldException e) {
+				//log.warning("Action中的字段[" + key + "]不存在,无法进行参数映射...");
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}  
 		return obj;
 	}
 	
@@ -257,4 +290,23 @@ public class MultipartStream {
         }
         return false;
     }
+	 
+	 private Date parseDate(Object value){
+		 SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		try {
+			return sdf.parse(value.toString());
+		 } catch (Exception e) {
+			try{
+				sdf = new SimpleDateFormat("yyyy-MM-dd");
+				return sdf.parse(value.toString());
+			} catch(Exception ex){
+				try{
+					sdf = new SimpleDateFormat("HH:mm:ss");
+					return sdf.parse(value.toString());
+				} catch(Exception exc){
+				}
+			} 
+			return null;
+		}
+	}
 }
