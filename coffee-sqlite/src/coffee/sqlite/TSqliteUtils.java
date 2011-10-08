@@ -1,6 +1,7 @@
 package coffee.sqlite;
 
 import java.lang.reflect.Field;
+import java.sql.ResultSet;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -9,7 +10,6 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import android.database.Cursor;
 import coffee.sqlite.annotation.Column;
 import coffee.sqlite.annotation.Entity;
 import coffee.sqlite.annotation.Id;
@@ -164,10 +164,10 @@ public class TSqliteUtils extends TUtils{
 	}
 	
 	// 将ResultSet组装成List 
-	public static <T> List<T> processResultSetToList(Cursor rs,Class<T> clazz) throws Exception{
+	public static <T> List<T> processResultSetToList(ResultSet rs,Class<T> clazz) throws Exception{
 		List<T> ls = new ArrayList<T>();
 		Field[] fields = clazz.getDeclaredFields();
-		while (rs.moveToNext()) {
+		while (rs.next()) {
 			T tt = clazz.newInstance();
 			for (Field field : fields) {
 				try {
@@ -175,17 +175,18 @@ public class TSqliteUtils extends TUtils{
 						continue;
 					}
 					Object value = null;
-					int columnIndex = rs.getColumnIndex(field.getName());
+//					int columnIndex = rs.getColumnIndex(field.getName());
+					String columnName = getColumnName(clazz, field.getName());
 					try{
 						switch(TypeUtils.getMappedType(field.getType())){
 							case Long : 
-								value = Long.valueOf(rs.getLong(columnIndex));
+								value = Long.valueOf(rs.getLong(columnName));
 								break;
 							case Integer :
-								value = Integer.valueOf(rs.getInt(columnIndex));
+								value = Integer.valueOf(rs.getInt(columnName));
 								break;
 							default:
-								value = rs.getString(columnIndex);
+								value = rs.getString(columnName);
 								break;
 						}
 					}catch(Exception e){//如果仅仅查询Class的部分字段
@@ -212,13 +213,17 @@ public class TSqliteUtils extends TUtils{
 	
 	
 	// 单列查询
-	public static List<String> processToStringList(Cursor rs){
+	public static List<String> processToStringList(ResultSet rs){
 		List<String> lst = new ArrayList<String>();
-		while (rs.moveToNext()) {
-			String val = rs.getString(0);
-			lst.add(val);
+		try{
+			while (rs.next()) {
+				String val = rs.getString(0);
+				lst.add(val);
+			}
+			rs.close();
+		}catch(Exception e){
+			e.printStackTrace();
 		}
-		rs.close();
 		return lst;
 	}
 	
