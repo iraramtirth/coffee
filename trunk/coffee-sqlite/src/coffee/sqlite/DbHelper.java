@@ -1,71 +1,25 @@
 package coffee.sqlite;
 
+import java.sql.Connection;
+import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 
-import android.content.Context;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteOpenHelper;
-import android.util.Log;
-
-public class DbHelper extends SQLiteOpenHelper {
+public class DbHelper{
 	
-	private Context context;
-	private SQLiteDatabase db;
-	/**
-	 * 默认的数据库名
-	 */
-	private static String DB_NAME = "TEST.DB";
+	private Connection conn;
 	
-	 /**
-     * @param name of the database file, or null for an in-memory database
-     * ---------------------------------------------------------------
-     * 		： [name 用于指定该DbHelper对象用于操作的数据库名称，即只能操作指定的database]
-     * ----------------------------------------------------------------
-     */
-	public DbHelper(Context context, String name){
-		//该操作不会立即生成db文件
-		super(context, name==null? DB_NAME:name, null,1);
-		//* 当调用 getWritableDatabase的时候 才开始创建数据库(db文件)
-		this.context = context;
-		//打开数据库
-		openDatabase(name==null? DB_NAME:name);
-		this.db = getWritableDatabase();
-	}
-	
-	/**
-	
-	/**
-	 * {@link #getWritableDatabase()}
-	 * Create and/or open a database that will be used for reading and writing.
-	 * 数据库创建， onCreate执行， 注意该方法只执行一次
-	 */
-	@Override
-	public void onCreate(SQLiteDatabase db) {
-		this.db = db;	
-		//该代码仅执行一次
-		//.....
-	}
-
-	@Override
-	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-		//db.execSQL("drop table if exists user");
-	}
-	
-	
-	///////// 以下是扩展方法 \\\\\\\\\\\\\\\\\\
 	/**
 	 * 打开数据库 
 	 */
 	public void openDatabase(String dbname){
-		this.getWritableDatabase();//创建db文件
+		//this.getWritableDatabase();//创建db文件
 	}
 	/**
 	 * 删除数据库 
 	 */
 	public void deleteDateBase(String dbname){
-		context.deleteDatabase(dbname);
+		//context.deleteDatabase(dbname);
 	}
 	/**
 	 * 按照执行的beanClass创建数据库
@@ -74,7 +28,7 @@ public class DbHelper extends SQLiteOpenHelper {
 	public void createTable(Class<?> beanClass){
 		try {
 			String sql = TSqliteUtils.generateTableSql(beanClass);
-			db.execSQL(sql);
+			//conn.execSQL(sql);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -84,7 +38,7 @@ public class DbHelper extends SQLiteOpenHelper {
 	 */
 	public void dropTable(Class<?> beanClass){
 		String tableName = TSqliteUtils.getTableName(beanClass);
-		db.execSQL("drop table " + tableName);
+		//conn.execSQL("drop table " + tableName);
 	}
 	
 	/**
@@ -94,8 +48,7 @@ public class DbHelper extends SQLiteOpenHelper {
 		String sql = null;
 		try {
 			sql = TSqliteUtils.getInsertSql(bean);
-			Log.e("DEBUG", sql);
-			db.execSQL(sql);
+			//conn.execSQL(sql);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -105,7 +58,7 @@ public class DbHelper extends SQLiteOpenHelper {
 	 */
 	public <T> void delete(Class<T> beanClass, long pk){
 		String tableName = TSqliteUtils.getTableName(beanClass); 
-		db.delete(tableName, "id=?", new String[]{pk+""});
+		//conn.delete(tableName, "id=?", new String[]{pk+""});
 	}
 	/**
 	 * 更新记录
@@ -113,7 +66,7 @@ public class DbHelper extends SQLiteOpenHelper {
 	public <T> void update(T bean){
 		try {
 			String sql = TSqliteUtils.getUpdateSql(bean);
-			db.execSQL(sql);
+			//conn.execSQL(sql);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -123,11 +76,11 @@ public class DbHelper extends SQLiteOpenHelper {
 	 * 查询记录 
 	 */
 	public <T> T queryForObject(Class<T> beanClass, int id){
-		Cursor c = null;
+		ResultSet c = null;
 		try {
 			String tableName = TSqliteUtils.getTableName(beanClass);
 			String sql = "select * from " + tableName +" where id=?";
-			c = db.rawQuery(sql, new String[]{id+""});
+			//c = conn.rawQuery(sql, new String[]{id+""});
 			List<T> lst = TSqliteUtils.processResultSetToList(c, beanClass);
 			if(lst.size() > 0){
 				return lst.get(0);
@@ -136,7 +89,7 @@ public class DbHelper extends SQLiteOpenHelper {
 			e.printStackTrace();
 		} finally{
 			if(c != null){
-				c.close();
+				//c.close();
 			}
 		}
 		return null;
@@ -157,16 +110,16 @@ public class DbHelper extends SQLiteOpenHelper {
 	 */
 	public <T> List<T> queryForList(String sql,Class<T> beanClass){
 		List<T> lst = new ArrayList<T>();
-		Cursor c = null;
+		ResultSet c = null;
 		try {
-			c = db.rawQuery(sql, new String[]{});
+			//c = conn.rawQuery(sql, new String[]{});
 			lst = TSqliteUtils.processResultSetToList(c, beanClass);
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally{
-			if(c != null && !c.isClosed()){
-				c.close();
-			}
+//			if(c != null && !c.isClosed()){
+//				c.close();
+//			}
 		}
 		return lst;
 	}
@@ -176,9 +129,9 @@ public class DbHelper extends SQLiteOpenHelper {
 	public List<String> queryForList(String sql){
 		List<String> lst = new ArrayList<String>();
 		try {
-			Cursor c = db.rawQuery(sql, new String[]{});
-			lst = TSqliteUtils.processToStringList(c);
-			c.close();
+//			ResultSet c = conn.rawQuery(sql, new String[]{});
+//			lst = TSqliteUtils.processToStringList(c);
+//			c.close();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -194,11 +147,11 @@ public class DbHelper extends SQLiteOpenHelper {
 		T colValue = null;
 		try {
 			String value = null;
-			Cursor c = db.rawQuery(sql, new String[]{});
-			if(c.moveToNext()){
-				value = c.getString(0);
-			}
-			c.close();
+			//ResultSet c = conn.rawQuery(sql, new String[]{});
+//			if(c.next()){
+//				value = c.getString(0);
+//			}
+			//c.close();
 			if("null".equals(colValue)){
 				return null;
 			}
@@ -224,7 +177,7 @@ public class DbHelper extends SQLiteOpenHelper {
 	
 	public void execSQL(String sql){
 		try{
-			db.execSQL(sql);
+			//conn.execSQL(sql);
 		}catch(Exception e){
 			e.printStackTrace();
 		}
@@ -234,8 +187,8 @@ public class DbHelper extends SQLiteOpenHelper {
 	 * 关闭数据库
 	 */
 	public void close(){
-		if(this.db != null){
-			this.db.close();
+		if(this.conn != null){
+			//this.conn.close();
 		}
 	}
 	

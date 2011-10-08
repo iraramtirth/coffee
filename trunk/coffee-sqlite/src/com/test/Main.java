@@ -6,8 +6,6 @@ import java.sql.Statement;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import coffee.sqlite.DbHelper;
-
 public class Main {
 	
 	public static void main(String[] args) {
@@ -21,8 +19,6 @@ public class Main {
 //			1317735900000</startTime><endTime>1317909540000</endTime>
 			System.out.println(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date(1317735900000L)));
 			System.out.println(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse("2011-10-04 21:45:00").getTime());
-			DbHelper helper = new DbHelper(null, null);
-			System.out.println(helper);
 			
 //			SQLiteDatabase db = new SQLiteDatabase
 			
