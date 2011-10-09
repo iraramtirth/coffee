@@ -19,8 +19,8 @@ public class Main {
 //			1317735900000</startTime><endTime>1317909540000</endTime>
 			System.out.println(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date(1317735900000L)));
 			System.out.println(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse("2011-10-04 21:45:00").getTime());
-			
 //			SQLiteDatabase db = new SQLiteDatabase
+		
 			
 		} catch (Exception e) {
 			e.printStackTrace();
