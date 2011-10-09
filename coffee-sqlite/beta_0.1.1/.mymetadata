@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project-module
+  type="WEB"
+  name="coffee-sqlite"
+  id="myeclipse.1317386816564"
+  context-root="/sqlite"
+  j2ee-spec="6.0"
+  archive="coffee-sqlite.war">
+  <attributes>
+    <attribute name="webrootdir" value="WebRoot" />
+  </attributes>
+</project-module>
+
