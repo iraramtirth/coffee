@@ -1,14 +1,14 @@
-package org.coffee.jdbc.dao;
+package coffee.sqlite.dao;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 
-import org.coffee.jdbc.Pager;
+import coffee.sqlite.Pager;
 /**
  * 系统DAO的公共/通用父类接口 
- * @author wangtao
+ * @author coffee
  */
 public interface TDao {
 	//获取当前数据库连接
