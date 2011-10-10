@@ -1,4 +1,4 @@
-package org.coffee.jdbc.dao.impl;
+package coffee.sqlite.dao.impl;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -12,24 +12,16 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import net.sf.ehcache.Cache;
-import net.sf.ehcache.CacheManager;
-import net.sf.ehcache.Element;
+import coffee.sqlite.Pager;
+import coffee.sqlite.TSqliteUtils;
+import coffee.sqlite.dao.TDao;
 
-import org.coffee.jdbc.Configuration;
-import org.coffee.jdbc.Pager;
-import org.coffee.jdbc.dao.TDao;
-import org.coffee.jdbc.dao.util.TUtils;
 
 public class TDaoImpl implements TDao{
 	/**
 	 * 当前数据库连接
 	 */
 	protected Connection conn;
-	/**
-	 * 缓存管理器
-	 */
-	protected CacheManager cm;
 	
 	private static Logger log = Logger.getLogger("jdbc");
 	static{
@@ -51,7 +43,7 @@ public class TDaoImpl implements TDao{
 	@Override
 	public <T> void delete(long id, Class<T> clazz) throws SQLException {
 		try {
-			String sql = "delete from " + TUtils.getTableName(clazz) + " where id=" + id;
+			String sql = "delete from " + TSqliteUtils.getTableName(clazz) + " where id=" + id;
 			Statement stmt = conn.createStatement();
 			stmt.executeUpdate(sql);
 			stmt.close();
@@ -70,7 +62,7 @@ public class TDaoImpl implements TDao{
 			return;
 		}
 		try {
-			String sql = "delete from "+TUtils.getTableName(clazz) +" where id=?";
+			String sql = "delete from "+TSqliteUtils.getTableName(clazz) +" where id=?";
 			conn.setAutoCommit(false);
 			PreparedStatement pstmt = conn.prepareStatement(sql);
 			for(String id : ids){
@@ -151,32 +143,7 @@ public class TDaoImpl implements TDao{
 			e.printStackTrace();
 		}
 	}
-	/**
-	 * 查询实体；首次查询的时候缓存
-	 */
-	@SuppressWarnings("unchecked")
-	@Override
-	public <T> T loadForEntity(Object id, Class<T> clazz) {
-		Object t = null;
-		try {
-			String cacheName = clazz.getName();
-			// 创建缓存 cacheName
-			System.out.println("创建缓存..."+cacheName);
-			Cache cache = cm.getCache(cacheName);
-			//cache = new Memory
-			if(cache != null){
-				System.out.println("从缓存中获取实体...");
-				t =  cache.get(id).getObjectValue();
-			}else{
-				t = this.queryForEntity(id, clazz);
-				cm.addCache(cacheName);
-				cm.getCache(cacheName).put(new Element(id, t));
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		return (T)t;
-	}
+	 
 	/**
 	 *  返回 Integer Long  String 等基本数据类型的包装类型 
 	 */
@@ -222,10 +189,10 @@ public class TDaoImpl implements TDao{
 		T t = null;
 		try {
 			t = clazz.newInstance();
-			String sql = "select * from " + TUtils.getTableName(clazz) + " where id = " + id;
+			String sql = "select * from " + TSqliteUtils.getTableName(clazz) + " where id = " + id;
 			Statement stmt = conn.createStatement();
 			ResultSet rs = stmt.executeQuery(sql);
-			List<T> ls = TUtils.processResultSetToList(rs, clazz);
+			List<T> ls = TSqliteUtils.processResultSetToList(rs, clazz);
 			if(ls == null || ls.size() == 0){
 				t = null;
 			}else{
@@ -248,7 +215,7 @@ public class TDaoImpl implements TDao{
 		try {
 			Statement stmt = conn.createStatement();
 			ResultSet rs = stmt.executeQuery(sql);
-			ls = TUtils.processResultSetToList(rs, clazz);
+			ls = TSqliteUtils.processResultSetToList(rs, clazz);
 			rs.close();
 			stmt.close();
 		} catch (Exception e) {
@@ -269,7 +236,7 @@ public class TDaoImpl implements TDao{
 			rs.first();
 			rs.relative((int)start - 1);
 			// 处理resultSet 实现分页查询
-			ls = TUtils.processResultSetToList(rs,clazz);
+			ls = TSqliteUtils.processResultSetToList(rs,clazz);
 			rs.close();
 			stmt.close();
 		} catch (Exception e) {
@@ -316,7 +283,7 @@ public class TDaoImpl implements TDao{
 			throw new SQLException("插入数据失败，实体为null");
 		}
 		try {
-			String sql = TUtils.getInsertSql(t,Configuration.dialect);
+			String sql = TSqliteUtils.getInsertSql(t);
 			Statement stmt = conn.createStatement();
 			stmt.executeUpdate(sql);
 			stmt.close();
@@ -336,10 +303,10 @@ public class TDaoImpl implements TDao{
 			throw new SQLException("插入数据失败，实体为null");
 		}
 		try {
-			String sql = TUtils.getInsertSql(t,Configuration.dialect);
+			String sql = TSqliteUtils.getInsertSql(t);
 			Statement stmt = conn.createStatement();
 			stmt.executeUpdate(sql, Statement.RETURN_GENERATED_KEYS);
-			sql = "select "+TUtils.getSequenceName(t.getClass()) +".currval from dual";
+//			sql = "select "+TSqliteUtils.getSequenceName(t.getClass()) +".currval from dual";
 			stmt.close();
 			// 新创建一个连接 ： 如果直接用stmt(未关闭)，
 			// 则会报出一个 bind variable does not exist
@@ -370,7 +337,7 @@ public class TDaoImpl implements TDao{
 			for(T t : entities){
 				String sql = null;
 				try {
-					sql = TUtils.getInsertSql(t,Configuration.dialect);
+					sql = TSqliteUtils.getInsertSql(t);
 					stmt.addBatch(sql);
 					if(index++ > 10000){
 						stmt.executeBatch();
@@ -390,7 +357,7 @@ public class TDaoImpl implements TDao{
 	@Override
 	public <T> void update(T t) throws SQLException {
 		try{
-			String sql = TUtils.getUpdateSql(t,Configuration.dialect);
+			String sql = TSqliteUtils.getUpdateSql(t);
 			Statement stmt = conn.createStatement();
 			stmt.executeUpdate(sql);
 			stmt.close();
@@ -427,6 +394,11 @@ public class TDaoImpl implements TDao{
 				conn.close();				
 			}
 		}
+	}
+	@Override
+	public <T> T loadForEntity(Object id, Class<T> clazz) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 	
 
