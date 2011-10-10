@@ -17,7 +17,6 @@ import coffee.sqlite.TSqliteUtils;
 import coffee.sqlite.dao.TDao;
 
 /**
- * 
  * @author coffee
  */
 public class TDaoImpl implements TDao{
