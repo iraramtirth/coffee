@@ -105,6 +105,6 @@ public class TableCreator {
 //	}
 	
 	public static void main(String[] args) {
-//		generateTableSql(GroupRateClientInfoBean.class);
+		generateTableSql(AdminBean.class);
 	}
 }
