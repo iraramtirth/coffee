@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project-module
+  type="WEB"
+  name="android-server"
+  id="myeclipse.1316334675185"
+  context-root="/android-server"
+  j2ee-spec="6.0"
+  archive="android-server.war">
+  <attributes>
+    <attribute name="webrootdir" value="WebRoot" />
+  </attributes>
+</project-module>
+

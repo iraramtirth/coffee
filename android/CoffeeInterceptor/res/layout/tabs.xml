@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	android:layout_width="fill_parent" android:layout_height="fill_parent">
+
+	<!-- 黑名单-短信列表 -->
+	<include android:id="@+id/tab_filter_message" layout="@layout/filter_message"/>
+	<!-- 黑名单-电话列表  -->
+	<include android:id="@+id/tab_filter_phone" layout="@layout/filter_phone"/>
+	<!-- 黑名单-设置  -->
+	<include android:id="@+id/tab_setting" layout="@layout/setting"/>
+</FrameLayout>

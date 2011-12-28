@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	android:layout_width="fill_parent" android:layout_height="fill_parent">
+
+	<!-- 底部 工具按钮 -->
+	<LinearLayout android:id="@+id/lnLayout_bottom_toolsBtn"
+		xmlns:android="http://schemas.android.com/apk/res/android"
+		android:layout_width="fill_parent" android:layout_height="wrap_content"
+		android:orientation="horizontal" android:layout_alignParentBottom="true">
+
+		<CheckBox android:id="@+id/setting_chx" android:layout_width="wrap_content"
+			android:layout_height="wrap_content" />
+
+		<Button android:id="@+id/setting_btn_message" android:text="Message Filter"
+			android:layout_weight="1" android:singleLine="true"
+			android:layout_width="fill_parent" android:layout_height="wrap_content" />
+		<Button android:id="@+id/setting_btn_phone" android:text="Phone Filter"
+			android:layout_weight="1" android:singleLine="true"
+			android:layout_width="fill_parent" android:layout_height="wrap_content" />
+	</LinearLayout>
+
+	<!-- 联系人列表 @android:id/list -->
+	<ListView android:id="@+id/list_contact" android:layout_width="fill_parent"
+		android:layout_height="fill_parent" android:layout_above="@id/lnLayout_bottom_toolsBtn">
+	</ListView>
+
+</RelativeLayout>

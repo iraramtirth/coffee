@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	android:layout_width="fill_parent" android:layout_height="fill_parent">
+
+	<!-- 底部 工具按钮 -->
+	<LinearLayout android:id="@+id/lnLayout_bottom_toolsBtn"
+		xmlns:android="http://schemas.android.com/apk/res/android"
+		android:layout_width="fill_parent" android:layout_height="wrap_content"
+		android:orientation="horizontal" android:layout_alignParentBottom="true">
+
+		<CheckBox android:id="@+id/filter_phone_chx" android:layout_width="wrap_content"
+			android:layout_height="wrap_content" />
+
+		<Button android:id="@+id/filter_phone_btn" android:text="Cancal Filter"
+			android:layout_weight="1" android:singleLine="true"
+			android:layout_width="fill_parent" android:layout_height="wrap_content" />
+	</LinearLayout>
+
+	<!-- 黑名单phone列表 -->
+	<ListView android:id="@+id/list_filter_phone" android:layout_width="fill_parent"
+		android:layout_height="fill_parent" android:layout_above="@id/lnLayout_bottom_toolsBtn">
+	</ListView>
+
+</RelativeLayout>
