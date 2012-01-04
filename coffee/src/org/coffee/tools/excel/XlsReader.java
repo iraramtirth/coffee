@@ -48,7 +48,7 @@ public class XlsReader {
 		} catch (IOException e) {
 			String msg = "读取文件失败...";
 			msg += e.getMessage();
-			//throw new IOException(msg);
+			System.out.println(msg);
 		}
 	}
 	

@@ -5,7 +5,7 @@ import java.lang.reflect.Field;
 
 /**
  * 反射用到的工具 
- * @author 王涛
+ * @author coffee
  */
 public class TUtils {
 	/**
