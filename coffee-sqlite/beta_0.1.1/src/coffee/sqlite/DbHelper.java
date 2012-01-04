@@ -27,7 +27,7 @@ public class DbHelper{
 	 */
 	public void createTable(Class<?> beanClass){
 		try {
-			String sql = TSqliteUtils.generateTableSql(beanClass);
+			//String sql = TSqliteUtils.generateTableSql(beanClass);
 			//conn.execSQL(sql);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -37,7 +37,7 @@ public class DbHelper{
 	 * 
 	 */
 	public void dropTable(Class<?> beanClass){
-		String tableName = TSqliteUtils.getTableName(beanClass);
+		//String tableName = TSqliteUtils.getTableName(beanClass);
 		//conn.execSQL("drop table " + tableName);
 	}
 	
@@ -45,9 +45,8 @@ public class DbHelper{
 	 * 新增记录
 	 */
 	public <T> void insert(T bean){
-		String sql = null;
 		try {
-			sql = TSqliteUtils.getInsertSql(bean);
+			//String sql = TSqliteUtils.getInsertSql(bean);
 			//conn.execSQL(sql);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -57,7 +56,7 @@ public class DbHelper{
 	 * 删除记录 
 	 */
 	public <T> void delete(Class<T> beanClass, long pk){
-		String tableName = TSqliteUtils.getTableName(beanClass); 
+		//String tableName = TSqliteUtils.getTableName(beanClass); 
 		//conn.delete(tableName, "id=?", new String[]{pk+""});
 	}
 	/**
@@ -65,7 +64,7 @@ public class DbHelper{
 	 */
 	public <T> void update(T bean){
 		try {
-			String sql = TSqliteUtils.getUpdateSql(bean);
+			//String sql = TSqliteUtils.getUpdateSql(bean);
 			//conn.execSQL(sql);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -78,8 +77,8 @@ public class DbHelper{
 	public <T> T queryForObject(Class<T> beanClass, int id){
 		ResultSet c = null;
 		try {
-			String tableName = TSqliteUtils.getTableName(beanClass);
-			String sql = "select * from " + tableName +" where id=?";
+			//String tableName = TSqliteUtils.getTableName(beanClass);
+			//String sql = "select * from " + tableName +" where id=?";
 			//c = conn.rawQuery(sql, new String[]{id+""});
 			List<T> lst = TSqliteUtils.processResultSetToList(c, beanClass);
 			if(lst.size() > 0){

@@ -10,10 +10,9 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import coffee.sqlite.annotation.Bean;
 import coffee.sqlite.annotation.Column;
-import coffee.sqlite.annotation.Entity;
 import coffee.sqlite.annotation.Id;
-import coffee.sqlite.annotation.Table;
 import coffee.sqlite.annotation.Transient;
 import coffee.util.common.TUtils;
 
@@ -95,9 +94,9 @@ public class TSqliteUtils extends TUtils{
 	 *  获取表名
 	 */
 	public static <T> String getTableName(Class<T> beanClass) {
-		if (beanClass.getAnnotation(Entity.class) != null
-				&& beanClass.getAnnotation(Table.class) != null) {
-			return beanClass.getAnnotation(Table.class).name();
+		Bean bean = beanClass.getAnnotation(Bean.class);
+		if (bean != null) {
+			return bean.name();
 		} else {
 			return beanClass.getSimpleName().toLowerCase();
 		}
