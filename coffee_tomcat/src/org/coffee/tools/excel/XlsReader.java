@@ -56,9 +56,9 @@ public class XlsReader {
 	/**
 	 * @param columns
 	 *           	 ：	列名称 ; 支持不连续的列
-	 * @param ix	:	索引所在的起始行
-	 * @param iy	:	索引所在的起始列
-	 * @param cx	:	内容起始行，列索引已经根据ix,iy保存下来了
+	 * @param ix	:	索引所在的起始行 , 从 0开始
+	 * @param iy	:	索引所在的起始列, 从0开始
+	 * @param cx	:	内容起始行， 从0开始 (列索引已经根据ix,iy保存下来了)
 	 * @return	 	: 	List<Map
 	 */
 	public List<Map<String,String>> query(String[] columns, int ix, int iy, int cx) {
