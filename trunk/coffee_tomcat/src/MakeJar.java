@@ -7,7 +7,7 @@ public class MakeJar {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		makeJdbc();
+		makeExcel();
 	}
 	
 	
