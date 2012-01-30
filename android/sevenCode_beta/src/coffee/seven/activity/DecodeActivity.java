@@ -46,6 +46,8 @@ public class DecodeActivity extends BaseActivity{
 	    		int position = cityList.indexOf(getCity());
 	    		if(position != -1){
 	    			mSpinner.setSelection(position);
+	    		}else{
+	    			
 	    		}
 	    	}
 	    };

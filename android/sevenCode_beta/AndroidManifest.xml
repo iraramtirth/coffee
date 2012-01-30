@@ -33,6 +33,7 @@
 		
 		<activity android:name=".activity.base.TabFlipperActivity" android:screenOrientation="portrait"/>
 		
+		<activity android:name=".activity.DecodeActivity" android:screenOrientation="portrait"/>
 		<activity android:name=".activity.SaleNowActivity" android:screenOrientation="portrait"/>
 		<activity android:name=".activity.SaleNextActivity" android:screenOrientation="portrait"/>
 		<activity android:name=".activity.SaleDetailsActivity" android:screenOrientation="portrait"/>

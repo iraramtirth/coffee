@@ -57,22 +57,21 @@ public class LocationAsyncTask extends AsyncTask<Activity, Void, Location> {
 		criteria.setPowerRequirement(Criteria.POWER_LOW);// 电量的消耗等级
 		String provider = locationmanager.getBestProvider(criteria, true);// 得到最适合的provider。
 		System.out.println(provider + "provider");
-		Location location = locationmanager
+		this.mLocation = locationmanager
 				.getLastKnownLocation(LocationManager.GPS_PROVIDER);// 获得gps的位置。
-		System.out.println(location + "location");
-		if (location == null) {
-			location = locationmanager
+		System.out.println(this.mLocation + "location");
+		if (this.mLocation == null) {
+			this.mLocation = locationmanager
 					.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
 		}
 		return this.mLocation;
 	}
 
 	protected void onPostExecute(Location location) {
-		Geocoder localGeocoder;
 		if (location != null) {
 			this.latitude = location.getLatitude();
 			this.longitude = location.getLongitude();
-			localGeocoder = new Geocoder(context, Locale.CHINA);
+			Geocoder localGeocoder = new Geocoder(context, Locale.CHINA);
 			List<Address> addrList = null;
 			try {
 				addrList = localGeocoder.getFromLocation(this.latitude,
