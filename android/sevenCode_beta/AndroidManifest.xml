@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+	package="coffee.seven" android:versionCode="20" android:versionName="好优限时抢 v1.2">
+	<uses-sdk android:minSdkVersion="7" />
+
+	<uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+	<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+	<uses-permission android:name="android.permission.CALL_PHONE"/> 
+	<uses-permission android:name="android.permission.GET_TASKS"/>
+	<uses-permission android:name="android.permission.INTERNET"/>
+	<uses-permission android:name="android.permission.READ_LOGS"/>
+	<uses-permission android:name="android.permission.READ_PHONE_STATE"/>
+	<uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS"/>
+	<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+	<uses-permission android:name="android.permission.WRITE_OWNER_DATA"/>
+	<uses-permission android:name="android.permission.VIBRATE"/>
+	<uses-permission android:name="com.android.launcher.permission.INSTALL_SHORTCUT"/>
+	<uses-permission android:name="com.android.launcher.permission.READ_SETTINGS"/>
+	
+	<application android:name="coffee.seven.App" android:icon="@drawable/icon" android:label="@string/app_label">
+		<service android:name="coffee.seven.service.SubRemindService"/>
+		<activity android:name=".activity.StartupActivity"
+			android:label="@string/app_label" android:screenOrientation="portrait"
+			android:launchMode="singleTop">
+			<intent-filter>
+				<action android:name="android.intent.action.MAIN" />
+				<category android:name="android.intent.category.LAUNCHER" />
+			</intent-filter>
+		</activity>
+		<activity android:name=".activity.MainTabActivity" android:screenOrientation="portrait"
+		    android:launchMode="singleTask"/>
+		
+		<activity android:name=".activity.base.TabFlipperActivity" android:screenOrientation="portrait"/>
+		
+		<activity android:name=".activity.SaleNowActivity" android:screenOrientation="portrait"/>
+		<activity android:name=".activity.SaleNextActivity" android:screenOrientation="portrait"/>
+		<activity android:name=".activity.SaleDetailsActivity" android:screenOrientation="portrait"/>
+		
+		<activity android:name=".activity.OrderSubmitActivity" android:screenOrientation="portrait" android:windowSoftInputMode=""/>
+		<activity android:name=".activity.OrderSuccessActivity" android:screenOrientation="portrait"/>
+		<activity android:name=".activity.OrderHomeActivity" android:screenOrientation="portrait"/>
+		<activity android:name=".activity.OrderListDetailActivity" android:screenOrientation="portrait"/>
+		
+		<activity android:name=".activity.MmbBrowserActivity" android:screenOrientation="portrait"/>
+		<activity android:name="coffee.seven.activity.HelpActivity" android:screenOrientation="portrait"/>
+		<receiver android:name=".receiver.ActionReceiver">
+            <intent-filter>  
+                <action android:name="android.intent.action.BOOT_COMPLETED"/>  
+                <category android:name="android.intent.category.HOME" />  
+                <action android:name="ACTION_AALE_SUB_REMIND"/>
+                <action android:name="ACTION_REMAIN_TIME_ERROR"/>
+            </intent-filter>  
+		</receiver>
+		<receiver android:name="coffee.seven.activity.SaleNowActivity$RemainCountReceiver">
+            <intent-filter>  
+                <action android:name="ACTION_SALE_REMAIN_COUNT_REDUCE"/>
+            </intent-filter>  
+		</receiver>
+		
+		<activity android:name=".activity.TestActivity">
+		    <intent-filter>
+				<action android:name="android.intent.action.MAIN" />
+				<category android:name="android.intent.category.LAUNCHER" />
+			</intent-filter>
+		</activity>
+		
+	</application>
+</manifest>
