@@ -71,10 +71,11 @@ public class LocationAsyncTask extends AsyncTask<Activity, Void, Location> {
 		if (location != null) {
 			this.latitude = location.getLatitude();
 			this.longitude = location.getLongitude();
-			Geocoder localGeocoder = new Geocoder(context, Locale.CHINA);
+			//java.io.IOException: Unable to parse response from server
+			Geocoder mGeocoder = new Geocoder(context, Locale.CHINA);
 			List<Address> addrList = null;
 			try {
-				addrList = localGeocoder.getFromLocation(this.latitude,
+				addrList = mGeocoder.getFromLocation(this.latitude,
 						this.longitude, 1);
 				this.city = addrList.get(0).getAdminArea();
 				if (city != null && city.endsWith("市")) {
