@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+	 限时抢购 - 大图
+	 注意该组件的父高度是定死的。所以这个高度用fill_parent
+-->
+<RelativeLayout
+  	xmlns:android="http://schemas.android.com/apk/res/android"
+  	android:id="@+id/time_limited_home_list_item"
+	android:layout_height="wrap_content"
+	android:layout_width="wrap_content">
+	 <!-- 图片表述 -->
+	 <TextView android:id="@+id/gallery_image_alt"
+	 	android:layout_height="wrap_content"
+	 	android:layout_width="wrap_content"
+	 	android:maxWidth="120dip"
+	 	android:layout_alignParentBottom="true"
+	 	android:text="平板电脑.."
+	 	android:textSize="13sp"
+	 	android:textColor="#000000"
+	 	android:layout_centerHorizontal="true"
+	 	android:singleLine="true"
+	 	android:ellipsize="end"/>
+	 <!-- 图片 -->
+	 <ImageView android:id="@+id/gallery_image_url"
+	 	android:layout_height="270dip"
+	 	android:layout_width="208dip"
+	 	android:layout_centerInParent="true"
+	 	android:layout_above="@id/gallery_image_alt"
+	 	android:src="@drawable/sale_detail_image_bg_small"
+	 	android:layout_marginTop="2dip"
+	 	android:scaleType="fitXY"/>
+</RelativeLayout>

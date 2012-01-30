@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_label">好优</string>
+    <string name="app_name">好优限时抢</string>
+    <string name="loading_text">正在载入抢购信息...</string>
+   	
+        
+    <string name="info_sub_success">订阅本活动后，在活动开始时我们将通过手机铃声及震动提醒您，请注意查看！</string>    
+    <string name="info_sub_already">您已订阅本活动，在活动开始时我们将通过手机铃声及震动提醒您，请注意查看！</string>    
+    <string name="order_success_title">恭喜! 订单提交成功</string>
+    <string name="order_success_info_1">买卖宝客服小姐将在五分钟内与您联系确认订单信息请留意我们的呼出电话为<font color="#ff7200">0510-85381919</font></string>
+    <string name="order_success_info_2">您可以在"我的订单"中追踪的订单详情信息，或拨打服务热线400-886-4966</string>
+    <string name="order_code">订单号</string>
+    <string name="order_total_price">订单总金额</string>
+    <string name="order_status">订单状态</string>
+    <string name="goods_name">商品名称</string>
+    <string name="goods_count">商品数量</string>
+    <string name="goods_total_price">商品总金额</string>
+    <string name="order_service_price">服务费</string>
+	<string name="customer_name">姓名</string>
+	<string name="customer_phone">电话</string>
+	<string name="customer_address">联系地址</string>
+	<string name="order_status_default">状态查询中</string>	
+	
+	<string name="menu_item_0">购物咨询</string>
+	<string name="menu_item_1">版本</string>
+	<string name="menu_item_2">进入买卖宝商城</string>
+	<string name="menu_item_3">退出</string>
+	<string name="menu_content_3">确认退出好优限时抢？</string>
+	
+	<string name="sale_home_remain_time_tag_0">倒计时:</string>
+	<string name="sale_home_remain_time_tag_1">距离开始:</string>
+	<string name="more_help_0">好优限时抢是买卖宝商城（http://mmb.cn）面向android（安卓）手机用户推出的一款限时抢购客户端。买卖宝商城是国内最大的、腾讯QQ战略合作的手机购物网站。</string>	
+	<string name="more_help_1">1.全国免运费货到付款，收到货再付款，无风险。\n2.十天内包退换，售后无忧。\n3.贴心服务：您下单抢购后买卖宝的客服人员会通过短信、电话与您联系确认订单。</string>
+	
+	<string name="help_dialog_title">好优限时抢功能简介</string>
+	<string name="help_dialog_10">天天低价抢名品\n货到付款最放心</string>
+	<string name="help_dialog_11">\t\t好优限时抢是买卖宝商城（http://mmb.cn）面向android（安卓）手机用户推出的一款限时抢购客户端。买卖宝商城是国内最大的、腾讯QQ战略合作的手机购物网站。
+	</string>
+	<string name="help_dialog_2_title">购物政策</string>
+	<string name="help_dialog_20">1.全国免运费货到付款，收到货再付款，无风险。\n
+	 			2.十天内包退换，售后无忧。\n
+	 			3.贴心服务：您下单抢购后买卖宝的客服人员会通过短信、电话与您联系确认订单
+	</string>
+</resources>
