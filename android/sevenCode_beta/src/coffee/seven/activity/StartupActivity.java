@@ -12,9 +12,7 @@ import android.os.Bundle;
 import android.view.Window;
 import android.widget.Toast;
 import coffee.seven.R;
-import coffee.seven.action.SaleUtils;
 import coffee.seven.service.SubRemindService;
-
 /**
  * 程序启动界面
  * @author wangtao
@@ -43,7 +41,7 @@ public class StartupActivity extends Activity{
 				@Override
 				protected Void doInBackground(Void... params) {
 					//更新
-					SaleUtils.saleService.updateSaleAll(context);
+					//saleService.updateSaleAll(context);
 					//开启服务
 					Intent intent = new Intent();
 					intent.setClass(context, SubRemindService.class);
