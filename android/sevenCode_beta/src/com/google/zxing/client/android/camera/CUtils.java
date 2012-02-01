@@ -144,22 +144,27 @@ public class CUtils {
 	 * 停止预览
 	 */
 	public static void stopPreview() {
-		if (mCamera != null && previewing) {
+		if (mCamera != null) {
 			mCamera.stopPreview();
-			previewing = false;
+			mCamera = null;
 		}
+		previewing = false;
 	}
 
 	/**
 	 * 请求聚焦
 	 */
 	public static void requestAutoFocusAndPreview() {
-		if (mCamera != null) {
-			if(!previewing){
-				mCamera.startPreview();
-				previewing = true;
+		try{
+			if (mCamera != null) {
+				if(!previewing){
+					mCamera.startPreview();
+					previewing = true;
+				}
+				mCamera.autoFocus(autoFocusCallback);
 			}
-			mCamera.autoFocus(autoFocusCallback);
+		}catch(Exception e){
+			e.printStackTrace();
 		}
 	}
 
