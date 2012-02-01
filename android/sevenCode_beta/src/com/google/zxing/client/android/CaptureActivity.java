@@ -53,7 +53,6 @@ public final class CaptureActivity extends Activity implements
 		viewfinderView = (ViewfinderView) findViewById(R.id.viewfinder_view);
 		surfaceView = (SurfaceView) findViewById(R.id.preview_view);
 		resultView = findViewById(R.id.result_view);
-		resultView.setVisibility(View.GONE);
 		
 		SurfaceHolder surfaceHolder = surfaceView.getHolder();
 		surfaceHolder.setType(SurfaceHolder.SURFACE_TYPE_PUSH_BUFFERS);

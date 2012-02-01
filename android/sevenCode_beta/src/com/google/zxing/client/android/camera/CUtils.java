@@ -66,6 +66,7 @@ public class CUtils {
 			public void handleMessage(final Message message) {
 				switch (message.what) {
 				case R.id.auto_focus:
+					canEncoding = true;
 					requestAutoFocusAndPreview();
 					break;
 				case R.id.restart_preview:
@@ -86,7 +87,7 @@ public class CUtils {
 							barcode);
 					break;
 				case R.id.decode_failed:
-					setOneShotPreviewCallback();
+					//setOneShotPreviewCallback();
 					break;
 				}
 			}
@@ -229,6 +230,7 @@ public class CUtils {
 		switch (previewFormat) {
 		case PixelFormat.YCbCr_420_SP:
 		case PixelFormat.YCbCr_422_SP:
+			//获取一个指定大小的灰度图
 			return new PlanarYUVLuminanceSource(data, width, height, rect.left,
 					rect.top, rect.width(), rect.height(), false);
 		default:
@@ -241,7 +243,11 @@ public class CUtils {
 				+ previewFormat + '/' + previewFormatString);
 	}
 
-	
+	/**
+	 * @param data ： 图像数据
+	 * @param width : 宽度  320 [注意此参数指的是langscape模式下的值]
+	 * @param height ： 高度 240 
+	 */
 	private static void decode(byte[] data, int width, int height) {
 		System.out.println("正在解码....");
 	    long start = System.currentTimeMillis();
