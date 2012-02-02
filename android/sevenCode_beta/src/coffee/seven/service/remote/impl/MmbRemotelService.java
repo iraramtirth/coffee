@@ -180,7 +180,7 @@ public class MmbRemotelService implements IRemoteService {
 		String query = "?" + IService.QUERY_KIND_ALL;
 		String json = new HttpClient().get(linkUrl + query, 0) + "";
 		json = "{sale=}";
-		JSONObject
+//		JSONObject
 	}
 	
 }
