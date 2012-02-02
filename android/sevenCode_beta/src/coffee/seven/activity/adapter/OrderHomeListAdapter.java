@@ -16,7 +16,7 @@ import coffee.seven.SysConfig;
 import coffee.seven.action.SaleService;
 import coffee.seven.action.SaleService.ImageType;
 import coffee.seven.bean.OrderBean;
-import coffee.seven.service.remote.IMmbService;
+import coffee.seven.service.remote.IService;
 
 /**
  * order列表
@@ -88,7 +88,7 @@ public class OrderHomeListAdapter extends BaseAdapter {
 		}
 		//表单ID != 0 && phone不为空
 		if(StringUtils.isNotEmpty(order.getCustomerPhone()) && order.getOrderId() != null){
-			String resUrl = SysConfig.SERVER_URL + "?action="+IMmbService.GET_ORDER_STATUS
+			String resUrl = SysConfig.SERVER_URL + "?action="+IService.GET_ORDER_STATUS
 				+"&phone="+order.getCustomerPhone()+"&code="+order.getOrderId();
 			new AsyncLoader() {
 				@Override

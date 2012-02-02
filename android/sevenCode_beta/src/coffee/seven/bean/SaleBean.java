@@ -15,7 +15,7 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 /**
- * 促销 
+ * 活动
  * @author wangtao
  */
 @XmlRootElement(name="sale")
@@ -23,6 +23,9 @@ import android.os.Parcelable;
 public class SaleBean extends Observable implements Parcelable{
 	@Id(isAuto=false)
 	private int id;				//活动的主键[非自增-从服务器端获取]
+	
+	private String name;		//活动名称
+	
 	@Column(length=30)
 	private String goodsName;	//商品名称
 	private long startTime;		//促销的起始时间 ：注意返回long
@@ -64,6 +67,14 @@ public class SaleBean extends Observable implements Parcelable{
 	public void setId(int id) {
 		this.id = id;
 	}
+	
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
+	}
+
 	public String getGoodsName() {
 		return goodsName;
 	}

@@ -1,11 +1,10 @@
 package coffee.seven.activity.base;
 
+import android.os.Bundle;
 import coffee.seven.activity.HelpActivity;
 import coffee.seven.activity.OrderHomeActivity;
-import coffee.seven.activity.SaleNextActivity;
-import coffee.seven.activity.SaleNowActivity;
-
-import android.os.Bundle;
+import coffee.seven.activity.ScanMainActivity;
+import coffee.seven.activity.SearchMainActivity;
 
 public class TabFlipperActivity extends FlipperActivity {
 
@@ -18,10 +17,10 @@ public class TabFlipperActivity extends FlipperActivity {
 	protected void onCreate(Bundle bundle) {
 		super.onCreate(bundle);
 		String className =  getIntent().getStringExtra(ACTIVITY_CLASS_NAME);
-		if(SaleNowActivity.class.getName().equals(className)){
+		if(ScanMainActivity.class.getName().equals(className)){
 			saleNowActivity = this;
 		}
-		if(SaleNextActivity.class.getName().equals(className)){
+		if(SearchMainActivity.class.getName().equals(className)){
 			saleNextActivity = this;
 		}
 		if(OrderHomeActivity.class.getName().equals(className)){

@@ -6,7 +6,14 @@ import coffee.seven.bean.OrderBean;
 import coffee.seven.bean.SaleBean;
 import coffee.seven.bean.Sales;
 
-public interface IMmbRemoteService extends IMmbService {
+public interface IRemoteService extends IService {
+	
+	
+	/**
+	 * 查询 所有的分类信息。
+	 * 包括 活动类别,热门关键字,购物券类别，以及该类别下的购物卷
+	 */
+	public void queryKindAll();
 	
 	//method
 	public long getServerTime() throws Exception;

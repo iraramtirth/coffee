@@ -3,7 +3,6 @@ package coffee.seven.action;
 import java.util.List;
 
 import org.droid.util.RUtils;
-import org.droid.util.lang.DateUtils;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -30,11 +29,11 @@ public class MmbSystem {
 		List<SaleBean> salesNext = SaleUtils.saleService.getSaleBaseListNext();
 		String content2 = null;
 		if(salesNext.size() > 0){
-			SaleBean sale = salesNext.get(0);
+//			SaleBean sale = salesNext.get(0);
 			String str = "下期抢购将在[#时间#]开始，[#商品名#]仅需[#价格#]元，记得到时来看看哦";
-			str = str.replace("#时间#", "<font color=\"#FF2200\">" + DateUtils.format(sale.getStartTime()) + "</font>");
-			str = str.replace("#商品名#", "<font color=\"#FF2200\">" + sale.getGoodsName() + "</font>");
-			str = str.replace("#价格#", "<font color=\"#FF2200\">" + sale.getPrice() + "</font>");
+//			str = str.replace("#时间#", "<font color=\"#FF2200\">" + DateUtils.format(sale.getStartTime()) + "</font>");
+//			str = str.replace("#商品名#", "<font color=\"#FF2200\">" + sale.getGoodsName() + "</font>");
+//			str = str.replace("#价格#", "<font color=\"#FF2200\">" + sale.getPrice() + "</font>");
 			content2 = str;
 		}
 		Integer[] drawableResid = new Integer[]{

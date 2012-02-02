@@ -35,8 +35,7 @@
 		<activity android:name=".activity.base.TabFlipperActivity" android:screenOrientation="portrait"/>
 		
 		<activity android:name=".activity.ScanMainActivity" android:screenOrientation="portrait"/>
-		<activity android:name=".activity.SaleNowActivity" android:screenOrientation="portrait"/>
-		<activity android:name=".activity.SaleNextActivity" android:screenOrientation="portrait"/>
+		<activity android:name=".activity.SearchMainActivity" android:screenOrientation="portrait"/>
 		<activity android:name=".activity.SaleDetailsActivity" android:screenOrientation="portrait"/>
 		
 		<activity android:name=".activity.OrderSubmitActivity" android:screenOrientation="portrait" android:windowSoftInputMode=""/>

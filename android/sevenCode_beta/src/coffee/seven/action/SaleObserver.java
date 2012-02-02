@@ -6,8 +6,6 @@ import java.util.Observable;
 import java.util.Observer;
 
 import coffee.seven.SysConfig;
-import coffee.seven.activity.SaleNextActivity;
-import coffee.seven.activity.SaleNowActivity;
 import coffee.seven.bean.SaleBean;
 
 /**
@@ -48,15 +46,15 @@ public class SaleObserver implements Observer{
 			if(sale.isEnd()){
 				scrollNotifyMap.remove(sale.getId());
 			}
-			SaleNowActivity.context.runOnUiThread(new Runnable() {
-				@Override
-				public void run() {
-					SaleNowActivity.context.refreshScrollText();
-					if(SaleNextActivity.context != null){
-						SaleNextActivity.context.refreshScrollText();
-					}
-				}
-			});
+//			SaleNowActivity.context.runOnUiThread(new Runnable() {
+//				@Override
+//				public void run() {
+//					SaleNowActivity.context.refreshScrollText();
+//					if(SaleNextActivity.context != null){
+//						SaleNextActivity.context.refreshScrollText();
+//					}
+//				}
+//			});
 		}
 	}
 

@@ -26,7 +26,7 @@ import coffee.seven.bean.SaleBean;
 import coffee.seven.bean.Sales;
 import coffee.seven.bean.VersionBean;
 import coffee.seven.service.SubRemindService;
-import coffee.seven.service.remote.IMmbRemoteService;
+import coffee.seven.service.remote.IRemoteService;
 import coffee.seven.service.remote.impl.MmbRemotelService;
 
 /**
@@ -152,7 +152,7 @@ public class SaleService{
 		if(saleDetail == null || saleDetail.getImageList().size() == 0
 				|| saleDetail.getInfoList().size() == 0){
 			//远程获取
-			IMmbRemoteService remoteService = new MmbRemotelService();
+			IRemoteService remoteService = new MmbRemotelService();
 			saleDetail = remoteService.getSaleDetail(saleId);
 			if(saleDetail != null){
 				for(GoodsImageBean image : saleDetail.getImageList()){
@@ -191,7 +191,7 @@ public class SaleService{
 	 * 【远程】获取最新的商品剩余量
 	 */
 	public List<SaleBean> getLastSaleRemainCount() {
-		IMmbRemoteService remoteService = new MmbRemotelService();
+		IRemoteService remoteService = new MmbRemotelService();
 		List<SaleBean> saleList = remoteService.getSaleRemainCount();
 		if (saleList == null) {
 			saleList = new ArrayList<SaleBean>();
@@ -358,7 +358,7 @@ public class SaleService{
 	 * 但是不包括goodsImage goodsInfo
 	 */
 	public void updateSaleAll(Activity context){
-		final IMmbRemoteService remoteService = new MmbRemotelService();
+		final IRemoteService remoteService = new MmbRemotelService();
 		//查询当前正在进行的活动
 		Sales sales = remoteService.getSaleUpdateTimeList(3);
 		if(sales == null){ //设置活动时间

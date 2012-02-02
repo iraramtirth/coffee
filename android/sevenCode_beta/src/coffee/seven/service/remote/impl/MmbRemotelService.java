@@ -14,15 +14,15 @@ import coffee.seven.SysConfig;
 import coffee.seven.bean.OrderBean;
 import coffee.seven.bean.SaleBean;
 import coffee.seven.bean.Sales;
-import coffee.seven.service.remote.IMmbRemoteService;
-import coffee.seven.service.remote.IMmbService;
+import coffee.seven.service.remote.IRemoteService;
+import coffee.seven.service.remote.IService;
 
 /**
  * :mmb远程服务的本地实现
  * 利用HttpClient从MMBserver端获取数据
  * @author wangtao
  */
-public class MmbRemotelService implements IMmbRemoteService {
+public class MmbRemotelService implements IRemoteService {
 
 	private String linkUrl;
 	
@@ -168,10 +168,15 @@ public class MmbRemotelService implements IMmbRemoteService {
 	 * @param orderCode
 	 */
 	public String getOrderStatus(String phone, String orderCode){
-		String query = "?action="+IMmbService.GET_ORDER_STATUS
+		String query = "?action="+IService.GET_ORDER_STATUS
 			+"&phone=" + phone +"&order="+orderCode + "&" + App.context.getQueryArgs();
 		String xmlResult = new HttpClient().get(linkUrl + query) + "";
 		return xmlResult;
+	}
+
+	@Override
+	public void queryKindAll() {
+		
 	}
 	
 }

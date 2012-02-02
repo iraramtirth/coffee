@@ -133,7 +133,6 @@ public class SubRemindService extends Service {
 		@Override
 		public void run() {
 			nowTime += 1000;//当前时间 +1000
-			Log.d(TAG, subMap + "");
 			if(lastVisitTime == -1){
 				lastVisitTime = SysConfig.getLastVisitTime();;
 				return;

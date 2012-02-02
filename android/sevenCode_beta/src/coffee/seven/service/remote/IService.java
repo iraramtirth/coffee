@@ -5,10 +5,31 @@ package coffee.seven.service.remote;
  * 常量 
  * @author wangtao
  */
-public interface IMmbService {
+public interface IService {
 	
 	//以下是request.getParameter的参数
-	public final String ACTION = "action";
+	public static final String ACTION = "action";
+	/**
+	 * 查询活动类别
+	 * 优惠券 | 限时折 | 团购 | 学生价
+	 */
+	public static final String QUERY_KIND_OF_SALE = ACTION + "=" + 1;
+	/**
+	 * 查询热门关键字
+	 */
+	public static final String QUERY_HOT_KEYWORDS = ACTION + "=" + 2;
+	/**
+	 * 查询【购物卷】类别
+	 * 饮品 | 旅游 | 美食 
+	 */
+	public static final String QUERY_KIND_OF_VOUCHER = ACTION + "=" + 3;
+	
+	/**
+	 * 查询指定类别的购物券
+	 */
+	public static final String query_voucher_by_kind = ACTION + "=" + 4; 
+	////////////////////////
+
 	public final String SALE_ID = "sale_id";	//
 	public final String SALE_IDS = "sale_ids";	//查询多个sale
 	

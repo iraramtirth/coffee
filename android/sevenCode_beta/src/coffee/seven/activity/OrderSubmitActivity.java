@@ -25,7 +25,7 @@ import coffee.seven.activity.base.IActivity;
 import coffee.seven.activity.base.TabFlipperActivity;
 import coffee.seven.bean.OrderBean;
 import coffee.seven.bean.SaleBean;
-import coffee.seven.service.remote.IMmbRemoteService;
+import coffee.seven.service.remote.IRemoteService;
 import coffee.seven.service.remote.impl.MmbRemotelService;
 /**
  * 订单提交 
@@ -127,7 +127,7 @@ public class OrderSubmitActivity extends BaseActivity {
 		@Override
 		protected OrderBean doInBackground(Void... params) {
 			//发送表单
-			IMmbRemoteService remoteService = new MmbRemotelService();
+			IRemoteService remoteService = new MmbRemotelService();
 			OrderBean order = new OrderBean(input[0], input[1], input[2], Integer.valueOf(goodsCode));
 			order.setSaleId(saleBase.getId());
 			order.setGoodsCode(StringUtils.toInt(goodsCode,0));

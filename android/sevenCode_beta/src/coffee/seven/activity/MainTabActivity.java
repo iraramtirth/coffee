@@ -53,7 +53,7 @@ public class MainTabActivity extends TabActivity implements IActivity,
 		OnTabChangeListener {
 
 	private final String TAB0_NAME = ScanMainActivity.class.getName();
-	private final String TAB1_NAME = SaleNextActivity.class.getName();
+	private final String TAB1_NAME = SearchMainActivity.class.getName();
 	private final String TAB2_NAME = OrderHomeActivity.class.getName();
 	private final String TAB3_NAME = HelpActivity.class.getName();
 
