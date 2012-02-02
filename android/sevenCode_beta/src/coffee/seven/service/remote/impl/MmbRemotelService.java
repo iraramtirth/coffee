@@ -8,6 +8,7 @@ import java.util.Map;
 import org.droid.util.http.HttpClient;
 import org.droid.util.lang.StringUtils;
 import org.droid.util.xml.parser.XmlParser;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import coffee.seven.App;
@@ -178,9 +179,16 @@ public class MmbRemotelService implements IRemoteService {
 	@Override
 	public void queryKindAll() {
 		String query = "?" + IService.QUERY_KIND_ALL;
-		String json = new HttpClient().get(linkUrl + query, 0) + "";
-		json = "{sale=}";
-//		JSONObject
+		String jsonStr = new HttpClient().get(linkUrl + query, 0) + "";
+		jsonStr = "{sale=优惠券,限时折,团购,学生价}";
+		try {
+			JSONObject  jsonObj = new JSONObject(jsonStr);
+			String sales =  jsonObj.getString("sale");
+			System.out.println(sales);
+		} catch (JSONException e) {
+			e.printStackTrace();
+		}
+		
 	}
 	
 }
