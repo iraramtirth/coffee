@@ -9,6 +9,8 @@ public interface IService {
 	
 	//以下是request.getParameter的参数
 	public static final String ACTION = "action";
+	
+	public static final String QUERY_KIND_ALL = ACTION + "=" + 0;
 	/**
 	 * 查询活动类别
 	 * 优惠券 | 限时折 | 团购 | 学生价
@@ -27,7 +29,7 @@ public interface IService {
 	/**
 	 * 查询指定类别的购物券
 	 */
-	public static final String query_voucher_by_kind = ACTION + "=" + 4; 
+	public static final String QUERY_VOUCHER_BY_KIND = ACTION + "=" + 4; 
 	////////////////////////
 
 	public final String SALE_ID = "sale_id";	//

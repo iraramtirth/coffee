@@ -6,8 +6,6 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.net.HttpURLConnection;
 import java.net.URL;
 
 import org.droid.util.http.HttpClient;
@@ -19,7 +17,6 @@ import android.graphics.Canvas;
 import android.graphics.PixelFormat;
 import android.graphics.drawable.Drawable;
 import android.util.Log;
-
 import coffee.seven.App;
 import coffee.seven.action.BitmapManager;
 
@@ -35,18 +32,9 @@ public class BitmapUtils {
 	 * BufferedInputStream(uc.getInputStream());
 	 * @param url
 	 */
-	public Bitmap loadBitmapFromNet(String linkUrl) {
-		Bitmap bmp = null;
-		if(HttpClient.netType == HttpClient.NetType.WAP){
-			bmp = loadBitmapByCmwap(linkUrl);
-		}else{
-			bmp = loadBitmapByCmnet(linkUrl);
-		}
-		return bmp;
-	}
+ 
 	
-	
-	private Bitmap loadBitmapByCmwap(String linkUrl){
+	public static Bitmap loadBitmapFromNet(String linkUrl){
 		Bitmap bmp = null;
 		try {
 			Log.d(TAG, "【远程】加载..." + linkUrl);
@@ -72,40 +60,7 @@ public class BitmapUtils {
 		return bmp;
 	}
 
-	private Bitmap loadBitmapByCmnet(String linkUrl){
-		Bitmap bmp = null;
-		HttpURLConnection uc = null;
-		try {
-			Log.d(TAG, "WIFI【远程】加载..." + linkUrl);
-			linkUrl = linkUrl.trim();
-			URL url = new URL(linkUrl);
-			uc = new HttpClient().createHttpURLConnection(url);
-			if (url != null) {
-				//将URL下载到本地
-				String fileName = linkUrl.substring((linkUrl.lastIndexOf("/")+1));
-				String fileWholePath = getCachePath(fileName);
-				BufferedOutputStream fout = new BufferedOutputStream(new FileOutputStream(new File(fileWholePath)));
-				InputStream in = uc.getInputStream();
-				byte[] data = new byte[1024 * 5];
-				int len = 0;
-				while((len = in.read(data)) != -1){
-					fout.write(data, 0, len);
-				}
-				fout.flush(); //放在while循环的外面
-				fout.close();
-				in.close();
-				bmp = loadBitmapFromLocal(fileWholePath, false);
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		} finally {
-			if (uc != null) {
-				uc.disconnect();
-			}
-		}
-		return bmp;
-	}
-	
+	 
 	/**
 	 * 从本地读取文件 param isCache : 是否缓存bitmap到BitmapManager中
 	 * 
@@ -137,48 +92,7 @@ public class BitmapUtils {
 		return null;
 	}
 
-	@SuppressWarnings("unused")
-	private static int computeSampleSize(BitmapFactory.Options options,
-			int minSideLength, int maxNumOfPixels) {
-		int initialSize = computeInitialSampleSize(options, minSideLength,
-				maxNumOfPixels);
-
-		int roundedSize;
-		if (initialSize <= 8) {
-			roundedSize = 1;
-			while (roundedSize < initialSize) {
-				roundedSize <<= 1;
-			}
-		} else {
-			roundedSize = (initialSize + 7) / 8 * 8;
-		}
-
-		return roundedSize;
-	}
-
-	private static int computeInitialSampleSize(BitmapFactory.Options options,
-			int minSideLength, int maxNumOfPixels) {
-		double w = options.outWidth;
-		double h = options.outHeight;
-
-		int lowerBound = (maxNumOfPixels == -1) ? 1 : (int) Math.ceil(Math
-				.sqrt(w * h / maxNumOfPixels));
-		int upperBound = (minSideLength == -1) ? 480 : (int) Math.min(
-				Math.floor(w / minSideLength), Math.floor(h / minSideLength));
-
-		if (upperBound < lowerBound) {
-			// return the larger one when there is no overlapping zone.
-			return lowerBound;
-		}
-		if ((maxNumOfPixels == -1) && (minSideLength == -1)) {
-			return 1;
-		} else if (minSideLength == -1) {
-			return lowerBound;
-		} else {
-			return upperBound;
-		}
-	}
-
+	 
 	/**
 	 * 缓存Bitmap 写入到本地
 	 * 
@@ -218,15 +132,6 @@ public class BitmapUtils {
 	 * 获取缓存路径
 	 */
 	public static String getCachePath(String fileName) {
-//		File file = null;
-//		String status = Environment.getExternalStorageState();
-//		// 判断是否有sdcard
-//		if (status.equals(Environment.MEDIA_MOUNTED)) {
-//			file = new File(getCacheDir(), fileName);
-//			return file.getAbsolutePath();
-//		} else {
-//			return null;// 没有sdcard
-//		}
 		return getCacheDir() + "/" + fileName; 
 	}
 

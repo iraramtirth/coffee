@@ -54,7 +54,7 @@ public class MmbHttpUtils extends WebViewUtils {
 			//http://mmb.cn/wap/upload/productImage/1314088464871.jpg
 			if(url.matches(".+?\\.(jpg|gif|jpeg|png)+.*?")){
 				charset = null;
-				byte[] data = new HttpClient().getImage(url); 
+				byte[] data = (byte[]) new HttpClient().get(url, 1); 
 				doc = Base64.encodeToString(data, Base64.DEFAULT);
 				doc = "<img src=\"data:image/jpeg;base64," + doc + "\" />";
 			}else{

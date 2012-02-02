@@ -1,13 +1,6 @@
 package org.droid.util.http;
 
-import java.io.BufferedInputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.net.HttpURLConnection;
-import java.net.InetSocketAddress;
-import java.net.Proxy;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -104,45 +97,7 @@ public class HttpClient {
 			+ " AppleWebKit/528.18 (KHTML, like Gecko) Version/4.0"
 			+ " Mobile/7A341 Safari/528.16";
 
-	/**
-	 * 读取图片
-	 * 
-	 * @param urlStr
-	 *            ： 传入的数据是 http://..../xxx.jpg的形式
-	 * @return
-	 */
-	public byte[] getImage(String urlStr) {
-		if(netType == NetType.WAP){
-			try{
-				byte[] data = (byte[])get(urlStr, 1);
-				return data;
-			}catch(Exception e){
-				return null;
-			}
-		}
-		
-		byte[] imageRaw = null;
-		try {
-			URL url = new URL(urlStr);
-			HttpURLConnection uc = createHttpURLConnection(url);
-			uc.connect();
-			InputStream in = new BufferedInputStream(uc.getInputStream());
-			ByteArrayOutputStream out = new ByteArrayOutputStream();
-			int c;
-			while ((c = in.read()) != -1) {
-				out.write(c);
-			}
-			out.flush();
-			imageRaw = out.toByteArray();
-			uc.disconnect();
-			in.close();
-			out.close();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		return imageRaw;
-	}
-
+ 
 	/**
 	 * post方式提交数据
 	 * 
@@ -182,24 +137,6 @@ public class HttpClient {
 	    	e.printStackTrace();
 	    }
 		return doc;
-	}
-	
-	
-	//创建Http连接
-	public HttpURLConnection createHttpURLConnection(URL url) {
-		HttpURLConnection uc = null;
-		try{
-			if (netType == NetType.WAP ) {// cmwap 上网模式， 使用代理
-	 			java.net.Proxy proxy = new Proxy(Proxy.Type.HTTP,
-						new InetSocketAddress(PROXY_SERVER, 80));
-				uc = (HttpURLConnection) url.openConnection(proxy);
-			}else{
-				uc = (HttpURLConnection) url.openConnection();
-			}
-		}catch(Exception e){
-			e.printStackTrace();
-		}
-		return uc;
 	}
 	
 	/**

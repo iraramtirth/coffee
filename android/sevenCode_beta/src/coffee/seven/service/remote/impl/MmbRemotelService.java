@@ -8,6 +8,7 @@ import java.util.Map;
 import org.droid.util.http.HttpClient;
 import org.droid.util.lang.StringUtils;
 import org.droid.util.xml.parser.XmlParser;
+import org.json.JSONObject;
 
 import coffee.seven.App;
 import coffee.seven.SysConfig;
@@ -176,7 +177,10 @@ public class MmbRemotelService implements IRemoteService {
 
 	@Override
 	public void queryKindAll() {
-		
+		String query = "?" + IService.QUERY_KIND_ALL;
+		String json = new HttpClient().get(linkUrl + query, 0) + "";
+		json = "{sale=}";
+		JSONObject
 	}
 	
 }
