@@ -60,6 +60,10 @@ public class SaleBean extends Observable implements Parcelable{
 	public SaleBean(){
 	}
 	
+	public SaleBean(String name){
+		this.name = name;
+	}
+	
 	////////
 	public int getId() {
 		return id;

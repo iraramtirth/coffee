@@ -13,6 +13,12 @@ public class Keywords {
 	private int id;
 	private String name;
 	
+	public Keywords(){
+	}
+	public Keywords(String name){
+		this.name = name;
+	}
+	
 	public int getId() {
 		return id;
 	}

@@ -13,10 +13,7 @@ import org.droid.util.sqlite.DbHelper;
 import org.droid.util.sqlite.TSqliteUtils;
 
 import android.app.Activity;
-import android.content.Context;
 import android.util.Log;
-
-import coffee.seven.App;
 import coffee.seven.SysConfig;
 import coffee.seven.bean.GoodsBean;
 import coffee.seven.bean.GoodsImageBean;
@@ -35,18 +32,9 @@ import coffee.seven.service.remote.impl.MmbRemotelService;
  */
 public class SaleService{
 	
-	private Context context;
-	
-	public SaleService(){
-		this.context = App.context;
-	}
-	
-	public SaleService(Activity context){
-		this.context = context;
-	}
 	
 	public void executeSql(String sql){
-		DbHelper helper = new DbHelper(context, null);
+		DbHelper helper = new DbHelper();
 		helper.execSQL(sql);
 		helper.close();
 	}
@@ -55,7 +43,7 @@ public class SaleService{
 	 * 查询需要通知的sale
 	 */
 	public List<SaleBean> getSaleNotifyList(){
-		DbHelper helper = new DbHelper(context, null);
+		DbHelper helper = new DbHelper();
 		List<SaleBean> saleList = helper.queryForList(SaleBean.class, null, "startTime");
 		for(SaleBean sale : saleList){
 			//添加观察者
@@ -75,7 +63,7 @@ public class SaleService{
 	 *  查询所有活动
 	 */
 	public List<SaleBean> getSaleBaseListAll(){
-		DbHelper helper = new DbHelper(context, null);
+		DbHelper helper = new DbHelper();
 		//
 		List<SaleBean> saleList = helper.queryForList(SaleBean.class, null, null);
 		for(SaleBean sale : saleList){
@@ -91,7 +79,7 @@ public class SaleService{
 	 *  查询当前正在进行的活动 
 	 */
 	public List<SaleBean> getSaleBaseListNow(){
-		DbHelper helper = new DbHelper(context, null);
+		DbHelper helper = new DbHelper();
 		//
 		List<SaleBean> saleList = helper.queryForList(SaleBean.class, "startTime <= " + SysConfig.getNowTime(), "startTime");
 		for(SaleBean sale : saleList){
@@ -108,7 +96,7 @@ public class SaleService{
 	 *  即：未开启的活动
 	 */
 	public List<SaleBean> getSaleBaseListNext(){
-		DbHelper helper = new DbHelper(context, null);
+		DbHelper helper = new DbHelper();
 		//
 		List<SaleBean> saleList = helper.queryForList(SaleBean.class, "startTime > " + SysConfig.getNowTime(), "startTime");
 		for(SaleBean sale : saleList){
@@ -128,7 +116,7 @@ public class SaleService{
 	 */
 	public SaleBean getSaleDetail(int saleId){
 		//先从本地
-		DbHelper helper = new DbHelper(context, null);
+		DbHelper helper = new DbHelper();
 		//
 		String sql = "select * from " + TSqliteUtils.getTableName(GoodsImageBean.class)
 					+ " where saleId = " + saleId;
@@ -178,7 +166,7 @@ public class SaleService{
 			return;
 		}
 		String tableName = TSqliteUtils.getTableName(GoodsBean.class);
-		DbHelper helper = new DbHelper(context, null);
+		DbHelper helper = new DbHelper();
 		for(GoodsBean goods : sale.getGoodsList()){
 			String sql = "update " + tableName + " set remainCount = " 
 				+ goods.getRemainCount() + " where id = " + goods.getId();
@@ -215,7 +203,7 @@ public class SaleService{
 	
 	//通过code获取goods信息
 	public String getLinkNameByCode(String code){
-		DbHelper helper = new DbHelper(context, null);
+		DbHelper helper = new DbHelper();
 		//String sql = "select * from " + TSqliteUtils.getTableName(GoodsBean.class);
 		int codeInt = StringUtils.toInt(code, -1);
 		String result = null;
@@ -313,7 +301,7 @@ public class SaleService{
 	 * @ruturn : 如果没有数据则返回new String[]{null,null,null} 
 	 */
 	public String[] getOrderInputInfo(){
-		DbHelper helper = new DbHelper(context, null);
+		DbHelper helper = new DbHelper();
 		String sql = "select * from " + TSqliteUtils.getTableName(OrderBean.class) + " limit 1";
 		OrderBean order = helper.queryForObject(sql, OrderBean.class);
 		String[] str = new String[3];
@@ -333,7 +321,7 @@ public class SaleService{
 	 * 		   false : 已经参加过一次了
 	 */
 	public boolean checkSaleUniqueInOrder(int saleId){
-		DbHelper helper = new DbHelper(context, null);
+		DbHelper helper = new DbHelper();
 		String sql = "select count(id) from " + TSqliteUtils.getTableName(OrderBean.class)
 					+" where orderId is not null and saleId=" + saleId;
 		String count = helper.queryForColumn(sql, String.class);
@@ -345,7 +333,7 @@ public class SaleService{
 	}
 
 	public List<OrderBean> getSaleOrdeList() {
-		DbHelper helper = new DbHelper(context, null);
+		DbHelper helper = new DbHelper();
 		List<OrderBean> lst = helper.queryForList(OrderBean.class, null, "orderCreateTime desc");
 		helper.close();
 		return lst;
@@ -371,7 +359,7 @@ public class SaleService{
 		/////////////
 		//lst.get(4).setLastUpdateTime(DateUtils.format(new Date()));
 		
-		DbHelper helper = new DbHelper(context, null);
+		DbHelper helper = new DbHelper();
 		StringBuilder ids = new StringBuilder();
 		StringBuilder idsToUpdate = new StringBuilder();
 		//比较最后更新时间，判断需要更新的记录
@@ -459,7 +447,7 @@ public class SaleService{
 	 * 以及goodsBean - goodsImageBean - goodsInfoBean
 	 */
 	public void deleteSaleAll(int saleId){
-		DbHelper helper = new DbHelper(context, null);
+		DbHelper helper = new DbHelper();
 		this.deleteGoodsAll(saleId, helper);
 		helper.delete(SaleBean.class, saleId);
 		helper.close();
@@ -480,7 +468,7 @@ public class SaleService{
 	 * @return :  如果不存在，则返回null
 	 */
 	public String getLocalImage( String netImageUrl, ImageType type){
-		DbHelper helper = new DbHelper(context, null);
+		DbHelper helper = new DbHelper();
 		String sql = null;
 		//首页--广告图
 		if(type == ImageType.SALE_BASE_AD){
@@ -526,7 +514,7 @@ public class SaleService{
 				+ " set urlBigLocal = '" + localImageUrl + "' where urlBig = '" + netImageUrl + "'";
 		}
 		//
-		DbHelper helper = new DbHelper(context, null);
+		DbHelper helper = new DbHelper();
 		helper.execSQL(sql);
 		helper.close();
 	}
@@ -541,7 +529,7 @@ public class SaleService{
 		String sql = "update " + tableName + 
 				" set orderStatus = '"+status+"' " +
 				" where orderId = '" + orderId +"'";
-		DbHelper helper = new DbHelper(context, null);
+		DbHelper helper = new DbHelper();
 		helper.execSQL(sql);
 		helper.close();
 	}
@@ -554,7 +542,7 @@ public class SaleService{
 	public int isRefreshSaleDetail(int saleId){
 		String tableName = TSqliteUtils.getTableName(SaleBean.class);
 		String sql = "select refresh from " + tableName + " where saleId = " + saleId;
-		DbHelper helper = new DbHelper(context, null);
+		DbHelper helper = new DbHelper();
 		Integer refresh = helper.queryForColumn(sql, Integer.class);
 		helper.close();
 		if(refresh == null){
@@ -573,7 +561,7 @@ public class SaleService{
 		String saleTable = TSqliteUtils.getTableName(SaleBean.class);
 		String sql = "update " + saleTable + 
 				" set refresh = " + refresh + " where saleId = " + saleId;
-		DbHelper helper = new DbHelper(context, null);
+		DbHelper helper = new DbHelper();
 		helper.execSQL(sql);
 		helper.close();
 	}
@@ -586,7 +574,7 @@ public class SaleService{
 	 */
 	public SaleBean getSaleBase(int saleId) {
 		SaleBean sale = null;
-		DbHelper helper = new DbHelper(context, null);
+		DbHelper helper = new DbHelper();
 		sale = helper.queryForObject(SaleBean.class, saleId);
 		String sql = "select * from " + TSqliteUtils.getTableName(GoodsBean.class) + " where saleId="+saleId;
 		List<GoodsBean> goodsList = helper.queryForList(sql, GoodsBean.class);
@@ -604,7 +592,7 @@ public class SaleService{
 		String tableName = TSqliteUtils.getTableName(VersionBean.class);
 		String sql = "select lastTime from " + tableName 
 			+ " order by id desc limit 1";
-		DbHelper helper = new DbHelper(context, null);
+		DbHelper helper = new DbHelper();
 		Long lastTime = helper.queryForColumn(sql, Long.class);
 		if(lastTime == null){
 			lastTime = 0L;
@@ -627,7 +615,7 @@ public class SaleService{
 	 * v:sale列表
 	 */
 	public Map<Long,List<SaleBean>> getSubMap(){
-		DbHelper helper = new DbHelper(context, null);
+		DbHelper helper = new DbHelper();
 		List<SaleBean> subList = helper.queryForList(SaleBean.class, "isSub=1", null);
 		Map<Long,List<SaleBean>> subMap = new HashMap<Long, List<SaleBean>>();
 		for(SaleBean sub : subList){
@@ -645,7 +633,7 @@ public class SaleService{
 	 * 查询该订阅列表活动列表 
 	 */
 	public List<SaleBean> getSubSaleList() {
-		DbHelper helper = new DbHelper(context, null);
+		DbHelper helper = new DbHelper();
 		List<SaleBean> subs = helper.queryForList(SaleBean.class,"isSub = 1", null);
 		helper.close();
 		return subs;
@@ -653,7 +641,7 @@ public class SaleService{
 	
 	//添加订阅记录
 	public void addSub(int saleId) {
-		DbHelper helper = new DbHelper(context, null);
+		DbHelper helper = new DbHelper();
 		String sql = "update " + TSqliteUtils.getTableName(SaleBean.class) 
 		+" set isSub = 1 where id = " + saleId;
 		helper.execSQL(sql);
@@ -661,7 +649,7 @@ public class SaleService{
 	}
 	//取消订阅
 	public void cancelSub(int saleId) {
-		DbHelper helper = new DbHelper(context, null);
+		DbHelper helper = new DbHelper();
 		//先删除该记录， 确保该记录的数据是最新的
 		String sql = "update " + TSqliteUtils.getTableName(SaleBean.class) 
 			+" set isSub = 0 where id = " + saleId;
@@ -670,7 +658,7 @@ public class SaleService{
 	}
 
 	public void deleteSub(List<SaleBean> sales) {
-		DbHelper helper = new DbHelper(context, null);
+		DbHelper helper = new DbHelper();
 		for(SaleBean sale : sales){
 			String sql = "update " + TSqliteUtils.getTableName(SaleBean.class) 
 					+ " set isSub = 0  where id = " + sale.getId(); 

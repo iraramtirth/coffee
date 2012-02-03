@@ -6,16 +6,20 @@ import java.util.List;
 import java.util.Map;
 
 import org.droid.util.http.HttpClient;
+import org.droid.util.json.JsonUtils;
 import org.droid.util.lang.StringUtils;
+import org.droid.util.sqlite.DbHelper;
 import org.droid.util.xml.parser.XmlParser;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import coffee.seven.App;
 import coffee.seven.SysConfig;
+import coffee.seven.bean.Keywords;
 import coffee.seven.bean.OrderBean;
 import coffee.seven.bean.SaleBean;
 import coffee.seven.bean.Sales;
+import coffee.seven.bean.VoucherBean;
 import coffee.seven.service.remote.IRemoteService;
 import coffee.seven.service.remote.IService;
 
@@ -176,15 +180,47 @@ public class MmbRemotelService implements IRemoteService {
 		return xmlResult;
 	}
 
+	/**
+	 * 从服务器获取kind的所有相关信息 【保存到本地数据库】
+	 */
 	@Override
 	public void queryKindAll() {
 		String query = "?" + IService.QUERY_KIND_ALL;
 		String jsonStr = new HttpClient().get(linkUrl + query, 0) + "";
-		jsonStr = "{sale=优惠券,限时折,团购,学生价}";
+		jsonStr = "{sale=优惠券,限时折,团购,学生价;kewowrds=肯德基,麦当劳," +
+				"venchors={venchor={name=肯德基,id=1,pid=0};venchor={name=肯德基优惠券，id=2,pid=1}}}";
 		try {
+			DbHelper db = new DbHelper();
+			
 			JSONObject  jsonObj = new JSONObject(jsonStr);
 			String sales =  jsonObj.getString("sale");
-			System.out.println(sales);
+			//活动
+			if(sales != null){
+				db.delete(SaleBean.class);
+				for(String saleName : sales.split(",")){
+					db.insert(new SaleBean(saleName));
+				}
+			}
+			String keywords = jsonObj.getString("kewowrds");
+			//热门搜索词
+			if(keywords != null){
+				db.delete(Keywords.class);
+				for(String str : keywords.split(",")){
+					Keywords kw = new Keywords(str);
+					db.insert(kw);
+				}
+			}
+			//优惠券类别
+			JSONObject jsonVoucher = jsonObj.getJSONObject("voucher");
+			if(jsonVoucher != null){
+				List<VoucherBean> voucherList = JsonUtils.toList(jsonVoucher, VoucherBean.class);
+				if(voucherList.size() > 0){
+					db.delete(VoucherBean.class);
+					for(VoucherBean voucher : voucherList){
+						db.insert(voucher);
+					}
+				}
+			}
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}

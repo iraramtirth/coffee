@@ -3,11 +3,10 @@ package org.droid.util.sqlite;
 import java.util.ArrayList;
 import java.util.List;
 
-import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-
+import coffee.seven.App;
 import coffee.seven.SysConfig;
 import coffee.seven.bean.GoodsBean;
 import coffee.seven.bean.GoodsImageBean;
@@ -19,6 +18,11 @@ import coffee.seven.bean.VersionBean;
 public class DbHelper extends SQLiteOpenHelper {
 	
 	private SQLiteDatabase db;
+	
+	public DbHelper(){
+		this(SysConfig.DB_NAME);
+	}
+	
 	 /**
      * @param name of the database file, or null for an in-memory database
      * ---------------------------------------------------------------
@@ -26,15 +30,15 @@ public class DbHelper extends SQLiteOpenHelper {
      * ----------------------------------------------------------------
      */
 	@SuppressWarnings("static-access")
-	public DbHelper(Context context, String name){
+	public DbHelper(String name){
 		//该操作不会立即生成db文件
-		super(context, name==null?SysConfig.DB_NAME:name, null, 6);
+		super(App.context, name==null?SysConfig.DB_NAME:name, null, 6);
 		//* 当调用 getWritableDatabase的时候 才开始创建数据库(db文件)
 		synchronized (this) {
 			//打开数据库
 			this.db = getWritableDatabase();
 			if(!db.isOpen()){
-				this.db.openDatabase(context.getDatabasePath(name).getPath(), 
+				this.db.openDatabase(App.context.getDatabasePath(name).getPath(), 
 						null, SQLiteDatabase.OPEN_READWRITE);
 			}
 		}
@@ -138,10 +142,16 @@ public class DbHelper extends SQLiteOpenHelper {
 	}
 	/**
 	 * 删除记录 
+	 * @param beanClass ;
+	 * @parem id : 如果该参数不为空则 只取一个值
 	 */
-	public synchronized <T> void delete(Class<T> beanClass, long pk){
+	public synchronized <T> void delete(Class<T> beanClass, Integer...id){
 		String tableName = TSqliteUtils.getTableName(beanClass); 
-		db.delete(tableName, "id=?", new String[]{pk+""});
+		if(id.length > 0){
+			db.delete(tableName, "id=?", new String[]{String.valueOf(id[0])});
+		}else{//删除所有的行
+			db.delete(tableName, null, new String[]{});
+		}
 	}
 	/**
 	 * 更新记录

@@ -49,14 +49,14 @@ public class OrderSubmitActivity extends BaseActivity {
 	private String linkName;
 	@Override
 	protected void onCreate(Bundle mbundle) {
-		saleService = new SaleService(context);
+		saleService = new SaleService();
 		//sale的基本信息
 		saleBase = this.getIntent().getParcelableExtra(KEY_EXTRA_SALE);
 		goodsCode = this.getIntent().getStringExtra(KEY_EXTRA_GOODS_CODE);
 		if(goodsCode == null){
 			goodsCode = "0";
 		}
-		linkName =  new SaleService(this).getLinkNameByCode(goodsCode);
+		linkName =  new SaleService().getLinkNameByCode(goodsCode);
 		
 		Bundle bundle = new Bundle();
 		bundle.putInt(KEY_LAYOUT_RES, R.layout.order_submit);
@@ -149,7 +149,7 @@ public class OrderSubmitActivity extends BaseActivity {
 				//设置默认状态
 				newOrder.setOrderStatus(context.getResources().getString(R.string.order_status_default)); //
 				//插入到数据库
-				DbHelper helper = new DbHelper(context, null);
+				DbHelper helper = new DbHelper();
 				helper.insert(newOrder);
 				helper.close();
 				//

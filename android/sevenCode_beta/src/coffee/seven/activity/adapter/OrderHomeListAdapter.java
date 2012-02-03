@@ -31,7 +31,7 @@ public class OrderHomeListAdapter extends BaseAdapter {
 	
 	public OrderHomeListAdapter(Activity context){
 		this.context = context;
-		saleService = new SaleService(context);
+		saleService = new SaleService();
 		orderList = saleService.getSaleOrdeList();
 	}
 	

@@ -3,24 +3,36 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     >
- 	
- 	<Button
-        android:id="@+id/search_main_action"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" 
-        android:layout_alignParentRight="true"
-        android:text="搜索">
-    </Button>
-    
-    <TextView
-        android:id="@+id/eckName"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" 
-        android:textSize="30dip"
-        android:layout_alignParentLeft="true"
-        android:layout_toLeftOf="@id/search_main_action"
-        android:text="测试">
-    </TextView>
-   
-
+ 	<RelativeLayout android:id="@+id/search_main_top"
+  	  	android:layout_width="wrap_content"
+   	 	android:layout_height="wrap_content"
+   	 	android:layout_alignParentTop="true"
+    >
+	 	<Button
+	        android:id="@+id/search_main_action"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content" 
+	        android:layout_alignParentRight="true"
+	        android:text="搜索">
+	    </Button>
+	    <EditView
+	        android:id="@+id/search_main_input"
+	        android:layout_width="fill_parent"
+	        android:layout_height="wrap_content" 
+	        android:textSize="30dip"
+	        android:layout_alignParentLeft="true"
+	        android:layout_toLeftOf="@id/search_main_action"
+	        android:text="测试">
+	    </EditView>
+    </RelativeLayout>
+    <GridView android:id="@+id/search_main_keywords"
+        android:layout_height="wrap_content"
+        android:layout_width="fill_parent"
+        android:layout_below="@id/search_main_top"
+        android:numColumns="4">
+    </GridView>
+   <ListView android:id="@+id/search_main_voucher" 
+       android:layout_width="fill_parent"
+       android:layout_height="wrap_content">
+   </ListView>
 </RelativeLayout>

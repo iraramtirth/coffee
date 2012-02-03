@@ -1,18 +1,21 @@
 package org.droid.util.json;
 
 import java.lang.reflect.Field;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 
 import org.droid.util.TUtils;
 import org.droid.util.sqlite.annotation.Column;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 public class JsonUtils {
 	
 	@SuppressWarnings("unchecked")
-	public static <T>  T toBean(JSONObject json, Class<T> beanClass){
+	public static <T> T toBean(JSONObject json, Class<T> beanClass){
 		try {
 			T obj = beanClass.newInstance();
 			Map<String,Object> items = new HashMap<String, Object>();
@@ -41,5 +44,20 @@ public class JsonUtils {
 			e.printStackTrace();
 		}
 		return null;
+	}
+	
+	@SuppressWarnings("unchecked")
+	public static <T> List<T> toList(JSONObject json, Class<T> beanClass){
+		List<T> lst = new ArrayList<T>();
+		for(Iterator<String> it = json.keys(); it.hasNext();){
+			String key = it.next();
+			try {
+				JSONObject jsonObj = json.getJSONObject(key);
+				lst.add(toBean(jsonObj, beanClass));
+			} catch (JSONException e) {
+				e.printStackTrace();
+			}
+		}
+		return lst;
 	}
 }
