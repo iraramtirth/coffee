@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <style name="search_voucher_layout_w_w">
+        <item name="android:layout_width">wrap_content</item>
+		<item name="android:layout_height">wrap_content</item>
+    </style>
+    
 	<style name="dialog" parent="@android:style/Theme.Dialog">
 	　　<item name="android:windowFrame">@null</item>
 		<item name="android:windowNoTitle">true</item>

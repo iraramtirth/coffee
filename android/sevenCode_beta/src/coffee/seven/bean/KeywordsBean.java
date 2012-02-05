@@ -8,14 +8,14 @@ import org.droid.util.sqlite.annotation.Id;
  * @author coffee
  */
 @Bean(name="coffee_keywords")
-public class Keywords {
+public class KeywordsBean {
 	@Id(isAuto=true)
 	private int id;
 	private String name;
 	
-	public Keywords(){
+	public KeywordsBean(){
 	}
-	public Keywords(String name){
+	public KeywordsBean(String name){
 		this.name = name;
 	}
 	

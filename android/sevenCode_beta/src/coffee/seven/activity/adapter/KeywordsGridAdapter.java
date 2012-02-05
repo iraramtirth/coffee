@@ -11,27 +11,27 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 import coffee.seven.R;
-import coffee.seven.bean.SaleBean;
+import coffee.seven.bean.KeywordsBean;
 
 /**
- * 活动分类
+ * 热门搜索
  * @author coffee
  */
-public class SaleGridAdapter extends BaseAdapter{
+public class KeywordsGridAdapter extends BaseAdapter{
 
-	private List<SaleBean> saleList;
+	private List<KeywordsBean> keywordsList;
 	private Activity context;
-	public SaleGridAdapter(Activity context){
-		saleList = new ArrayList<SaleBean>();
+	public KeywordsGridAdapter(Activity context){
+		keywordsList = new ArrayList<KeywordsBean>();
 		this.context = context;
 		DbHelper db = new DbHelper();
-		saleList = db.queryForList(SaleBean.class, null, null, null);
+		keywordsList = db.queryForList(KeywordsBean.class, null, null, null);
 		db.close();
 	}
 	
 	@Override
 	public int getCount() {
-		return saleList.size();
+		return keywordsList.size();
 	}
 
 	@Override
@@ -49,22 +49,19 @@ public class SaleGridAdapter extends BaseAdapter{
 		ViewHolder holder;
 		if(convertView == null){
 			convertView = context.getLayoutInflater()
-					.inflate(R.layout.search_sale_grid_item, parent, false);
+					.inflate(R.layout.search_keywords_grid_item, parent, false);
 			holder = new ViewHolder();
-			holder.saleId = (TextView) convertView.findViewById(R.id.sale_id);
-			holder.saleName = (TextView) convertView.findViewById(R.id.sale_name);
+			holder.name = (TextView) convertView.findViewById(R.id.keywords_name);
 			convertView.setTag(holder);
 		}else{
 			holder = (ViewHolder) convertView.getTag();
 		}
-		holder.saleId.setText(saleList.get(position).getId() + "");
-		holder.saleName.setText(saleList.get(position).getName());
+		holder.name.setText(keywordsList.get(position).getName());
 		return convertView;
 	}
 	
 	static class ViewHolder{
-		TextView saleId;			// 活动编号
-		TextView saleName;			// 活动名称
+		TextView name;			// 活动名称
 	}
 
 }

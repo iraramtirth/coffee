@@ -53,8 +53,6 @@ public class ViewUtils {
 		return bitmap;
 	}
 	
-	
-	
 	/**
 	 * 为某一个组件赋值
 	 * @param thiz	： 当前活动的Activity

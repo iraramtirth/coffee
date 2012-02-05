@@ -1,6 +1,11 @@
 package coffee.seven.bean;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.droid.util.sqlite.annotation.Bean;
+import org.droid.util.sqlite.annotation.Id;
+import org.droid.util.sqlite.annotation.Transient;
 
 /**
  * 优惠劵
@@ -8,11 +13,13 @@ import org.droid.util.sqlite.annotation.Bean;
  */
 @Bean(name="coffee_voucher")
 public class VoucherBean {
+	@Id
 	private int id;
 	private String name;
 	private String imgae;
 	private int pid;
-	
+	@Transient
+	private List<VoucherBean> children = new ArrayList<VoucherBean>();
 	///
 	public int getId() {
 		return id;
@@ -37,5 +44,11 @@ public class VoucherBean {
 	}
 	public void setPid(int pid) {
 		this.pid = pid;
+	}
+	public List<VoucherBean> getChildren() {
+		return children;
+	}
+	public void setChildren(List<VoucherBean> children) {
+		this.children = children;
 	}
 }

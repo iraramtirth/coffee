@@ -52,9 +52,9 @@ import coffee.seven.activity.base.TabFlipperActivity;
 public class MainTabActivity extends TabActivity implements IActivity,
 		OnTabChangeListener {
 
-	private final String TAB0_NAME = ScanMainActivity.class.getName();
-	private final String TAB1_NAME = SearchMainActivity.class.getName();
-	private final String TAB2_NAME = OrderHomeActivity.class.getName();
+	private final String TAB0_NAME = SearchMainActivity.class.getName();
+	private final String TAB1_NAME = ScanMainActivity.class.getName();
+	private final String TAB2_NAME = SearchMainActivity.class.getName();
 	private final String TAB3_NAME = HelpActivity.class.getName();
 
 	private final String TAB_PRE = "tab_"; // tab名前缀

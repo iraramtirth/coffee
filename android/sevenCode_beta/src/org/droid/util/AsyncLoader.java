@@ -9,10 +9,8 @@ import android.os.AsyncTask;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
-
 import coffee.seven.action.BitmapManager;
-import coffee.seven.action.SaleUtils;
-import coffee.seven.action.SaleService.ImageType;
+import coffee.seven.bean.ImageType;
 /**
  * 异步加载
  * @author wangtao
@@ -55,7 +53,7 @@ public abstract class AsyncLoader extends AsyncTask<Object, Void, Object>{
 						}
 						result = bmp;
 						//保存到数据库
-						SaleUtils.saleService.setLocalImage(resUrl, imgLocalUrl, (ImageType)params[1]);
+						//SaleUtils.saleService.setLocalImage(resUrl, imgLocalUrl, (ImageType)params[1]);
 					}
 				}else{
 					result = bmp;

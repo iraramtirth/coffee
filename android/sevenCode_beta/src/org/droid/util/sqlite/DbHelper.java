@@ -8,19 +8,16 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import coffee.seven.App;
 import coffee.seven.SysConfig;
-import coffee.seven.bean.GoodsBean;
-import coffee.seven.bean.GoodsImageBean;
-import coffee.seven.bean.GoodsInfoBean;
-import coffee.seven.bean.OrderBean;
+import coffee.seven.bean.KeywordsBean;
 import coffee.seven.bean.SaleBean;
-import coffee.seven.bean.VersionBean;
+import coffee.seven.bean.VoucherBean;
 
 public class DbHelper extends SQLiteOpenHelper {
 	
 	private SQLiteDatabase db;
 	
 	public DbHelper(){
-		this(SysConfig.DB_NAME);
+		this(null);
 	}
 	
 	 /**
@@ -52,11 +49,8 @@ public class DbHelper extends SQLiteOpenHelper {
 	public void onCreate(SQLiteDatabase db) {
 		this.db = db;	//该代码仅执行一次
 		this.createTable(SaleBean.class);
-		this.createTable(GoodsBean.class);
-		this.createTable(GoodsInfoBean.class);
-		this.createTable(GoodsImageBean.class);
-		this.createTable(OrderBean.class);
-		this.createTable(VersionBean.class);
+		this.createTable(KeywordsBean.class);
+		this.createTable(VoucherBean.class);
 	}
 	/**
 	 CREATE TABLE IF NOT EXISTS mmb_sale(
@@ -168,12 +162,27 @@ public class DbHelper extends SQLiteOpenHelper {
 	/**
 	 * 查询记录 
 	 */
-	public <T> T queryForObject(Class<T> beanClass, int id){
+	public <T> T queryForObject(Class<T> beanClass,String[] columns, String condition){
 		Cursor c = null;
 		try {
-			String tableName = TSqliteUtils.getTableName(beanClass);
-			String sql = "select * from " + tableName +" where id=?";
-			c = db.rawQuery(sql, new String[]{id+""});
+			StringBuilder sql = new StringBuilder();
+			sql.append("select ");
+			if(columns != null && columns.length > 0){
+				for(int i=0; i<columns.length; i++){
+					sql.append(columns[i]);
+					if(i+1 < columns.length){
+						sql.append(",");
+					}
+				}
+			}else{
+				sql.append(" * ");
+			}
+			
+			if(condition != null && !"true".equals(condition)){
+				sql.append(" where ").append(condition);
+			}
+			
+			c = db.rawQuery(sql.toString(), new String[]{});
 			List<T> lst = TSqliteUtils.processResultSetToList(c, beanClass);
 			if(lst.size() > 0){
 				return lst.get(0);
@@ -187,25 +196,36 @@ public class DbHelper extends SQLiteOpenHelper {
 		}
 		return null;
 	}
-	/**
-	 * 查询记录 
-	 */
-	public <T> T queryForObject(String sql,Class<T> beanClass){
-		List<T> lst = queryForList(sql, beanClass);
-		if(lst.size() > 0){
-			return lst.get(0);
-		}
-		return null;
-	}
+	 
 	/**
 	 *  返回列表 
 	 *  @return ： 如果无记录，则返回一个size==0的list
 	 */
-	public <T> List<T> queryForList(String sql,Class<T> beanClass){
+	public <T> List<T> queryForList(Class<T> beanClass,String[] columns, String condition, String orderBy){
 		List<T> lst = new ArrayList<T>();
 		Cursor c = null;
 		try {
-			c = db.rawQuery(sql, new String[]{});
+			StringBuilder sql = new StringBuilder();
+			sql.append("select ");
+			if(columns != null && columns.length > 0){
+				for(int i=0; i<columns.length; i++){
+					sql.append(columns[i]);
+					if(i+1 < columns.length){
+						sql.append(",");
+					}
+				}
+			}else{
+				sql.append(" * ");
+			}
+			sql.append(" from ").append(TSqliteUtils.getTableName(beanClass));
+			if(condition != null && !"true".equals(condition)){
+				sql.append(" where ").append(condition);
+			}
+			if(orderBy != null){
+				sql.append(" order by ").append(orderBy);
+			}
+			///
+			c = db.rawQuery(sql.toString(), new String[]{});
 			lst = TSqliteUtils.processResultSetToList(c, beanClass);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -215,17 +235,6 @@ public class DbHelper extends SQLiteOpenHelper {
 			}
 		}
 		return lst;
-	}
-	
-	public <T> List<T> queryForList(Class<T> beanClass, String condition, String orderBy){
-		String sql = "select * from " + TSqliteUtils.getTableName(beanClass);
-		if(condition != null && !"true".equals(condition)){
-			sql += " where " + condition;
-		}
-		if(orderBy != null){
-			sql += " order by " + orderBy;
-		}
-		return this.queryForList(sql, beanClass);
 	}
 	
 	/**

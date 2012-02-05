@@ -9,6 +9,7 @@ import java.util.Map;
 
 import org.droid.util.TUtils;
 import org.droid.util.sqlite.annotation.Column;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -46,13 +47,11 @@ public class JsonUtils {
 		return null;
 	}
 	
-	@SuppressWarnings("unchecked")
-	public static <T> List<T> toList(JSONObject json, Class<T> beanClass){
+	public static <T> List<T> toList(JSONArray jsonArr, Class<T> beanClass){
 		List<T> lst = new ArrayList<T>();
-		for(Iterator<String> it = json.keys(); it.hasNext();){
-			String key = it.next();
+		for(int i = 0; i < jsonArr.length(); i++){
 			try {
-				JSONObject jsonObj = json.getJSONObject(key);
+				JSONObject jsonObj = jsonArr.getJSONObject(i);
 				lst.add(toBean(jsonObj, beanClass));
 			} catch (JSONException e) {
 				e.printStackTrace();

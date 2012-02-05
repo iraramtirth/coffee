@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- 限时抢购 - 活动列表-item -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	android:layout_height="wrap_content"
+	android:layout_width="fill_parent"
+	android:orientation="vertical">
+	<!-- 隐藏域;记录sale的ID -->
+	<TextView android:id="@+id/sale_id" 
+		android:layout_width="0dp" 
+		android:layout_height="0dp"
+		android:visibility="gone"/>
+	<!-- 活动名称 -->
+	<TextView  android:id="@+id/sale_name" 
+		android:layout_width="wrap_content" 
+		android:layout_height="wrap_content"
+		android:text="优惠券"/>	 
+	 
+</LinearLayout>

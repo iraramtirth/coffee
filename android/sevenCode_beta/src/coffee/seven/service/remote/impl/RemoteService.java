@@ -10,12 +10,13 @@ import org.droid.util.json.JsonUtils;
 import org.droid.util.lang.StringUtils;
 import org.droid.util.sqlite.DbHelper;
 import org.droid.util.xml.parser.XmlParser;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import coffee.seven.App;
 import coffee.seven.SysConfig;
-import coffee.seven.bean.Keywords;
+import coffee.seven.bean.KeywordsBean;
 import coffee.seven.bean.OrderBean;
 import coffee.seven.bean.SaleBean;
 import coffee.seven.bean.Sales;
@@ -28,11 +29,11 @@ import coffee.seven.service.remote.IService;
  * 利用HttpClient从MMBserver端获取数据
  * @author wangtao
  */
-public class MmbRemotelService implements IRemoteService {
+public class RemoteService implements IRemoteService {
 
 	private String linkUrl;
 	
-	public MmbRemotelService(){
+	public RemoteService(){
 		this.linkUrl = SysConfig.SERVER_URL;
 	}
 	
@@ -187,31 +188,37 @@ public class MmbRemotelService implements IRemoteService {
 	public void queryKindAll() {
 		String query = "?" + IService.QUERY_KIND_ALL;
 		String jsonStr = new HttpClient().get(linkUrl + query, 0) + "";
-		jsonStr = "{sale=优惠券,限时折,团购,学生价;kewowrds=肯德基,麦当劳," +
-				"venchors={venchor={name=肯德基,id=1,pid=0};venchor={name=肯德基优惠券，id=2,pid=1}}}";
+		jsonStr = "{" +
+				"sales:[{name:优惠券,id:1},{name:限时折,id:2}," +
+				"{name:团购,id:3},{name:学生价,id:4}]," + 
+				"kewowrds:'肯德基,麦当劳'," +
+				"vouchers:[{name:肯德基,id:1,pid:0},{name:肯德基优惠券,id:2,pid:1}]}" +
+				"}";
+		
+		DbHelper db = new DbHelper();
 		try {
-			DbHelper db = new DbHelper();
 			
-			JSONObject  jsonObj = new JSONObject(jsonStr);
-			String sales =  jsonObj.getString("sale");
+			JSONObject  jsonObj = new JSONObject(jsonStr); 
+			JSONArray sales = jsonObj.getJSONArray("sales");
 			//活动
 			if(sales != null){
+				List<SaleBean> saleList = JsonUtils.toList(sales, SaleBean.class);
 				db.delete(SaleBean.class);
-				for(String saleName : sales.split(",")){
-					db.insert(new SaleBean(saleName));
+				for(SaleBean sale : saleList){
+					db.insert(sale);
 				}
 			}
 			String keywords = jsonObj.getString("kewowrds");
 			//热门搜索词
 			if(keywords != null){
-				db.delete(Keywords.class);
+				db.delete(KeywordsBean.class);
 				for(String str : keywords.split(",")){
-					Keywords kw = new Keywords(str);
+					KeywordsBean kw = new KeywordsBean(str);
 					db.insert(kw);
 				}
 			}
 			//优惠券类别
-			JSONObject jsonVoucher = jsonObj.getJSONObject("voucher");
+			JSONArray jsonVoucher = jsonObj.getJSONArray("vouchers");
 			if(jsonVoucher != null){
 				List<VoucherBean> voucherList = JsonUtils.toList(jsonVoucher, VoucherBean.class);
 				if(voucherList.size() > 0){
@@ -223,8 +230,9 @@ public class MmbRemotelService implements IRemoteService {
 			}
 		} catch (JSONException e) {
 			e.printStackTrace();
+		} finally{
+			db.close();
 		}
-		
 	}
 	
 }

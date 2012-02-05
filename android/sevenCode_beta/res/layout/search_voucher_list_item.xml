@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    >
+    <TextView android:id="@+id/voucher_id"
+ 	    android:layout_height="0dp"
+ 	    android:layout_width="0dp"
+ 	    android:visibility="gone"/>
+ 	<TextView android:id="@+id/voucher_name"
+ 	    android:layout_height="wrap_content"
+ 	    android:layout_width="fill_parent"/>
+ 	<LinearLayout android:layout_width="fill_parent"
+ 	    android:layout_height="wrap_content"
+ 	    android:layout_below="@id/voucher_name">
+		<RelativeLayout style="@style/search_voucher_layout_w_w">
+		    <ImageView android:id="@+id/voucher_image_0"
+		        style="@style/search_voucher_layout_w_w"
+		        android:layout_alignParentTop="true"
+		       	android:src="@drawable/icon"/>
+		    <TextView android:id="@+id/voucher_name_0" 
+		        style="@style/search_voucher_layout_w_w"
+		        android:layout_below="@id/voucher_image_0"/>
+		</RelativeLayout> 
+		<RelativeLayout style="@style/search_voucher_layout_w_w">
+		    <ImageView android:id="@+id/voucher_image_1"
+		        style="@style/search_voucher_layout_w_w"
+		        android:layout_alignParentTop="true"/>
+		    <TextView android:id="@+id/voucher_name_1" 
+		        style="@style/search_voucher_layout_w_w"
+		        android:layout_below="@id/voucher_image_1"/>
+		</RelativeLayout> 
+		<RelativeLayout style="@style/search_voucher_layout_w_w">
+		    <ImageView android:id="@+id/voucher_image_2"
+		        style="@style/search_voucher_layout_w_w"
+		        android:layout_alignParentTop="true"/>
+		    <TextView android:id="@+id/voucher_name_2" 
+		        style="@style/search_voucher_layout_w_w"
+		        android:layout_below="@id/voucher_image_2"/>
+		</RelativeLayout> 
+		<RelativeLayout style="@style/search_voucher_layout_w_w">
+		    <ImageView android:id="@+id/voucher_image_3"
+		        style="@style/search_voucher_layout_w_w"
+		        android:layout_alignParentTop="true"/>
+		    <TextView android:id="@+id/voucher_name_3" 
+		        style="@style/search_voucher_layout_w_w"
+		        android:layout_below="@id/voucher_image_3"/>
+		</RelativeLayout> 
+ 	</LinearLayout>
+</RelativeLayout>

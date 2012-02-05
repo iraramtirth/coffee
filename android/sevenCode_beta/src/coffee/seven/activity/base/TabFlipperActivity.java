@@ -2,7 +2,6 @@ package coffee.seven.activity.base;
 
 import android.os.Bundle;
 import coffee.seven.activity.HelpActivity;
-import coffee.seven.activity.OrderHomeActivity;
 import coffee.seven.activity.ScanMainActivity;
 import coffee.seven.activity.SearchMainActivity;
 
@@ -23,9 +22,9 @@ public class TabFlipperActivity extends FlipperActivity {
 		if(SearchMainActivity.class.getName().equals(className)){
 			saleNextActivity = this;
 		}
-		if(OrderHomeActivity.class.getName().equals(className)){
-			saleOrderActivity = this;
-		}
+//		if(OrderHomeActivity.class.getName().equals(className)){
+//			saleOrderActivity = this;
+//		}
 		if(HelpActivity.class.getName().equals(className)){
 			saleHelpActivity = this;
 		}

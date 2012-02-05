@@ -10,10 +10,8 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.ViewFlipper;
-
 import coffee.seven.action.MmbSystem;
 import coffee.seven.activity.MainTabActivity;
-import coffee.seven.activity.OrderHomeActivity;
 
 public abstract class FlipperActivity extends Activity implements IActivity {
 
@@ -38,11 +36,11 @@ public abstract class FlipperActivity extends Activity implements IActivity {
 			Class<?> clazz = Class.forName(className);
 			intentRoot = new Intent(this, clazz);
 			//重新加载
-			if(OrderHomeActivity.class == clazz){ 
+			//if(OrderHomeActivity.class == clazz){ 
 //					|| SaleNowFlipperActivity.class == clazz
 //					|| SaleNextFlipperActivity.class == clazz){
-				intentRoot.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-			}
+				//intentRoot.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+			//}
 			
 			flipper = new ViewFlipper(this);
 			flipper.setLayoutParams(new LayoutParams(LayoutParams.FILL_PARENT,LayoutParams.FILL_PARENT));
