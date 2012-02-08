@@ -1,0 +1,6 @@
+程序启动的过程中会配置插件
+org.jivesoftware.openfire.container.AdminConsolePlugin
+见plugins/admin/admin.xml文件
+然后会创建一个上下文目录
+WebRoot\plugins\admin\webapp
+
