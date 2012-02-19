@@ -1,7 +1,5 @@
 package coffee.activity;
 
-import org.droid.coffee.R;
-
 import android.app.Activity;
 import android.app.Notification;
 import android.app.NotificationManager;

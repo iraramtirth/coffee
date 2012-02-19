@@ -1,11 +1,5 @@
 package coffee.activity;
 
-import org.droid.coffee.R;
-
-import coffee.browser.BrowserHistory;
-import coffee.browser.MmbHttpUtils;
-import coffee.util.window.TitleUtils;
-
 import android.app.Activity;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -20,6 +14,9 @@ import android.webkit.WebViewClient;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import coffee.browser.BrowserHistory;
+import coffee.browser.MmbHttpUtils;
+import coffee.util.window.TitleUtils;
 /**
  * 需要
  * @author coffee

@@ -1,10 +1,5 @@
 package coffee.view;
 
-import org.droid.coffee.R;
-
-import coffee.util.adapter.OnGestureEvent;
-import coffee.util.res.RES;
-
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -19,6 +14,9 @@ import android.view.View.OnClickListener;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import coffee.activity.R;
+import coffee.util.adapter.OnGestureEvent;
+import coffee.util.res.RES;
 
 public class ImageZoomer extends FrameLayout implements OnClickListener{
 	
