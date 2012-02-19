@@ -13,7 +13,7 @@
  *     Specification available from http://jcp.org/en/jsr/detail?id=317
  *
  ******************************************************************************/
-package coffee.util.sqlite.annotation;
+package coffee.sqlite.annotation;
 
 import java.lang.annotation.Target;
 import java.lang.annotation.Retention;

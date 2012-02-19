@@ -1,7 +1,8 @@
-package coffee.util.sqlite;
+package coffee.sqlite;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.TimeZone;
 import java.util.logging.Logger;
 /**
  * 日期工具类
@@ -22,6 +23,7 @@ public class DateUtils {
 	 */
 	public static String format(Object value){
 		try {
+			sdf.setTimeZone(TimeZone.getTimeZone("GMT+08:00"));
 			return sdf.format(value);
 		} catch (Exception e) {
 			return null;
@@ -32,16 +34,19 @@ public class DateUtils {
 	 * @param 
 	 * @return 返回日期
 	 */
-	public static Date parse(Object value){
+	public static Date parse(String value){
 		try {
-			return sdf.parse(value.toString());
+			sdf.setTimeZone(TimeZone.getTimeZone("GMT+08:00"));
+			return sdf.parse(value);
 		} catch (Exception e) {
 			try{
 				sdf = new SimpleDateFormat("yyyy-MM-dd");
+				sdf.setTimeZone(TimeZone.getTimeZone("GMT+08:00"));
 				return sdf.parse(value.toString());
 			} catch(Exception ex){
 				try{
 					sdf = new SimpleDateFormat("HH:mm:ss");
+					sdf.setTimeZone(TimeZone.getTimeZone("GMT+08:00"));
 					return sdf.parse(value.toString());
 				} catch(Exception exc){
 					//exc.printStackTrace();
@@ -56,6 +61,7 @@ public class DateUtils {
 	public String  getCurDateTime(String format){
 		try {
 			SimpleDateFormat sdf = new SimpleDateFormat(format);
+			sdf.setTimeZone(TimeZone.getTimeZone("GMT+08:00"));
 			return sdf.format(new Date(System.currentTimeMillis()));
 		} catch (Exception e) {
 			return null;
