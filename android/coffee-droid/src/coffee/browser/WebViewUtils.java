@@ -1,5 +1,10 @@
 package coffee.browser;
 
+import android.util.Base64;
+import coffee.browser.activity.BrowserActivity;
+import coffee.http.HttpClient;
+import coffee.util.lang.RegexUtils;
+
 /**
  * webview的相关工具类
  * @author coffee
@@ -76,4 +81,58 @@ public class WebViewUtils {
 		}
 		return buf.toString();
 	}
+	
+	
+	private static String charset = "UTF-8";
+	private static String mimeType = "text/html";
+	private static StringBuilder doc = new StringBuilder();
+	
+	
+	/**
+	 * @param oriHtml
+	 *            : 原始html
+	 * @return : 返回处理后的html
+	 */
+	public static String handleHtml(String oriHtml) {
+		doc.setLength(0);// 清空
+		doc.append(oriHtml);
+		if (doc.indexOf("</head>") > 0) {
+			doc.insert(doc.indexOf("</head>"), metaLow);
+		}
+		if(doc.indexOf("</style>") > 0){
+			doc.insert(doc.indexOf("</style>"), cssRemoveHighLight);
+		}
+		return doc.toString();
+	}
+
+	
+	/**
+	 * @param url
+	 *            : 该URL是不需要\或者是已经处理过得标准的、完整的URL 即是：主机 +URI
+	 * @return : 返回网页的标题<title></title>
+	 */
+	public static String loadUrl(BrowserActivity context, String linkUrl) {
+		String title = "";
+		try {
+			String doc = "";
+			//http://mmb.cn/wap/upload/productImage/1314088464871.jpg
+			if(linkUrl.matches(".+?\\.(jpg|gif|jpeg|png)+.*?")){
+				charset = null;
+				byte[] data = (byte[]) new HttpClient().get(linkUrl, 1); 
+				doc = Base64.encodeToString(data, Base64.DEFAULT);
+				doc = "<img src=\"data:image/jpeg;base64," + doc + "\" />";
+			}else{
+				doc = handleHtml(new HttpClient().get(linkUrl) + "");
+				title = RegexUtils.match(doc, "<title>(.+?)</title>",1);
+				charset = "utf-8";	
+			}
+			//即使记录
+			BrowserHistory.put(linkUrl, doc);
+			context.getWebView().loadDataWithBaseURL(linkUrl, doc, mimeType, charset, linkUrl);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return title;
+	}
+	
 }
