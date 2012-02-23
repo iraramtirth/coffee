@@ -22,6 +22,8 @@ public class ActivityCycle extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		Log.e(TAG, "onCreate");
+		
+		getContentResolver();
 	}
 	
 	@Override
