@@ -10,13 +10,16 @@ import android.net.Uri;
 
 public class AppContentProvider extends ContentProvider {
 
+	public static final String AUTH_ORITIES = "coffee.provider.AppContentProvider";
+	
 	private UriMatcher uriMatcher;
 	
 	@Override
 	public boolean onCreate() {
 		uriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
-		uriMatcher.addURI("coffee.provider.AppConentProvide", "user", 1);
-		int result = uriMatcher.match(Uri.parse("content://coffee.provider.AppConentProvide/user"));
+		uriMatcher.addURI(AUTH_ORITIES, "user", 1);
+		uriMatcher.addURI(AUTH_ORITIES, "user/#", 2);
+		int result = uriMatcher.match(Uri.parse("content://"+AUTH_ORITIES+"/user"));
 		switch(result){
 		case 0:
 			System.out.println("xxx");

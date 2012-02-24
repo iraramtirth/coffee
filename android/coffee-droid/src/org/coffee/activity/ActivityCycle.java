@@ -1,5 +1,7 @@
 package org.coffee.activity;
 
+import org.coffee.provider.AppContentProvider;
+
 import android.app.Activity;
 import android.database.Cursor;
 import android.net.Uri;
@@ -26,7 +28,7 @@ public class ActivityCycle extends Activity {
 		Log.e(TAG, "onCreate");
 		
 		Cursor cursor = getContentResolver()
-			.query(Uri.parse("content://coffee.provider.AppConentProvide/user")
+			.query(Uri.parse("content://"+AppContentProvider.AUTH_ORITIES+"/user")
 				,null, null, null, null);
 		if(cursor != null){
 			System.out.println(cursor);
