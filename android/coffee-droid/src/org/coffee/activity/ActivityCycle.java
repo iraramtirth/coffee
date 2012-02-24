@@ -25,7 +25,8 @@ public class ActivityCycle extends Activity {
 		super.onCreate(savedInstanceState);
 		Log.e(TAG, "onCreate");
 		
-		Cursor cursor = getContentResolver().query(Uri.parse("content://coffee.provider.AppConentProvide/user")
+		Cursor cursor = getContentResolver()
+			.query(Uri.parse("content://coffee.provider.AppConentProvide/user")
 				,null, null, null, null);
 		if(cursor != null){
 			System.out.println(cursor);
