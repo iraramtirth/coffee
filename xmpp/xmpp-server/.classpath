@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry excluding="main/java/|test/java/|main/java/|test/java/" kind="src" path="src"/>
+	<classpathentry kind="src" path="src/main/java"/>
+	<classpathentry kind="src" path="src/test/java"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.6"/>
+	<classpathentry kind="lib" path="target/dependency/junit-4.6.jar"/>
+	<classpathentry kind="lib" path="target/dependency/kxml2-min-2.3.0.jar"/>
+	<classpathentry kind="lib" path="target/dependency/xpp3.jar"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>
