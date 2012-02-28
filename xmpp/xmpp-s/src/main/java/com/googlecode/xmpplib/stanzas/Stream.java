@@ -23,6 +23,7 @@ import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 
 import com.googlecode.xmpplib.StreamProcessor;
+import com.googlecode.xmpplib.Xmpp;
 import com.googlecode.xmpplib.XmppServer;
 
 public class Stream extends PacketProcessor {
@@ -87,7 +88,7 @@ public class Stream extends PacketProcessor {
 		xmpp.append(" id='").append(handler.createNextId()).append("'");
 		xmpp.append(" version='1.0'>");
 		
-		XmppServer xmppServer = handler.getXmppServer();
+		XmppServer xmppServer = Xmpp.xmppServer;
 		
 		boolean tls = xmppServer.isTlsSupported();
 		boolean sasl = xmppServer.isSaslSupported()

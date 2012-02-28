@@ -19,7 +19,6 @@ package com.googlecode.xmpplib;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
-import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -47,15 +46,11 @@ import com.googlecode.xmpplib.stanzas.Stream;
 import com.googlecode.xmpplib.utils.XmlWriter;
 
 public class StreamProcessor {
-	private Logger logger = Logger.getAnonymousLogger();
+	Logger logger = Logger.getAnonymousLogger();
 	/**
 	 * 
 	 */
 	private long id = 0;
-	/**
-	 * XmppServer.
-	 */
-	private XmppServer xmppServer;
 	/**
 	 * XmppFactory.
 	 */
@@ -87,17 +82,14 @@ public class StreamProcessor {
 	/**
 	 * The current IQ tag.
 	 */
-	// TODO make this not public
 	public IQ iq = new IQ(this);
 	/**
 	 * The current auth query.
 	 */
-	// TODO make this not public
 	public AuthQuery authQuery;
 	/**
 	 * The current auth sasl.
 	 */
-	// TODO make this not public
 	public AuthSasl authSasl;
 	/**
 	 * The current bind.
@@ -111,13 +103,8 @@ public class StreamProcessor {
 	public Message message = null;
 
 	public StreamProcessor(
-			XmppServer xmppServer,
-			XmppFactory xmppFactory,
 			Reader reader, Writer writer) throws IOException,
 			XmlPullParserException {
-		
-		this.xmppServer = xmppServer;
-		this.xmppFactory = xmppFactory;
 		
 		if (reader instanceof BufferedReader) {
 			this.reader = reader;
@@ -125,27 +112,28 @@ public class StreamProcessor {
 			this.reader = new BufferedReader(reader);
 		}
 		
-		if(reader.markSupported()){
-			reader.mark(10024 * 100);
-			String xml = "";
-			char[] data = new char[1024];
-			int len = -1;
-			try {
-				while((len=reader.read(data)) != -1){
-					xml += new String(data, 0, len);
-				}
-				logger.info("input stream ==> "+xml);
-			}catch(Exception e){
-				e.printStackTrace();
-			}
-			reader.reset();
-		}
+//		if(reader.markSupported()){
+//			reader.mark(10024 * 100);
+//			String xml = "";
+//			char[] data = new char[1024];
+//			int len = -1;
+//			try {
+//				while((len=reader.read(data)) != -1){
+//					xml += new String(data, 0, len);
+//				}
+//				logger.info("input stream ==> "+xml);
+//			}catch(Exception e){
+//				e.printStackTrace();
+//			}
+//			reader.reset();
+//		}
 		
 		if (writer instanceof BufferedWriter) {
 			this.writer = writer;
 		} else {
 			this.writer = new BufferedWriter(writer);
 		}
+		xmppFactory = Xmpp.xmppFactory;
 		
 		AuthenticationController authenticationController = xmppFactory.createAuthenticationController();
 		authQuery = new AuthQuery(this, authenticationController);
@@ -164,25 +152,13 @@ public class StreamProcessor {
 	}
 
 	public StreamProcessor(
-			XmppServer xmppServer,
-			XmppFactory xmppFactory,
 			InputStream inputStream,
 			OutputStream outputStream) throws IOException,
 			XmlPullParserException {
 		this(
-				xmppServer,
-				xmppFactory,
 				new InputStreamReader(inputStream, "UTF-8"),
 				new OutputStreamWriter(outputStream, "UTF-8"));
 		
-	}
-
-	public XmppServer getXmppServer() {
-		return xmppServer;
-	}
-
-	public XmppFactory getXmppFactory() {
-		return xmppFactory;
 	}
 
 	public XmlPullParser getXmlPullParser() {

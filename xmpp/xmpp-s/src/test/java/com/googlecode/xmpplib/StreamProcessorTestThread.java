@@ -51,11 +51,11 @@ public class StreamProcessorTestThread {
 		serverOutput = new PipedWriter(clientInput);
 		
 		xmppFactory = new DebugXmppFactory();
-		xmppServer = new XmppServer(xmppFactory);
+		xmppServer = new XmppServer();
 		
 		authenticationController = (SimpleAuthenticationController) xmppFactory.createAuthenticationController();
 		
-		streamProcessor = new StreamProcessor(xmppServer, xmppFactory,
+		streamProcessor = new StreamProcessor(
 				serverInput, serverOutput);
 	}
 

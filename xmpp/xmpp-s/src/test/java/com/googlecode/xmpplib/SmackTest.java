@@ -47,7 +47,7 @@ public class SmackTest {
 	}
 
 	protected XmppServer createXmppServer() throws IOException {
-		XmppServer xmppServer = new XmppServer(createXmppFactory());
+		XmppServer xmppServer = new XmppServer();
 		xmppServer.setBindIP("127.0.0.1");
 		xmppServer.setBindPort(port);
 		xmppServer.start();

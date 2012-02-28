@@ -20,7 +20,10 @@ package com.googlecode.xmpplib;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.ServerSocket;
+import java.net.Socket;
 import java.util.logging.Logger;
+
+import org.xmlpull.v1.XmlPullParserException;
 
 /**
  * <p>XmppServer is the main configuration class for the xmpplib server.</p>
@@ -40,11 +43,9 @@ import java.util.logging.Logger;
  * 
  * @author Christoph Jerolimov
  */
-public class XmppServer {
+public class XmppServer implements Runnable{
 	private Logger logger = Logger.getLogger(XmppServer.class.getName());
 	
-	private XmppFactory xmppFactory;
-
 	private boolean tlsSupported = false;
 	private boolean tlsRequired = false;
 	private boolean saslSupported = true;
@@ -55,6 +56,10 @@ public class XmppServer {
 	private boolean saslPlain = false;
 	private boolean saslAnonymous = false;
 
+	
+	private boolean stillRunning = true;
+	private ServerSocket serverSocket;
+	
 	/**
 	 * Default (null) is the loopback address.
 	 */
@@ -64,20 +69,8 @@ public class XmppServer {
 	 */
 	private Integer bindPort = 5222;
 
-	private SocketListener socketListener;
 	private Thread socketListenerThread;
 
-	public XmppServer(XmppFactory xmppFactory) {
-		this.xmppFactory = xmppFactory;
-	}
-
-	public XmppFactory getXmppFactory() {
-		return xmppFactory;
-	}
-
-	public void setXmppFactory(XmppFactory xmppFactory) {
-		this.xmppFactory = xmppFactory;
-	}
 
 	public boolean isTlsSupported() {
 		return tlsSupported;
@@ -159,30 +152,60 @@ public class XmppServer {
 		this.bindPort = bindPort;
 	}
 
-	protected ServerSocket createServerSocket() throws IOException {
-		int port = getBindPort() != null ? getBindPort() : 5222;
-		int backlog = 20;
-		InetAddress bindAddr = InetAddress.getByName(bindIP);
-		return new ServerSocket(port, backlog, bindAddr);
-	}
 
 	public void start() throws IOException {
 		if (isRunning()) {
 			throw new IllegalStateException("XmppServer is already running.");
 		}
-		ServerSocket serverSocket = createServerSocket();
-		socketListener = new SocketListener(this, xmppFactory, serverSocket);
-		socketListenerThread = new Thread(socketListener);
+		int port = getBindPort() != null ? getBindPort() : 5222;
+		int backlog = 20;
+		InetAddress bindAddr = InetAddress.getByName(bindIP);
+		//创建Server端口
+		serverSocket = new ServerSocket(port, backlog, bindAddr);
+		socketListenerThread = new Thread(this);
 		socketListenerThread.start();
+		
 		logger.info("server startup....");
 	}
 
-	public void shutdown() {
-		if (socketListener != null) {
-			socketListener.shutdown();
+	public void run() {
+		while (stillRunning) {
+			try {
+				final Socket socket = serverSocket.accept();
+				final StreamProcessor streamProcessor = new StreamProcessor(
+						socket.getInputStream(),
+						socket.getOutputStream());
+				new Thread(new Runnable() {
+					public void run() {
+						try {
+							streamProcessor.parse();
+						} catch (XmlPullParserException e) {
+							e.printStackTrace();
+						} catch (IOException e) {
+							e.printStackTrace();
+						}
+						try {
+							socket.close();
+						} catch (IOException e) {
+							e.printStackTrace();
+						}
+					}
+				}).start();
+			} catch (Throwable e) {
+				e.printStackTrace();
+			}
+		}
+		try {
+			serverSocket.close();
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
 	}
 
+	public void shutdown() {
+		stillRunning = false;
+	}
+	
 	public boolean isRunning() {
 		return socketListenerThread != null && socketListenerThread.isAlive();
 	}
