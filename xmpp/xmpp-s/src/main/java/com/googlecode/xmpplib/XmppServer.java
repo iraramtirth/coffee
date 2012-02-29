@@ -185,7 +185,7 @@ public class XmppServer implements Runnable{
 				final StreamProcessor streamProcessor = new StreamProcessor(
 						socket.getInputStream(),
 						socket.getOutputStream());
-				new Thread(new Runnable() {
+				poolExecutor.execute(new Runnable() {
 					public void run() {
 						try {
 							streamProcessor.parse();
@@ -200,7 +200,7 @@ public class XmppServer implements Runnable{
 							e.printStackTrace();
 						}
 					}
-				}).start();
+				});
 			} catch (Throwable e) {
 				e.printStackTrace();
 			}

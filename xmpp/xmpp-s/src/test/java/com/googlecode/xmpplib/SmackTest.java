@@ -69,7 +69,6 @@ public class SmackTest {
 
 	@Test
 	public void testConnection() throws Exception {
-		XmppServer xmppServer = createXmppServer();
 		
 		try {
 			ConnectionConfiguration configuration = createConfiguration();
@@ -85,7 +84,6 @@ public class SmackTest {
 			throw e;
 		} finally {
 			Thread.sleep(SLEEP_AFTER_EACH_TEST);
-			xmppServer.shutdown();
 			port++;
 		}
 	}
