@@ -21,6 +21,9 @@ import java.io.IOException;
 import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.concurrent.ArrayBlockingQueue;
+import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 import java.util.logging.Logger;
 
 import org.xmlpull.v1.XmlPullParserException;
@@ -168,6 +171,13 @@ public class XmppServer implements Runnable{
 		logger.info("server startup....");
 	}
 
+	private ThreadPoolExecutor poolExecutor;
+	
+	public XmppServer(){
+		poolExecutor = new ThreadPoolExecutor(2, 10, 10, TimeUnit.SECONDS,
+				new ArrayBlockingQueue<Runnable>(3));
+	}
+	
 	public void run() {
 		while (stillRunning) {
 			try {

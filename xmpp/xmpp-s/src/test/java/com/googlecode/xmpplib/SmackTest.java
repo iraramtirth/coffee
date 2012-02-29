@@ -37,7 +37,7 @@ public class SmackTest {
 	private static final boolean ENABLE_SMACK_DEBUGGER = Boolean.parseBoolean(System.getProperty("enableSmackDebugger"));
 	private static final long SLEEP_AFTER_EACH_TEST = ENABLE_SMACK_DEBUGGER ? 10000L : 0L;
 
-	private static int port = 10000;
+	private static int port = 5222;
 
 	protected XmppFactory createXmppFactory() {
 		XmppFactory xmppFactory = new DebugXmppFactory();
