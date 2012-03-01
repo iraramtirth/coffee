@@ -35,10 +35,10 @@ public class IQRosterTest {
 		rosterController.addContact(new RosterListener.Contact("GHI", "789"));
 		
 		PacketProcessorTestThread packetProcessorTestThread = new PacketProcessorTestThread(iq, true);
-		packetProcessorTestThread.packetProcessor.handler.roster = new Roster(packetProcessorTestThread.packetProcessor.handler, rosterController);
+		packetProcessorTestThread.xmlPuller.handler.roster = new Roster(packetProcessorTestThread.xmlPuller.handler, rosterController);
 		packetProcessorTestThread.start();
 		
-		rosterController.addListener(packetProcessorTestThread.packetProcessor.handler.roster);
+		rosterController.addListener(packetProcessorTestThread.xmlPuller.handler.roster);
 		
 		try {
 			AutoFlushWriter autoFlushWriter = new AutoFlushWriter(packetProcessorTestThread.getClientOutput());

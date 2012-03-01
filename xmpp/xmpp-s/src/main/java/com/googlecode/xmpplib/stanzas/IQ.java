@@ -22,9 +22,9 @@ import java.io.IOException;
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 
-import com.googlecode.xmpplib.StreamProcessor;
+import com.googlecode.xmpplib.Stream;
 
-public class IQ extends PacketProcessor {
+public class IQ extends XmlPuller {
 	private String type;
 	private String from;
 	private String to;
@@ -32,7 +32,7 @@ public class IQ extends PacketProcessor {
 
 	private boolean handled;
 
-	public IQ(StreamProcessor handler) {
+	public IQ(Stream handler) {
 		super(handler);
 	}
 

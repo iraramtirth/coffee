@@ -182,13 +182,13 @@ public class XmppServer implements Runnable{
 		while (stillRunning) {
 			try {
 				final Socket socket = serverSocket.accept();
-				final StreamProcessor streamProcessor = new StreamProcessor(
+				final Stream stream = new Stream(
 						socket.getInputStream(),
 						socket.getOutputStream());
 				poolExecutor.execute(new Runnable() {
 					public void run() {
 						try {
-							streamProcessor.parse();
+							stream.parse();
 						} catch (XmlPullParserException e) {
 							e.printStackTrace();
 						} catch (IOException e) {

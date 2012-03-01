@@ -23,11 +23,11 @@ import java.io.Serializable;
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 
-import com.googlecode.xmpplib.StreamProcessor;
+import com.googlecode.xmpplib.Stream;
 import com.googlecode.xmpplib.provider.MessageController;
 import com.googlecode.xmpplib.provider.MessageListener;
 
-public class Message extends PacketProcessor implements MessageListener {
+public class Message extends XmlPuller implements MessageListener {
 
 	private MessageController messageController;
 
@@ -37,7 +37,7 @@ public class Message extends PacketProcessor implements MessageListener {
 
 	private int currentTag = -1;
 
-	public Message(StreamProcessor handler, MessageController messageController) {
+	public Message(Stream handler, MessageController messageController) {
 		super(handler);
 		this.messageController = messageController;
 	}

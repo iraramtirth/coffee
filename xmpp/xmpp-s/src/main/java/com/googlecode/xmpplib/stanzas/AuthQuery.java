@@ -23,7 +23,7 @@ import java.io.Serializable;
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 
-import com.googlecode.xmpplib.StreamProcessor;
+import com.googlecode.xmpplib.Stream;
 import com.googlecode.xmpplib.provider.AuthenticationController;
 import com.googlecode.xmpplib.provider.AuthenticationListener;
 
@@ -32,8 +32,7 @@ import com.googlecode.xmpplib.provider.AuthenticationListener;
  * XMPP standard. See http://xmpp.org/extensions/xep-0078.html for more
  * information.
  */
-public class AuthQuery extends PacketProcessor implements AuthenticationListener {
-//TODO	private AuthenticationController authenticationController;
+public class AuthQuery extends XmlPuller implements AuthenticationListener {
 
 	private int currentTag = -1;
 	
@@ -42,9 +41,8 @@ public class AuthQuery extends PacketProcessor implements AuthenticationListener
 	private String digest;
 	private String resource;
 
-	public AuthQuery(StreamProcessor handler, AuthenticationController authenticationController) {
+	public AuthQuery(Stream handler, AuthenticationController authenticationController) {
 		super(handler);
-//TODO		this.authenticationController = authenticationController;
 	}
 
 	public String getUsername() {
@@ -154,18 +152,15 @@ public class AuthQuery extends PacketProcessor implements AuthenticationListener
 
 	public void receivePasswordFormat(Serializable xmppData, String username,
 			String passwordFormat) {
-		// TODO Auto-generated method stub
 		
 	}
 
 	public void receivePassword(Serializable xmppData, String username,
 			String password) {
-		// TODO Auto-generated method stub
 		
 	}
 
 	public void receivePasswordError(Serializable xmppData, String username) {
-		// TODO Auto-generated method stub
 		
 	}
 }

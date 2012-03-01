@@ -38,7 +38,7 @@ public class StreamProcessorTestThread {
 	protected final XmppFactory xmppFactory;
 	protected final XmppServer xmppServer;
 
-	protected final StreamProcessor streamProcessor;
+	protected final Stream stream;
 
 	protected Exception inThreadException = null;
 
@@ -55,7 +55,7 @@ public class StreamProcessorTestThread {
 		
 		authenticationController = (SimpleAuthenticationController) xmppFactory.createAuthenticationController();
 		
-		streamProcessor = new StreamProcessor(
+		stream = new Stream(
 				serverInput, serverOutput);
 	}
 
@@ -63,7 +63,7 @@ public class StreamProcessorTestThread {
 		thread = new Thread(new Runnable() {
 			public void run() {
 				try {
-					streamProcessor.parse();
+					stream.parse();
 				} catch (Exception e) {
 					inThreadException = e;
 				}

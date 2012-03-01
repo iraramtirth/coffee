@@ -25,18 +25,18 @@ import org.xmlpull.v1.XmlPullParserException;
 import com.googlecode.xmpplib.StreamProcessorTestThread;
 
 public class PacketProcessorTestThread extends StreamProcessorTestThread {
-	protected final PacketProcessor packetProcessor;
+	protected final XmlPuller xmlPuller;
 	protected final boolean skipUnitStartTag;
 
 	protected boolean again;
 
-	public PacketProcessorTestThread(PacketProcessor packetProcessor) throws IOException, XmlPullParserException {
-		this(packetProcessor, false);
+	public PacketProcessorTestThread(XmlPuller xmlPuller) throws IOException, XmlPullParserException {
+		this(xmlPuller, false);
 	}
 
-	public PacketProcessorTestThread(PacketProcessor packetProcessor, boolean skipUnitStartTag) throws IOException, XmlPullParserException {
-		this.packetProcessor = packetProcessor;
-		this.packetProcessor.handler = streamProcessor;
+	public PacketProcessorTestThread(XmlPuller xmlPuller, boolean skipUnitStartTag) throws IOException, XmlPullParserException {
+		this.xmlPuller = xmlPuller;
+		this.xmlPuller.handler = stream;
 		this.skipUnitStartTag = skipUnitStartTag;
 	}
 
@@ -45,14 +45,14 @@ public class PacketProcessorTestThread extends StreamProcessorTestThread {
 		thread = new Thread(new Runnable() {
 			public void run() {
 				try {
-					XmlPullParser xmlPullParser = packetProcessor.getXmlPullParser();
+					XmlPullParser xmlPullParser = xmlPuller.getXmlPullParser();
 					while (again) {
 						try {
 							while (xmlPullParser.nextTag() != XmlPullParser.START_TAG) {
 								System.out.println("stream processor#parse ignore " + xmlPullParser.getEventType());
 							}
-							packetProcessor.parse();
-						} catch (RenewStreamException e) {
+							xmlPuller.parse();
+						} catch (Exception e) {
 							System.out.println("renew stream!");
 							
 							xmlPullParser = xmppFactory.resetXmlPullParser(xmlPullParser, PacketProcessorTestThread.this.serverInput);

@@ -28,7 +28,6 @@ import java.io.Reader;
 import java.io.Writer;
 import java.util.logging.Logger;
 
-import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 
 import com.googlecode.xmpplib.provider.AuthenticationController;
@@ -39,13 +38,11 @@ import com.googlecode.xmpplib.stanzas.AuthSasl;
 import com.googlecode.xmpplib.stanzas.Bind;
 import com.googlecode.xmpplib.stanzas.IQ;
 import com.googlecode.xmpplib.stanzas.Message;
-import com.googlecode.xmpplib.stanzas.PacketProcessor;
-import com.googlecode.xmpplib.stanzas.RenewStreamException;
 import com.googlecode.xmpplib.stanzas.Roster;
-import com.googlecode.xmpplib.stanzas.Stream;
+import com.googlecode.xmpplib.stanzas.XmlPuller;
 import com.googlecode.xmpplib.utils.XmlWriter;
 
-public class StreamProcessor {
+public class Stream {
 	Logger logger = Logger.getAnonymousLogger();
 	/**
 	 * 
@@ -64,21 +61,13 @@ public class StreamProcessor {
 	 */
 	private Writer writer;
 	/**
-	 * The pullparser for the xmpp stream.
-	 */
-	private XmlPullParser xmlPullParser;
-	/**
 	 * The xml writer for the xmpp stream.
 	 */
 	private XmlWriter xmlWriter;
 	/**
 	 * 
 	 */
-	public PacketProcessor processor = new PacketProcessor(this);
-	/**
-	 * The current streaming tag.
-	 */
-	public Stream stream = new Stream(this);
+	public XmlPuller processor = new XmlPuller(this);
 	/**
 	 * The current IQ tag.
 	 */
@@ -102,7 +91,7 @@ public class StreamProcessor {
 	
 	public Message message = null;
 
-	public StreamProcessor(
+	public Stream(
 			Reader reader, Writer writer) throws IOException,
 			XmlPullParserException {
 		
@@ -110,6 +99,12 @@ public class StreamProcessor {
 			this.reader = reader;
 		} else {
 			this.reader = new BufferedReader(reader);
+		}
+		
+		if (writer instanceof BufferedWriter) {
+			this.writer = writer;
+		} else {
+			this.writer = new BufferedWriter(writer);
 		}
 		
 //		if(reader.markSupported()){
@@ -128,11 +123,7 @@ public class StreamProcessor {
 //			reader.reset();
 //		}
 		
-		if (writer instanceof BufferedWriter) {
-			this.writer = writer;
-		} else {
-			this.writer = new BufferedWriter(writer);
-		}
+		
 		xmppFactory = Xmpp.xmppFactory;
 		
 		AuthenticationController authenticationController = xmppFactory.createAuthenticationController();
@@ -147,11 +138,11 @@ public class StreamProcessor {
 		MessageController messageController = xmppFactory.createMessageController();
 		message = new Message(this, messageController);
 		
-		xmlPullParser = xmppFactory.createXmlPullParser(this.reader);
+	
 		xmlWriter = new XmlWriter(this.writer);
 	}
 
-	public StreamProcessor(
+	public Stream(
 			InputStream inputStream,
 			OutputStream outputStream) throws IOException,
 			XmlPullParserException {
@@ -160,15 +151,15 @@ public class StreamProcessor {
 				new OutputStreamWriter(outputStream, "UTF-8"));
 		
 	}
-
-	public XmlPullParser getXmlPullParser() {
-		return xmlPullParser;
-	}
-
+	
 	public XmlWriter getXmlWriter() {
 		return xmlWriter;
 	}
 
+	public Reader getReader(){
+		return this.reader;
+	}
+	
 	public long createNextId() {
 		return id++;
 	}
@@ -178,21 +169,6 @@ public class StreamProcessor {
 	 * thread dies if the stream is finished or an error occurs.
 	 */
 	public void parse() throws XmlPullParserException, IOException {
-		boolean again = true;
-		while (again) {
-			again = false;
-			try {
-				while (xmlPullParser.nextTag() != XmlPullParser.START_TAG) {
-					System.out.println("stream processor#parse ignore " + xmlPullParser.getEventType());
-				}
-				stream.parse();
-			} catch (RenewStreamException e) {
-				System.out.println("renew stream!");
-				
-				xmlPullParser = xmppFactory.resetXmlPullParser(xmlPullParser, this.reader);
-				
-				again = true;
-			}
-		}
+		new XmlPuller(this).parse();
 	}
 }

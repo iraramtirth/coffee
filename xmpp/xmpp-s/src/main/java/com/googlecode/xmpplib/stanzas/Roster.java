@@ -23,16 +23,16 @@ import java.util.Collection;
 
 import org.xmlpull.v1.XmlPullParserException;
 
-import com.googlecode.xmpplib.StreamProcessor;
+import com.googlecode.xmpplib.Stream;
 import com.googlecode.xmpplib.provider.RosterController;
 import com.googlecode.xmpplib.provider.RosterListener;
 
-public class Roster extends PacketProcessor implements RosterListener {
+public class Roster extends XmlPuller implements RosterListener {
 	private int currentTag = -1;
 
 	private RosterController rosterController;
 
-	public Roster(StreamProcessor handler, RosterController rosterController) {
+	public Roster(Stream handler, RosterController rosterController) {
 		super(handler);
 		this.rosterController = rosterController;
 	}

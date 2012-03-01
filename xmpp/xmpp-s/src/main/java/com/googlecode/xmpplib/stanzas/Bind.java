@@ -22,14 +22,14 @@ import java.io.IOException;
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 
-import com.googlecode.xmpplib.StreamProcessor;
+import com.googlecode.xmpplib.Stream;
 
-public class Bind extends PacketProcessor {
+public class Bind extends XmlPuller {
 	private int currentTag = -1;
 
 	public String resource;
 
-	public Bind(StreamProcessor handler) {
+	public Bind(Stream handler) {
 		super(handler);
 	}
 

@@ -22,44 +22,88 @@ import java.io.IOException;
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 
-import com.googlecode.xmpplib.StreamProcessor;
+import com.googlecode.xmpplib.Stream;
 import com.googlecode.xmpplib.Xmpp;
 import com.googlecode.xmpplib.XmppServer;
 
-public class Stream extends PacketProcessor {
-	private String to;
+/**
+ * Notice: This class is not-threadsafe.
+ * 
+ * @author Christoph Jerolimov
+ */
+public class XmlPuller {
+	protected Stream handler;
+	protected int type = -1; 
 
-	public Stream(StreamProcessor handler) {
-		super(handler);
+	private XmlPullParser xmlPullParser;
+	
+	public XmlPuller(Stream handler) {
+		this.handler = handler;
+		try {
+			xmlPullParser = Xmpp.xmppFactory.createXmlPullParser(this.handler.getReader());
+		} catch (XmlPullParserException e) {
+			e.printStackTrace();
+		}
 	}
 
-	@Override
+	public XmlPullParser getXmlPullParser(){
+		return this.xmlPullParser;
+	}
+	
+
+	/**
+	 * Parse a whole xml tag. The current event must already the start tag. The
+	 * method will be leaved with the end tag event. For the current event we
+	 * call {@link #handleStartTag()}, for the last {@link #handleEndTag()},
+	 * and for all other events {@link #handleEvent()}.
+	 */
+	public void parse() throws XmlPullParserException, IOException {
+		this.type = -1;
+		//this.type = xmlPullParser.getEventType();
+		while (true) {
+			type = xmlPullParser.nextToken();
+			if (type == XmlPullParser.START_TAG) {
+				handleStartTag();
+			} else if (type == XmlPullParser.END_TAG) {
+				handleEndTag();
+			} else if (type == XmlPullParser.START_DOCUMENT) {
+				System.out.println("start document !!!");
+			} else if (type == XmlPullParser.END_DOCUMENT) {
+				System.out.println("found end document!!!");
+				return;
+			}
+			handleEvent();
+		}
+	}
+
+	/**
+	 * Called when we start the current top tag.
+	 */
 	protected void handleStartTag() throws XmlPullParserException, IOException {
-		super.handleStartTag();
-		
-		to = getXmlPullParser().getAttributeValue(null, "to");
-		handleOpenStream(to);
+		System.out.print("<" + xmlPullParser.getName());
+		for (int i = 0; i < xmlPullParser.getAttributeCount(); i++) {
+			System.out.print(" " + xmlPullParser.getAttributeName(i) + "='" + xmlPullParser.getAttributeValue(i) + "'");
+		}
+		System.out.println(">");
 	}
 
-	@Override
+	/**
+	 * Called when we finished the current top tag.
+	 */
 	protected void handleEndTag() throws XmlPullParserException, IOException {
-		handleCloseStream();
+		String tag = xmlPullParser.getName();
+		System.out.println("</" + tag + ">");
 	}
 
-	@Override
 	protected void handleEvent() throws XmlPullParserException, IOException {
-		super.handleEvent();
 		
 		if (type == XmlPullParser.START_TAG) {
-			String tag = getXmlPullParser().getName();
-			String ns = getXmlPullParser().getAttributeValue(null, "xmlns");
+			String tag = xmlPullParser.getName();
+			String ns = xmlPullParser.getAttributeValue(null, "xmlns");
 			System.out.println("xmlns=" + ns);
-			
 			if (ns != null && ns.equals("urn:ietf:params:xml:ns:xmpp-sasl")) {
 				System.out.println("found sasl-auth in stream, parse it.");
-				
 				handler.authSasl.parse();
-				
 			} else if (tag.equals("iq")) {
 				handler.iq.parse();
 			} else if (tag.equals("presence") && (ns == null || (ns != null && ns.equals("jabber:client")))) {
@@ -75,6 +119,7 @@ public class Stream extends PacketProcessor {
 		}
 	}
 	
+	@SuppressWarnings("unused")
 	private void handleOpenStream(String to) throws IOException {
 		StringBuffer xmpp = new StringBuffer(512);
 		xmpp.append("<?xml version='1.0' encoding='UTF-8'?>");
@@ -138,7 +183,4 @@ public class Stream extends PacketProcessor {
 		handler.getXmlWriter().write(xmpp.toString());
 	}
 
-	private void handleCloseStream() throws IOException {
-		handler.getXmlWriter().write("</stream:stream>");
-	}
 }

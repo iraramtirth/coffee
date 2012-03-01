@@ -24,7 +24,7 @@ import org.apache.commons.codec.binary.Base64;
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 
-import com.googlecode.xmpplib.StreamProcessor;
+import com.googlecode.xmpplib.Stream;
 import com.googlecode.xmpplib.provider.AuthenticationController;
 import com.googlecode.xmpplib.provider.AuthenticationListener;
 import com.googlecode.xmpplib.sasl.SaslAnonymous;
@@ -36,7 +36,7 @@ import com.googlecode.xmpplib.sasl.SaslPlain;
  * This class handles the SASL authentication based on RFC 3920. Please read
  * http://xmpp.org/rfcs/rfc3920.html for more information.
  */
-public class AuthSasl extends PacketProcessor implements AuthenticationListener {
+public class AuthSasl extends XmlPuller implements AuthenticationListener {
 	private AuthenticationController authenticationController;
 
 	private int currentTag = -1;
@@ -44,7 +44,7 @@ public class AuthSasl extends PacketProcessor implements AuthenticationListener 
 	private Object saslInstance;
 	private String response;
 
-	public AuthSasl(StreamProcessor handler, AuthenticationController authenticationController) {
+	public AuthSasl(Stream handler, AuthenticationController authenticationController) {
 		super(handler);
 		this.authenticationController = authenticationController;
 	}
@@ -130,7 +130,7 @@ public class AuthSasl extends PacketProcessor implements AuthenticationListener 
 						xmpp.append("</success>");
 						//xmpp.append("</stream:stream>");
 						handler.getXmlWriter().write(xmpp.toString());
-						throw new RenewStreamException();
+//						throw new RenewStreamException();
 					} else {
 						handler.getXmlWriter().write("<failure xmlns='urn:ietf:params:xml:ns:xmpp-sasl'><not-authorized/></failure>");
 					}
@@ -150,7 +150,7 @@ public class AuthSasl extends PacketProcessor implements AuthenticationListener 
 						xmpp.append("</success>");
 						//xmpp.append("</stream:stream>");
 						handler.getXmlWriter().write(xmpp.toString());
-						throw new RenewStreamException();
+//						throw new RenewStreamException();
 					} else {
 						handler.getXmlWriter().write("<failure xmlns='urn:ietf:params:xml:ns:xmpp-sasl'><not-authorized/></failure>");
 					}
@@ -170,7 +170,7 @@ public class AuthSasl extends PacketProcessor implements AuthenticationListener 
 						xmpp.append("</success>");
 						//xmpp.append("</stream:stream>");
 						handler.getXmlWriter().write(xmpp.toString());
-						throw new RenewStreamException();
+//						throw new RenewStreamException();
 					} else {
 						handler.getXmlWriter().write("<failure xmlns='urn:ietf:params:xml:ns:xmpp-sasl'><not-authorized/></failure>");
 					}
@@ -186,7 +186,7 @@ public class AuthSasl extends PacketProcessor implements AuthenticationListener 
 				xmpp.append("</success>");
 				//xmpp.append("</stream:stream>");
 				handler.getXmlWriter().write(xmpp.toString());
-				throw new RenewStreamException();
+//				throw new RenewStreamException();
 			} else {
 				handler.getXmlWriter().write("<error/>");
 			}
