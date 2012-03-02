@@ -1,11 +1,12 @@
 package coffee.seven;
 
+import coffee.seven.activity.base.IActivity;
+import coffee.seven.service.SubRemindService;
+
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Environment;
 
-import coffee.seven.activity.base.IActivity;
-import coffee.seven.service.SubRemindService;
 
 /**
  * 系统的全局配置

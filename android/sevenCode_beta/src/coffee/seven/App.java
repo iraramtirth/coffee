@@ -2,7 +2,7 @@ package coffee.seven;
 
 import java.net.URLEncoder;
 
-import org.droid.util.sys.SystemUtils;
+import coffee.util.sys.SystemUtils;
 
 import android.app.Application;
 import android.os.Build;
