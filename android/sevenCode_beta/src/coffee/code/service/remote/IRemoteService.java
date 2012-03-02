@@ -2,9 +2,9 @@ package coffee.code.service.remote;
 
 import java.util.List;
 
-import coffee.seven.bean.OrderBean;
-import coffee.seven.bean.SaleBean;
-import coffee.seven.bean.Sales;
+import coffee.code.bean.OrderBean;
+import coffee.code.bean.SaleBean;
+import coffee.code.bean.Sales;
 
 
 public interface IRemoteService extends IService {

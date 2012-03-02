@@ -9,10 +9,10 @@ import android.content.Intent;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.util.Log;
+import coffee.code.activity.StartupActivity;
 import coffee.seven.App;
-import coffee.seven.R;
+import coffee.code.R;
 import coffee.seven.SysConfig;
-import coffee.seven.activity.StartupActivity;
 
 public class NotificationUtils {
 	private static final String TAG = NotificationUtils.class.getSimpleName();

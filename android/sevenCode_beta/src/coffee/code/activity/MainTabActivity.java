@@ -1,13 +1,6 @@
 package coffee.code.activity;
 
-import static coffee.seven.activity.base.TabFlipperActivity.saleHelpActivity;
-import static coffee.seven.activity.base.TabFlipperActivity.saleNextActivity;
-import static coffee.seven.activity.base.TabFlipperActivity.saleNowActivity;
-import static coffee.seven.activity.base.TabFlipperActivity.saleOrderActivity;
-
 import java.lang.reflect.Field;
-
-
 
 import android.app.Dialog;
 import android.app.LocalActivityManager;
@@ -34,12 +27,12 @@ import android.widget.PopupWindow;
 import android.widget.TabHost;
 import android.widget.TabHost.OnTabChangeListener;
 import android.widget.TabWidget;
-import coffee.seven.R;
+import coffee.code.action.Alert;
+import coffee.code.action.MmbSystem;
+import coffee.code.activity.base.IActivity;
+import coffee.code.activity.base.TabFlipperActivity;
+import coffee.code.R;
 import coffee.seven.SysConfig;
-import coffee.seven.action.Alert;
-import coffee.seven.action.MmbSystem;
-import coffee.seven.activity.base.IActivity;
-import coffee.seven.activity.base.TabFlipperActivity;
 import coffee.util.RUtils;
 import coffee.util.sys.ShortCutUtils;
 import coffee.util.view.ViewUtils;
@@ -277,13 +270,13 @@ public class MainTabActivity extends TabActivity implements IActivity,
 			}
 			tabHost.getCurrentTabView().setBackgroundResource(resid);
 			if (tabId.equals(tabs[0])) { // 正在抢购
-				saleNowActivity.show(ROOT);
+				//saleNowActivity.show(ROOT);
 			} else if (tabId.equals(tabs[1])) {// 下期预告
-				saleNextActivity.show(ROOT);
+				//saleNextActivity.show(ROOT);
 			} else if (tabId.equals(tabs[2])) {// 我的订单{
-				saleOrderActivity.show(ROOT);
+				//saleOrderActivity.show(ROOT);
 			} else if (tabId.equals(tabs[3])) {// 购物须知
-				saleHelpActivity.show(ROOT);
+				//saleHelpActivity.show(ROOT);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();

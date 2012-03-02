@@ -7,7 +7,7 @@ import android.text.Html;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
-import coffee.seven.R;
+import coffee.code.R;
 import coffee.util.view.ViewUtils;
 
 public class Alert {

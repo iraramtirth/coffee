@@ -1,5 +1,7 @@
 package coffee.seven;
 
+import coffee.code.R;
+
 public class Intents {
 	//预加载所有的图片
 	public static final String ACTION_PRELOADING_ALL = "ACTION_PRELOADING_ALL";

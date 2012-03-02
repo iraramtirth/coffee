@@ -6,7 +6,7 @@ import org.json.JSONObject;
 import android.app.Activity;
 import android.os.Bundle;
 import android.widget.TextView;
-import coffee.seven.bean.UserBean;
+import coffee.code.bean.UserBean;
 import coffee.util.json.JsonUtils;
 
 public class TestActivity extends Activity {

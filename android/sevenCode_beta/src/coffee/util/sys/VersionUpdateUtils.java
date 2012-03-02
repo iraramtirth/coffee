@@ -22,7 +22,7 @@ import android.os.AsyncTask;
 import android.os.Environment;
 import android.widget.RemoteViews;
 import android.widget.Toast;
-import coffee.seven.R;
+import coffee.code.R;
 import coffee.seven.SysConfig;
 import coffee.util.http.HttpClient;
 

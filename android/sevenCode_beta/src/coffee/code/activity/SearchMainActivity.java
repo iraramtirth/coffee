@@ -8,13 +8,13 @@ import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.GridView;
 import android.widget.ListView;
-import coffee.seven.R;
-import coffee.seven.activity.adapter.KeywordsGridAdapter;
-import coffee.seven.activity.adapter.SaleGridAdapter;
-import coffee.seven.activity.adapter.VoucherListAdapter;
-import coffee.seven.activity.base.BaseActivity;
-import coffee.seven.activity.base.IActivity;
-import coffee.seven.service.remote.impl.RemoteService;
+import coffee.code.activity.adapter.KeywordsGridAdapter;
+import coffee.code.activity.adapter.SaleGridAdapter;
+import coffee.code.activity.adapter.VoucherListAdapter;
+import coffee.code.activity.base.BaseActivity;
+import coffee.code.activity.base.IActivity;
+import coffee.code.service.remote.impl.RemoteService;
+import coffee.code.R;
 import coffee.util.view.ViewUtils;
 
 /**

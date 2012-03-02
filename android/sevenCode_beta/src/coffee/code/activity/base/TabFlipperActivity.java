@@ -1,10 +1,9 @@
 package coffee.code.activity.base;
 
-import coffee.seven.activity.HelpActivity;
-import coffee.seven.activity.ScanMainActivity;
-import coffee.seven.activity.SearchMainActivity;
-
 import android.os.Bundle;
+import coffee.code.activity.HelpActivity;
+import coffee.code.activity.ScanMainActivity;
+import coffee.code.activity.SearchMainActivity;
 
 public class TabFlipperActivity extends FlipperActivity {
 

@@ -1,31 +1,25 @@
 package coffee.code.service;
 
-import java.io.File;
-import java.text.ParseException;
 import java.util.List;
 import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
-
 
 import android.app.ActivityManager;
 import android.app.ActivityManager.RunningTaskInfo;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.Service;
-import android.content.Context;
 import android.content.Intent;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.IBinder;
 import android.util.Log;
-import coffee.seven.App;
-import coffee.seven.R;
+import coffee.code.action.NotificationUtils;
+import coffee.code.activity.base.IActivity;
+import coffee.code.bean.SaleBean;
+import coffee.code.R;
 import coffee.seven.SysConfig;
-import coffee.seven.action.NotificationUtils;
-import coffee.seven.activity.base.IActivity;
-import coffee.seven.bean.SaleBean;
-import coffee.seven.service.remote.impl.RemoteService;
 /**
  * 订阅提醒
  * 常驻内存。

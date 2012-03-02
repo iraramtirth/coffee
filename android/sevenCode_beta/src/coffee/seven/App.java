@@ -2,6 +2,7 @@ package coffee.seven;
 
 import java.net.URLEncoder;
 
+import coffee.code.R;
 import coffee.util.sys.SystemUtils;
 
 import android.app.Application;

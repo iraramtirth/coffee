@@ -8,8 +8,8 @@ import android.os.AsyncTask;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
-import coffee.seven.action.BitmapManager;
-import coffee.seven.bean.ImageType;
+import coffee.code.action.BitmapManager;
+import coffee.code.bean.ImageType;
 import coffee.util.http.HttpClient;
 import coffee.util.view.BitmapUtils;
 /**

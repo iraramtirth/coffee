@@ -3,9 +3,6 @@ package coffee.code.activity.base;
 import java.util.HashMap;
 import java.util.Map;
 
-import coffee.seven.action.MmbSystem;
-import coffee.seven.activity.MainTabActivity;
-
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -13,6 +10,8 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.ViewFlipper;
+import coffee.code.action.MmbSystem;
+import coffee.code.activity.MainTabActivity;
 
 public abstract class FlipperActivity extends Activity implements IActivity {
 

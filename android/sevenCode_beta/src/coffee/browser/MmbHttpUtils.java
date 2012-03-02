@@ -7,7 +7,7 @@ import android.util.Base64;
 import android.view.View;
 import android.webkit.WebView;
 import coffee.code.action.Alert;
-import coffee.seven.R;
+import coffee.code.R;
 import coffee.util.http.HttpClient;
 import coffee.util.http.WebViewUtils;
 import coffee.util.lang.StringUtils;

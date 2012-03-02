@@ -9,7 +9,7 @@ import android.content.DialogInterface.OnClickListener;
 import android.view.View;
 import coffee.code.activity.MainTabActivity;
 import coffee.code.activity.StartupActivity;
-import coffee.seven.R;
+import coffee.code.R;
 import coffee.util.RUtils;
 
 public class MmbSystem {

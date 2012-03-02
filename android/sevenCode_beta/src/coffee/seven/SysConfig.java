@@ -1,11 +1,11 @@
 package coffee.seven;
 
-import coffee.seven.activity.base.IActivity;
-import coffee.seven.service.SubRemindService;
-
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Environment;
+import coffee.code.R;
+import coffee.code.activity.base.IActivity;
+import coffee.code.service.SubRemindService;
 
 
 /**

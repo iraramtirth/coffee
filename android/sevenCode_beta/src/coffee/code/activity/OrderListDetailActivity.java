@@ -4,9 +4,9 @@ package coffee.code.activity;
 
 import android.os.Bundle;
 import android.widget.TextView;
-import coffee.seven.R;
-import coffee.seven.activity.base.BaseActivity;
-import coffee.seven.bean.OrderBean;
+import coffee.code.activity.base.BaseActivity;
+import coffee.code.bean.OrderBean;
+import coffee.code.R;
 import coffee.util.view.ViewUtils;
 
 public class OrderListDetailActivity extends BaseActivity {

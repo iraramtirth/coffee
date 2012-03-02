@@ -3,10 +3,6 @@ package coffee.code.activity;
 import java.util.ArrayList;
 import java.util.List;
 
-
-
-import com.google.zxing.client.android.CaptureActivity;
-
 import android.content.Intent;
 import android.location.Location;
 import android.os.Bundle;
@@ -14,10 +10,12 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.TextView;
-import coffee.seven.R;
-import coffee.seven.activity.base.BaseActivity;
-import coffee.seven.activity.base.IActivity;
+import coffee.code.activity.base.BaseActivity;
+import coffee.code.activity.base.IActivity;
+import coffee.code.R;
 import coffee.util.lbs.LocationAsyncTask;
+
+import com.google.zxing.client.android.CaptureActivity;
 
 public class ScanMainActivity extends BaseActivity {
 

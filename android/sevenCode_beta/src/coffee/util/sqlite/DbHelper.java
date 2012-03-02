@@ -3,15 +3,14 @@ package coffee.util.sqlite;
 import java.util.ArrayList;
 import java.util.List;
 
-import coffee.seven.App;
-import coffee.seven.SysConfig;
-import coffee.seven.bean.KeywordsBean;
-import coffee.seven.bean.SaleBean;
-import coffee.seven.bean.VoucherBean;
-
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import coffee.code.bean.KeywordsBean;
+import coffee.code.bean.SaleBean;
+import coffee.code.bean.VoucherBean;
+import coffee.seven.App;
+import coffee.seven.SysConfig;
 
 public class DbHelper extends SQLiteOpenHelper {
 	

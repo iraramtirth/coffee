@@ -8,16 +8,14 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.URL;
 
-
-
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.PixelFormat;
 import android.graphics.drawable.Drawable;
 import android.util.Log;
+import coffee.code.action.BitmapManager;
 import coffee.seven.App;
-import coffee.seven.action.BitmapManager;
 import coffee.util.http.HttpClient;
 import coffee.util.lang.FileUtils;
 

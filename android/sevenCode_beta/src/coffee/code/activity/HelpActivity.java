@@ -2,9 +2,9 @@ package coffee.code.activity;
 
 
 import android.os.Bundle;
-import coffee.seven.R;
-import coffee.seven.activity.base.BaseActivity;
-import coffee.seven.activity.base.IActivity;
+import coffee.code.activity.base.BaseActivity;
+import coffee.code.activity.base.IActivity;
+import coffee.code.R;
 
 /**
  * 帮助页面

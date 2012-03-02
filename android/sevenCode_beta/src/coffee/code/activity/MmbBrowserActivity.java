@@ -8,9 +8,9 @@ import android.os.Bundle;
 import android.webkit.WebView;
 import android.widget.ImageView;
 import android.widget.ViewSwitcher;
-import coffee.seven.R;
-import coffee.seven.activity.base.BrowserActivity;
-import coffee.seven.activity.base.IActivity;
+import coffee.code.activity.base.BrowserActivity;
+import coffee.code.activity.base.IActivity;
+import coffee.code.R;
 import coffee.util.RUtils;
 
 public class MmbBrowserActivity extends BrowserActivity{

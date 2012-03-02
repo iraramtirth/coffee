@@ -11,8 +11,8 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.Window;
 import android.widget.Toast;
-import coffee.seven.R;
-import coffee.seven.service.SubRemindService;
+import coffee.code.service.SubRemindService;
+import coffee.code.R;
 import coffee.util.http.HttpClient;
 /**
  * 程序启动界面
