@@ -1,4 +1,4 @@
-package coffee.seven;
+package coffee.code;
 
 import android.content.Context;
 import android.content.SharedPreferences;

@@ -1,4 +1,4 @@
-package coffee.seven;
+package coffee.code;
 
 import java.net.URLEncoder;
 
