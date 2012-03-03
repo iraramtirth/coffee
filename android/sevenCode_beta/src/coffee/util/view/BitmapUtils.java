@@ -14,8 +14,8 @@ import android.graphics.Canvas;
 import android.graphics.PixelFormat;
 import android.graphics.drawable.Drawable;
 import android.util.Log;
+import coffee.code.App;
 import coffee.code.action.BitmapManager;
-import coffee.seven.App;
 import coffee.util.http.HttpClient;
 import coffee.util.lang.FileUtils;
 

@@ -1,9 +1,8 @@
 package coffee.util.sys;
 
-import coffee.seven.App;
-
 import android.content.Context;
 import android.telephony.TelephonyManager;
+import coffee.code.App;
 
 
 /**

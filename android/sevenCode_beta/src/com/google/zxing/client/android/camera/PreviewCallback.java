@@ -19,7 +19,7 @@ package com.google.zxing.client.android.camera;
 import android.graphics.Point;
 import android.hardware.Camera;
 import android.os.Message;
-import coffee.seven.R;
+import coffee.code.R;
 
 final class PreviewCallback implements Camera.PreviewCallback {
 

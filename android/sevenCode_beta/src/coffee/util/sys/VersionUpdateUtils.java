@@ -7,8 +7,6 @@ import java.io.InputStream;
 import java.net.URL;
 import java.net.URLConnection;
 
-
-
 import android.app.AlertDialog;
 import android.app.Notification;
 import android.app.NotificationManager;
@@ -23,7 +21,7 @@ import android.os.Environment;
 import android.widget.RemoteViews;
 import android.widget.Toast;
 import coffee.code.R;
-import coffee.seven.SysConfig;
+import coffee.code.SysConfig;
 import coffee.util.http.HttpClient;
 
 /**

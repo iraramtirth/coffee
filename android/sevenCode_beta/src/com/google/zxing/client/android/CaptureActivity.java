@@ -9,7 +9,7 @@ import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
 import android.widget.TextView;
-import coffee.seven.R;
+import coffee.code.R;
 
 import com.google.zxing.Result;
 import com.google.zxing.client.android.camera.CUtils;

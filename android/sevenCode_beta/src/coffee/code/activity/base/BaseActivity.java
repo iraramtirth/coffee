@@ -10,7 +10,7 @@ import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import coffee.code.R;
-import coffee.seven.SysConfig;
+import coffee.code.SysConfig;
 
 /*
  * 买卖宝

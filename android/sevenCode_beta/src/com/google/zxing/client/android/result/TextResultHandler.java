@@ -17,7 +17,7 @@
 package com.google.zxing.client.android.result;
 
 import android.app.Activity;
-import coffee.seven.R;
+import coffee.code.R;
 
 import com.google.zxing.Result;
 import com.google.zxing.client.result.ParsedResult;

@@ -39,48 +39,7 @@ public abstract class ResultParser {
     // way to go about this. For example, we have no reflection available, really.
     // Order is important here.
     ParsedResult result;
-    if ((result = BookmarkDoCoMoResultParser.parse(theResult)) != null) {
-      return result;
-    } else if ((result = AddressBookDoCoMoResultParser.parse(theResult)) != null) {
-      return result;
-    } else if ((result = EmailDoCoMoResultParser.parse(theResult)) != null) {
-      return result;
-    } else if ((result = AddressBookAUResultParser.parse(theResult)) != null) {
-      return result;
-    } else if ((result = VCardResultParser.parse(theResult)) != null) {
-      return result;
-    } else if ((result = BizcardResultParser.parse(theResult)) != null) {
-      return result;
-    } else if ((result = VEventResultParser.parse(theResult)) != null) {
-      return result;
-    } else if ((result = EmailAddressResultParser.parse(theResult)) != null) {
-      return result;
-    } else if ((result = SMTPResultParser.parse(theResult)) != null) {
-      return result;
-    } else if ((result = TelResultParser.parse(theResult)) != null) {
-      return result;
-    } else if ((result = SMSMMSResultParser.parse(theResult)) != null) {
-      return result;
-    } else if ((result = SMSTOMMSTOResultParser.parse(theResult)) != null) {
-      return result;
-    } else if ((result = GeoResultParser.parse(theResult)) != null) {
-      return result;
-    } else if ((result = WifiResultParser.parse(theResult)) != null) {
-      return result;
-    } else if ((result = URLTOResultParser.parse(theResult)) != null) {
-      return result;
-    } else if ((result = URIResultParser.parse(theResult)) != null) {
-      // URI is a catch-all for protocol: contents that we don't handle explicitly above.
-      return result;
-    } else if ((result = ISBNResultParser.parse(theResult)) != null) {
-      // We depend on ISBN parsing coming before UPC, as it is a subset.
-      return result;
-    } else if ((result = ProductResultParser.parse(theResult)) != null) {
-      return result;
-    } else if ((result = ExpandedProductResultParser.parse(theResult)) != null) {
-      return result;
-    }
-    return new TextParsedResult(theResult.getText(), null);
+    return null;
   }
 
   protected static void maybeAppend(String value, StringBuffer result) {

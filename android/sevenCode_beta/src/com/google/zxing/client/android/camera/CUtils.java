@@ -14,7 +14,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
 import android.view.SurfaceHolder;
-import coffee.seven.R;
+import coffee.code.R;
 
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.BinaryBitmap;
@@ -127,7 +127,9 @@ public class CUtils {
 	 */
 	public static void releaseCamera() {
 		stopPreview();
-		mCamera.release();
+		if(mCamera != null){
+			mCamera.release();
+		}
 	}
 
 	/**

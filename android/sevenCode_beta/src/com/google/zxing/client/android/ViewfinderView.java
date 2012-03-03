@@ -27,7 +27,7 @@ import android.graphics.Paint;
 import android.graphics.Rect;
 import android.util.AttributeSet;
 import android.view.View;
-import coffee.seven.R;
+import coffee.code.R;
 
 import com.google.zxing.ResultPoint;
 import com.google.zxing.client.android.camera.CUtils;

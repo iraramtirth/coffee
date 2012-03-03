@@ -15,11 +15,11 @@ import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.IBinder;
 import android.util.Log;
+import coffee.code.R;
+import coffee.code.SysConfig;
 import coffee.code.action.NotificationUtils;
 import coffee.code.activity.base.IActivity;
 import coffee.code.bean.SaleBean;
-import coffee.code.R;
-import coffee.seven.SysConfig;
 /**
  * 订阅提醒
  * 常驻内存。

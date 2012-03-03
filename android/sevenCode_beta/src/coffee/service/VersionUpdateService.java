@@ -7,16 +7,12 @@ import java.io.InputStream;
 import java.net.URL;
 import java.net.URLConnection;
 
-import coffee.seven.SysConfig;
-
-
-//import org.coffee.util.io.FileUtils;
-
 import android.app.Service;
 import android.content.Intent;
 import android.os.Binder;
 import android.os.Environment;
 import android.os.IBinder;
+import coffee.code.SysConfig;
 /**
  * 下载服务  
  * @author wangtao

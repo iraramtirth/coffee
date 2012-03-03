@@ -29,7 +29,7 @@ import android.app.AlertDialog;
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.util.Log;
-import coffee.seven.R;
+import coffee.code.R;
 
 import com.google.zxing.Result;
 import com.google.zxing.client.result.ParsedResult;
