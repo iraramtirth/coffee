@@ -16,14 +16,11 @@
 
 package com.google.zxing;
 
-import com.google.zxing.aztec.AztecReader;
-import com.google.zxing.datamatrix.DataMatrixReader;
-import com.google.zxing.oned.MultiFormatOneDReader;
-import com.google.zxing.pdf417.PDF417Reader;
-import com.google.zxing.qrcode.QRCodeReader;
-
 import java.util.Hashtable;
 import java.util.Vector;
+
+import com.google.zxing.aztec.AztecReader;
+import com.google.zxing.qrcode.QRCodeReader;
 
 /**
  * MultiFormatReader is a convenience class and the main entry point into the library for most uses.
@@ -108,39 +105,18 @@ public final class MultiFormatReader implements Reader {
               formats.contains(BarcodeFormat.RSS_14) ||
               formats.contains(BarcodeFormat.RSS_EXPANDED);
       // Put 1D readers upfront in "normal" mode
-      if (addOneDReader && !tryHarder) {
-        readers.addElement(new MultiFormatOneDReader(hints));
-      }
       if (formats.contains(BarcodeFormat.QR_CODE)) {
         readers.addElement(new QRCodeReader());
-      }
-      if (formats.contains(BarcodeFormat.DATA_MATRIX)) {
-        readers.addElement(new DataMatrixReader());
       }
       if (formats.contains(BarcodeFormat.AZTEC)) {
         readers.addElement(new AztecReader());
       }
-      if (formats.contains(BarcodeFormat.PDF_417)) {
-         readers.addElement(new PDF417Reader());
-       }
       // At end in "try harder" mode
-      if (addOneDReader && tryHarder) {
-        readers.addElement(new MultiFormatOneDReader(hints));
-      }
     }
     if (readers.isEmpty()) {
-      if (!tryHarder) {
-        readers.addElement(new MultiFormatOneDReader(hints));
-      }
 
       readers.addElement(new QRCodeReader());
-      readers.addElement(new DataMatrixReader());
-      readers.addElement(new AztecReader());
-      readers.addElement(new PDF417Reader());
 
-      if (tryHarder) {
-        readers.addElement(new MultiFormatOneDReader(hints));
-      }
     }
   }
 

@@ -75,8 +75,6 @@ public abstract class ResultParser {
     } else if ((result = ISBNResultParser.parse(theResult)) != null) {
       // We depend on ISBN parsing coming before UPC, as it is a subset.
       return result;
-    } else if ((result = ProductResultParser.parse(theResult)) != null) {
-      return result;
     } else if ((result = ExpandedProductResultParser.parse(theResult)) != null) {
       return result;
     }

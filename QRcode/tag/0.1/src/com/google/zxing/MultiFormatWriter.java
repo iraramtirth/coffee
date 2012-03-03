@@ -16,16 +16,10 @@
 
 package com.google.zxing;
 
-import com.google.zxing.common.BitMatrix;
-import com.google.zxing.oned.Code128Writer;
-import com.google.zxing.oned.Code39Writer;
-import com.google.zxing.oned.EAN13Writer;
-import com.google.zxing.oned.EAN8Writer;
-import com.google.zxing.oned.ITFWriter;
-import com.google.zxing.oned.UPCAWriter;
-import com.google.zxing.qrcode.QRCodeWriter;
-
 import java.util.Hashtable;
+
+import com.google.zxing.common.BitMatrix;
+import com.google.zxing.qrcode.QRCodeWriter;
 
 /**
  * This is a factory class which finds the appropriate Writer subclass for the BarcodeFormat
@@ -45,20 +39,8 @@ public final class MultiFormatWriter implements Writer {
       Hashtable hints) throws WriterException {
 
     Writer writer;
-    if (format == BarcodeFormat.EAN_8) {
-      writer = new EAN8Writer();
-    } else if (format == BarcodeFormat.EAN_13) {
-      writer = new EAN13Writer();
-    } else if (format == BarcodeFormat.UPC_A) {
-      writer = new UPCAWriter();
-    } else if (format == BarcodeFormat.QR_CODE) {
+    if (format == BarcodeFormat.QR_CODE) {
       writer = new QRCodeWriter();
-    } else if (format == BarcodeFormat.CODE_39) {
-      writer = new Code39Writer();
-    } else if (format == BarcodeFormat.CODE_128) {
-      writer = new Code128Writer();
-    } else if (format == BarcodeFormat.ITF) {
-      writer = new ITFWriter();
     } else {
       throw new IllegalArgumentException("No encoder available for format " + format);
     }
