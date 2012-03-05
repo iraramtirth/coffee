@@ -136,10 +136,10 @@ public class NgnConfigurationEntry {
 	public static final int DEFAULT_GENERAL_ECHO_TAIL = 500;
 	
 	//	Identity
-	public static final String DEFAULT_IDENTITY_DISPLAY_NAME = "coffee";
-	public static final String DEFAULT_IDENTITY_IMPU = "sip:wangtaomsn@sip2sip.info";
-	public static final String DEFAULT_IDENTITY_IMPI = "wangtaomsn@sip2sip.info";
-	public static final String DEFAULT_IDENTITY_PASSWORD = "21tc8pp9dd";
+	public static final String DEFAULT_IDENTITY_DISPLAY_NAME = "245355193";
+	public static final String DEFAULT_IDENTITY_IMPU = "sip:245355193@sip2sip.info";//wangtaomsn //245355193 //786792111
+	public static final String DEFAULT_IDENTITY_IMPI = "245355193@sip2sip.info";
+	public static final String DEFAULT_IDENTITY_PASSWORD = "e2wd3j3jj4";//21tc8pp9dd    e2wd3j3jj4  yixeey4k5k
 	
 	// Network
 	public static final int DEFAULT_NETWORK_REGISTRATION_TIMEOUT = 1700;
