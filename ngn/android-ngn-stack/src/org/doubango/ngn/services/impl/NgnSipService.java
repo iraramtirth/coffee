@@ -134,13 +134,11 @@ implements INgnSipService, tinyWRAPConstants {
 
 	@Override
 	public String getDefaultIdentity() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public void setDefaultIdentity(String identity) {
-		// TODO Auto-generated method stub
 		
 	}
 
@@ -167,61 +165,55 @@ implements INgnSipService, tinyWRAPConstants {
 
 	@Override
 	public boolean isXcapEnabled() {
-		// TODO Auto-generated method stub
 		return false;
 	}
 
 	@Override
 	public boolean isPublicationEnabled() {
-		// TODO Auto-generated method stub
 		return false;
 	}
 
 	@Override
 	public boolean isSubscriptionEnabled() {
-		// TODO Auto-generated method stub
 		return false;
 	}
 
 	@Override
 	public boolean isSubscriptionToRLSEnabled() {
-		// TODO Auto-generated method stub
 		return false;
 	}
 
 	@Override
 	public int getCodecs() {
-		// TODO Auto-generated method stub
 		return 0;
 	}
 
 	@Override
 	public void setCodecs(int coddecs) {
-		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
 	public byte[] getSubRLSContent() {
-		// TODO Auto-generated method stub
+		
 		return null;
 	}
 
 	@Override
 	public byte[] getSubRegContent() {
-		// TODO Auto-generated method stub
+		
 		return null;
 	}
 
 	@Override
 	public byte[] getSubMwiContent() {
-		// TODO Auto-generated method stub
+		
 		return null;
 	}
 
 	@Override
 	public byte[] getSubWinfoContent() {
-		// TODO Auto-generated method stub
+		
 		return null;
 	}
 
@@ -450,7 +442,7 @@ implements INgnSipService, tinyWRAPConstants {
 
 	@Override
 	public boolean PresencePublish(NgnPresenceStatus status) {
-		// TODO Auto-generated method stub
+		
 		return false;
 	}
 	
