@@ -304,7 +304,7 @@ implements INgnSipService, tinyWRAPConstants {
 		
 		// Set Proxy-CSCF
 		mPreferences.setPcscfHost(mConfigurationService.getString(NgnConfigurationEntry.NETWORK_PCSCF_HOST,
-				null)); // null will trigger DNS NAPTR+SRV
+				NgnConfigurationEntry.DEFAULT_NETWORK_PCSCF_HOST)); // null will trigger DNS NAPTR+SRV
 		mPreferences.setPcscfPort(mConfigurationService.getInt(NgnConfigurationEntry.NETWORK_PCSCF_PORT,
 				NgnConfigurationEntry.DEFAULT_NETWORK_PCSCF_PORT));
 		mPreferences.setTransport(mConfigurationService.getString(NgnConfigurationEntry.NETWORK_TRANSPORT,
