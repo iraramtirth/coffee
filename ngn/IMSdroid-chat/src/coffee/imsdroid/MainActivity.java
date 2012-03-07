@@ -64,8 +64,6 @@ public class MainActivity extends Activity {
 				StatusType.Outgoing);
 		e.setContent(content);
 
-		boolean isRegister = engine.getSipService().register(this);
-		System.out.println(isRegister);
 		try {
 			final String remotePartyUri = NgnUriUtils.makeValidSipUri(sRemoteParty);
 			final NgnMessagingSession imSession = NgnMessagingSession
