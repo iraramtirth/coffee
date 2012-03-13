@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- 订单提交  -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+  android:layout_width="fill_parent"
+  android:layout_height="fill_parent"
+  android:orientation="vertical">
+  <include android:id="@+id/common_title"	
+ 	 	android:layout_width="fill_parent"
+ 	 	android:layout_height="wrap_content"
+  		layout="@layout/common_title"/>
+  <ScrollView android:layout_width="fill_parent"
+  		android:layout_height="fill_parent"
+  		android:scrollbars="none"
+  		android:background="@drawable/order_bg">		
+    <LinearLayout android:layout_width="fill_parent"
+  		android:layout_height="wrap_content"
+  		android:orientation="vertical"
+  		android:paddingLeft="15dip"
+  		android:paddingRight="15dip">
+    <TableLayout android:id="@+id/submit_goods_rlayout" 
+  		android:padding="5dip"
+  		style="@style/order_table_layout"
+  		android:layout_marginTop="45dip">
+  		<TableRow>
+	  		<TextView android:text="商品单价:"
+	   			style="@style/order_content_text_label"/>
+	   		<TextView android:id="@+id/order_goods_price" 
+	   			android:text="68.0"
+	   			style="@style/order_content_text_2"/>
+	   		<TextView android:text="元 "
+	   			style="@style/order_content_text_1"/>
+   		</TableRow>
+  		<TableRow>
+	 		<TextView android:text="商品数量:"
+	   			style="@style/order_content_text_label"/>
+	   		<TextView android:id="@+id/order_goods_count" 
+	   			android:text="1"
+	   			style="@style/order_content_text_2"/>
+  		</TableRow>
+  </TableLayout> 
+  <TextView android:id="@+id/submit_order_tag" 
+  	android:layout_width="fill_parent"
+  	android:layout_height="wrap_content"
+  	android:text="订单总金额"
+  	style="@style/order_title_text"/> 
+  <TableLayout android:id="@+id/submit_order_rlayout" 
+  		style="@style/order_table_layout">
+  		<TableRow>
+	  		<TextView android:text="商品总额:"
+	   			style="@style/order_content_text_label"/>
+	   		<TextView android:id="@+id/order_goods_total_price" 
+	   			android:text="68.0"
+	   			style="@style/order_content_text_2"/>
+	   		<TextView android:text="元 "
+	   			style="@style/order_content_text_1"/>
+   		</TableRow>
+   		<TableRow>
+	  		<TextView android:text="服务费:"
+	   			style="@style/order_content_text_label"/>
+	   		<TextView android:id="@+id/order_goods_service" 
+	   			android:text="0.0"
+	   			style="@style/order_content_text_2"/>
+	   		<TextView android:text="元"
+	   			style="@style/order_content_text_1"/>
+	   	</TableRow>
+	   	<TableRow>
+	   		<TextView android:text="订单总额:"
+	   			style="@style/order_content_text_label"/>
+	   		<TextView android:id="@+id/order_total_price" 
+	   			android:text="239.0"
+	   			style="@style/order_content_text_2"/>
+	   		<TextView android:text="元"
+	   			style="@style/order_content_text_1"/>
+	   	</TableRow>
+  </TableLayout>  
+  <!-- 收货信息 -->
+  <TextView android:id="@+id/submit_customer_info_tag"
+  	android:layout_width="wrap_content" 
+  	android:layout_height="wrap_content"
+  	android:text="填写收货信息 "
+  	style="@style/order_title_text"/>
+  
+  <TableLayout android:id="@+id/order_customer_info"
+  	android:layout_width="fill_parent"
+  	android:layout_height="wrap_content"
+  	style="@style/order_input_layout"
+  	android:stretchColumns="1"
+  	android:shrinkColumns="1">
+  	<TableRow>
+  		<TextView android:text="您的手机号码:"
+	  		style="@style/order_common_input_tag"/>
+  		<EditText android:id="@+id/order_input_phone"
+	  		style="@style/order_common_input"
+	  		android:numeric="integer"
+	  		android:maxLength="11"/>
+  	</TableRow>
+  	<TableRow>
+  		<TextView android:text="收货人姓名 :"
+  			style="@style/order_common_input_tag"/>
+  		<EditText android:id="@+id/order_input_name"
+  			style="@style/order_common_input"/>
+  	</TableRow>
+  	<TableRow>
+  		<TextView android:text="收货地址:"
+			style="@style/order_common_input_tag"/>
+		<EditText android:id="@+id/order_input_address"
+  			style="@style/order_common_input"/>
+  	</TableRow>
+  </TableLayout>	
+ 
+ <!-- 支付方式 -->
+ <TableLayout android:id="@+id/liner_pay_type" 
+	   		style="@style/order_table_layout"
+	   		android:layout_marginTop="5dip">
+	   	<TableRow>
+	 		<TextView android:text="支付方式:"
+		   		style="@style/order_content_text_label"
+		   		android:textColor="#000000"/>
+		   <TextView android:text="货到付款 "
+		   		style="@style/order_content_text_1"/>
+	   	</TableRow>
+  </TableLayout>
+ <!-- 提交表单  -->
+ <Button android:id="@+id/order_submit_action"
+ 	android:layout_width="wrap_content"
+ 	android:layout_height="wrap_content"
+ 	android:layout_gravity="center_horizontal"
+ 	android:layout_marginBottom="5dip"
+ 	android:background="@drawable/order_submit_action_selector"/>
+ </LinearLayout>
+ </ScrollView>	
+ </LinearLayout>

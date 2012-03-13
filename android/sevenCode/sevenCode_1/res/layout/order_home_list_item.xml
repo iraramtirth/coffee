@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- 我的抢购订单-主页  -->
+<LinearLayout
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  android:orientation="vertical"
+  android:layout_width="fill_parent"
+  android:layout_height="fill_parent"
+  android:padding="5dip"
+  android:background="@drawable/background_corners">
+    
+   <TableLayout android:orientation="horizontal"
+   		android:layout_width="fill_parent"
+   		android:layout_height="wrap_content"
+   		android:shrinkColumns="1">
+   		<TableRow>
+	   		<TextView android:text="商品名称"
+	   			style="@style/order_content_text_label"
+	   			android:textColor="#000000"/>
+	   		<TextView android:id="@+id/order_list_goods_name" 
+	   			android:layout_width="wrap_content"
+	   			android:layout_height="wrap_content"
+	   			android:text="平板电脑"
+	   			android:textSize="14sp"
+	   			android:textColor="#000000"/>
+  		</TableRow>
+  		<TableRow>
+	   		<TextView android:text="订单号"
+	   			style="@style/order_content_text_label"/>
+	   		<TextView android:id="@+id/order_list_order_id" 
+	   			android:text="T12893489438"
+	   			style="@style/order_content_text_1"/>
+	   	</TableRow>
+  		<TableRow>
+	   		<TextView android:text="订单总金额"
+	   			style="@style/order_content_text_label"/>
+	   		<TextView android:id="@+id/order_list_total_price" 
+	   			android:text="125.0元"
+	   			style="@style/order_content_text_1"/>
+  		</TableRow>
+  		<TableRow>
+	   		<TextView android:text="订单生成时间"
+	   			style="@style/order_content_text_label"/>
+	   		<TextView android:id="@+id/order_list_order_create_time" 
+	   			android:text="2011-09-24 21:23:41"
+	   			style="@style/order_content_text_1"/>
+   		</TableRow>
+  		<TableRow>
+	   		<TextView android:text="订单状态"
+	   			style="@style/order_content_text_label"/>
+	   		<TextView android:id="@+id/order_list_order_status" 
+	   			android:text="订单未处理"
+	   			style="@style/order_status_default"/>
+  	 	</TableRow>
+  		<TableRow android:visibility="gone" android:id="@+id/order_list_pack_layout">
+	   		<TextView android:text="包裹单号"
+	   			style="@style/order_content_text_label"/>
+	   		<TextView android:id="@+id/order_list_packId" 
+	   			android:text="234556234"
+	   			style="@style/order_content_text_1"/>
+		</TableRow>
+	</TableLayout>
+</LinearLayout>

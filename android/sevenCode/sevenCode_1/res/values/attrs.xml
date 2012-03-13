@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+	 <!-- 价格 -->
+   	 <declare-styleable name="price">
+   	 	<attr name="lineColor" format="color" />
+   	 </declare-styleable>
+</resources>

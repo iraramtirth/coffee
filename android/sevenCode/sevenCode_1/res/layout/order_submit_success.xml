@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- 订单提交  - 成功页  -->
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+  android:layout_width="fill_parent"
+  android:layout_height="fill_parent"
+  android:orientation="vertical">
+	<include android:id="@+id/common_title" 
+	    layout="@layout/common_title"
+		android:layout_height="wrap_content"
+		android:layout_width="fill_parent"
+		android:layout_alignParentTop="true"/>
+	<ScrollView android:layout_width="fill_parent"
+  		android:layout_height="fill_parent"
+  		android:layout_below="@id/common_title"
+  		android:scrollbars="none"
+  		android:background="@drawable/order_bg">
+		<LinearLayout android:layout_width="fill_parent"
+  			android:layout_height="wrap_content"
+  			android:orientation="vertical"
+  			android:padding="15dip">
+		 	<!-- 恭喜 -->
+		 	<TextView android:layout_height="wrap_content"
+		 		android:layout_width="fill_parent"
+		 		android:text="恭喜!你已提交成功"
+		 		android:textColor="#ff7200"
+		 		android:textSize="16sp"
+		 		android:gravity="center_horizontal"
+		 		android:layout_marginTop="28dip"/>
+		 	<LinearLayout android:layout_width="fill_parent"
+		  		android:layout_height="wrap_content"
+		  		android:paddingLeft="3dip">
+		  		<TextView 
+		  			android:layout_width="wrap_content"
+		   			android:layout_height="wrap_content"
+		   			android:text="您的订单号:"
+		   			android:textColor="#ff0000"
+		   			android:textSize="14sp"/>
+		   		<TextView android:id="@+id/order_id" 
+		   			android:layout_width="wrap_content"
+		   			android:layout_height="wrap_content"
+		   			android:text="634344545"
+		   			android:textColor="#ff0000"
+		   			android:textSize="15sp"
+		   			android:paddingLeft="5dip"/>
+		  </LinearLayout> 
+		  <TextView android:id="@+id/order_success_goods_name"
+		  		android:layout_height="wrap_content"
+		  		android:layout_width="fill_parent"
+		  		android:text="[商品]平板电脑(杏色35码)"
+		  		android:textColor="#000000"
+		  		android:textSize="15sp"/>
+		  <TableLayout style="@style/order_table_layout">
+		  		<TableRow>
+		  		<TextView android:text="购买数量"
+		   			style="@style/order_content_text_label"/>
+		   		<TextView android:id="@+id/order_goods_count" 
+		   			android:text="1"
+		   			style="@style/order_content_text_1"/>
+		   		</TableRow>
+		   		<TableRow>
+			  		<TextView android:text="商品总金额"
+			   			style="@style/order_content_text_label"/>
+			   		<TextView android:id="@+id/order_goods_total_price" 
+			   			android:text="68.0"
+			   			style="@style/order_content_text_1"/>
+		   		</TableRow>
+				<TableRow>	 
+			  		<TextView android:text="服务费"
+			   			style="@style/order_content_text_label"/>
+			   		<TextView android:id="@+id/order_service_price" 
+			   			android:text="0.0元"
+			   			style="@style/order_content_text_1"/>
+		   		</TableRow>
+		 		<TableRow>
+			  		<TextView android:text="订单总额"
+			   			style="@style/order_content_text_label"/>
+			   		<TextView android:id="@+id/order_total_price" 
+			   			android:text="239.0"
+			   			style="@style/order_content_text_1"/>
+			   	</TableRow>
+			   	<TableRow>
+			  		<TextView android:text="支付方式"
+			   			style="@style/order_content_text_label"/>
+			   		<TextView android:text="货到付款 "
+			   			style="@style/order_content_text_1"/>
+			   	</TableRow>
+		   </TableLayout>	
+		   <TextView android:id="@+id/order_success_info_1" 
+		       	android:text="@string/order_success_info_1"
+			  	style="@style/order_content_text_1"
+			  	android:layout_marginTop="5dip"/>
+			  			
+		  <!-- 温馨提示-标题 -->
+		  <LinearLayout android:layout_width="fill_parent" 
+			  	android:layout_height="wrap_content"
+			  	android:layout_marginTop="5dip">
+			  <ImageView android:layout_width="wrap_content" 
+			  	android:layout_height="wrap_content"
+			  	android:src="@drawable/order_success_tip"/>
+			  <TextView android:id="@+id/submit_customer_info_tag"
+			  	android:layout_width="wrap_content" 
+			  	android:layout_height="wrap_content"
+			  	android:text="温馨提示:"
+			  	android:textColor="#000000" 
+			  	android:textSize="15sp"
+			  	android:gravity="center_vertical"
+			  	android:layout_gravity="center_vertical"/>
+		  </LinearLayout>	
+		  <!-- 温馨提示 -内容 -->
+		  <TextView android:layout_width="wrap_content" 
+		  	android:layout_height="wrap_content"
+		  	android:text="@string/order_success_info_2"
+		  	android:textColor="#000000"
+			android:textSize="14sp"
+			android:padding="5dip"
+			android:background="@drawable/background_corners"/>
+		 <!-- 提交表单  -->
+		 <Button android:id="@+id/order_buy_other_action"
+		 	android:layout_width="wrap_content"
+		 	android:layout_height="wrap_content"
+		 	android:layout_gravity="center_horizontal"
+		 	android:background="@drawable/order_buy_other_action_selector"/> 
+  		</LinearLayout>
+  		</ScrollView>
+</RelativeLayout>

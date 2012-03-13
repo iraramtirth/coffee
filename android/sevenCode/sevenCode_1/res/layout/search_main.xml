@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    >
+ 	<RelativeLayout android:id="@+id/search_main_top"
+  	  	android:layout_width="wrap_content"
+   	 	android:layout_height="wrap_content"
+   	 	android:layout_alignParentTop="true"
+    >
+	 	<Button
+	        android:id="@+id/search_main_action"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content" 
+	        android:layout_alignParentRight="true"
+	        android:text="搜索">
+	    </Button>
+	    <EditText
+	        android:id="@+id/search_main_input"
+	        android:layout_width="fill_parent"
+	        android:layout_height="wrap_content" 
+	        android:textSize="30dip"
+	        android:layout_alignParentLeft="true"
+	        android:layout_toLeftOf="@id/search_main_action"
+	        android:text="测试">
+	    </EditText>
+    </RelativeLayout>
+    <GridView android:id="@+id/search_main_sale_grid"
+        android:layout_height="wrap_content"
+        android:layout_width="fill_parent"
+        android:layout_below="@id/search_main_top"
+        android:numColumns="4">
+    </GridView>
+    <GridView android:id="@+id/search_main_keywords_grid"
+        android:layout_height="wrap_content"
+        android:layout_width="fill_parent"
+        android:layout_below="@id/search_main_sale_grid"
+        android:numColumns="4">
+    </GridView>
+   <ListView android:id="@+id/search_main_voucher_list" 
+       android:layout_width="fill_parent"
+       android:layout_height="wrap_content"
+       android:layout_below="@id/search_main_keywords_grid">
+   </ListView>
+</RelativeLayout>
