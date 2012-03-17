@@ -13,7 +13,7 @@ public class AppContentProvider extends ContentProvider {
 	public static final String AUTH_ORITIES = "coffee.provider.AppContentProvider";
 	
 	private UriMatcher uriMatcher;
-	
+	 
 	@Override
 	public boolean onCreate() {
 		uriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
