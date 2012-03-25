@@ -35,11 +35,11 @@
 	<uses-feature android:name="android.hardware.camera" />
 	<uses-feature android:name="android.hardware.audio.low_latency"/>
 	
-    <application android:name="org.doubango.ngn.NgnApplication"
+    <application android:name="coffee.imsdroid.App"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name" >
         <activity
-            android:name=".MainActivity"
+            android:name="coffee.imsdroid.MainActivity"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

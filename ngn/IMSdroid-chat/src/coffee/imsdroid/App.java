@@ -27,4 +27,5 @@ public class App extends NgnApplication {
 		super.onCreate();
 		initEngine();
 	}
+	
 }

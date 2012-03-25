@@ -7,10 +7,9 @@ import org.doubango.ngn.services.INgnSipService;
 import org.doubango.ngn.sip.NgnMessagingSession;
 import org.doubango.ngn.utils.NgnUriUtils;
 
-import android.app.Activity;
 import android.os.Bundle;
 
-public class MainActivity extends Activity {
+public class MainActivity extends BaseActivity {
 
 	String TAG = MainActivity.class.getCanonicalName();
 
