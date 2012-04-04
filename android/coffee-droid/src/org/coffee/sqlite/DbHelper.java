@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.coffee.App;
 
+import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
@@ -14,9 +15,8 @@ public class DbHelper extends SQLiteOpenHelper {
 	private SQLiteDatabase db;
 	
 	public DbHelper(){
-		this(null);
+		this(App.context);
 	}
-	
 	 /**
      * @param name of the database file, or null for an in-memory database
      * ---------------------------------------------------------------
@@ -24,15 +24,15 @@ public class DbHelper extends SQLiteOpenHelper {
      * ----------------------------------------------------------------
      */
 	@SuppressWarnings("static-access")
-	public DbHelper(String name){
+	public DbHelper(Context context){
 		//该操作不会立即生成db文件
-		super(App.context, name==null? "shop":name, null, 6);
+		super(context, App.DB_NAME, null, 6);
 		//* 当调用 getWritableDatabase的时候 才开始创建数据库(db文件)
 		synchronized (this) {
 			//打开数据库
 			this.db = getWritableDatabase();
 			if(!db.isOpen()){
-				this.db.openDatabase(App.context.getDatabasePath(name).getPath(), 
+				this.db.openDatabase(App.context.getDatabasePath(App.DB_NAME).getPath(), 
 						null, SQLiteDatabase.OPEN_READWRITE);
 			}
 		}

@@ -26,7 +26,7 @@ public class AppContentProvider extends ContentProvider {
 	@Override
 	public boolean onCreate() {
 		Log.i(TAG, "onCreate ContentProvider");
-		dbHelper = new DbHelper();
+		dbHelper = new DbHelper(this.getContext());
 		
 		uriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
 		uriMatcher.addURI(AUTH_ORITIES, "insert/*", 1);//插入 # 匹配表名
