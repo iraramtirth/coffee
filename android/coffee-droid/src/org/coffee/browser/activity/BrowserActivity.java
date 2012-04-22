@@ -20,9 +20,6 @@ public class BrowserActivity extends Activity{
 	
 	protected BrowserActivity context;
  
-	/**
-	 * 浏览器组件
-	 */
 	protected WebView mWebView;
 	protected WebSettings webSettings;
 	
@@ -104,10 +101,8 @@ public class BrowserActivity extends Activity{
 			@Override
 			public void onPageFinished(WebView view, String url) {
 				/**
-				 * 如果页面加载失败， 将不会调用该方法。 故而必须要写 {@link BrowserActivity#onDestroy} 方法
+				 * 如果页面加载失败， 将不会调用该方法。
 				 */
-				//显示页面内容
-				//mViewSwitcher.setDisplayedChild(1);
 			}
 			@Override
 			public void onReceivedError(WebView view, int errorCode,

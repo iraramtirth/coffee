@@ -29,6 +29,10 @@ public class WebViewUtils {
 		" -webkit-tap-highlight-color: rgba(0, 0, 0, 0); "+	//去掉高亮的边框
 		" }";
 	
+	private static String charset = "UTF-8";
+	private static String mimeType = "text/html";
+	private static StringBuilder doc = new StringBuilder();
+	
 	/**
 	 * 解析url
 	 * 将URl转化成标准的格式  http://domain
@@ -83,12 +87,6 @@ public class WebViewUtils {
 		return buf.toString();
 	}
 	
-	
-	private static String charset = "UTF-8";
-	private static String mimeType = "text/html";
-	private static StringBuilder doc = new StringBuilder();
-	
-	
 	/**
 	 * @param oriHtml
 	 *            : 原始html
@@ -116,7 +114,7 @@ public class WebViewUtils {
 		String title = "";
 		try {
 			String doc = "";
-			//http://mmb.cn/wap/upload/productImage/1314088464871.jpg
+			//查看图片
 			if(linkUrl.matches(".+?\\.(jpg|gif|jpeg|png)+.*?")){
 				charset = null;
 				byte[] data = (byte[]) new HttpClient().get(linkUrl, 1); 
