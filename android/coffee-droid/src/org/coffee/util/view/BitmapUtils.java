@@ -18,7 +18,7 @@ import android.util.Log;
  */
 public class BitmapUtils {
 	
-	private final static String CACHE_DIR = Environment.getExternalStorageState() + "/cache"; 
+	private final static String CACHE_DIR = Environment.getExternalStorageDirectory() + "/cache"; 
 	/**
 	 * 加载网络上的Bitmap
 	 * 
@@ -50,7 +50,7 @@ public class BitmapUtils {
 //			bitmap = BitmapFactory.decodeByteArray(allData, 0, allData.length);
 			bitmap = BitmapFactory.decodeStream(new URL(linkUrl).openStream());
 			//缓存图片
-			cacheBitmap(bitmap, fileName);
+			cacheBitmapToFile(bitmap, fileName);
 		} catch (MalformedURLException e) {
 			//e.printStackTrace();
 		} catch (Exception e) {
@@ -65,7 +65,7 @@ public class BitmapUtils {
 	 * 缓存Bitmap
 	 * 写入到本地
 	 */
-	public static void cacheBitmap(Bitmap bitmap, String fileName){
+	public static void cacheBitmapToFile(Bitmap bitmap, String fileName){
 		if(bitmap == null){
 			return;
 		}
