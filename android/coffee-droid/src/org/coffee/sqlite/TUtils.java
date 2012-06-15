@@ -6,7 +6,7 @@ import java.lang.reflect.Method;
 
 /**
  * 反射用到的工具 
- * @author wangtao
+ * @author coffee
  */
 public class TUtils {
 	/**
