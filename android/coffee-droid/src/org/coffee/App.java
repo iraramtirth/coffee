@@ -19,7 +19,7 @@ public class App extends Application {
 		Log.i(TAG, "onCreate application....");
 		context = this;
 		//
-		Thread.setDefaultUncaughtExceptionHandler(new GlobalUncaughtExceptionHandler());
+		//Thread.setDefaultUncaughtExceptionHandler(new GlobalUncaughtExceptionHandler());
 	}
 	
 	public static Context getContext(){
