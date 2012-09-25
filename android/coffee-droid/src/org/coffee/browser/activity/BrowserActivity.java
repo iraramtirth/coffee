@@ -21,7 +21,7 @@ public class BrowserActivity extends Activity{
 	protected BrowserActivity context;
  
 	protected WebView mWebView;
-	protected WebSettings webSettings;
+	protected WebSettings mWebSettings;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -34,6 +34,12 @@ public class BrowserActivity extends Activity{
 		this.mWebView = new WebView(this);
 		this.setContentView(mWebView);
 
+		mWebSettings = mWebView.getSettings();
+		//开启js支持， 否则无法单击网页中的button。 即无法提交表单等操作
+		mWebSettings.setJavaScriptEnabled(true);
+		mWebSettings.setJavaScriptCanOpenWindowsAutomatically(true);
+		mWebView.addJavascriptInterface(obj, interfaceName)
+		
 		String url = "http://wap.baidu.com";
 
 		loadUrl(url);
@@ -64,10 +70,9 @@ public class BrowserActivity extends Activity{
 	public WebView getWebView(){
 		return mWebView;
 	}
+	
 	protected void loadUrl(String url) {
-		webSettings = mWebView.getSettings();
-		//开启js支持， 否则无法单击网页中的button。 即无法提交表单等操作
-		webSettings.setJavaScriptEnabled(true);
+		
 		WebViewUtils.loadUrl(context, url);
 		
 		mWebView.setWebChromeClient(new WebChromeClient(){
