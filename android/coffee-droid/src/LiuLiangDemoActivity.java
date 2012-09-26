@@ -21,10 +21,11 @@ public class LiuLiangDemoActivity extends Activity {
 	static final String[] mobile_iface_list = new String[] { "rmnet0",
 			"rmnet1", "rmnet2", "rmnet3", "cdma_rmnet4", "ppp0", };
 	TextView[] mTextView = new TextView[20];
-	int[] id = new int[] { R.id.txt1, R.id.txt2, R.id.txt3, R.id.txt4,
-			R.id.txt5, R.id.txt6, R.id.txt7, R.id.txt8, R.id.txt9, R.id.txt10,
-			R.id.txt11, R.id.txt12, R.id.txt13, R.id.txt14, R.id.txt15,
-			R.id.txt16, R.id.txt17, R.id.txt18, R.id.txt19, R.id.txt20 };
+	int[] id;
+//	int[] id = new int[] { R.id.txt1, R.id.txt2, R.id.txt3, R.id.txt4,
+//			R.id.txt5, R.id.txt6, R.id.txt7, R.id.txt8, R.id.txt9, R.id.txt10,
+//			R.id.txt11, R.id.txt12, R.id.txt13, R.id.txt14, R.id.txt15,
+//			R.id.txt16, R.id.txt17, R.id.txt18, R.id.txt19, R.id.txt20 };
 	Button btn;
 	Button btnSelf;
 	int uid = -1;
@@ -40,7 +41,7 @@ public class LiuLiangDemoActivity extends Activity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.main);
+		//setContentView(R.layout.main);
 		PackageManager pm = getPackageManager();
 		ApplicationInfo ai = null;
 		try {
@@ -53,8 +54,8 @@ public class LiuLiangDemoActivity extends Activity {
 		for (int i = 0; i < 20; i++) {
 			mTextView[i] = (TextView) findViewById(id[i]);
 		}
-		btn = (Button) findViewById(R.id.btn);
-		btnSelf = (Button) findViewById(R.id.btn_self);
+		//btn = (Button) findViewById(R.id.btn);
+		//btnSelf = (Button) findViewById(R.id.btn_self);
 		btnSelf.setOnClickListener(new OnClickListener() {
 
 			@Override
@@ -92,24 +93,24 @@ public class LiuLiangDemoActivity extends Activity {
 	 * 2.2�汾�Ժ���TrafficStatsֱ��ȡ������
 	 * */
 	private void setLiuLiangBySysMethod() {
-		mTextView[0].setText("MobileRxBytes : "
-				+ TrafficStats.getMobileRxBytes());
-		mTextView[1].setText("MobileRxPackets : "
-				+ TrafficStats.getMobileRxPackets());
-		mTextView[2].setText("MobileTxBytes : "
-				+ TrafficStats.getMobileTxBytes());
-		mTextView[3].setText("MobileTxPackets : "
-				+ TrafficStats.getMobileTxPackets());
-		mTextView[4]
-				.setText("TotalRxBytes : " + TrafficStats.getTotalRxBytes());
-		mTextView[5].setText("TotalRxPackets : "
-				+ TrafficStats.getTotalRxPackets());
-		mTextView[6]
-				.setText("TotalTxBytes : " + TrafficStats.getTotalTxBytes());
-		mTextView[7].setText("TotalTxPackets : "
-				+ TrafficStats.getTotalTxPackets());
-		mTextView[8].setText("UidRxBytes : " + TrafficStats.getUidRxBytes(uid));
-		mTextView[9].setText("UidTxBytes : " + TrafficStats.getUidTxBytes(uid));
+//		mTextView[0].setText("MobileRxBytes : "
+//				+ TrafficStats.getMobileRxBytes());
+//		mTextView[1].setText("MobileRxPackets : "
+//				+ TrafficStats.getMobileRxPackets());
+//		mTextView[2].setText("MobileTxBytes : "
+//				+ TrafficStats.getMobileTxBytes());
+//		mTextView[3].setText("MobileTxPackets : "
+//				+ TrafficStats.getMobileTxPackets());
+//		mTextView[4]
+//				.setText("TotalRxBytes : " + TrafficStats.getTotalRxBytes());
+//		mTextView[5].setText("TotalRxPackets : "
+//				+ TrafficStats.getTotalRxPackets());
+//		mTextView[6]
+//				.setText("TotalTxBytes : " + TrafficStats.getTotalTxBytes());
+//		mTextView[7].setText("TotalTxPackets : "
+//				+ TrafficStats.getTotalTxPackets());
+//		mTextView[8].setText("UidRxBytes : " + TrafficStats.getUidRxBytes(uid));
+//		mTextView[9].setText("UidTxBytes : " + TrafficStats.getUidTxBytes(uid));
 	}
 
 	private long getMobileRxBytes() {
