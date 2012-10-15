@@ -37,16 +37,16 @@ body{margin:0;padding:0;font-size:12px;background:url(${path}/res/admin/bg.jpg) 
         <tbody><tr>
           <td width="423" height="280" valign="top"><table width="100%" border="0" cellspacing="0" cellpadding="0">
               <tbody><tr>
-                <td><img src="${path}/res/ltop.jpg"/></td>
+                <td><img src="${path}/res/admin/ltop.jpg"/></td>
               </tr>
               <tr>
-                <td><img src="${path}/res/llogo.jpg"/></td>
+                <td><img src="${path}/res/admin/llogo.jpg"/></td>
               </tr>
             </tbody></table></td>
-          <td width="40" align="center" valign="bottom"><img src="${path}/res/line.jpg" width="23" height="232"/></td>
+          <td width="40" align="center" valign="bottom"><img src="${path}/res/admin/line.jpg" width="23" height="232"/></td>
           <td valign="top"><table width="100%" border="0" cellspacing="0" cellpadding="0">
               <tbody><tr>
-                <td height="90" align="center" valign="bottom"><img src="${path}/res/ltitle.jpg"/></td>
+                <td height="90" align="center" valign="bottom"><img src="${path}/res/admin/ltitle.jpg"/></td>
               </tr>
               <tr>
                 <td>
@@ -61,8 +61,8 @@ body{margin:0;padding:0;font-size:12px;background:url(${path}/res/admin/bg.jpg) 
                     </tr>
                     <tr>
                       <td height="40" colspan="2" align="center">
-					    <input type="image" src="${path}/res/login.jpg" name="submit"/>
-                        &nbsp; &nbsp; <img name="reg" style="cursor: pointer" src="${path}/res/reset.jpg" onclick="document.forms[0].reset()"/> </td>
+					    <input type="image" src="${path}/res/admin/login.jpg" name="submit"/>
+                        &nbsp; &nbsp; <img name="reg" style="cursor: pointer" src="${path}/res/admin/reset.jpg" onclick="document.forms[0].reset()"/> </td>
                     </tr>
                   </tbody></table></td>
               </tr>
