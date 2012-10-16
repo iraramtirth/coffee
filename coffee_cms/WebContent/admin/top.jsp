@@ -107,7 +107,7 @@ setTimeout( "countUnreadMsg() ",1000*60*10);
                         <td>
                         	<ul class="nav-menu">
                             	<li class="current" id="tb_11" onclick="HoverLi(1,1,10);">
-                            		<a href="main.do" target="mainFrame">首页</a>
+                            		<a href="${path}/admin/main.jsp" target="mainFrame">首页</a>
                             	</li>
 								<li class="sep"></li><li class="normal" id="tb_12" onclick="HoverLi(1,2,10);">
 									<a href="frame/channel_main.do" target="mainFrame">栏目</a>

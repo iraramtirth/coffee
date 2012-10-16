@@ -7,7 +7,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>jeecms-left</title>
+<title>CoffeeCMS-left</title>
 <link href="${path}/res/css/admin.css" rel="stylesheet" type="text/css"/>
 <link href="${path}/res/css/theme.css" rel="stylesheet" type="text/css"/>
 <link href="${path}/res/common/css/jquery.validate.css" rel="stylesheet" type="text/css"/>
@@ -18,16 +18,18 @@
 <script src="${path}/res/common/js/pony.js" type="text/javascript"/>
 <script src="${path}/res/js/admin.js" type="text/javascript"/>
 <script type="text/javascript">
-	$(function() {
-		$("#browser").treeview({
-			url : "v_tree.do"
-		});
-		Cms.lmenu("lmenu");
-	});
+
+	function test(id)
+	{
+		var content = $("#"+id);
+		alert(content);
+	}
+	
 </script>
 </head>
 <body class="lbody">
 	
+	<!-- 左侧的时间和菜单操作  -->
 	<div class="left">
 		<div class="date">
 			<span>今天： <script language="javascript">
@@ -78,71 +80,37 @@
 			</table>
 		</div>
 	</div>
+	
 	<ul id="browser" class="filetree treeview">
-		<li id="" class="open collapsable lastCollapsable"><div
-				class="hitarea open-hitarea collapsable-hitarea lastCollapsable-hitarea "></div>
+		<li id="" class="open collapsable lastCollapsable">
+			<div class="hitarea open-hitarea collapsable-hitarea lastCollapsable-hitarea "></div>
 			<span class="folder"><a href="v_list.do" target="rightFrame">根目录</a></span>
-		<ul>
-				<li id="1" class="hasChildren expandable"><div
-						class="hitarea hasChildren-hitarea expandable-hitarea "></div>
-					<span class="folder"><a href="v_list.do?root=1"
-						target="rightFrame">新闻 [<span style="color: red">新闻</span>]
-					</a></span>
-				<ul style="display: none;">
-						<li id="placeholder" class="last"><span>placeholder</span></li>
-					</ul></li>
-				<li id="42" class="hasChildren expandable"><div
-						class="hitarea hasChildren-hitarea expandable-hitarea "></div>
-					<span class="folder"><a href="v_list.do?root=42"
-						target="rightFrame">图库 [<span style="color: red">图库</span>]
-					</a></span>
-				<ul style="display: none;">
-						<li id="placeholder" class="last"><span>placeholder</span></li>
-					</ul></li>
-				<li id="46" class="hasChildren expandable"><div
-						class="hitarea hasChildren-hitarea expandable-hitarea "></div>
-					<span class="folder"><a href="v_list.do?root=46"
-						target="rightFrame">视频 [<span style="color: red">视频</span>]
-					</a></span>
-				<ul style="display: none;">
+		
+			<ul>
+				<li id="46" class="hasChildren expandable">
+					<div class="hitarea hasChildren-hitarea expandable-hitarea "></div>
+					<span class="folder" onclick="javascript:test('46');">
+						<a  target="rightFrame">视频 [<span style="color: red">视频</span>]</a>
+					</span>
+					<ul style="display: none;">
 						<li id="placeholder" class="last"><span>placeholder</span></li>
 					</ul>
-				
-				<ul style="display: block; "><li id="49"><span class="file"><a href="v_edit.do?id=49" target="rightFrame">明星糗镜头 [<span style="color:red">视频</span>]</a></span></li><li id="50"><span class="file"><a href="v_edit.do?id=50" target="rightFrame">有才恶搞 [<span style="color:red">视频</span>]</a></span></li><li id="51"><span class="file"><a href="v_edit.do?id=51" target="rightFrame">经典搞笑专辑 [<span style="color:red">视频</span>]</a></span></li><li id="52" class="last"><span class="file"><a href="v_edit.do?id=52" target="rightFrame">哈哈趣闻 [<span style="color:red">视频</span>]</a></span></li></ul>
-				
-					
+					<ul style="display: block; ">
+						<li id="49"><span class="file"><a href="v_edit.do?id=49" target="rightFrame">明星糗镜头 [<span style="color:red">视频</span>]</a></span></li>
+						<li id="50"><span class="file"><a href="v_edit.do?id=50" target="rightFrame">有才恶搞 [<span style="color:red">视频</span>]</a></span></li>
+						<li id="51"><span class="file"><a href="v_edit.do?id=51" target="rightFrame">经典搞笑专辑 [<span style="color:red">视频</span>]</a></span></li>
+						<li id="52" class="last"><span class="file"><a href="v_edit.do?id=52" target="rightFrame">哈哈趣闻 [<span style="color:red">视频</span>]</a></span></li>
+					</ul>
 				</li>
-				<li id="9" class="hasChildren expandable"><div
-						class="hitarea hasChildren-hitarea expandable-hitarea "></div>
-					<span class="folder hover"><a href="v_list.do?root=9"
-						target="rightFrame" class="hover">下载 [<span style="color: red">下载</span>]
-					</a></span>
-				<ul style="display: none;">
-						<li id="placeholder" class="last"><span>placeholder</span></li>
-					</ul></li>
-				<li id="47" class="hasChildren expandable"><div
-						class="hitarea hasChildren-hitarea expandable-hitarea "></div>
-					<span class="folder"><a href="v_list.do?root=47"
-						target="rightFrame">作品 [<span style="color: red">作品</span>]
-					</a></span>
-				<ul style="display: none;">
-						<li id="placeholder" class="last"><span>placeholder</span></li>
-					</ul></li>
-				<li id="48" class="hasChildren expandable"><div
-						class="hitarea hasChildren-hitarea expandable-hitarea "></div>
-					<span class="folder"><a href="v_list.do?root=48"
-						target="rightFrame" class="">产品 [<span style="color: red">产品</span>]
-					</a></span>
-				<ul style="display: none;">
-						<li id="placeholder" class="last"><span>placeholder</span></li>
-					</ul></li>
-				<li id="10" class="last"><span class="file"><a
-						href="v_edit.do?id=10" target="rightFrame" class="">关于我们 [<span
-							style="color: red">单页</span>]
-					</a></span></li>
-			</ul></li>
+				 
+				<li id="10" class="last">
+					<span class="file">
+						<a href="v_edit.do?id=10" target="rightFrame" class="">关于我们 [<span style="color: red">单页</span>]</a>
+					</span>
+				</li>
+			</ul>
+		</li>
 	</ul>
-
 
 </body>
 </html>
