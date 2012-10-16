@@ -8,15 +8,23 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>CoffeeCMS-left</title>
+
 <link href="${path}/res/css/admin.css" rel="stylesheet" type="text/css"/>
 <link href="${path}/res/css/theme.css" rel="stylesheet" type="text/css"/>
 <link href="${path}/res/common/css/jquery.validate.css" rel="stylesheet" type="text/css"/>
 <link href="${path}/res/common/css/jquery.treeview.css" rel="stylesheet" type="text/css"/>
 <link href="${path}/res/common/css/jquery.ui.css" rel="stylesheet" type="text/css"/>
-<script src="${path}/res/common/js/jquery.js" type="text/javascript"/>
-<script src="${path}/res/common/js/jquery.ext.js" type="text/javascript"/>
-<script src="${path}/res/common/js/pony.js" type="text/javascript"/>
-<script src="${path}/res/js/admin.js" type="text/javascript"/>
+
+<script src="${path}/res/common/js/jquery.js" type="text/javascript"></script>
+<script src="${path}/res/common/js/jquery.ext.js" type="text/javascript"></script>
+<script src="${path}/res/js/admin.js" type="text/javascript"></script>
+<!-- 
+	注意该js有bug 
+	不能写成<script src="${path}/res/common/js/pony.js" type="text/javascript"/>
+	否则， 解析该js文件的时候报错， 则不会继续往下解析其他js文件/或者js脚本
+ -->
+<script src="${path}/res/common/js/pony.js" type="text/javascript"></script>
+
 <script type="text/javascript">
 
 	function test(id)
@@ -24,8 +32,8 @@
 		var content = $("#"+id);
 		alert(content);
 	}
-	
 </script>
+
 </head>
 <body class="lbody">
 	
