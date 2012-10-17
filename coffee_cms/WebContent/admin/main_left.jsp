@@ -27,10 +27,19 @@
 
 <script type="text/javascript">
 
-	function test(id)
+	function menuClick(id)
 	{
-		var content = $("#"+id);
-		alert(content);
+		var menuItem = $("#"+id + " ul");
+		var obj = menuItem.eq(1);
+		//如果： == none 或者  == undefined 
+		if(obj.css("display") != 'block')
+		{
+			obj.css("display","block");
+		}
+		else
+		{
+			obj.css("display","none");
+		}
 	}
 </script>
 
@@ -93,12 +102,14 @@
 		<li id="" class="open collapsable lastCollapsable">
 			<div class="hitarea open-hitarea collapsable-hitarea lastCollapsable-hitarea "></div>
 			<span class="folder"><a href="v_list.do" target="rightFrame">根目录</a></span>
-		
+			
+			<!-- 菜单的顶级 ul -->
 			<ul>
 				<li id="46" class="hasChildren expandable">
-					<div class="hitarea hasChildren-hitarea expandable-hitarea "></div>
-					<span class="folder" onclick="javascript:test('46');">
-						<a  target="rightFrame">视频 [<span style="color: red">视频</span>]</a>
+					<!-- 菜单前面的加号 -->
+					<div onclick="javascript:menuClick('46');" class="hitarea hasChildren-hitarea expandable-hitarea"></div>
+					<span class="folder">
+						<a href="v_edit.do?id="  target="rightFrame">视频 [<span style="color: red">视频</span>]</a>
 					</span>
 					<ul style="display: none;">
 						<li id="placeholder" class="last"><span>placeholder</span></li>
