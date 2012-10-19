@@ -475,7 +475,7 @@ public class PluginServlet extends HttpServlet {
                 }
 
             }
-            catch (JasperException e) {
+            catch (Exception e) {
                 Log.error(e.getMessage(), e);
             }
         }
