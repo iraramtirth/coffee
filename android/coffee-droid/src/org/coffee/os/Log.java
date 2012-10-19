@@ -15,8 +15,6 @@ import android.os.Environment;
 /**
  * 日志打印
  * 
- * @author 范炜柠
- * @version 1.0
  */
 public abstract class Log {
 	/**
