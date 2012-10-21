@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="lib" path="libs/tigase-extras-1.0.0.jar"/>
+	<classpathentry kind="lib" path="libs/tigase-utils-3.3.11.jar"/>
+	<classpathentry kind="lib" path="libs/tigase-xmltools-3.3.7.jar"/>
+	<classpathentry kind="lib" path="libs/smack.jar"/>
+	<classpathentry kind="lib" path="libs/smackx.jar"/>
+	<classpathentry kind="lib" path="libs/jdbc-mysql.jar"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>
