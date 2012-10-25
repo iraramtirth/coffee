@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout  xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_height="fill_parent"
+    android:layout_width="fill_parent"
+    android:orientation="vertical">
+<org.coffee.view.CoffeeGallery
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/my_list"
+    android:layout_width="fill_parent"
+    android:layout_height="100dip"
+    android:background="#000"
+    android:focusableInTouchMode="true"
+/>
+
+<Button android:id="@+id/btn_click"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:text="setSelected"
+    android:onClick="click"/>
+</LinearLayout>
