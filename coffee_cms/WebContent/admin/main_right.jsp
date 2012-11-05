@@ -1,4 +1,7 @@
 <%@ page contentType="text/html; charset=UTF-8" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
+<%@ taglib prefix="pg" uri="http://jsptags.com/tags/navigation/pager"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <%
 	String path = request.getContextPath();
@@ -8,18 +11,19 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
 <title></title>
-<link href="/res/jeecms/css/admin.css" rel="stylesheet" type="text/css"/>
-<link href="/res/common/css/theme.css" rel="stylesheet" type="text/css"/>
-<link href="/res/common/css/jquery.validate.css" rel="stylesheet" type="text/css"/>
-<link href="/res/common/css/jquery.treeview.css" rel="stylesheet" type="text/css"/>
-<link href="/res/common/css/jquery.ui.css" rel="stylesheet" type="text/css"/>
 
-<script src="/thirdparty/fckeditor/fckeditor.js" type="text/javascript"></script>
-<script src="/thirdparty/My97DatePicker/WdatePicker.js" type="text/javascript"></script>
-<script src="/res/common/js/jquery.js" type="text/javascript"></script>
-<script src="/res/common/js/jquery.ext.js" type="text/javascript"></script>
-<script src="/res/common/js/pony.js" type="text/javascript"></script>
-<script src="/res/jeecms/js/admin.js" type="text/javascript"></script><script type="text/javascript">
+<link href="${path}/res/css/admin.css" rel="stylesheet" type="text/css"/>
+<link href="${path}/res/css/theme.css" rel="stylesheet" type="text/css"/>
+<link href="${path}/res/common/css/jquery.validate.css" rel="stylesheet" type="text/css"/>
+<link href="${path}/res/common/css/jquery.treeview.css" rel="stylesheet" type="text/css"/>
+<link href="${path}/res/common/css/jquery.ui.css" rel="stylesheet" type="text/css"/>
+
+<script src="${path}/res/common/js/jquery.js" type="text/javascript"></script>
+<script src="${path}/res/common/js/jquery.ext.js" type="text/javascript"></script>
+<script src="${path}/res/js/admin.js" type="text/javascript"></script>
+<script src="${path}/res/common/js/pony.js" type="text/javascript"></script>
+
+<script type="text/javascript">
 $(function() {
 
 	$("#rejectDialog").dialog({
@@ -257,703 +261,59 @@ function chgStatus() {
 	<td align="center">已终审		
 
 </td>
-
 	<td align="center">		 <span style="color:red">需要生成</span>
-
 </td>
-
 	<td align="center">		<a href="v_view.do?id=339&cid=&pageNo=&queryTitle=&queryInputUsername=&queryTopLevel=false&queryRecommend=false&queryTypeId=&queryStatus=&queryOrderBy=0" class="pn-opt">查看</a> | 		<a href="v_edit.do?id=339&cid=&pageNo=&queryTitle=&queryInputUsername=&queryTopLevel=false&queryRecommend=false&queryTypeId=&queryStatus=&queryOrderBy=0" class="pn-opt">修改</a> | 		<a href="o_delete.do?ids=339&cid=&pageNo=&queryTitle=&queryInputUsername=&queryTopLevel=false&queryRecommend=false&queryTypeId=&queryStatus=&queryOrderBy=0" onclick="if(!confirm('您确定删除吗？')) {return false;}" class="pn-opt">删除</a>
-
 		</td>
-
 </tr>
 
-<tr onmouseover="this.bgColor='#eeeeee'" onmouseout="this.bgColor='#ffffff'">
-
-	<td><input type='checkbox' name='ids' value='338'/></td>
-
-	<td>338</td>
-
-	<td>		
-
-		<span style="color:red">[推]</span>
-
-		<strong>[文娱体育]</strong>
-
-		<a href="/wyty/338.jhtml" target="_blank">海豚的故事-先行版预告片</a>
-
-</td>
-
-	<td align="center">焦点</td>
-
-	<td align="center">admin</td>
-
-	<td align="right">5</td>
-
-	<td align="center">2011-12-19</td>
-
-	<td align="center">已终审		
-
-</td>
-
-	<td align="center">		 <span style="color:red">需要生成</span>
-
-</td>
-
-	<td align="center">		<a href="v_view.do?id=338&cid=&pageNo=&queryTitle=&queryInputUsername=&queryTopLevel=false&queryRecommend=false&queryTypeId=&queryStatus=&queryOrderBy=0" class="pn-opt">查看</a> | 		<a href="v_edit.do?id=338&cid=&pageNo=&queryTitle=&queryInputUsername=&queryTopLevel=false&queryRecommend=false&queryTypeId=&queryStatus=&queryOrderBy=0" class="pn-opt">修改</a> | 		<a href="o_delete.do?ids=338&cid=&pageNo=&queryTitle=&queryInputUsername=&queryTopLevel=false&queryRecommend=false&queryTypeId=&queryStatus=&queryOrderBy=0" onclick="if(!confirm('您确定删除吗？')) {return false;}" class="pn-opt">删除</a>
-
-		</td>
-
-</tr>
-
-<tr onmouseover="this.bgColor='#eeeeee'" onmouseout="this.bgColor='#ffffff'">
-
-	<td><input type='checkbox' name='ids' value='337'/></td>
-
-	<td>337</td>
-
-	<td>		
-
-		
-
-		<strong>[实用助手]</strong>
-
-		<a href="/syzs/337.jhtml" target="_blank">多玩YY</a>
-
-</td>
-
-	<td align="center">普通</td>
-
-	<td align="center">admin</td>
-
-	<td align="right">2</td>
-
-	<td align="center">2011-12-19</td>
-
-	<td align="center">已终审		
-
-</td>
-
-	<td align="center">		 <span style="color:red">需要生成</span>
-
-</td>
-
-	<td align="center">		<a href="v_view.do?id=337&cid=&pageNo=&queryTitle=&queryInputUsername=&queryTopLevel=false&queryRecommend=false&queryTypeId=&queryStatus=&queryOrderBy=0" class="pn-opt">查看</a> | 		<a href="v_edit.do?id=337&cid=&pageNo=&queryTitle=&queryInputUsername=&queryTopLevel=false&queryRecommend=false&queryTypeId=&queryStatus=&queryOrderBy=0" class="pn-opt">修改</a> | 		<a href="o_delete.do?ids=337&cid=&pageNo=&queryTitle=&queryInputUsername=&queryTopLevel=false&queryRecommend=false&queryTypeId=&queryStatus=&queryOrderBy=0" onclick="if(!confirm('您确定删除吗？')) {return false;}" class="pn-opt">删除</a>
-
-		</td>
-
-</tr>
-
-<tr onmouseover="this.bgColor='#eeeeee'" onmouseout="this.bgColor='#ffffff'">
-
-	<td><input type='checkbox' name='ids' value='336'/></td>
-
-	<td>336</td>
-
-	<td>		
-
-		
-
-		<strong>[实用助手]</strong>
-
-		<a href="/syzs/336.jhtml" target="_blank">迅雷7</a>
-
-</td>
-
-	<td align="center">普通</td>
-
-	<td align="center">admin</td>
-
-	<td align="right">1</td>
-
-	<td align="center">2011-12-19</td>
-
-	<td align="center">已终审		
-
-</td>
-
-	<td align="center">		 <span style="color:red">需要生成</span>
-
-</td>
-
-	<td align="center">		<a href="v_view.do?id=336&cid=&pageNo=&queryTitle=&queryInputUsername=&queryTopLevel=false&queryRecommend=false&queryTypeId=&queryStatus=&queryOrderBy=0" class="pn-opt">查看</a> | 		<a href="v_edit.do?id=336&cid=&pageNo=&queryTitle=&queryInputUsername=&queryTopLevel=false&queryRecommend=false&queryTypeId=&queryStatus=&queryOrderBy=0" class="pn-opt">修改</a> | 		<a href="o_delete.do?ids=336&cid=&pageNo=&queryTitle=&queryInputUsername=&queryTopLevel=false&queryRecommend=false&queryTypeId=&queryStatus=&queryOrderBy=0" onclick="if(!confirm('您确定删除吗？')) {return false;}" class="pn-opt">删除</a>
-
-		</td>
-
-</tr>
-
-<tr onmouseover="this.bgColor='#eeeeee'" onmouseout="this.bgColor='#ffffff'">
-
-	<td><input type='checkbox' name='ids' value='335'/></td>
-
-	<td>335</td>
-
-	<td>		
-
-		
-
-		<strong>[实用助手]</strong>
-
-		<a href="/syzs/335.jhtml" target="_blank">有道词典</a>
-
-</td>
-
-	<td align="center">普通</td>
-
-	<td align="center">admin</td>
-
-	<td align="right">3</td>
-
-	<td align="center">2011-12-19</td>
-
-	<td align="center">已终审		
-
-</td>
-
-	<td align="center">		 <span style="color:red">需要生成</span>
-
-</td>
-
-	<td align="center">		<a href="v_view.do?id=335&cid=&pageNo=&queryTitle=&queryInputUsername=&queryTopLevel=false&queryRecommend=false&queryTypeId=&queryStatus=&queryOrderBy=0" class="pn-opt">查看</a> | 		<a href="v_edit.do?id=335&cid=&pageNo=&queryTitle=&queryInputUsername=&queryTopLevel=false&queryRecommend=false&queryTypeId=&queryStatus=&queryOrderBy=0" class="pn-opt">修改</a> | 		<a href="o_delete.do?ids=335&cid=&pageNo=&queryTitle=&queryInputUsername=&queryTopLevel=false&queryRecommend=false&queryTypeId=&queryStatus=&queryOrderBy=0" onclick="if(!confirm('您确定删除吗？')) {return false;}" class="pn-opt">删除</a>
-
-		</td>
-
-</tr>
-
-<tr onmouseover="this.bgColor='#eeeeee'" onmouseout="this.bgColor='#ffffff'">
-
-	<td><input type='checkbox' name='ids' value='334'/></td>
-
-	<td>334</td>
-
-	<td>		
-
-		
-
-		<strong>[实用助手]</strong>
-
-		<a href="/syzs/334.jhtml" target="_blank">搜狗拼音输入</a>
-
-</td>
-
-	<td align="center">普通</td>
-
-	<td align="center">admin</td>
-
-	<td align="right">1</td>
-
-	<td align="center">2011-12-19</td>
-
-	<td align="center">已终审		
-
-</td>
-
-	<td align="center">		 <span style="color:red">需要生成</span>
-
-</td>
-
-	<td align="center">		<a href="v_view.do?id=334&cid=&pageNo=&queryTitle=&queryInputUsername=&queryTopLevel=false&queryRecommend=false&queryTypeId=&queryStatus=&queryOrderBy=0" class="pn-opt">查看</a> | 		<a href="v_edit.do?id=334&cid=&pageNo=&queryTitle=&queryInputUsername=&queryTopLevel=false&queryRecommend=false&queryTypeId=&queryStatus=&queryOrderBy=0" class="pn-opt">修改</a> | 		<a href="o_delete.do?ids=334&cid=&pageNo=&queryTitle=&queryInputUsername=&queryTopLevel=false&queryRecommend=false&queryTypeId=&queryStatus=&queryOrderBy=0" onclick="if(!confirm('您确定删除吗？')) {return false;}" class="pn-opt">删除</a>
-
-		</td>
-
-</tr>
-
-<tr onmouseover="this.bgColor='#eeeeee'" onmouseout="this.bgColor='#ffffff'">
-
-	<td><input type='checkbox' name='ids' value='333'/></td>
-
-	<td>333</td>
-
-	<td>		
-
-		
-
-		<strong>[系统软件]</strong>
-
-		<a href="/system/333.jhtml" target="_blank">酷狗音乐</a>
-
-</td>
-
-	<td align="center">普通</td>
-
-	<td align="center">admin</td>
-
-	<td align="right">2</td>
-
-	<td align="center">2011-12-19</td>
-
-	<td align="center">已终审		
-
-</td>
-
-	<td align="center">		 <span style="color:red">需要生成</span>
-
-</td>
-
-	<td align="center">		<a href="v_view.do?id=333&cid=&pageNo=&queryTitle=&queryInputUsername=&queryTopLevel=false&queryRecommend=false&queryTypeId=&queryStatus=&queryOrderBy=0" class="pn-opt">查看</a> | 		<a href="v_edit.do?id=333&cid=&pageNo=&queryTitle=&queryInputUsername=&queryTopLevel=false&queryRecommend=false&queryTypeId=&queryStatus=&queryOrderBy=0" class="pn-opt">修改</a> | 		<a href="o_delete.do?ids=333&cid=&pageNo=&queryTitle=&queryInputUsername=&queryTopLevel=false&queryRecommend=false&queryTypeId=&queryStatus=&queryOrderBy=0" onclick="if(!confirm('您确定删除吗？')) {return false;}" class="pn-opt">删除</a>
-
-		</td>
-
-</tr>
-
-<tr onmouseover="this.bgColor='#eeeeee'" onmouseout="this.bgColor='#ffffff'">
-
-	<td><input type='checkbox' name='ids' value='332'/></td>
-
-	<td>332</td>
-
-	<td>		
-
-		
-
-		<strong>[媒体工具]</strong>
-
-		<a href="/media/332.jhtml" target="_blank">风行网络电影</a>
-
-</td>
-
-	<td align="center">普通</td>
-
-	<td align="center">admin</td>
-
-	<td align="right">10</td>
-
-	<td align="center">2011-12-19</td>
-
-	<td align="center">已终审		
-
-</td>
-
-	<td align="center">		 <span style="color:red">需要生成</span>
-
-</td>
-
-	<td align="center">		<a href="v_view.do?id=332&cid=&pageNo=&queryTitle=&queryInputUsername=&queryTopLevel=false&queryRecommend=false&queryTypeId=&queryStatus=&queryOrderBy=0" class="pn-opt">查看</a> | 		<a href="v_edit.do?id=332&cid=&pageNo=&queryTitle=&queryInputUsername=&queryTopLevel=false&queryRecommend=false&queryTypeId=&queryStatus=&queryOrderBy=0" class="pn-opt">修改</a> | 		<a href="o_delete.do?ids=332&cid=&pageNo=&queryTitle=&queryInputUsername=&queryTopLevel=false&queryRecommend=false&queryTypeId=&queryStatus=&queryOrderBy=0" onclick="if(!confirm('您确定删除吗？')) {return false;}" class="pn-opt">删除</a>
-
-		</td>
-
-</tr>
-
-<tr onmouseover="this.bgColor='#eeeeee'" onmouseout="this.bgColor='#ffffff'">
-
-	<td><input type='checkbox' name='ids' value='331'/></td>
-
-	<td>331</td>
-
-	<td>		
-
-		
-
-		<strong>[媒体工具]</strong>
-
-		<a href="/media/331.jhtml" target="_blank">腾讯QQ </a>
-
-</td>
-
-	<td align="center">普通</td>
-
-	<td align="center">admin</td>
-
-	<td align="right">5</td>
-
-	<td align="center">2011-12-19</td>
-
-	<td align="center">已终审		
-
-</td>
-
-	<td align="center">		 <span style="color:red">需要生成</span>
-
-</td>
-
-	<td align="center">		<a href="v_view.do?id=331&cid=&pageNo=&queryTitle=&queryInputUsername=&queryTopLevel=false&queryRecommend=false&queryTypeId=&queryStatus=&queryOrderBy=0" class="pn-opt">查看</a> | 		<a href="v_edit.do?id=331&cid=&pageNo=&queryTitle=&queryInputUsername=&queryTopLevel=false&queryRecommend=false&queryTypeId=&queryStatus=&queryOrderBy=0" class="pn-opt">修改</a> | 		<a href="o_delete.do?ids=331&cid=&pageNo=&queryTitle=&queryInputUsername=&queryTopLevel=false&queryRecommend=false&queryTypeId=&queryStatus=&queryOrderBy=0" onclick="if(!confirm('您确定删除吗？')) {return false;}" class="pn-opt">删除</a>
-
-		</td>
-
-</tr>
-
-<tr onmouseover="this.bgColor='#eeeeee'" onmouseout="this.bgColor='#ffffff'">
-
-	<td><input type='checkbox' name='ids' value='330'/></td>
-
-	<td>330</td>
-
-	<td>		
-
-		
-
-		<strong>[网络游戏]</strong>
-
-		<a href="/network/330.jhtml" target="_blank">永恒之塔</a>
-
-</td>
-
-	<td align="center">普通</td>
-
-	<td align="center">admin</td>
-
-	<td align="right">7</td>
-
-	<td align="center">2011-12-19</td>
-
-	<td align="center">已终审		
-
-</td>
-
-	<td align="center">		 <span style="color:red">需要生成</span>
-
-</td>
-
-	<td align="center">		<a href="v_view.do?id=330&cid=&pageNo=&queryTitle=&queryInputUsername=&queryTopLevel=false&queryRecommend=false&queryTypeId=&queryStatus=&queryOrderBy=0" class="pn-opt">查看</a> | 		<a href="v_edit.do?id=330&cid=&pageNo=&queryTitle=&queryInputUsername=&queryTopLevel=false&queryRecommend=false&queryTypeId=&queryStatus=&queryOrderBy=0" class="pn-opt">修改</a> | 		<a href="o_delete.do?ids=330&cid=&pageNo=&queryTitle=&queryInputUsername=&queryTopLevel=false&queryRecommend=false&queryTypeId=&queryStatus=&queryOrderBy=0" onclick="if(!confirm('您确定删除吗？')) {return false;}" class="pn-opt">删除</a>
-
-		</td>
-
-</tr>
-
-<tr onmouseover="this.bgColor='#eeeeee'" onmouseout="this.bgColor='#ffffff'">
-
-	<td><input type='checkbox' name='ids' value='329'/></td>
-
-	<td>329</td>
-
-	<td>		
-
-		
-
-		<strong>[网络游戏]</strong>
-
-		<a href="/network/329.jhtml" target="_blank">神魔大陆</a>
-
-</td>
-
-	<td align="center">普通</td>
-
-	<td align="center">admin</td>
-
-	<td align="right">6</td>
-
-	<td align="center">2011-12-19</td>
-
-	<td align="center">已终审		
-
-</td>
-
-	<td align="center">		 <span style="color:red">需要生成</span>
-
-</td>
-
-	<td align="center">		<a href="v_view.do?id=329&cid=&pageNo=&queryTitle=&queryInputUsername=&queryTopLevel=false&queryRecommend=false&queryTypeId=&queryStatus=&queryOrderBy=0" class="pn-opt">查看</a> | 		<a href="v_edit.do?id=329&cid=&pageNo=&queryTitle=&queryInputUsername=&queryTopLevel=false&queryRecommend=false&queryTypeId=&queryStatus=&queryOrderBy=0" class="pn-opt">修改</a> | 		<a href="o_delete.do?ids=329&cid=&pageNo=&queryTitle=&queryInputUsername=&queryTopLevel=false&queryRecommend=false&queryTypeId=&queryStatus=&queryOrderBy=0" onclick="if(!confirm('您确定删除吗？')) {return false;}" class="pn-opt">删除</a>
-
-		</td>
-
-</tr>
-
-<tr onmouseover="this.bgColor='#eeeeee'" onmouseout="this.bgColor='#ffffff'">
-
-	<td><input type='checkbox' name='ids' value='328'/></td>
-
-	<td>328</td>
-
-	<td>		
-
-		
-
-		<strong>[网络游戏]</strong>
-
-		<a href="/network/328.jhtml" target="_blank">天下3</a>
-
-</td>
-
-	<td align="center">普通</td>
-
-	<td align="center">admin</td>
-
-	<td align="right">1</td>
-
-	<td align="center">2011-12-19</td>
-
-	<td align="center">已终审		
-
-</td>
-
-	<td align="center">		 <span style="color:red">需要生成</span>
-
-</td>
-
-	<td align="center">		<a href="v_view.do?id=328&cid=&pageNo=&queryTitle=&queryInputUsername=&queryTopLevel=false&queryRecommend=false&queryTypeId=&queryStatus=&queryOrderBy=0" class="pn-opt">查看</a> | 		<a href="v_edit.do?id=328&cid=&pageNo=&queryTitle=&queryInputUsername=&queryTopLevel=false&queryRecommend=false&queryTypeId=&queryStatus=&queryOrderBy=0" class="pn-opt">修改</a> | 		<a href="o_delete.do?ids=328&cid=&pageNo=&queryTitle=&queryInputUsername=&queryTopLevel=false&queryRecommend=false&queryTypeId=&queryStatus=&queryOrderBy=0" onclick="if(!confirm('您确定删除吗？')) {return false;}" class="pn-opt">删除</a>
-
-		</td>
-
-</tr>
-
-<tr onmouseover="this.bgColor='#eeeeee'" onmouseout="this.bgColor='#ffffff'">
-
-	<td><input type='checkbox' name='ids' value='327'/></td>
-
-	<td>327</td>
-
-	<td>		
-
-		
-
-		<strong>[冬雪系列]</strong>
-
-		<a href="/dong/327.jhtml" target="_blank">足球宝贝徐冬冬海边写真 湿身展无限魅力</a>
-
-</td>
-
-	<td align="center">图文</td>
-
-	<td align="center">admin</td>
-
-	<td align="right">8</td>
-
-	<td align="center">2011-12-19</td>
-
-	<td align="center">已终审		
-
-</td>
-
-	<td align="center">		 <span style="color:red">需要生成</span>
-
-</td>
-
-	<td align="center">		<a href="v_view.do?id=327&cid=&pageNo=&queryTitle=&queryInputUsername=&queryTopLevel=false&queryRecommend=false&queryTypeId=&queryStatus=&queryOrderBy=0" class="pn-opt">查看</a> | 		<a href="v_edit.do?id=327&cid=&pageNo=&queryTitle=&queryInputUsername=&queryTopLevel=false&queryRecommend=false&queryTypeId=&queryStatus=&queryOrderBy=0" class="pn-opt">修改</a> | 		<a href="o_delete.do?ids=327&cid=&pageNo=&queryTitle=&queryInputUsername=&queryTopLevel=false&queryRecommend=false&queryTypeId=&queryStatus=&queryOrderBy=0" onclick="if(!confirm('您确定删除吗？')) {return false;}" class="pn-opt">删除</a>
-
-		</td>
-
-</tr>
-
-<tr onmouseover="this.bgColor='#eeeeee'" onmouseout="this.bgColor='#ffffff'">
-
-	<td><input type='checkbox' name='ids' value='326'/></td>
-
-	<td>326</td>
-
-	<td>		
-
-		
-
-		<strong>[网络游戏]</strong>
-
-		<a href="/network/326.jhtml" target="_blank">魔兽世界</a>
-
-</td>
-
-	<td align="center">普通</td>
-
-	<td align="center">admin</td>
-
-	<td align="right">13</td>
-
-	<td align="center">2011-12-19</td>
-
-	<td align="center">已终审		
-
-</td>
-
-	<td align="center">		 <span style="color:red">需要生成</span>
-
-</td>
-
-	<td align="center">		<a href="v_view.do?id=326&cid=&pageNo=&queryTitle=&queryInputUsername=&queryTopLevel=false&queryRecommend=false&queryTypeId=&queryStatus=&queryOrderBy=0" class="pn-opt">查看</a> | 		<a href="v_edit.do?id=326&cid=&pageNo=&queryTitle=&queryInputUsername=&queryTopLevel=false&queryRecommend=false&queryTypeId=&queryStatus=&queryOrderBy=0" class="pn-opt">修改</a> | 		<a href="o_delete.do?ids=326&cid=&pageNo=&queryTitle=&queryInputUsername=&queryTopLevel=false&queryRecommend=false&queryTypeId=&queryStatus=&queryOrderBy=0" onclick="if(!confirm('您确定删除吗？')) {return false;}" class="pn-opt">删除</a>
-
-		</td>
-
-</tr>
-
-<tr onmouseover="this.bgColor='#eeeeee'" onmouseout="this.bgColor='#ffffff'">
-
-	<td><input type='checkbox' name='ids' value='325'/></td>
-
-	<td>325</td>
-
-	<td>		
-
-		<span style="color:red">[推]</span>
-
-		<strong>[蓝天白云绿地]</strong>
-
-		<a href="/tiankong/325.jhtml" target="_blank">AC米兰球星出席圣诞晚会，帅哥美女云集</a>
-
-</td>
-
-	<td align="center">图文</td>
-
-	<td align="center">admin</td>
-
-	<td align="right">10</td>
-
-	<td align="center">2011-12-19</td>
-
-	<td align="center">已终审		
-
-</td>
-
-	<td align="center">		 <span style="color:red">需要生成</span>
-
-</td>
-
-	<td align="center">		<a href="v_view.do?id=325&cid=&pageNo=&queryTitle=&queryInputUsername=&queryTopLevel=false&queryRecommend=false&queryTypeId=&queryStatus=&queryOrderBy=0" class="pn-opt">查看</a> | 		<a href="v_edit.do?id=325&cid=&pageNo=&queryTitle=&queryInputUsername=&queryTopLevel=false&queryRecommend=false&queryTypeId=&queryStatus=&queryOrderBy=0" class="pn-opt">修改</a> | 		<a href="o_delete.do?ids=325&cid=&pageNo=&queryTitle=&queryInputUsername=&queryTopLevel=false&queryRecommend=false&queryTypeId=&queryStatus=&queryOrderBy=0" onclick="if(!confirm('您确定删除吗？')) {return false;}" class="pn-opt">删除</a>
-
-		</td>
-
-</tr>
-
-<tr onmouseover="this.bgColor='#eeeeee'" onmouseout="this.bgColor='#ffffff'">
-
-	<td><input type='checkbox' name='ids' value='324'/></td>
-
-	<td>324</td>
-
-	<td>		
-
-		<span style="color:red">[推]</span>
-
-		<strong>[蓝天白云绿地]</strong>
-
-		<a href="/tiankong/324.jhtml" target="_blank">爨底下村私家写真</a>
-
-</td>
-
-	<td align="center">图文</td>
-
-	<td align="center">admin</td>
-
-	<td align="right">10</td>
-
-	<td align="center">2011-12-19</td>
-
-	<td align="center">已终审		
-
-</td>
-
-	<td align="center">		 <span style="color:red">需要生成</span>
-
-</td>
-
-	<td align="center">		<a href="v_view.do?id=324&cid=&pageNo=&queryTitle=&queryInputUsername=&queryTopLevel=false&queryRecommend=false&queryTypeId=&queryStatus=&queryOrderBy=0" class="pn-opt">查看</a> | 		<a href="v_edit.do?id=324&cid=&pageNo=&queryTitle=&queryInputUsername=&queryTopLevel=false&queryRecommend=false&queryTypeId=&queryStatus=&queryOrderBy=0" class="pn-opt">修改</a> | 		<a href="o_delete.do?ids=324&cid=&pageNo=&queryTitle=&queryInputUsername=&queryTopLevel=false&queryRecommend=false&queryTypeId=&queryStatus=&queryOrderBy=0" onclick="if(!confirm('您确定删除吗？')) {return false;}" class="pn-opt">删除</a>
-
-		</td>
-
-</tr>
-
-<tr onmouseover="this.bgColor='#eeeeee'" onmouseout="this.bgColor='#ffffff'">
-
-	<td><input type='checkbox' name='ids' value='323'/></td>
-
-	<td>323</td>
-
-	<td>		
-
-		<span style="color:red">[推]</span>
-
-		<strong>[蓝天白云绿地]</strong>
-
-		<a href="/tiankong/323.jhtml" target="_blank">柳岩红黑诱惑大片写真</a>
-
-</td>
-
-	<td align="center">图文</td>
-
-	<td align="center">admin</td>
-
-	<td align="right">15</td>
-
-	<td align="center">2011-12-19</td>
-
-	<td align="center">已终审		
-
-</td>
-
-	<td align="center">		 <span style="color:red">需要生成</span>
-
-</td>
-
-	<td align="center">		<a href="v_view.do?id=323&cid=&pageNo=&queryTitle=&queryInputUsername=&queryTopLevel=false&queryRecommend=false&queryTypeId=&queryStatus=&queryOrderBy=0" class="pn-opt">查看</a> | 		<a href="v_edit.do?id=323&cid=&pageNo=&queryTitle=&queryInputUsername=&queryTopLevel=false&queryRecommend=false&queryTypeId=&queryStatus=&queryOrderBy=0" class="pn-opt">修改</a> | 		<a href="o_delete.do?ids=323&cid=&pageNo=&queryTitle=&queryInputUsername=&queryTopLevel=false&queryRecommend=false&queryTypeId=&queryStatus=&queryOrderBy=0" onclick="if(!confirm('您确定删除吗？')) {return false;}" class="pn-opt">删除</a>
-
-		</td>
-
-</tr>
-
-<tr onmouseover="this.bgColor='#eeeeee'" onmouseout="this.bgColor='#ffffff'">
-
-	<td><input type='checkbox' name='ids' value='322'/></td>
-
-	<td>322</td>
-
-	<td>		
-
-		<span style="color:red">[推]</span>
-
-		<strong>[蓝天白云绿地]</strong>
-
-		<a href="/tiankong/322.jhtml" target="_blank">美国旧金山圣诞老人大聚会</a>
-
-</td>
-
-	<td align="center">图文</td>
-
-	<td align="center">admin</td>
-
-	<td align="right">3</td>
-
-	<td align="center">2011-12-19</td>
-
-	<td align="center">已终审		
-
-</td>
-
-	<td align="center">		 <span style="color:red">需要生成</span>
-
-</td>
-
-	<td align="center">		<a href="v_view.do?id=322&cid=&pageNo=&queryTitle=&queryInputUsername=&queryTopLevel=false&queryRecommend=false&queryTypeId=&queryStatus=&queryOrderBy=0" class="pn-opt">查看</a> | 		<a href="v_edit.do?id=322&cid=&pageNo=&queryTitle=&queryInputUsername=&queryTopLevel=false&queryRecommend=false&queryTypeId=&queryStatus=&queryOrderBy=0" class="pn-opt">修改</a> | 		<a href="o_delete.do?ids=322&cid=&pageNo=&queryTitle=&queryInputUsername=&queryTopLevel=false&queryRecommend=false&queryTypeId=&queryStatus=&queryOrderBy=0" onclick="if(!confirm('您确定删除吗？')) {return false;}" class="pn-opt">删除</a>
-
-		</td>
-
-</tr>
-
-<tr onmouseover="this.bgColor='#eeeeee'" onmouseout="this.bgColor='#ffffff'">
-
-	<td><input type='checkbox' name='ids' value='321'/></td>
-
-	<td>321</td>
-
-	<td>		
-
-		<span style="color:red">[推]</span>
-
-		<strong>[蓝天白云绿地]</strong>
-
-		<a href="/tiankong/321.jhtml" target="_blank">童星今昔对比照大曝光</a>
-
-</td>
-
-	<td align="center">图文</td>
-
-	<td align="center">admin</td>
-
-	<td align="right">2</td>
-
-	<td align="center">2011-12-19</td>
-
-	<td align="center">已终审		
-
-</td>
-
-	<td align="center">		 <span style="color:red">需要生成</span>
-
-</td>
-
-	<td align="center">		<a href="v_view.do?id=321&cid=&pageNo=&queryTitle=&queryInputUsername=&queryTopLevel=false&queryRecommend=false&queryTypeId=&queryStatus=&queryOrderBy=0" class="pn-opt">查看</a> | 		<a href="v_edit.do?id=321&cid=&pageNo=&queryTitle=&queryInputUsername=&queryTopLevel=false&queryRecommend=false&queryTypeId=&queryStatus=&queryOrderBy=0" class="pn-opt">修改</a> | 		<a href="o_delete.do?ids=321&cid=&pageNo=&queryTitle=&queryInputUsername=&queryTopLevel=false&queryRecommend=false&queryTypeId=&queryStatus=&queryOrderBy=0" onclick="if(!confirm('您确定删除吗？')) {return false;}" class="pn-opt">删除</a>
-
-		</td>
-
-</tr></tbody>
+</tbody>
 
 </table>
 
+<c:if test="${!empty pager}">
+		 <table width="95%" border="0" align="center" cellpadding="0" cellspacing="0">
+	        <tr>
+	          <td height="6"><img src="${path}/resource/img/spacer.gif" width="1" height="1" /></td>
+	        </tr>
+	        <tr>
+	          <td height="33"><table width="100%" border="0" align="center" cellpadding="0" cellspacing="0" class="right-font08">
+	              <tr>
+	                <td width="50%">共 <span class="right-text09"> ${pager.page} </span> 页  (${fn:length(pager.items)}/${pager.count}) </td>
+	                <td width="49%" align="right">
+	                 <pg:pager scope="request" maxIndexPages="5" index="center"
+						    maxPageItems="${pager.size}" url="${localPath}" items="${pager.count}"
+						    export="currentPageNumber=pageNumber">
+						   
+						   <pg:param name="action" value="query"/>
+						   <pg:param name="qName" value="${qName}"/>
+						   
+						    <!-- 以下内容保持不变 -->
+						    <pg:first> <a href="${pageUrl}">首页</a> </pg:first>
+						    <pg:prev> <a href="${pageUrl}">前页</a>  </pg:prev>
+						     <pg:pages>
+							     <c:choose>
+							  	    <c:when test="${pageNumber eq currentPageNumber }">
+							       		<font color="red">${pageNumber }</font>
+							      	</c:when>
+							      	<c:otherwise>
+							       		<a href="${pageUrl }">${pageNumber}</a>
+							      	</c:otherwise>
+							     </c:choose>
+						    </pg:pages>
+						    <pg:next> <a href="${pageUrl}">下页</a> </pg:next>
+						    <pg:last> <a href="${pageUrl}">尾页</a> </pg:last>
+						    <pg:skip pages="<%= 5 %>"> 
+						 	 	<a href="${pageUrl}">[ 跳转 #${pageNumber} ]</a> 
+							</pg:skip> 
+						   </pg:pager>
+	                 </td>
+	              </tr>
+	          </table></td>
+	        </tr>
+	      </table>
+      </c:if>
+      
 <table width="100%" border="0" cellpadding="0" cellspacing="0"><tr><td align="center" class="pn-sp">
 
 	共 189 条&nbsp;
@@ -997,43 +357,9 @@ function _gotoPage(pageNo) {
 	}
 
 }
-
 </script>
-
-<div style="margin-top:15px;">
-
-	<input type="button" value="删除" onclick="optDelete();" class="del-button"/>
-
-	<input type="button" value="审核" onclick="optCheck();" class="check"/>
-
-	<input id="rejectButton" type="button" value="退回" onclick="optReject();" class="reject"/>
-
-	<input type="button" value="生成静态页" onclick="optStatic();" class="generate-static"/>
-
-</div>
-
 </form>
-
-</div>
-
-<div id="rejectDialog" style="display:none" title="退回原因">
-
-<p>退回原因: <input type="text" id="rejectOpinion" style="width:260px" onkeypress="if(event.keyCode==13){rejectSubmit();return false;}"/></p>
-
-<p>退回级数:
-
-	<select id="rejectStep">
-
-		<option value="">上一级</option>
-
-		<option value="1">1</option><option value="0">0</option>
-
-	</select>
-
-</p>
-
 </div>
 
 </body>
-
 </html>

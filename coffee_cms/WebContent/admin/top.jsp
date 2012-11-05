@@ -19,7 +19,8 @@
 <script src="${path}/res/common/js/jquery.js" type="text/javascript"></script>
 <script src="${path}/res/common/js/jquery.ext.js" type="text/javascript"></script>
 <script src="${path}/res/common/js/pony.js" type="text/javascript"></script>
-<script src="${path}/res/js/admin.js" type="text/javascript"></script><style type="text/css">        
+<script src="${path}/res/js/admin.js" type="text/javascript"></script>
+<style type="text/css">        
 *{margin:0;padding:0}
 a:focus {outline:none;}
 html{height:100%;overflow:hidden;}
@@ -50,29 +51,12 @@ body{height:100%;}
 function g(o){
 	return document.getElementById(o);
 }
-function HoverLi(m,n,counter){
+function hoverLi(m,counter){
 	for(var i=1;i<=counter;i++){
-		g('tb_'+m+i).className='normal';
+		g('tb_'+i).className='normal';
 	}
-	g('tb_'+m+n).className='current';
+	g('tb_'+m).className='current';
 }
-function countUnreadMsg(){
-	 $.post("message/v_countUnreadMsg.do", {
-		}, function(data) {
-			if(data.result){
-				 $("#countDiv").html(""+data.count+"");
-			}else{
-				alert("请先登录");
-			}
-		}, "json");
-	 setTimeout( "countUnreadMsg() ",1000*60*10);    
-}
-$(function(){
-	$('a').bind("focus", function(){   
-	    $(this).blur();   
-	}); 
-	countUnreadMsg();
-});
 setTimeout( "countUnreadMsg() ",1000*60*10); 
 </script>
 </head>
@@ -106,19 +90,19 @@ setTimeout( "countUnreadMsg() ",1000*60*10);
                         <td style="background-image:url('${path}/res/img/admin/nav-left.png')" width="14" height="31"></td>
                         <td>
                         	<ul class="nav-menu">
-                            	<li class="current" id="tb_11" onclick="HoverLi(1,1,10);">
+                            	<li class="current" id="tb_1" onclick="hoverLi(1,5);">
                             		<a href="${path}/admin/main.jsp" target="mainFrame">首页</a>
                             	</li>
-								<li class="sep"></li><li class="normal" id="tb_12" onclick="HoverLi(1,2,10);">
+								<li class="sep"></li><li class="normal" id="tb_2" onclick="hoverLi(2,5);">
 									<a href="frame/channel_main.do" target="mainFrame">栏目</a>
 								</li>
-								<li class="sep"></li><li class="normal" id="tb_13" onclick="HoverLi(1,3,10);">
+								<li class="sep"></li><li class="normal" id="tb_3" onclick="hoverLi(3,5);">
 									<a href="frame/content_main.do" target="mainFrame">内容</a>
 								</li>
-								<li class="sep"></li><li class="normal" id="tb_14" onclick="HoverLi(1,4,10);">
+								<li class="sep"></li><li class="normal" id="tb_4" onclick="hoverLi(4,5);">
 									<a href="frame/template_main.do" target="mainFrame">模板</a>
 								</li>
-								<li class="sep"></li><li class="normal" id="tb_15" onclick="HoverLi(1,5,10);">
+								<li class="sep"></li><li class="normal" id="tb_5" onclick="hoverLi(5,5);">
 									<a href="frame/resource_main.do" target="mainFrame">资源</a>
 								</li>
                             </ul>

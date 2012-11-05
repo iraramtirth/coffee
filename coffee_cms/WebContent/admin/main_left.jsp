@@ -1,4 +1,6 @@
 <%@ page contentType="text/html; charset=UTF-8" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <%
 	String path = request.getContextPath();
@@ -6,7 +8,7 @@
 %>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
 <title>CoffeeCMS-left</title>
 
 <link href="${path}/res/css/admin.css" rel="stylesheet" type="text/css"/>
@@ -105,29 +107,42 @@
 			
 			<!-- 菜单的顶级 ul -->
 			<ul>
-				<li id="46" class="hasChildren expandable">
-					<!-- 菜单前面的加号 -->
-					<div onclick="javascript:menuClick('46');" class="hitarea hasChildren-hitarea expandable-hitarea"></div>
-					<span class="folder">
-						<a href="v_edit.do?id="  target="rightFrame">视频 [<span style="color: red">视频</span>]</a>
-					</span>
-					<ul style="display: none;">
-						<li id="placeholder" class="last"><span>placeholder</span></li>
-					</ul>
-					<ul style="display: block; ">
-						<li id="49"><span class="file"><a href="v_edit.do?id=49" target="rightFrame">明星糗镜头 [<span style="color:red">视频</span>]</a></span></li>
-						<li id="50"><span class="file"><a href="v_edit.do?id=50" target="rightFrame">有才恶搞 [<span style="color:red">视频</span>]</a></span></li>
-						<li id="51"><span class="file"><a href="v_edit.do?id=51" target="rightFrame">经典搞笑专辑 [<span style="color:red">视频</span>]</a></span></li>
-						<li id="52" class="last"><span class="file"><a href="v_edit.do?id=52" target="rightFrame">哈哈趣闻 [<span style="color:red">视频</span>]</a></span></li>
-					</ul>
-				</li>
-				 
-				<li id="10" class="last">
-					<span class="file">
-						<a href="v_edit.do?id=10" target="rightFrame" class="">关于我们 [<span style="color: red">单页</span>]</a>
-					</span>
-				</li>
-			</ul>
+			 <c:forEach var="item" items="${menus}">
+			 	<c:choose>
+				 	<c:when test="${!empty item.children}">
+				 		<li id="${item.id}" class="hasChildren expandable" >
+							<!-- 菜单前面的加号 -->
+							<div onclick="javascript:menuClick('${item.id}');" class="hitarea hasChildren-hitarea expandable-hitarea"></div>
+							<span class="folder">
+								<a href="${item.url}"  target="rightFrame">${item.name}</a>
+								[<span style="color:red">${item.name}</span>]
+							</span>
+							<ul style="display: none;">
+								<li id="placeholder" class="last"><span>placeholder</span></li>
+							</ul>
+							<ul style="display: none; ">
+								<c:forEach var="child" items="${item.children}">
+									<li id="${child.id}">
+										<span class="file">
+											<a href="${child.url}" target="rightFrame">${child.name}&nbsp;[<span style="color:red">${item.name}</span>]</a>
+										</span>
+									</li>
+								</c:forEach>
+							</ul>
+						</li>
+				
+				 	</c:when>
+				 	<c:otherwise>
+				 		<li id="${item.id}" class="last">
+							<span class="file">
+								<a href="${item.url}" target="rightFrame" class="">${item.name}</a>
+							</span>
+						</li>
+				 	 </c:otherwise>	
+			 	</c:choose>
+			 </c:forEach>				
+			</ul><!-- 菜单的顶级 ul--END -->
+			
 		</li>
 	</ul>
 
