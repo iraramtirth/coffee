@@ -1,28 +1,8 @@
 package coffee.cms.core.action;
 
-import java.io.IOException;
-
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 public class BaseAction {
-
-	protected void doPost(HttpServletRequest request,
-			HttpServletResponse response) throws ServletException, IOException {
-		String url = request.getRequestURL().toString();
-		if (url.endsWith("query")) {
-			this.query(request);
-		} else if (url.endsWith("insert")) {
-			this.insert(request);
-		} else if (url.endsWith("update")) {
-			this.update(request);
-		} else if (url.endsWith("delete")) {
-			this.delete(request);
-		}
-		String forward = url.substring(url.lastIndexOf("/") + 1) + ".jsp";
-		response.sendRedirect(forward);
-	}
 
 	protected void query(HttpServletRequest request) {
 
