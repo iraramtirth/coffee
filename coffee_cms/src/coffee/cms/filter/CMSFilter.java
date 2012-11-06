@@ -12,7 +12,7 @@ import javax.servlet.ServletResponse;
 import javax.servlet.annotation.WebFilter;
 
 import coffee.cms.admin.bean.MenuItemBean;
-import coffee.cms.admin.bean.MenuItemService;
+import coffee.cms.admin.service.MenuItemService;
 
 /**
  * Servlet Filter implementation class CMSFilter
