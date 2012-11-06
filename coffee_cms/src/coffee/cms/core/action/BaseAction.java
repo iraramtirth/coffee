@@ -1,4 +1,4 @@
-package coffee.cms.admin.action;
+package coffee.cms.core.action;
 
 import java.io.IOException;
 

@@ -1,4 +1,4 @@
-package coffee.cms.admin.bean;
+package coffee.cms.core.bean;
 
 import java.util.ArrayList;
 import java.util.List;

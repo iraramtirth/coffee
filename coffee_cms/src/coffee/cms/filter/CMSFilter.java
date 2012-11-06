@@ -11,8 +11,8 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.annotation.WebFilter;
 
-import coffee.cms.admin.bean.MenuItemBean;
-import coffee.cms.admin.service.MenuItemService;
+import coffee.cms.core.bean.MenuItemBean;
+import coffee.cms.core.service.MenuItemService;
 
 /**
  * Servlet Filter implementation class CMSFilter

@@ -1,11 +1,11 @@
-package coffee.cms.admin.service;
+package coffee.cms.core.service;
 
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
-import coffee.cms.admin.bean.MenuItemBean;
+import coffee.cms.core.bean.MenuItemBean;
 
 public class MenuItemService {
 
