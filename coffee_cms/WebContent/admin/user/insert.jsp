@@ -1,3 +1,5 @@
+<%@page import="coffee.cms.admin.bean.UserJIDBean"%>
+<%@page import="coffee.cms.admin.action.UserJIDAction"%>
 <%@ page contentType="text/html; charset=UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
@@ -7,6 +9,17 @@
 	String path = request.getContextPath();
 	pageContext.setAttribute("path", path);
 	
+	String action = request.getParameter("action");
+	if(action != null)
+	{
+		if("insert".equals(action))
+		{
+			UserJIDAction act = new UserJIDAction();
+			act.insert(request, UserJIDBean.class);
+			response.sendRedirect("query.jsp");
+			return;
+		}
+	}
 %>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
