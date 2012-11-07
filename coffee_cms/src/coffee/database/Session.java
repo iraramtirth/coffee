@@ -2,11 +2,13 @@ package coffee.database;
 
 import java.sql.SQLException;
 
-import coffee.jdbc.dao.impl.TDaoImpl;
+import coffee.database.dao.TDaoImpl;
 /**
  * 相对于TDaoImpl
  * Session主要增加了对Connection的管理(创建、关闭,开启关闭事务)
- * @author wangtao
+ * 
+ * @author coffee
+ * 20122012-11-7上午11:27:12
  */
 public class Session extends TDaoImpl{
 	/**

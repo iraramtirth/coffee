@@ -5,13 +5,14 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.Properties;
 
-import coffee.jdbc.dao.util.Configuration;
-import coffee.jdbc.dao.util.Configuration.DialectType;
+import coffee.database.core.Configuration;
+import coffee.database.core.Configuration.DialectType;
 
 /**
- * 数据链连接
- * 
- * @author wangtao
+ * 数据库连接类
+ *
+ * @author coffee
+ * 20122012-11-7上午11:31:24
  */
 public class SqlConnection {
 

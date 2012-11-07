@@ -1,6 +1,6 @@
 package coffee.database.test;
 
-import coffee.jdbc.annotation.Id;
+import coffee.database.annotation.Id;
 
 public class UserBean {
 
