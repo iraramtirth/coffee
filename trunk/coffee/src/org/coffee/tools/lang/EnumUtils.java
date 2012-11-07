@@ -27,7 +27,7 @@ public class EnumUtils {
 //			System.out.println(ps.codeValue);
 //		}
 		System.out.println("...");
-		Person p19 = get(Person.values(), 19);
+		Person p19 = get(Person.values(), 20);
 		System.out.println(p19.codeValue);
 		
 	}
@@ -46,12 +46,16 @@ public class EnumUtils {
 		try {
 			Method values = enumType[0].getClass().getMethod("values", new Class[]{});
 			T[] obj = (T[]) values.invoke(enumType[0], new Object[]{});
-			System.out.println(obj);
 			
 			for(T t : obj)
 			{
-				System.out.println(t);
-				if(t.toString().contains(codeValue + ""))
+				Field codeValueField = t.getClass().getDeclaredField("codeValue");
+				
+				codeValueField.setAccessible(true);
+				
+				codeValueField.get(t);
+				
+				if(String.valueOf(codeValue).equals(codeValueField.get(t) + ""))
 				{
 					return t;
 				}

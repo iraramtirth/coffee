@@ -3,8 +3,11 @@ package org.coffee.common.util;
 import java.util.Random;
 
 public class RandomUtils {
+	
 	public static void main(String[] args) {
-		System.out.println(nextInt(10, 20));
+		for (int i = 0; i < 50; i++) {
+			System.out.println(nextInt(1, 2));
+		}
 	}
 
 	private static final String allChar = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
@@ -12,12 +15,23 @@ public class RandomUtils {
 	private static final String digitChar = "0123456789";
 
 	
-	public static int nextInt(int start, int end){
+	/**
+	 * 俩整形之间，包括0 
+	 * @param start ： 最小值(包括自身) 从0开始 
+	 * @param end : 最大值 (包含自身) 
+	 * @return
+	 */
+	public static int nextInt(int start, int end) {
+		/**
+		 * 因为random.nextInt函数 [0,1）  包括0但是不包含1
+		 */
+		int newStart = start + 1;
+
 		Random random = new Random();
-		int val = random.nextInt(start) + end - start;
+		int val = random.nextInt(newStart) + end - start;
 		return val;
 	}
-	
+
 	/**
 	 * 返回一个定长的随机字符串 (只包含数字)
 	 * 

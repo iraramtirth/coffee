@@ -6,7 +6,7 @@ import java.util.logging.Logger;
 /**
  * 日期工具类
  * 主要负责处理时间java.util.Date与String类型的转换
- * @author wangtao
+ * @author coffee
  */
 public class DateUtils {
 	private static Logger log = Logger.getLogger(DateUtils.class.toString());
@@ -15,21 +15,22 @@ public class DateUtils {
 	 * yyyy-MM-dd HH:mm:ss
 	 */
 	private static SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+	
 	/**
 	 *  格式化日期类型 ，返回字符串
-	 *  @param : 传入参数
+	 *  @param : 传入参数 java.util.Date
 	 *  @return 返回一个字符串
 	 */
-	public static String format(Object value){
+	public static String format(Object date){
 		try {
-			return sdf.format(value);
+			return sdf.format(date);
 		} catch (Exception e) {
 			return null;
 		}
 	}
 	/**
 	 * 解析字符串,返回日期
-	 * @param 
+	 * @param value : 传入一个字符串
 	 * @return 返回日期
 	 */
 	public static Date parse(Object value){
@@ -60,5 +61,12 @@ public class DateUtils {
 		} catch (Exception e) {
 			return null;
 		}
+	}
+	
+	public static void main(String[] args) {
+		
+		Date date =  new Date(1346643092000L);
+		
+		System.out.println(format(date));
 	}
 }
