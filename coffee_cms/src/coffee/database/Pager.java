@@ -3,7 +3,7 @@ package coffee.database;
 import java.util.List;
 /**
  * 分页 
- * @author wangtao
+ * @author coffee
  * @param <T>
  */
 public class Pager<T>{
@@ -16,7 +16,7 @@ public class Pager<T>{
 	 * ognl.OgnlException: target is null for 
 	 * setProperty(null, "offset", [Ljava.lang.String;@1e09e6a)
 	 */
-	private int curpage;	// 当面页数
+	private int curpage;	// 当前页数
 	private int offset;		// 偏移量
 	
 	public int getTotal() {

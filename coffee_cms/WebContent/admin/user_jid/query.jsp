@@ -125,21 +125,13 @@ function chgStatus() {
 <form action="v_list.do" method="post" style="padding-top:5px;">
 <div>
 标题: <input type="text" name="queryTitle" value="" style="width:100px"/>
-
 发布者: <input type="text" name="queryInputUsername" value="" style="width:70px"/>
-
 <label><input type="checkbox" name="queryTopLevel" value="true"/>固顶</label>
-
 <label><input type="checkbox" name="queryRecommend" value="true"/>推荐</label>
-
 <select name="queryTypeId"><option value="" selected="selected">--所有类型--</option><option value="1">普通</option><option value="2">图文</option><option value="3">焦点</option><option value="4">头条</option></select>
-
 <select name="queryOrderBy"><option value="0" selected="selected">ID降序</option><option value="1">ID升序</option><option value="2">发布时间降</option><option value="3">发布时间升</option><option value="4">固顶降,发布降</option><option value="5">固顶降,发布升</option><option value="6">日点击降</option><option value="7">周点击降</option><option value="8">月点击降</option><option value="9">总点击降</option><option value="10">日评论降</option><option value="11">周评论降</option><option value="12">月评论降</option><option value="13">总评论降</option><option value="14">日下载降</option><option value="15">周下载降</option><option value="16">月下载降</option><option value="17">总下载降</option><option value="18">日顶降</option><option value="19">周顶降</option><option value="20">月顶降</option><option value="21">总顶降</option></select>
-
 <input type="hidden" name="cid" value=""/>
-
 <input class="query" type="submit" value="查询"/>
-
 </div>
 <div style="padding-top:5px">
 <label><input type="radio" name="queryStatus" value="all" onclick="chgStatus();" checked="checked"/>所有内容</label>
@@ -154,39 +146,30 @@ function chgStatus() {
 <form id="tableForm" method="post">
 	<input type="hidden" name="pageNo" value=""/>
 	<input type="hidden" name="cid" value=""/>
-	<input type="hidden" name="queryOrderBy" value="0"/>
-	<input type="hidden" name="queryTopLevel" value="false"/>
-	<input type="hidden" name="queryRecommend" value="false"/>
-	<input type="hidden" name="rejectStep"/>
 	<input type="hidden" name="rejectOpinion"/>
 <table class="pn-ltable" style="" width="100%" cellspacing="1" cellpadding="0" border="0">
-<thead class="pn-lthead"><tr>
-	<th width="20"><input type='checkbox' onclick='Pn.checkbox("ids",this.checked)'/></th>
-	<th>ID</th>
-	<th>标题</th>
-	<th>类型</th>
-	<th>发布时间</th>
-	<th>状态</th>
-	<th>操作选项</th></tr></thead>
-<tbody class="pn-ltbody">
-<tr onmouseover="this.bgColor='#eeeeee'" onmouseout="this.bgColor='#ffffff'">
-	<td><input type='checkbox' name='ids' value='340'/></td>
-	<td>340</td>
-	<td>		
-		<strong>[国内新闻]</strong>
-		<a href="/gnxw/340.jhtml" target="_blank">1212</a>
-</td>
-	<td align="center">普通</td>
-	<td align="center">admin</td>
-	<td align="right">0</td>
-	<td align="center">2011-12-19</td>
-	<td align="center">		
-		<a href="v_view.do?id=340" class="pn-opt">查看</a> | 
-		<a href="v_edit.do" class="pn-opt">修改</a> | 		
-		<a href="" onclick="if(!confirm('您确定删除吗？')) {return false;}" class="pn-opt">删除</a>
-	</td>
-</tr>
-</tbody>
+	<thead class="pn-lthead">
+		<tr>
+			<th width="20"><input type='checkbox' onclick='Pn.checkbox("ids",this.checked)'/></th>
+			<th>ID</th>
+			<th>用户JID</th>
+			<th>操作选项</th>
+		</tr>
+	</thead>
+	<tbody class="pn-ltbody">
+		<c:forEach items="${pager}" var="item">
+			<tr onmouseover="this.bgColor='#eeeeee'" onmouseout="this.bgColor='#ffffff'">
+				<td><input type='checkbox' name='ids' value='340'/></td>
+				<td>${item.it}</td>
+				<td>${item.jid}</td>
+				<td align="center">		
+					<a href="v_view.do?id=340" class="pn-opt">查看</a> | 
+					<a href="v_edit.do" class="pn-opt">修改</a> | 		
+					<a href="" onclick="if(!confirm('您确定删除吗？')) {return false;}" class="pn-opt">删除</a>
+				</td>
+			</tr>
+		</c:forEach>
+	</tbody>
 </table>
 <c:if test="${!empty pager}">
 		 <table width="95%" border="0" align="center" cellpadding="0" cellspacing="0">

@@ -9,8 +9,10 @@ import coffee.servlet.ParameterReflect;
 
 public class Action {
 
+	protected String tableName; 
+	
 	public void query(HttpServletRequest request) {
-
+		
 	}
 
 	/**

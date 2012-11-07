@@ -49,7 +49,7 @@
 						<span class="pn-frequired">*</span>用户名:
 					</td>
 					<td colspan="3" class="pn-fcontent">
-						<input type="text" maxlength="150" name="username" class="required" size="70" maxlength="150" />
+						<input type="text" maxlength="150" name="jid" class="required" size="70" maxlength="150" />
 					</td>
 				</tr>
 				<tr>
@@ -57,7 +57,7 @@
 						<span class="pn-frequired">*</span>密码:
 					</td>
 					<td colspan="3" class="pn-fcontent">
-						<input type="password" maxlength="150" name="username" class="required" size="70" maxlength="150" />
+						<input type="password" maxlength="150" name="password" class="required" size="70" maxlength="150" />
 					</td>
 				</tr>
 				<tr>
