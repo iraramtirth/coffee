@@ -9,7 +9,7 @@ import coffee.servlet.ParameterReflect;
 
 public class Action {
 
-	protected void query(HttpServletRequest request) {
+	public void query(HttpServletRequest request) {
 
 	}
 
@@ -18,7 +18,7 @@ public class Action {
 	 * @param request
 	 * @param modelClass
 	 */
-	protected <T> void insert(HttpServletRequest request, Class<T> modelClass) {
+	public <T> void insert(HttpServletRequest request, Class<T> modelClass) {
 		T model = new ParameterReflect().invoke(request, modelClass);
 		Session session = new Session();
 		try {
@@ -31,11 +31,11 @@ public class Action {
 		}
 	}
 
-	protected void update(HttpServletRequest request) {
+	public void update(HttpServletRequest request) {
 
 	}
 
-	protected void delete(HttpServletRequest request) {
+	public void delete(HttpServletRequest request) {
 
 	}
 }
