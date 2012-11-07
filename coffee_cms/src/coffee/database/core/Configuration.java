@@ -34,29 +34,6 @@ public class Configuration {
 		}
 	}
 
-	public enum MappedType {
-		/**
-		 * java.lang.Long
-		 */
-		Long,
-		/**
-		 * java.lang.Integer
-		 */
-		Integer,
-		/**
-		 * java.util.Date
-		 */
-		Date,
-		/**
-		 * java.util.String
-		 */
-		String,
-		/**
-		 * 无意义枚举，为了支持switch中 continue + label 的使用
-		 */
-		Default
-	}
-
 	/**
 	 * 数据库方言；用于指定数据库类型； 主要用来处理不同数据库对sql命令中的时间类型的处理存在差异
 	 * 

@@ -1,4 +1,4 @@
-package coffee.jdbc;
+package coffee.database;
 
 import java.util.List;
 /**

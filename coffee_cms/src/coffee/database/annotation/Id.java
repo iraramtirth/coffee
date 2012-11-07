@@ -1,4 +1,4 @@
-package coffee.jdbc.annotation;
+package coffee.database.annotation;
 
 import static java.lang.annotation.ElementType.FIELD;
 import static java.lang.annotation.ElementType.METHOD;

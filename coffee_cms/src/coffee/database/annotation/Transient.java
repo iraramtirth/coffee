@@ -1,4 +1,4 @@
-package coffee.jdbc.annotation;
+package coffee.database.annotation;
 
 import java.lang.annotation.Target;
 import java.lang.annotation.Retention;
