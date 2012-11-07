@@ -18,7 +18,7 @@ import org.coffee.common.util.TypeUtils;
  * 该类是一个工具类；
  * 在使用的过程中应该先执行 invoke方法，传入俩参数： 将从request获取的参数map进行解析
  * 并进行参数值的反射
- * @author wangtao
+ * @author coffee
  */
 public class ParameterReflect {
 	private Logger log = Logger.getLogger(this.toString());

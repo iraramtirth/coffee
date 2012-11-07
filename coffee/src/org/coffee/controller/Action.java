@@ -24,7 +24,7 @@ import org.coffee.spring.ioc.annotation.Resource;
 /**
  * action 的公共父类 总的控制器
  * 
- * @author wangtao
+ * @author coffee
  */
 public abstract class Action extends HttpServlet implements Constants {
 
