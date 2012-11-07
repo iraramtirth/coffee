@@ -1,4 +1,4 @@
-package coffee.database.core;
+package coffee.database.dao;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -17,10 +17,9 @@ import javax.sql.rowset.CachedRowSet;
 import net.sf.ehcache.Cache;
 import net.sf.ehcache.CacheManager;
 import net.sf.ehcache.Element;
-import coffee.jdbc.Pager;
-import coffee.jdbc.dao.TDao;
-import coffee.jdbc.dao.util.Configuration;
-import coffee.jdbc.dao.util.TUtils;
+import coffee.database.Pager;
+import coffee.database.core.Configuration;
+import coffee.database.core.DBUtils;
 
 public class TDaoImpl implements TDao{
 	/**
@@ -53,7 +52,7 @@ public class TDaoImpl implements TDao{
 	@Override
 	public <T> void delete(long id, Class<T> clazz) throws SQLException {
 		try {
-			String sql = "delete from " + TUtils.getTableName(clazz) + " where id=" + id;
+			String sql = "delete from " + DBUtils.getTableName(clazz) + " where id=" + id;
 			Statement stmt = conn.createStatement();
 			stmt.executeUpdate(sql);
 			stmt.close();
@@ -72,7 +71,7 @@ public class TDaoImpl implements TDao{
 			return;
 		}
 		try {
-			String sql = "delete from "+TUtils.getTableName(clazz) +" where id=?";
+			String sql = "delete from "+DBUtils.getTableName(clazz) +" where id=?";
 			conn.setAutoCommit(false);
 			PreparedStatement pstmt = conn.prepareStatement(sql);
 			for(String id : ids){
@@ -225,10 +224,10 @@ public class TDaoImpl implements TDao{
 		T t = null;
 		try {
 			t = clazz.newInstance();
-			String sql = "select * from " + TUtils.getTableName(clazz) + " where id = " + id;
+			String sql = "select * from " + DBUtils.getTableName(clazz) + " where id = " + id;
 			Statement stmt = conn.createStatement();
 			ResultSet rs = stmt.executeQuery(sql);
-			List<T> ls = TUtils.processResultSetToList(rs, clazz);
+			List<T> ls = DBUtils.processResultSetToList(rs, clazz);
 			if(ls == null || ls.size() == 0){
 				t = null;
 			}else{
@@ -251,7 +250,7 @@ public class TDaoImpl implements TDao{
 		try {
 			Statement stmt = conn.createStatement();
 			ResultSet rs = stmt.executeQuery(sql);
-			ls = TUtils.processResultSetToList(rs, clazz);
+			ls = DBUtils.processResultSetToList(rs, clazz);
 			rs.close();
 			stmt.close();
 		} catch (Exception e) {
@@ -272,7 +271,7 @@ public class TDaoImpl implements TDao{
 			rs.first();
 			rs.relative((int)start - 1);
 			// 处理resultSet 实现分页查询
-			ls = TUtils.processResultSetToList(rs,clazz);
+			ls = DBUtils.processResultSetToList(rs,clazz);
 			rs.close();
 			stmt.close();
 		} catch (Exception e) {
@@ -319,7 +318,7 @@ public class TDaoImpl implements TDao{
 			throw new SQLException("插入数据失败，实体为null");
 		}
 		try {
-			String sql = TUtils.getInsertSql(t,Configuration.dialect);
+			String sql = DBUtils.getInsertSql(t,Configuration.dialect);
 			Statement stmt = conn.createStatement();
 			stmt.executeUpdate(sql);
 			stmt.close();
@@ -339,10 +338,10 @@ public class TDaoImpl implements TDao{
 //			throw new SQLException("插入数据失败，实体为null");
 //		}
 //		try {
-//			String sql = TUtils.getInsertSql(t,Configuration.dialect);
+//			String sql = DBUtils.getInsertSql(t,Configuration.dialect);
 //			Statement stmt = conn.createStatement();
 //			stmt.executeUpdate(sql, Statement.RETURN_GENERATED_KEYS);
-//			sql = "select "+TUtils.getSequenceName(t.getClass()) +".currval from dual";
+//			sql = "select "+DBUtils.getSequenceName(t.getClass()) +".currval from dual";
 //			stmt.close();
 //			// 新创建一个连接 ： 如果直接用stmt(未关闭)，
 //			// 则会报出一个 bind variable does not exist
@@ -373,7 +372,7 @@ public class TDaoImpl implements TDao{
 			for(T t : entities){
 				String sql = null;
 				try {
-					sql = TUtils.getInsertSql(t,Configuration.dialect);
+					sql = DBUtils.getInsertSql(t,Configuration.dialect);
 					stmt.addBatch(sql);
 					if(index++ > 10000){
 						stmt.executeBatch();
@@ -393,7 +392,7 @@ public class TDaoImpl implements TDao{
 	@Override
 	public <T> void update(T t) throws SQLException {
 		try{
-			String sql = TUtils.getUpdateSql(t,Configuration.dialect);
+			String sql = DBUtils.getUpdateSql(t,Configuration.dialect);
 			Statement stmt = conn.createStatement();
 			stmt.executeUpdate(sql);
 			stmt.close();

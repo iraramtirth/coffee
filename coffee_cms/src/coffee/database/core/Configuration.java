@@ -3,7 +3,7 @@ package coffee.database.core;
 /**
  * 设定数据库中的一些配置信息，主要用来给TDao服务的
  * 
- * @author wangtao
+ * @author coffee
  */
 public class Configuration {
 	/**

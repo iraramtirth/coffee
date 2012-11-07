@@ -3,7 +3,15 @@ package coffee.database.core;
 import java.beans.PropertyDescriptor;
 import java.lang.reflect.Field;
 
+/**
+ * 
+ * @author coffee
+ */
 public class TypeUtils {
+
+	public enum Type {
+		Byte, Character, Short, Integer, Long, Float, Double, Boolean, String, Date, BYTE_ARRAY, FormFile, Object
+	}
 
 	/**
 	 * 获取Field的数据类型
@@ -43,10 +51,6 @@ public class TypeUtils {
 			return Type.FormFile;
 		}
 		return Type.Object;
-	}
-
-	public enum Type {
-		Byte, Character, Short, Integer, Long, Float, Double, Boolean, String, Date, BYTE_ARRAY, FormFile, Object
 	}
 
 	/**

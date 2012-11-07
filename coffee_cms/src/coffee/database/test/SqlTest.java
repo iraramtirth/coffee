@@ -1,6 +1,6 @@
 package coffee.database.test;
 
-import coffee.jdbc.table.TableCreator;
+import coffee.database.core.DBUtils;
 
 public class SqlTest {
 
@@ -8,7 +8,7 @@ public class SqlTest {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		String sql = TableCreator.generateTableSql(UserBean.class);
+		String sql = DBUtils.generateTableSql(UserBean.class);
 		
 		System.out.println(sql);
 	}

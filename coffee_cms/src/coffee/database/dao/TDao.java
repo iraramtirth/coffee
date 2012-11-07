@@ -1,4 +1,4 @@
-package coffee.database.core;
+package coffee.database.dao;
 
 import java.sql.Connection;
 import java.sql.SQLException;
