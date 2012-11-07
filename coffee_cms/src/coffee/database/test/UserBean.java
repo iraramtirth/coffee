@@ -1,12 +1,18 @@
 package coffee.database.test;
 
+import coffee.database.annotation.Bean;
+import coffee.database.annotation.Column;
 import coffee.database.annotation.Id;
 
+@Bean(name="user_jid")
 public class UserBean {
 
 	@Id
+	@Column(name="jid_id")
 	private String id;
+	@Column(name="jid")
 	private String username;
+	@Column(name="jid_sha")
 	private String password;
 
 	public String getId() {

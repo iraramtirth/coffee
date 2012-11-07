@@ -30,7 +30,7 @@ public class SqlConnection {
 			 * 注意不能写成**SqlConnection.class.getClass().getResource("/")
 			 */
 			prop.load(new FileInputStream(SqlConnection.class.getResource("/")
-					.getPath() + "jdbc.properties"));
+					.getPath() + "props/jdbc.properties"));
 			url = prop.getProperty("url");
 			username = prop.getProperty("username");
 			password = prop.getProperty("password");

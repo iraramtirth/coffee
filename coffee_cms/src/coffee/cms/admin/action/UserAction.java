@@ -2,10 +2,10 @@ package coffee.cms.admin.action;
 
 import javax.servlet.http.HttpServletRequest;
 
-import coffee.cms.core.action.BaseAction;
+import coffee.cms.core.action.Action;
 
 
-public class UserAction extends BaseAction{
+public class UserAction extends Action{
 	
 	private HttpServletRequest request;
 	

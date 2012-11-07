@@ -1,7 +1,6 @@
 package coffee.database.core;
 
 import java.lang.reflect.Field;
-import java.lang.reflect.Method;
 
 /**
  * 反射用到的工具
@@ -42,32 +41,29 @@ public class TUtils {
 		return null;
 	}
 
-	public static Object setValue(Object obj, String fieldName, Object value) {
+	public static Object setValue(Object obj, String fieldName,
+			Object fieldValue) {
 		try {
-			if (obj == null || value == null) {
+			if (obj == null || fieldValue == null) {
 				return obj;
 			}
 			Field field = obj.getClass().getDeclaredField(fieldName);
 			if (field != null) {
-				Object newVal = value;
+				Object newVal = fieldValue;
 				if (field.getType().isPrimitive()) {
 					String type = field.getType().toString();
 					if (type.contains("long")) {
-						newVal = Long.valueOf(value + "");
+						newVal = Long.valueOf(fieldValue + "");
 					} else if (type.contains("int")) {
-						newVal = Integer.valueOf(value + "");
+						newVal = Integer.valueOf(fieldValue + "");
 					} else if (type.contains("float")) {
-						newVal = Float.valueOf(value + "");
+						newVal = Float.valueOf(fieldValue + "");
 					} else if (type.contains("double")) {
-						newVal = Double.valueOf(value + "");
+						newVal = Double.valueOf(fieldValue + "");
 					}
 				}
-				String methodName = "set"
-						+ fieldName.substring(0, 1).toUpperCase()
-						+ fieldName.substring(1);
-				Method method = obj.getClass().getMethod(methodName,
-						new Class[] { field.getType() });
-				method.invoke(obj, newVal);
+				field.setAccessible(true);
+				field.set(obj, newVal);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
