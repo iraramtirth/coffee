@@ -65,6 +65,8 @@ public class TUtils {
 				field.setAccessible(true);
 				field.set(obj, newVal);
 			}
+		} catch (NoSuchFieldException se) {
+			//
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
