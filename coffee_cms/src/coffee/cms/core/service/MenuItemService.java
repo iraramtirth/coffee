@@ -53,7 +53,7 @@ public class MenuItemService {
 	 */
 	public List<MenuItemBean> getMenuItems() {
 
-		ResourceBundle res = ResourceBundle.getBundle("res/admin_menu");
+		ResourceBundle res = ResourceBundle.getBundle("props/admin_menu");
 
 		List<MenuItemBean> menuItems = new ArrayList<MenuItemBean>();
 		for (String key : res.keySet()) {
