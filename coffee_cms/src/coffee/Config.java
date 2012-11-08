@@ -7,4 +7,8 @@ public class Config {
 	 */
 	public static final String CMS_MENU_PROPS = "conf/admin_menu";
 	public static final String DB_JDBC_PROPS = "conf/jdbc";
+	/**
+	 * 本机主机名
+	 */
+	public static final String XMPP_HOST = "android";
 }

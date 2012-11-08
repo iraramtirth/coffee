@@ -1,6 +1,7 @@
 package coffee.cms.admin.bean;
 
 
+import coffee.Config;
 import coffee.database.annotation.Bean;
 import coffee.database.annotation.Column;
 import coffee.database.annotation.Id;
@@ -25,6 +26,10 @@ public class UserJIDBean {
 		return jid;
 	}
 	public void setJid(String jid) {
+		if(!jid.endsWith("@"+Config.XMPP_HOST))
+		{
+			jid += "@" + Config.XMPP_HOST;
+		}
 		this.jid = jid;
 	}
 	public String getPassword() {
