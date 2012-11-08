@@ -1,18 +1,17 @@
 package coffee.database;
 
-import java.io.FileInputStream;
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.util.Properties;
+import java.util.ResourceBundle;
 
+import coffee.Config;
 import coffee.database.core.Configuration;
 import coffee.database.core.Configuration.DialectType;
 
 /**
  * 数据库连接类
- *
- * @author coffee
- * 20122012-11-7上午11:31:24
+ * 
+ * @author coffee 20122012-11-7上午11:31:24
  */
 public class SqlConnection {
 
@@ -24,17 +23,13 @@ public class SqlConnection {
 	public static ConnectionPool cp;
 
 	private static void initConnectionPool() throws SQLException {
-		Properties prop = new Properties();
 		try {
-			/**
-			 * 注意不能写成**SqlConnection.class.getClass().getResource("/")
-			 */
-			prop.load(new FileInputStream(SqlConnection.class.getResource("/")
-					.getPath() + "props/jdbc.properties"));
-			url = prop.getProperty("url");
-			username = prop.getProperty("username");
-			password = prop.getProperty("password");
-			driver = prop.getProperty("driver");
+			ResourceBundle prop = ResourceBundle
+					.getBundle(Config.DB_JDBC_PROPS);
+			url = prop.getString("url");
+			username = prop.getString("username");
+			password = prop.getString("password");
+			driver = prop.getString("driver");
 			if (driver.toUpperCase().contains("ORACLE")) {
 				Configuration.dialect = DialectType.ORACLE;
 			} else if (driver.toUpperCase().contains("MYSQL")) {

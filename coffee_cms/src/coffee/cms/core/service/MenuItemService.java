@@ -3,8 +3,10 @@ package coffee.cms.core.service;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.ResourceBundle;
 
+import coffee.Config;
 import coffee.cms.core.bean.MenuItemBean;
 
 public class MenuItemService {
@@ -53,7 +55,7 @@ public class MenuItemService {
 	 */
 	public List<MenuItemBean> getMenuItems() {
 
-		ResourceBundle res = ResourceBundle.getBundle("props/admin_menu");
+		ResourceBundle res = ResourceBundle.getBundle(Config.CMS_MENU_PROPS,Locale.getDefault());
 
 		List<MenuItemBean> menuItems = new ArrayList<MenuItemBean>();
 		for (String key : res.keySet()) {
