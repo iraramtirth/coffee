@@ -98,6 +98,23 @@ public class DBUtils extends TUtils {
 	}
 
 	/**
+	 * 获取主键名
+	 * @param beanClass
+	 * @return
+	 */
+	public static <T> String getPrimaryKeyName(Class<T> beanClass)
+	{
+		for(Field field : beanClass.getDeclaredFields())
+		{
+			if(isPrimaryKey(beanClass, field))
+			{
+				return getColumnName(field);
+			}
+		}
+		return "";
+	}
+	
+	/**
 	 * 获取列名
 	 */
 	public static <T> String getColumnName(Field field) {
@@ -251,7 +268,7 @@ public class DBUtils extends TUtils {
 		if (sql.toString().endsWith(",")) {// 除去末尾的 ,
 			sql.deleteCharAt(sql.length() - 1);
 		}
-		sql.append(" where id = ").append(id);
+		sql.append(" where "+getPrimaryKeyName(clazz)+" = ").append(id);
 		return sql.toString();
 	}
 
@@ -373,6 +390,7 @@ public class DBUtils extends TUtils {
 							}
 						}
 					}
+					field.setAccessible(true);
 					field.set(tt, value);
 				} catch (IllegalArgumentException e) {
 					e.printStackTrace();

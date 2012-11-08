@@ -10,15 +10,15 @@ public class UserJIDBean {
 
 	@Id
 	@Column(name="jid_id")
-	private String id;
+	private long id;
 	private String jid;
 	@Column(name="jid_sha")
 	private String password;
 	
-	public String getId() {
+	public long getId() {
 		return id;
 	}
-	public void setId(String id) {
+	public void setId(long id) {
 		this.id = id;
 	}
 	public String getJid() {

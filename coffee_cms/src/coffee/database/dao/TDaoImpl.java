@@ -21,7 +21,7 @@ import coffee.database.Pager;
 import coffee.database.core.Configuration;
 import coffee.database.core.DBUtils;
 
-public class TDaoImpl implements TDao{
+public class TDaoImpl implements TDao {
 	/**
 	 * 当前数据库连接
 	 */
@@ -30,58 +30,70 @@ public class TDaoImpl implements TDao{
 	 * 缓存管理器
 	 */
 	protected CacheManager cm;
-	
+
 	private static Logger log = Logger.getLogger("jdbc");
-	
-	static{
+
+	static {
 		log.setLevel(Level.INFO);
 	}
-	
+
 	/**
-	 *  获取当前的connection链接
+	 * 获取当前的connection链接
 	 */
 	@Override
 	public Connection currentConnection() {
 		return conn;
 	}
+
 	/**
-	 *  删除实体
-	 *  @param clazz ： 实体类型
-	 *  @param id ： 主键Id
+	 * 删除实体
+	 * 
+	 * @param clazz
+	 *            ： 实体类型
+	 * @param id
+	 *            ： 主键Id
 	 */
 	@Override
 	public <T> void delete(long id, Class<T> clazz) throws SQLException {
 		try {
-			String sql = "delete from " + DBUtils.getTableName(clazz) + " where id=" + id;
+			String primaryKey = DBUtils.getPrimaryKeyName(clazz);
+			String sql = "delete from " + DBUtils.getTableName(clazz)
+					+ " where  " + primaryKey + "=" + id;
 			Statement stmt = conn.createStatement();
 			stmt.executeUpdate(sql);
 			stmt.close();
 		} catch (Exception e) {
 			e.printStackTrace();
-		} 
+		}
 	}
+
 	/**
-	 *  批量删除实体
-	 *  @param clazz ： 实体类型
-	 *  @param ids ：主键数据
+	 * 批量删除实体
+	 * 
+	 * @param clazz
+	 *            ： 实体类型
+	 * @param ids
+	 *            ：主键数据
 	 */
 	@Override
-	public <T> void deleteBatch(String[] ids, Class<T> clazz) throws SQLException{
-		if(ids == null || ids.length == 0){
+	public <T> void deleteBatch(String[] ids, Class<T> clazz)
+			throws SQLException {
+		if (ids == null || ids.length == 0) {
 			return;
 		}
 		try {
-			String sql = "delete from "+DBUtils.getTableName(clazz) +" where id=?";
+			String sql = "delete from " + DBUtils.getTableName(clazz)
+					+ " where "+DBUtils.getPrimaryKeyName(clazz)+"=?";
 			conn.setAutoCommit(false);
 			PreparedStatement pstmt = conn.prepareStatement(sql);
-			for(String id : ids){
+			for (String id : ids) {
 				int idInt = 0;
-				try{
+				try {
 					idInt = Integer.parseInt(id);
-				}catch(Exception e){
+				} catch (Exception e) {
 					continue;
 				}
-				if(idInt != 0){
+				if (idInt != 0) {
 					pstmt.setInt(1, idInt);
 					pstmt.addBatch();
 				}
@@ -93,19 +105,20 @@ public class TDaoImpl implements TDao{
 			e.printStackTrace();
 		}
 	}
+
 	// 获取离线数据集
-	
+
 	@Override
 	public CachedRowSet queryForResultSet(String sql) throws SQLException {
-//		CachedRowSet crs = new CachedRowSetImpl();
-//		Statement stmt = conn.createStatement();
-//		ResultSet rs = stmt.executeQuery(sql);
-//		crs.populate(rs);
-//		rs.close();
-//		stmt.close();
+		// CachedRowSet crs = new CachedRowSetImpl();
+		// Statement stmt = conn.createStatement();
+		// ResultSet rs = stmt.executeQuery(sql);
+		// crs.populate(rs);
+		// rs.close();
+		// stmt.close();
 		return null;
 	}
-	 
+
 	/**
 	 * 执行指定sql语句
 	 */
@@ -121,24 +134,26 @@ public class TDaoImpl implements TDao{
 		}
 		return value;
 	}
+
 	/**
 	 * 指定指定文件的脚本
+	 * 
 	 * @param scriptPath
 	 */
 	@Override
-	public void executeScript(String scriptPath){
+	public void executeScript(String scriptPath) {
 		try {
 			BufferedReader in = new BufferedReader(new FileReader(scriptPath));
 			StringBuilder sb = new StringBuilder();
 			String line = null;
-			while((line =in.readLine()) != null){
+			while ((line = in.readLine()) != null) {
 				sb.append(line);
 			}
 			String[] sqls = sb.toString().split(";");
 			Statement stmt = this.conn.createStatement();
 			try {
 				this.conn.setAutoCommit(false);
-				for(String sql : sqls){
+				for (String sql : sqls) {
 					stmt.addBatch(sql);
 				}
 				stmt.executeBatch();
@@ -149,10 +164,11 @@ public class TDaoImpl implements TDao{
 			}
 			stmt.close();
 			in.close();
-		}  catch (Exception e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
+
 	/**
 	 * 查询实体；首次查询的时候缓存
 	 */
@@ -163,13 +179,13 @@ public class TDaoImpl implements TDao{
 		try {
 			String cacheName = clazz.getName();
 			// 创建缓存 cacheName
-			System.out.println("创建缓存..."+cacheName);
+			System.out.println("创建缓存..." + cacheName);
 			Cache cache = cm.getCache(cacheName);
-			//cache = new Memory
-			if(cache != null){
+			// cache = new Memory
+			if (cache != null) {
 				System.out.println("从缓存中获取实体...");
-				t =  cache.get(id).getObjectValue();
-			}else{
+				t = cache.get(id).getObjectValue();
+			} else {
 				t = this.queryForEntity(id, clazz);
 				cm.addCache(cacheName);
 				cm.getCache(cacheName).put(new Element(id, t));
@@ -177,25 +193,26 @@ public class TDaoImpl implements TDao{
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		return (T)t;
+		return (T) t;
 	}
+
 	/**
-	 *  返回 Integer Long  String 等基本数据类型的包装类型 
+	 * 返回 Integer Long String 等基本数据类型的包装类型
 	 */
 	@SuppressWarnings("unchecked")
 	@Override
-	public <T> List<T> queryForColumnList(String sql, Class<T> clazz) throws SQLException {
+	public <T> List<T> queryForColumnList(String sql, Class<T> clazz)
+			throws SQLException {
 		List<T> ls = new ArrayList<T>();
 		try {
 			Statement stmt = conn.createStatement();
 			ResultSet rs = stmt.executeQuery(sql);
 			while (rs.next()) {
 				T t = null;
-				if(clazz.getSimpleName().equals("Integer")){
-					t = (T)Integer.valueOf(rs.getInt(1));
-				}
-				else{
-					t = (T)rs.getString(1);
+				if (clazz.getSimpleName().equals("Integer")) {
+					t = (T) Integer.valueOf(rs.getInt(1));
+				} else {
+					t = (T) rs.getString(1);
 				}
 				ls.add(t);
 			}
@@ -203,34 +220,35 @@ public class TDaoImpl implements TDao{
 			stmt.close();
 		} catch (Exception e) {
 			e.printStackTrace();
-		} 
+		}
 		return ls;
 	}
-	
+
 	@Override
 	public <T> T queryForColumn(String sql, Class<T> clazz) throws SQLException {
 		List<T> ls = this.queryForColumnList(sql, clazz);
-		if(ls.size() > 0){
+		if (ls.size() > 0) {
 			return ls.get(0);
 		}
 		return null;
 	}
-	
+
 	/**
-	 *   查询，返回实体对象
+	 * 查询，返回实体对象
 	 */
 	@Override
 	public <T> T queryForEntity(Object id, Class<T> clazz) throws SQLException {
 		T t = null;
 		try {
 			t = clazz.newInstance();
-			String sql = "select * from " + DBUtils.getTableName(clazz) + " where id = " + id;
+			String sql = "select * from " + DBUtils.getTableName(clazz)
+					+ " where "+DBUtils.getPrimaryKeyName(clazz)+"= " + id;
 			Statement stmt = conn.createStatement();
 			ResultSet rs = stmt.executeQuery(sql);
 			List<T> ls = DBUtils.processResultSetToList(rs, clazz);
-			if(ls == null || ls.size() == 0){
+			if (ls == null || ls.size() == 0) {
 				t = null;
-			}else{
+			} else {
 				t = ls.get(0);
 			}
 			rs.close();
@@ -240,8 +258,9 @@ public class TDaoImpl implements TDao{
 		}
 		return t;
 	}
+
 	/**
-	 *  查询返回list
+	 * 查询返回list
 	 */
 	@Override
 	public <T> List<T> queryForList(String sql, Class<T> clazz)
@@ -255,51 +274,56 @@ public class TDaoImpl implements TDao{
 			stmt.close();
 		} catch (Exception e) {
 			e.printStackTrace();
-		} 
+		}
 		return ls;
 	}
-	//分页查询
+
+	// 分页查询
 	@Override
 	public <T> List<T> queryForList(String sql, long start, int size,
 			Class<T> clazz) throws SQLException {
 		List<T> ls = new ArrayList<T>();
 		try {
-			Statement stmt = conn.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,ResultSet.CONCUR_READ_ONLY);
-			stmt.setMaxRows((int)(start + size));
+			Statement stmt = conn.createStatement(
+					ResultSet.TYPE_SCROLL_INSENSITIVE,
+					ResultSet.CONCUR_READ_ONLY);
+			stmt.setMaxRows((int) (start + size));
 			ResultSet rs = stmt.executeQuery(sql);
 			// 设置分页
 			rs.first();
-			rs.relative((int)start - 1);
+			rs.relative((int) start - 1);
 			// 处理resultSet 实现分页查询
-			ls = DBUtils.processResultSetToList(rs,clazz);
+			ls = DBUtils.processResultSetToList(rs, clazz);
 			rs.close();
 			stmt.close();
 		} catch (Exception e) {
 			System.out.println(sql);
 			e.printStackTrace();
-		} 
+		}
 		return ls;
 	}
-	
+
 	/**
 	 *	 
 	 */
 	@Override
-	public Object[][] queryForArray(String sql){
+	public Object[][] queryForArray(String sql) {
 		Object[][] arr = null;
 		try {
-			Statement stmt = conn.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,ResultSet.CONCUR_READ_ONLY);
+			Statement stmt = conn.createStatement(
+					ResultSet.TYPE_SCROLL_INSENSITIVE,
+					ResultSet.CONCUR_READ_ONLY);
 			ResultSet rs = stmt.executeQuery(sql);
 			rs.last();
-			//记录总数
+			// 记录总数
 			int recordCount = rs.getRow();
 			int columnCount = rs.getMetaData().getColumnCount();
 			arr = new Object[recordCount][columnCount];
 			rs.beforeFirst();
-			while(rs.next()){
-				for(int i=0; i<arr.length; i++){
+			while (rs.next()) {
+				for (int i = 0; i < arr.length; i++) {
 					for (int j = 0; j < columnCount; j++) {
-						arr[i][j] = rs.getObject(j+1);
+						arr[i][j] = rs.getObject(j + 1);
 					}
 				}
 			}
@@ -309,16 +333,17 @@ public class TDaoImpl implements TDao{
 		}
 		return arr;
 	}
+
 	/**
 	 * 插入实体
 	 */
 	@Override
 	public <T> void insert(T t) throws SQLException {
-		if(t == null){
+		if (t == null) {
 			throw new SQLException("插入数据失败，实体为null");
 		}
 		try {
-			String sql = DBUtils.getInsertSql(t,Configuration.dialect);
+			String sql = DBUtils.getInsertSql(t, Configuration.dialect);
 			Statement stmt = conn.createStatement();
 			stmt.executeUpdate(sql);
 			stmt.close();
@@ -327,109 +352,119 @@ public class TDaoImpl implements TDao{
 			e.printStackTrace();
 		}
 	}
+
 	/**
 	 * 插入实体；以String形式返回生成的主键
-	 * @param t	：实体对象
-	 * @param autoGeneratedKeys ：是否返回主键
+	 * 
+	 * @param t
+	 *            ：实体对象
+	 * @param autoGeneratedKeys
+	 *            ：是否返回主键
 	 */
-//	public <T> String insert(T t , boolean autoGeneratedKeys) throws SQLException {
-//		Object pk = null;
-//		if(t == null){
-//			throw new SQLException("插入数据失败，实体为null");
-//		}
-//		try {
-//			String sql = DBUtils.getInsertSql(t,Configuration.dialect);
-//			Statement stmt = conn.createStatement();
-//			stmt.executeUpdate(sql, Statement.RETURN_GENERATED_KEYS);
-//			sql = "select "+DBUtils.getSequenceName(t.getClass()) +".currval from dual";
-//			stmt.close();
-//			// 新创建一个连接 ： 如果直接用stmt(未关闭)，
-//			// 则会报出一个 bind variable does not exist
-//			stmt = conn.createStatement();
-//			ResultSet rs = stmt.executeQuery(sql);
-//			if(rs.next()){
-//				pk = rs.getString(1);
-//			}
-//			rs.close();
-//			stmt.close();
-//			log.info(sql);
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//			conn.rollback();
-//		}
-//		return pk.toString();
-//	}
+	// public <T> String insert(T t , boolean autoGeneratedKeys) throws
+	// SQLException {
+	// Object pk = null;
+	// if(t == null){
+	// throw new SQLException("插入数据失败，实体为null");
+	// }
+	// try {
+	// String sql = DBUtils.getInsertSql(t,Configuration.dialect);
+	// Statement stmt = conn.createStatement();
+	// stmt.executeUpdate(sql, Statement.RETURN_GENERATED_KEYS);
+	// sql = "select "+DBUtils.getSequenceName(t.getClass())
+	// +".currval from dual";
+	// stmt.close();
+	// // 新创建一个连接 ： 如果直接用stmt(未关闭)，
+	// // 则会报出一个 bind variable does not exist
+	// stmt = conn.createStatement();
+	// ResultSet rs = stmt.executeQuery(sql);
+	// if(rs.next()){
+	// pk = rs.getString(1);
+	// }
+	// rs.close();
+	// stmt.close();
+	// log.info(sql);
+	// } catch (Exception e) {
+	// e.printStackTrace();
+	// conn.rollback();
+	// }
+	// return pk.toString();
+	// }
 	/**
 	 * 批量插入
-	 * @param entities : 实体列表 
-	 * @throws SQLException 
+	 * 
+	 * @param entities
+	 *            : 实体列表
+	 * @throws SQLException
 	 */
 	@Override
 	public <T> void insert(List<T> entities) throws SQLException {
-			conn.setAutoCommit(false);
-			Statement stmt = conn.createStatement();
-			int index = 0;
-			for(T t : entities){
-				String sql = null;
-				try {
-					sql = DBUtils.getInsertSql(t,Configuration.dialect);
-					stmt.addBatch(sql);
-					if(index++ > 10000){
-						stmt.executeBatch();
-						index = 0;
-					}
-				} catch (Exception e) {
-					e.printStackTrace();
+		conn.setAutoCommit(false);
+		Statement stmt = conn.createStatement();
+		int index = 0;
+		for (T t : entities) {
+			String sql = null;
+			try {
+				sql = DBUtils.getInsertSql(t, Configuration.dialect);
+				stmt.addBatch(sql);
+				if (index++ > 10000) {
+					stmt.executeBatch();
+					index = 0;
 				}
+			} catch (Exception e) {
+				e.printStackTrace();
 			}
-			stmt.executeBatch();
-			conn.commit();
-			stmt.close();
+		}
+		stmt.executeBatch();
+		conn.commit();
+		stmt.close();
 	}
+
 	/**
 	 * 更新实体
 	 */
 	@Override
 	public <T> void update(T t) throws SQLException {
-		try{
-			String sql = DBUtils.getUpdateSql(t,Configuration.dialect);
+		try {
+			String sql = DBUtils.getUpdateSql(t, Configuration.dialect);
 			Statement stmt = conn.createStatement();
 			stmt.executeUpdate(sql);
 			stmt.close();
 		} catch (Exception e) {
 			e.printStackTrace();
-		} 
+		}
 	}
+
 	@Override
 	public <T> Pager<T> queryForPager(String sql, int offset, int size,
 			Class<T> clazz) throws SQLException {
-		String countSql = sql.replaceAll("select\\s*.*? from", "select count(*) from")
-		.replaceAll("\\s?order\\s+?by.+", "");
-		if(offset < 0){
+		String countSql = sql.replaceAll("select\\s*.*? from",
+				"select count(*) from").replaceAll("\\s?order\\s+?by.+", "");
+		if (offset < 0) {
 			offset = 0;
 		}
 		Pager<T> pager = new Pager<T>();
-		pager.setItems(this.queryForList(sql,offset,size,clazz));
-		pager.setTotal(this.queryForColumnList(countSql,Integer.class).get(0));
-		pager.setCurpage(offset/size + 1);
+		pager.setItems(this.queryForList(sql, offset, size, clazz));
+		pager.setCount(this.queryForColumnList(countSql, Integer.class).get(0));
+		pager.setCurpage(offset / size + 1);
 		pager.setOffset(offset);
 		return pager;
 	}
+
 	/**
 	 * 关闭数据库连接
 	 */
 	@Override
-	public void close() throws SQLException{
-		try{
+	public void close() throws SQLException {
+		try {
 			this.conn.close();
-		}catch(Exception e){
+		} catch (Exception e) {
 			e.printStackTrace();
-		}finally{
-			if(conn != null){
-				conn.close();				
+		} finally {
+			if (conn != null) {
+				conn.close();
 			}
 		}
 	}
-	
 
 }

@@ -13,27 +13,30 @@ import coffee.database.core.DBUtils;
 /**
  * 
  * @author coffee
- *
+ * 
  */
-public class UserJIDAction extends Action{
-	
-	public UserJIDAction()
-	{
+public class UserJIDAction extends Action {
+
+	public UserJIDAction() {
 		super.tableName = DBUtils.getTableName(UserJIDBean.class);
 	}
-	
+
 	@Override
 	public void query(HttpServletRequest request) {
-		String sid = request.getParameter("sid");
-		String sql = "select * from " + super.tableName;
+		String jid = request.getParameter("jid");
+		String sql = "select * from " + super.tableName + " where true";
+		if (jid != null) {
+			sql += " and jid like '%" + jid + "%' ";
+		}
 		Session session = new Session();
 		session.open();
 		try {
-			Pager<UserJIDBean> pager = session.queryForPager(sql, 0, 10, UserJIDBean.class);
+			Pager<UserJIDBean> pager = session.queryForPager(sql, 0, 10,
+					UserJIDBean.class);
 			request.setAttribute("pager", pager);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		
+		request.setAttribute("jid", jid);
 	}
 }
