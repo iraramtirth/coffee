@@ -19,18 +19,18 @@
 	{
 		if("delete".equals(action))
 		{
-			act.delete(request, UserJIDBean.class);
+			act.delete(request);
 			act.query(request);
 		}
 		else if("toUpdate".equals(action))
 		{
-			act.toUpdate(request, UserJIDBean.class);
+			act.toUpdate(request);
 			request.getRequestDispatcher("update.jsp").forward(request, response);
 			return;
 		}
 		else if("toShow".equals(action))
 		{
-			act.toUpdate(request, UserJIDBean.class);
+			act.toUpdate(request);
 			request.getRequestDispatcher("update.jsp?action=toShow").forward(request, response);
 			return;
 		}

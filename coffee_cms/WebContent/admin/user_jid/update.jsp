@@ -15,7 +15,7 @@
 		if("update".equals(action))
 		{
 			UserJIDAction act = new UserJIDAction();
-			act.update(request, UserJIDBean.class);
+			act.update(request);
 			response.sendRedirect("query.jsp");
 			return;
 		}

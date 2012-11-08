@@ -15,7 +15,7 @@
 		if("insert".equals(action))
 		{
 			UserJIDAction act = new UserJIDAction();
-			act.insert(request, UserJIDBean.class);
+			act.insert(request);
 			response.sendRedirect("query.jsp");
 			return;
 		}
@@ -62,8 +62,8 @@
 				</tr>
 				<tr>
 					<td colspan="4" class="pn-fbutton">
-					<input type="submit" value="提交" class="submit" class="submit" /> &nbsp; 
-					<input type="reset" value="重置" class="reset" class="reset" /></td>
+					<input type="submit" value="提交" /> &nbsp; 
+					<input type="reset" value="重置" /></td>
 				</tr>
 			</table>
 		</form>

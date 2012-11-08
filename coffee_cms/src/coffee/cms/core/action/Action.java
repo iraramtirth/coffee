@@ -10,6 +10,7 @@ import coffee.servlet.ParameterReflect;
 public class Action {
 
 	protected String tableName;
+	protected Class<?> modelClass;
 
 	public void query(HttpServletRequest request) {
 
@@ -21,8 +22,8 @@ public class Action {
 	 * @param request
 	 * @param modelClass
 	 */
-	public <T> void insert(HttpServletRequest request, Class<T> modelClass) {
-		T model = new ParameterReflect().invoke(request, modelClass);
+	public void insert(HttpServletRequest request) {
+		Object model = new ParameterReflect().invoke(request, modelClass);
 		Session session = new Session();
 		try {
 			session.open();
@@ -34,12 +35,12 @@ public class Action {
 		}
 	}
 
-	public <T> void toUpdate(HttpServletRequest request, Class<T> modelClass) {
+	public  void toUpdate(HttpServletRequest request) {
 		String sid = request.getParameter("sid");
 		Session session = new Session();
 		try {
 			session.open();
-			T model = session.queryForEntity(Long.valueOf(sid), modelClass);
+			Object model = session.queryForEntity(Long.valueOf(sid), modelClass);
 			request.setAttribute("item", model);
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -48,8 +49,8 @@ public class Action {
 		}
 	}
 
-	public <T> void update(HttpServletRequest request, Class<T> modelClass) {
-		T model = new ParameterReflect().invoke(request, modelClass);
+	public void update(HttpServletRequest request) {
+		Object model = new ParameterReflect().invoke(request, modelClass);
 		Session session = new Session();
 		try {
 			session.open();
@@ -65,7 +66,7 @@ public class Action {
 	 * @param request
 	 * @param modelClass
 	 */
-	public <T> void delete(HttpServletRequest request, Class<T> modelClass) {
+	public void delete(HttpServletRequest request) {
 		String sid = request.getParameter("sid");
 		Session session = new Session();
 		try {
