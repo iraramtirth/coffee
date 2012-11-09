@@ -6,6 +6,12 @@ import coffee.database.annotation.Bean;
 import coffee.database.annotation.Column;
 import coffee.database.annotation.Id;
 
+/**
+ * 聊天JID
+ *
+ * @author coffee
+ * 20122012-11-9下午12:15:39
+ */
 @Bean(name="user_jid")
 public class UserJIDBean {
 
