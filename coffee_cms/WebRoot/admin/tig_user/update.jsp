@@ -1,4 +1,4 @@
-<%@page import="coffee.cms.admin.action.UserJIDAction"%>
+<%@page import="coffee.cms.admin.action.TigUserAction"%>
 <%@ page contentType="text/html; charset=UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -13,7 +13,7 @@
 	{
 		if("update".equals(action))
 		{
-			UserJIDAction act = new UserJIDAction();
+			TigUserAction act = new TigUserAction();
 			act.update(request);
 			response.sendRedirect("query.jsp");
 			return;
