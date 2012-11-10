@@ -94,18 +94,18 @@ public class ParameterReflect extends TUtils {
 		return model;
 	}
 
-	public static void main(String[] args) throws Exception {
-		Map<String, Object> map = new HashMap<String, Object>();
-		map.put("username", "111");
-		map.put("user.username", "222");
-		// map.put("user.child.username", "333");
-		System.out.println();
-		ParameterReflect pr = new ParameterReflect();
-		User user = new User();
-		user = pr.invoke(map, user);
-		System.out.println("......." + user.getUsername()
-				+ user.getUser().getUsername());
-	}
+//	public static void main(String[] args) throws Exception {
+//		Map<String, Object> map = new HashMap<String, Object>();
+//		map.put("username", "111");
+//		map.put("user.username", "222");
+//		// map.put("user.child.username", "333");
+//		System.out.println();
+//		ParameterReflect pr = new ParameterReflect();
+//		User user = new User();
+//		user = pr.invoke(map, user);
+//		System.out.println("......." + user.getUsername()
+//				+ user.getUser().getUsername());
+//	}
 
 }
 

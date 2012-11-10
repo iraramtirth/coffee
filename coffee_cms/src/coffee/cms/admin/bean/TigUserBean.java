@@ -1,40 +1,44 @@
 package coffee.cms.admin.bean;
 
+import java.util.Date;
 
 import coffee.Config;
+import coffee.common.MD5Utils;
 import coffee.database.annotation.Bean;
 import coffee.database.annotation.Column;
 import coffee.database.annotation.Id;
 
 /**
  * Tigase XMPP Server创建的User
- *
- * @author coffee
- * 20122012-11-9下午12:15:39
+ * 
+ * @author coffee 20122012-11-9下午12:15:39
  */
-@Bean(name="tig_user")
+@Bean(name = "tig_users")
 public class TigUserBean {
 
 	@Id
-	@Column(name="uid")
+	@Column(name = "uid")
 	private long id;
-	
-	@Column(name="user_id")
-	private String userId;
-	
-	@Column(name="user_pw")
-	private String password;
-	
-	@Column(name="acc_create_time")
-	private String accCreateTime;
-	
-	@Column(name="last_login")
-	private String lastLogin;
-	
-	@Column(name="last_logout")
-	private String lastLogout;
 
-	@Column(name="online_status")
+	@Column(name = "user_id")
+	private String userId;
+
+	@Column(name = "sha1_user_id")
+	private String shalUserId;
+
+	@Column(name = "user_pw")
+	private String password;
+
+	@Column(name = "acc_create_time")
+	private Date accCreateTime;
+
+	@Column(name = "last_login")
+	private Date lastLoginTime;
+
+	@Column(name = "last_logout")
+	private Date lastLogoutTime;
+
+	@Column(name = "online_status")
 	private int onlineStatus;
 
 	public long getId() {
@@ -50,8 +54,7 @@ public class TigUserBean {
 	}
 
 	public void setUserId(String userId) {
-		if(!userId.endsWith("@"+Config.XMPP_HOST))
-		{
+		if (!userId.endsWith("@" + Config.XMPP_HOST)) {
 			userId += "@" + Config.XMPP_HOST;
 		}
 		this.userId = userId;
@@ -63,30 +66,39 @@ public class TigUserBean {
 
 	public void setPassword(String password) {
 		this.password = password;
+		this.setShalUserId(MD5Utils.getMD5Str(this.password));
 	}
 
-	public String getAccCreateTime() {
+	public String getShalUserId() {
+		return shalUserId;
+	}
+
+	public void setShalUserId(String shalUserId) {
+		this.shalUserId = shalUserId;
+	}
+
+	public Date getAccCreateTime() {
 		return accCreateTime;
 	}
 
-	public void setAccCreateTime(String accCreateTime) {
+	public void setAccCreateTime(Date accCreateTime) {
 		this.accCreateTime = accCreateTime;
 	}
 
-	public String getLastLogin() {
-		return lastLogin;
+	public Date getLastLoginTime() {
+		return lastLoginTime;
 	}
 
-	public void setLastLogin(String lastLogin) {
-		this.lastLogin = lastLogin;
+	public void setLastLoginTime(Date lastLoginTime) {
+		this.lastLoginTime = lastLoginTime;
 	}
 
-	public String getLastLogout() {
-		return lastLogout;
+	public Date getLastLogoutTime() {
+		return lastLogoutTime;
 	}
 
-	public void setLastLogout(String lastLogout) {
-		this.lastLogout = lastLogout;
+	public void setLastLogoutTime(Date lastLogoutTime) {
+		this.lastLogoutTime = lastLogoutTime;
 	}
 
 	public int getOnlineStatus() {

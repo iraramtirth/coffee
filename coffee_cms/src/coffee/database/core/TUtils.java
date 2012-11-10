@@ -2,6 +2,8 @@ package coffee.database.core;
 
 import java.lang.reflect.Field;
 
+import coffee.cms.admin.bean.TigUserBean;
+
 /**
  * 反射用到的工具
  * 
@@ -51,8 +53,11 @@ public class TUtils {
 			if (field != null) {
 				Object newVal = fieldValue;
 				if (field.getType().isPrimitive()) {
-					String type = field.getType().toString();
-					if (type.contains("long")) {
+					String type = field.getType().toString().toLowerCase();
+					/**
+					 * 如果fieldValue是string等类型，需要对其进行转型
+					 */
+					if (Long.TYPE == field.getType()) {
 						newVal = Long.valueOf(fieldValue + "");
 					} else if (type.contains("int")) {
 						newVal = Integer.valueOf(fieldValue + "");
@@ -62,8 +67,16 @@ public class TUtils {
 						newVal = Double.valueOf(fieldValue + "");
 					}
 				}
-				field.setAccessible(true);
-				field.set(obj, newVal);
+				//调用setter方法
+				String firstChar = fieldName.charAt(0) + "";
+				String methodName = "set"
+						+ fieldName.replaceFirst(".", firstChar.toUpperCase());
+				Class<?>[] paramClass = new Class[] { field.getType() };
+				obj.getClass().getMethod(methodName, paramClass)
+						.invoke(obj, new Object[] { newVal });
+				//直接通过field设置
+				//field.setAccessible(true);
+				// field.set(obj, newVal);
 			}
 		} catch (NoSuchFieldException se) {
 			//
@@ -73,4 +86,13 @@ public class TUtils {
 		return obj;
 	}
 
+	
+	public static void main(String[] args) {
+		TigUserBean user = new TigUserBean();
+		
+		setValue(user, "id", "12");
+		
+		System.out.println(user.getId());
+		
+	}
 }
