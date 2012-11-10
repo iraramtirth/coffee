@@ -63,7 +63,7 @@
 						<span class="pn-frequired">*</span>用户名:
 					</td>
 					<td colspan="3" class="pn-fcontent">
-						<input type="text" maxlength="150" name="jid" value="${item.jid}" class="required" size="70" maxlength="150" />
+						<input type="text" maxlength="150" name="userId" value="${item.userId}" class="required" size="70" maxlength="150" />
 					</td>
 				</tr>
 				<tr>

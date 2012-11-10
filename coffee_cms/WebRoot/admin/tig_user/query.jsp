@@ -4,6 +4,7 @@
 <%@ page contentType="text/html; charset=UTF-8" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@ taglib prefix="pg" uri="http://jsptags.com/tags/navigation/pager"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <%
@@ -132,7 +133,9 @@
 					</th>
 					<th>ID</th>
 					<th>用户JID</th>
-					<th>操作选项</th>
+					<th>账号创建时间</th>
+					<th>最后登录</th>
+					<th>最后注销</th>
 					</tr>
 			</thead>
 			<tbody class="pn-ltbody">
@@ -140,7 +143,10 @@
 					<tr onmouseover="this.bgColor='#eeeeee'" onmouseout="this.bgColor='#ffffff'">
 						<td><input type="checkbox" name="cid" value="${item.id}"/></td>
 						<td>${item.id}</td>
-						<td>${item.jid}</td>
+						<td>${item.userId}</td>
+						<td><fmt:formatDate value="${item.accCreateTime}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
+						<td><fmt:formatDate value="${item.lastLoginTime}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
+						<td><fmt:formatDate value="${item.lastLogoutTime}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
 						<td align="center">		
 							<a href="query.jsp?action=toShow&sid=${item.id}" class="pn-opt">查看</a> | 
 							<a href="query.jsp?action=toUpdate&sid=${item.id}" class="pn-opt">修改</a> | 		
