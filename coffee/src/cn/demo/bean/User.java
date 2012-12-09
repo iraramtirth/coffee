@@ -8,7 +8,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
-import org.coffee.controller.util.FormFile;
+import coffee.controller.util.FormFile;
 
 @Entity
 @Table(name="users")
