@@ -2,11 +2,11 @@ package cn.demo.action;
 
 import javax.servlet.annotation.WebServlet;
 
-import org.coffee.controller.Action;
-import org.coffee.controller.annotation.Result;
-import org.coffee.jdbc.Pager;
-import org.coffee.jdbc.Session;
-import org.coffee.spring.ioc.annotation.Resource;
+import coffee.controller.Action;
+import coffee.controller.annotation.Result;
+import coffee.jdbc.Pager;
+import coffee.jdbc.Session;
+import coffee.spring.ioc.annotation.Resource;
 
 import cn.demo.bean.User;
 

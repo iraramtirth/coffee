@@ -4,7 +4,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.coffee.jdbc.Session;
+
+import coffee.jdbc.Session;
 
 import com.wangtao.test.jdbc.bean.User;
 
