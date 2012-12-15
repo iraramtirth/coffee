@@ -28,8 +28,6 @@ import org.jivesoftware.util.LocaleUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.sun.net.ssl.X509TrustManager;
-
 /**
  * Trust manager which accepts certificates without any validation
  * except date validation.
@@ -44,7 +42,7 @@ import com.sun.net.ssl.X509TrustManager;
  *
  * @author Iain Shigeoka
  */
-public class SSLJiveTrustManager implements X509TrustManager {
+public class SSLJiveTrustManager {
 
 	private static final Logger Log = LoggerFactory.getLogger(SSLJiveTrustManager.class);
 

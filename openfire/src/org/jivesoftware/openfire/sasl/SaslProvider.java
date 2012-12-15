@@ -25,7 +25,6 @@ import java.security.Provider;
 /**
  * This is the Provider object providing the SaslServerFactory written by Jive Software. 
  *
- * @see SaslServerFactoryImpl
  */
 
 public class SaslProvider extends Provider {

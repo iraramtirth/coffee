@@ -28,8 +28,6 @@ import java.security.cert.X509Certificate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.sun.net.ssl.X509KeyManager;
-
 /**
  * A skeleton placeholder for developers wishing to implement their own custom
  * key manager. In future revisions we may expand the skeleton code if customers
@@ -41,7 +39,7 @@ import com.sun.net.ssl.X509KeyManager;
  *
  * @author Iain Shigeoka
  */
-public class SSLJiveKeyManager implements X509KeyManager {
+public class SSLJiveKeyManager  {
 	
 	private static final Logger Log = LoggerFactory.getLogger(SSLJiveKeyManager.class);
 

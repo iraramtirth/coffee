@@ -52,6 +52,7 @@ GRANT DBA TO SA
 SET WRITE_DELAY 1
 SET SCHEMA PUBLIC
 INSERT INTO OFUSER VALUES('admin',NULL,'55c0275b07ef76b5226b3cf0b0ca1539ab5a13bac7326dbc','Administrator','admin@example.com','001321002287750','0')
+INSERT INTO OFPRESENCE VALUES('admin',NULL,'001350620007644')
 INSERT INTO OFID VALUES(18,1)
 INSERT INTO OFID VALUES(19,1)
 INSERT INTO OFID VALUES(23,1)
@@ -65,7 +66,7 @@ INSERT INTO OFPROPERTY VALUES('provider.lockout.className','org.jivesoftware.ope
 INSERT INTO OFPROPERTY VALUES('provider.securityAudit.className','org.jivesoftware.openfire.security.DefaultSecurityAuditProvider')
 INSERT INTO OFPROPERTY VALUES('provider.user.className','org.jivesoftware.openfire.user.DefaultUserProvider')
 INSERT INTO OFPROPERTY VALUES('provider.vcard.className','org.jivesoftware.openfire.vcard.DefaultVCardProvider')
-INSERT INTO OFPROPERTY VALUES('update.lastCheck','1328492223421')
+INSERT INTO OFPROPERTY VALUES('update.lastCheck','1350617326392')
 INSERT INTO OFPROPERTY VALUES('xmpp.auth.anonymous','true')
 INSERT INTO OFPROPERTY VALUES('xmpp.domain','wangtao-org')
 INSERT INTO OFPROPERTY VALUES('xmpp.session.conflict-limit','0')

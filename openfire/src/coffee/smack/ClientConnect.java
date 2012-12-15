@@ -1,5 +1,6 @@
 package coffee.smack;
 
+import org.jivesoftware.smack.AccountManager;
 import org.jivesoftware.smack.Chat;
 import org.jivesoftware.smack.ConnectionConfiguration;
 import org.jivesoftware.smack.MessageListener;
@@ -11,7 +12,7 @@ import org.jivesoftware.smack.packet.Packet;
 
 /**
  * 
- * @author wangtao
+ * @author coffee
  */
 public class ClientConnect {
 	public static void main(String[] args) {
@@ -29,8 +30,9 @@ public class ClientConnect {
 			XMPPConnection connection = new XMPPConnection(connConfig);
 
 			connection.connect();// 连接
-			// AccountManager amgr = connection.getAccountManager();
-			// amgr.createAccount("test", "test");
+			
+			//AccountManager amgr = connection.getAccountManager();
+			//amgr.createAccount("admin", "admin");
 
 			connection.login("admin", "admin");
 			Chat chat = connection.getChatManager().createChat(
@@ -59,10 +61,5 @@ public class ClientConnect {
 			e.printStackTrace();
 		}
 	}
-	
-	/**
-	 * A startup class specified in smack-config.xml could not be loaded: 导入
-	 * smackx.jar SASL authentication failed using mechanism PLAIN:
-	 */
 	
 }
