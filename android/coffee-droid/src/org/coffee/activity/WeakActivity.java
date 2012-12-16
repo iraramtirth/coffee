@@ -6,20 +6,22 @@ import android.app.Activity;
 import android.os.Bundle;
 
 public class WeakActivity extends Activity {
-	private WeakHashMap<Object, Object> map = new WeakHashMap<Object, Object>();
+	private WeakHashMap<String, Object> map = new WeakHashMap<String, Object>();
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		Object abc = new Object();
-		map.put(abc, new Object());
+		String key = new String("abc");
+		Object val = new Object();
+		map.put(key, val);
 		System.out.println(map.size());
 		try {
-			abc = null;
+			key = null;
 			System.gc();
-			Thread.sleep(1000 * 1);
-		} catch (InterruptedException e) {
+			//Thread.sleep(1000 * 1);
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		System.out.println(map.get(abc));
+		System.out.println(map.containsValue(val));
 	}
 }
+
