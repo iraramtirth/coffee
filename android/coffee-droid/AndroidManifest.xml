@@ -27,6 +27,7 @@
         <activity
             android:name="org.coffee.process.UIActivity"
             android:configChanges="orientation|keyboardHidden"
+
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -59,9 +60,8 @@
         </receiver>
 
         <service android:name=".widget.service.WidgetService" />
-        <service
-            android:name="org.coffee.aidl.AIDLService"
-            android:exported="false" >
+        <service android:name="org.coffee.aidl.AIDLService" 
+            android:process=":coffee">
             <intent-filter>
                 <action android:name="org.coffee.aidl.IAIDLAction" />
             </intent-filter>
