@@ -6,7 +6,7 @@ import android.os.Handler;
 /**
  * contentObserver是一个提前通知，这时候只是通知cursor说，我的内容变化了。
  * datasetObserver是一个后置通知，只有通过requery() deactivate() close()方法的调用才能获得这个通知。
- * @author wangtao
+ * @author coffee
  */
 public class AppContentObserver extends ContentObserver {
 

@@ -12,7 +12,7 @@ import android.util.Log;
 
 /**
  * AppContentProvider 为单例模式
- * @author wangtao
+ * @author coffee
  */
 public class AppContentProvider extends ContentProvider {
 	private final String TAG = AppContentProvider.class.getCanonicalName(); 
