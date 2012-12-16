@@ -2,4 +2,5 @@
 <resources>
     <string name="hello">Hello World, CoffeeroidActivity!</string>
     <string name="app_name">Coffee-droid</string>
+    <string name="map_send_address">KKKKK</string>
 </resources>
