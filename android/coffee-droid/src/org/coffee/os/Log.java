@@ -29,25 +29,6 @@ public abstract class Log {
 	// 打印日志到SDCard文件的预设值
 	private static boolean isPrintLogSD = isPrintLog;
 
-
-	/**
-	 * 打印verbose级别的日志
-	 * 
-	 * @param tag
-	 *            标记
-	 * @param text
-	 *            日志内容
-	 */
-	public static void verbose(String tag, String text) {
-		if (isPrintLogSD) {
-			storeLog("v", tag, text);
-		}
-
-		if (isPrintLog) {
-			android.util.Log.v(tag, text);
-		}
-	}
-
 	private static long currentTime = System.currentTimeMillis();
 
 	public static long getCurrentTime() {
