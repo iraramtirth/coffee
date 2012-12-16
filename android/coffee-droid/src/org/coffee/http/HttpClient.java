@@ -54,6 +54,7 @@ public class HttpClient {
 	 * [X86]  NetworkInfo: type: ETH[], state: CONNECTED/CONNECTED, reason: (unspecified), extra: (none), roaming: false, failover: false, isAvailable: true
 	 * [WIFI] NetworkInfo: type: WIFI[], state: CONNECTED/CONNECTED, reason: (unspecified), extra: (none), roaming: false, failover: false, isAvailable: true
 	 * [CMNET]NetworkInfo: type: MOBILE[EDGE], state: CONNECTED/CONNECTED, reason: dataEnabled, extra: cmnet, roaming: false, failover: false, isAvailable: true
+	 * [联通3G]NetworkInfo: type: mobile[HSPA], state: CONNECTED/CONNECTED, reason: dataEnabled, extra: 3gnet, roaming: false, failover: false, isAvailable: true
 	 * @param context
 	 */
 	public synchronized static void setNetworkType(Activity context) {
