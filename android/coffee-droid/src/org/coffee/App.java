@@ -16,6 +16,7 @@ public class App extends Application {
 	public static Context context;
 	public static final String DB_NAME = "COFFEE";
 
+	public static int count = 100;
 	@Override
 	public void onCreate() {
 		Log.i(TAG, "onCreate application....");
