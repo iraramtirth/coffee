@@ -4,8 +4,6 @@ import org.coffee.browser.activity.BrowserActivity;
 import org.coffee.http.HttpClient;
 import org.coffee.util.lang.RegexUtils;
 
-import android.util.Base64;
-
 /**
  * webview的相关工具类
  * @author coffee
@@ -118,7 +116,7 @@ public class WebViewUtils {
 			if(linkUrl.matches(".+?\\.(jpg|gif|jpeg|png)+.*?")){
 				charset = null;
 				byte[] data = (byte[]) new HttpClient().get(linkUrl, 1); 
-				doc = Base64.encodeToString(data, Base64.DEFAULT);
+				//doc = Base64.encodeToString(data, Base64.DEFAULT);
 				doc = "<img src=\"data:image/jpeg;base64," + doc + "\" />";
 			}else{
 				doc = handleHtml(new HttpClient().get(linkUrl) + "");

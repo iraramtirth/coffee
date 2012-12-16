@@ -38,7 +38,7 @@ public class BrowserActivity extends Activity{
 		//开启js支持， 否则无法单击网页中的button。 即无法提交表单等操作
 		mWebSettings.setJavaScriptEnabled(true);
 		mWebSettings.setJavaScriptCanOpenWindowsAutomatically(true);
-		mWebView.addJavascriptInterface(obj, interfaceName)
+		//mWebView.addJavascriptInterface(obj, interfaceName)
 		
 		String url = "http://wap.baidu.com";
 
