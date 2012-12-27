@@ -1,0 +1,34 @@
+<root>
+	<return>0</return>
+	<desc>Success</desc>
+	<userid>12</userid>
+	<loginid>133951145882476</loginid>
+	<token>x\A\yTXQ|1|1|1339583458859|s36qMsVvdHjctuqGnZCvpyNCRQYdCWZ2jr5PJk1kvux9abQ18emhYwo23doUXp_FHOoK6obVE_n7Xs1A07bpC2Edn_l8QRQhliHHNmOAtCoIGkYcbq2z2POKCbEDuWkUayDLOyh0hADEsHlykluDggdYSN_JmoRI8V_cKwCh8J8-
+	</token>
+	<expiretime>72000</expiretime>
+	<user>100013</user>
+	<lang>zh_CN</lang>
+	<loginfirsttime>1</loginfirsttime>
+	<status></status>
+	<serverinfo>
+		<voipaddr></voipaddr>
+		<rifurl>http://123.125.97.187:15842/</rifurl>
+		<imsuser>100013</imsuser>
+		<imspwd>Raxpw7pCQOKG</imspwd>
+		<cabsyncmlurl>http://123.125.97.187:13040/sync/</cabsyncmlurl>
+		<portalurl>http://123.125.97.187:18080/</portalurl>
+		<imsaddr></imsaddr>
+		<svnuser>null</svnuser>
+		<svnpwd>null</svnpwd>
+		<svnlist>null</svnlist>
+		<cabgroupurl>http://123.125.97.187:13040</cabgroupurl>
+		<nduploadurl>http://123.125.97.187:14081/netdisk/</nduploadurl>
+		<liveupdateurl>http://10.10.10.10:8080/sync</liveupdateurl>
+		<orderStat>-1</orderStat>
+		<endDate></endDate>
+		<rifhttpsurl>https://:10.250.251.20:5842/</rifhttpsurl>
+		<cabhttpurl>http://123.125.97.187:13040/sync/</cabhttpurl>
+		<cabhttpsurl>https://123.125.97.187:13240/</cabhttpsurl>
+		<xmppaddr>123.125.97.187:15222</xmppaddr>
+	</serverinfo>
+</root>
