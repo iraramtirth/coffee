@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mb>
+<retn>0</retn>
+<desc>ok</desc>
+<statuses>
+	<status>
+	<id>3488481588616056</id>
+	<source>&lt;a href="http://m.weibo.com/web/cellphone.php#h5iphone"&gt;手机微博触屏版&lt;/a&gt;</source>
+	<text><![CDATA[抱歉，此微博已被删除。如需帮助，请私信给@围脖被删投诉]]></text>
+	<user>
+		<name>手机用户2909348145</name>
+		<location>其他</location>
+		<id>2909348145</id>
+		<description></description>
+		<domain></domain>
+		<gender>m</gender>
+		<city>1000</city>
+		<province>100</province>
+		<weiboid>SINA_WEIBO</weiboid>
+		<screen_name>手机用户2909348145</screen_name>
+		<url></url>
+		<created_at>Sat Sep 08 15:57:16 +0800 2012</created_at>
+		<profile_image_url>http://123.125.97.177:80/proxyserver/servlet/GetImgServlet/aHR0cDovL3RwMi5zaW5haW1nLmNuLzI5MDkzNDgxNDUvNTAvNTY0MjA2MDMzNS8x</profile_image_url>
+		<followers_count>1</followers_count>	
+		<friends_count>0</friends_count>
+		<statuses_count>387</statuses_count>
+		<favourites_count>0</favourites_count>
+		<following>false</following>
+		<verified>false</verified>
+	</user>
+	<weiboid>SINA_WEIBO</weiboid>
+	<in_reply_to_status_id></in_reply_to_status_id>
+	<created_at>Sun Sep 09 22:51:26 +0800 2012</created_at>
+	<favorited>false</favorited>
+	<truncated>false</truncated>
+	<in_reply_to_user_id></in_reply_to_user_id>
+	<in_reply_to_screen_name></in_reply_to_screen_name>
+	<thumbnail_pic></thumbnail_pic>
+	<bmiddle_pic></bmiddle_pic>
+	<original_pic></original_pic>
+	<retweeted_status>
+		<id>3488480942746735</id>
+		<source>&lt;a href="http://m.weibo.com/web/cellphone.php#h5iphone"&gt;手机微博触屏版&lt;/a&gt;</source>
+		<text><![CDATA[[dx脚踏车]哈哈，3个月就让我长高了5CM~~没想到同事介绍的长高产品这么太给力[dx倒]，尼玛，终于不用因为自己身高感到自卑了，太开心了，店家现在好像还在做5折促销活动呢[w]，好东西~当然要和大家一起分享[cc穿越]，对自己身高不满意的朋友们千万别错过哦[5]：http://t.cn/zWFcPgF]]></text>
+		<user>
+			<name>手机用户1877811605</name>
+			<location>山东</location>
+			<id>1877811605</id>
+			<description></description>
+			<domain></domain>
+			<gender>m</gender>
+			<city>1000</city>
+			<province>37</province>
+			<weiboid>SINA_WEIBO</weiboid>
+			<screen_name>手机用户1877811605</screen_name>
+			<url></url>
+			<created_at>Mon Nov 29 20:43:01 +0800 2010</created_at>
+			<profile_image_url>http://123.125.97.177:80/proxyserver/servlet/GetImgServlet/aHR0cDovL3RwMi5zaW5haW1nLmNuLzE4Nzc4MTE2MDUvNTAvNTY0MDU3MTM4OC8x</profile_image_url>
+			<followers_count>5</followers_count>
+			<friends_count>0</friends_count>
+			<statuses_count>130</statuses_count>
+			<favourites_count>0</favourites_count>
+			<following>false</following>
+			<verified>false</verified>
+		</user>
+		<weiboid>SINA_WEIBO</weiboid>
+		<in_reply_to_status_id></in_reply_to_status_id>
+		<created_at>Sun Sep 09 22:48:52 +0800 2012</created_at>
+		<favorited>false</favorited>
+		<truncated>false</truncated>
+		<in_reply_to_user_id></in_reply_to_user_id>
+		<in_reply_to_screen_name></in_reply_to_screen_name>
+		<thumbnail_pic>http://123.125.97.177:80/proxyserver/servlet/GetImgServlet/aHR0cDovL3d3MS5zaW5haW1nLmNuL3RodW1ibmFpbC82ZmVkMjE5NWp3MWR3cW5tMzYwejJqLmpwZw==</thumbnail_pic>
+		<bmiddle_pic>http://123.125.97.177:80/proxyserver/servlet/GetImgServlet/aHR0cDovL3d3MS5zaW5haW1nLmNuL2JtaWRkbGUvNmZlZDIxOTVqdzFkd3FubTM2MHoyai5qcGc=</bmiddle_pic>
+		<original_pic>http://123.125.97.177:80/proxyserver/servlet/GetImgServlet/aHR0cDovL3d3MS5zaW5haW1nLmNuL2xhcmdlLzZmZWQyMTk1ancxZHdxbm0zNjB6MmouanBn</original_pic>
+	</retweeted_status>
+	</status>
+</statuses>
+</mb>

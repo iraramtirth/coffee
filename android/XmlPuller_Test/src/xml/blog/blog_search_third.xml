@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mb>
+	<retn>0</retn>
+	<desc>OK</desc>
+	<statuses>
+		<status>
+			<type>1</type>
+			<bindinged>true</bindinged>
+			<weibouserid>1658187771</weibouserid>
+			<weiboid>SINA_WEIBO</weiboid>
+			<weiboname>新浪微博</weiboname>
+			<weiboicon>http://10.250.251.20:8080/portal/datum/web/img/bind/sinaweibo.PNG</weiboicon>
+			<weibobindurl></weibobindurl>
+			<weibobindStringerface></weibobindStringerface>
+			<weiboregisterurl></weiboregisterurl>
+			<mbaccount></mbaccount>
+		</status>
+		<status>
+			<type>1</type>
+			<bindinged>false</bindinged>
+			<weibouserid></weibouserid>
+			<weiboid>SOHU_WEIBO</weiboid>
+			<weiboname>搜狐微博</weiboname>
+			<weiboicon>http://10.250.251.20:8080/portal/datum/web/img/bind/souhuweibo.PNG</weiboicon>
+			<weibobindurl></weibobindurl>
+			<weibobindStringerface></weibobindStringerface>
+			<weiboregisterurl></weiboregisterurl>
+			<mbaccount></mbaccount>
+		</status>
+	</statuses>
+</mb>

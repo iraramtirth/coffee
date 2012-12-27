@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?><mb>
+<retn>0</retn><desc>ok</desc>
+<status>
+    <created_at>Fri Sep 21 13:43:01 +0800 2012</created_at>
+    <id>3492692229201348</id>
+    <text>蓝色调装扮的家居充满了浓浓的海洋气息，本款家居在设计时时不时用蓝色装扮空间，让家居清新宜人。这款家居集结了各种风格的设计特色，展现一款不受风格约束的温馨家居。http://t.cn/zlwINPh</text>
+    <source>
+      &lt;a href="http://e.weibo.com"&gt;专业版微博&lt;/a&gt;
+    </source>
+    <favorited>false</favorited>
+    <truncated>false</truncated>
+    <geo/>
+    <in_reply_to_status_id/>
+    <in_reply_to_user_id/>
+    <in_reply_to_screen_name/>
+    <thumbnail_pic>http://123.125.97.177:80/proxyserver/servlet/GetImgServlet/aHR0cDovL3d3Mi5zaW5haW1nLmNuL3RodW1ibmFpbC85YjliMzExYmd3MWR4NDM5cnlodTFqLmpwZw==</thumbnail_pic>
+    <bmiddle_pic>http://123.125.97.177:80/proxyserver/servlet/GetImgServlet/aHR0cDovL3d3Mi5zaW5haW1nLmNuL2JtaWRkbGUvOWI5YjMxMWJndzFkeDQzOXJ5aHUxai5qcGc=</bmiddle_pic>
+    <original_pic>http://123.125.97.177:80/proxyserver/servlet/GetImgServlet/aHR0cDovL3d3Mi5zaW5haW1nLmNuL2xhcmdlLzliOWIzMTFiZ3cxZHg0MzlyeWh1MWouanBn</original_pic>
+    <mid>3492692229201348</mid>
+    <user>
+      <id>2610639131</id>
+      <screen_name>宁波网装修频道</screen_name>
+      <name>宁波网装修频道</name>
+      <province>33</province>
+      <city>2</city>
+      <location>浙江 宁波</location>
+      <description>宁波网旗下装修频道，整合宁波优质装修公司与品牌建材商家，致力于为甬城家装业主提供全方位服务
+官方网址：home1818.cnnb.com...</description>
+      <url>http://home1818.cnnb.com.cn/portal.php</url>
+      <profile_image_url>http://123.125.97.177:80/proxyserver/servlet/GetImgServlet/aHR0cDovL3RwNC5zaW5haW1nLmNuLzI2MTA2MzkxMzEvNTAvNTYyMzY1NzI5NS8x</profile_image_url>
+      <domain>nbwzx</domain>
+      <gender>m</gender>
+      <followers_count>22273</followers_count>
+      <friends_count>1949</friends_count>
+      <statuses_count>1981</statuses_count>
+      <favourites_count>4</favourites_count>
+      <created_at>Wed Feb 08 16:10:53 +0800 2012</created_at>
+      <following>false</following>
+      <verified>true</verified>
+      <allow_all_act_msg>false</allow_all_act_msg>
+      <geo_enabled>true</geo_enabled>
+    </user>
+  </status>
+</mb>

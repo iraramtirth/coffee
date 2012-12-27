@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mb>
+	<retn>0</retn>
+	<desc>OK</desc>
+	<statuses>
+		<status>
+			<id>3492346148702684</id>
+			<source>
+				&lt;a href="http://im.wo.com.cn" rel="nofollow"&gt;联通沃友&lt;/a&gt;
+			</source>
+			<text><![CDATA[rgyhhgg]]></text>
+			<user>
+				<name>卡咔咔咖啡</name>
+				<location>北京 海淀区</location>
+				<id>1658187771</id>
+				<description></description>
+				<domain></domain>
+				<gender>m</gender>
+				<city>8</city>
+				<province>11</province>
+				<weiboid>SINA_WEIBO</weiboid>
+				<screen_name>卡咔咔咖啡</screen_name>
+				<url></url>
+				<profile_image_url>http://123.125.97.187:18080/proxyserver/servlet/GetImgServlet/aHR0cDovL3RwNC5zaW5haW1nLmNuLzE2NTgxODc3NzEvNTAvMC8x
+				</profile_image_url>
+				<created_at>Fri Mar 23 10:00:47 +0800 2012</created_at>
+				<followers_count>20</followers_count>
+				<friends_count>1400</friends_count>
+				<statuses_count>304</statuses_count>
+				<favourites_count>1</favourites_count>
+				<following>false</following>
+				<verified>false</verified>
+			</user>
+			<weiboid>SINA_WEIBO</weiboid>
+			<in_reply_to_status_id></in_reply_to_status_id>
+			<created_at>Thu Sep 20 14:47:49 +0800 2012</created_at>
+			<favorited>false</favorited>
+			<truncated>false</truncated>
+			<in_reply_to_user_id></in_reply_to_user_id>
+			<in_reply_to_screen_name></in_reply_to_screen_name>
+			<thumbnail_pic></thumbnail_pic>
+			<bmiddle_pic></bmiddle_pic>
+			<original_pic></original_pic>
+		</status>
+	</statuses>
+</mb>

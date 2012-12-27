@@ -1,0 +1,27 @@
+<result>
+	<retcode>0</retcode>
+	<retdesc>查看根信息成功</retdesc>
+	<rootgroupinfo>
+		<groupinfo>
+			<groupid>1161801</groupid>
+			<groupname>test1</groupname>
+			<ownerid>12000002</ownerid>
+			<orgname></orgname>
+			<grouprelationid>1161801</grouprelationid>
+			<ifhasson>1</ifhasson>
+			<fatherid>null</fatherid>
+			<membernumer>6</membernumer>
+			<userarea>1100</userarea>
+			<ifmsisdnset>0</ifmsisdnset>
+			<logourl>http://123.125.97.187:14081/storageWeb/servlet/GetFileByURLServlet?root=/home/oracle/archive&fileid=030fee53eeecc726fb9c48dccf7d474632.jpg&ci=0611SsAk002y00520120913085901616&cn=7a92bfe4-3701-4804-86e2-ff91dce336bf.jpg&ct=1&code=BFC91CB49A1BE024605A4DDE0C25F0BE&type=2
+			</logourl>
+			<groupdesc>fsfds</groupdesc>
+			<groupbulletin>null</groupbulletin>
+			<ownerchat>0</ownerchat>
+			<ownernick>友中友</ownernick>
+			<ownerjid>12000002@im.wo.com.cn</ownerjid>
+			<adminnick>管理员</adminnick>
+			<adminjid>12000710@im.wo.com.cn</adminjid>
+		</groupinfo>
+	</rootgroupinfo>
+</result>

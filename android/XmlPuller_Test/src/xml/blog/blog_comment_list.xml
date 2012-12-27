@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mb>
+<retn>0</retn><desc>ok</desc>
+<comments>
+	<comment>
+		<created_at>Sat Sep 22 23:31:50 +0800 2012</created_at>
+		<id>3493202801727807</id>
+		<text>转发微博</text>
+		<source>
+		    &lt;a href="http://down2.uc.cn/ucbrowser/html/?pub=chens@sina13&amp;amp;title=&amp;amp;url="&gt;UC浏览器&lt;/a&gt;
+		</source>
+		<mid>21212092296627180</mid>
+		<user>
+			<id>2520905530</id>
+			<screen_name>梦对岸粉紫色的海</screen_name>
+			<name>梦对岸粉紫色的海</name>
+			<province>11</province>
+			<city>1000</city>
+			<location>北京</location>
+			<description>用天真的心去愛，用生命的勇气去承受。</description>
+			<url/>
+			<profile_image_url>http://123.125.97.177:80/proxyserver/servlet/GetImgServlet/aHR0cDovL3RwMy5zaW5haW1nLmNuLzI1MjA5MDU1MzAvNTAvNTYzOTk2NzQ2NC8w</profile_image_url>
+			<domain/>
+			<gender>f</gender>
+			<followers_count>145</followers_count>
+			<friends_count>105</friends_count>
+			<statuses_count>2180</statuses_count>
+			<favourites_count>253</favourites_count>
+			<created_at>Tue Nov 08 09:31:13 +0800 2011</created_at>
+			<following>false</following>
+			<verified>false</verified>
+			<allow_all_act_msg>false</allow_all_act_msg>
+			<geo_enabled>false</geo_enabled>
+		</user>
+		<status>
+			<created_at>Fri Sep 21 13:41:00 +0800 2012</created_at>
+			<id>3492691721589661</id>
+			<text>长大的岁月里，我们从未变化，只是越来越清晰地成为自己。</text>
+			<source>&lt;a href="http://weibo.com"&gt;新浪微博&lt;/a&gt;</source>
+			<favorited>false</favorited>
+			<truncated>false</truncated>
+			<geo/>
+			<in_reply_to_status_id/>
+			<in_reply_to_user_id/>
+			<in_reply_to_screen_name/>
+			<thumbnail_pic>http://123.125.97.177:80/proxyserver/servlet/GetImgServlet/aHR0cDovL3d3My5zaW5haW1nLmNuL3RodW1ibmFpbC82MjIzMTEwMWd3MWR4NDJ4ZThrM3BqLmpwZw==</thumbnail_pic>
+			<bmiddle_pic>http://123.125.97.177:80/proxyserver/servlet/GetImgServlet/aHR0cDovL3d3My5zaW5haW1nLmNuL2JtaWRkbGUvNjIyMzExMDFndzFkeDQyeGU4azNwai5qcGc=</bmiddle_pic>
+			<original_pic>http://123.125.97.177:80/proxyserver/servlet/GetImgServlet/aHR0cDovL3d3My5zaW5haW1nLmNuL2xhcmdlLzYyMjMxMTAxZ3cxZHg0MnhlOGszcGouanBn</original_pic>
+			<mid>3492691721589661</mid>
+			<user>
+				<id>1646465281</id>
+				<screen_name>围脖经典语录</screen_name>
+				<name>围脖经典语录</name>
+				<province>11</province>
+				<city>1000</city>
+				<location>北京</location>
+				<description>老师问我长大想做什么？我说“快乐的人”。老师说我不懂问题，我说他不懂人生。- -列侬</description>
+				<url>http://weibo.com/sohu</url>
+				<profile_image_url>http://123.125.97.177:80/proxyserver/servlet/GetImgServlet/aHR0cDovL3RwMi5zaW5haW1nLmNuLzE2NDY0NjUyODEvNTAvNTYzMTYxMTI0NC8w</profile_image_url>
+				<domain>sohu</domain>
+				<gender>f</gender>
+				<followers_count>2360895</followers_count>
+				<friends_count>1368</friends_count>
+				<statuses_count>23891</statuses_count>
+				<favourites_count>1126</favourites_count>
+				<created_at>Fri Sep 11 13:34:05 +0800 2009</created_at>
+				<following>false</following>
+				<verified>false</verified>
+				<allow_all_act_msg>true</allow_all_act_msg>
+				<geo_enabled>false</geo_enabled>
+			</user>
+		</status>
+	</comment>
+</comments>
+</mb>

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mb>
+	<retn>0</retn>
+	<desc>OK</desc>
+	<counts>
+		<count>
+			<new_status>0</new_status>
+			<followers>0</followers>
+			<status>0</status>
+			<dm>0</dm>
+			<mentions>0</mentions>
+			<comments>0</comments>
+			<weiboid>SINA_WEIBO</weiboid>
+		</count>
+	</counts>
+</mb> 

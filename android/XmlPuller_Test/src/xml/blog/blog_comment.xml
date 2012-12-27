@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mb>
+<retn>0</retn>
+<desc>ok</desc>
+<comment>
+    <created_at>Fri Sep 21 13:44:26 +0800 2012</created_at>
+    <id>3492692589647037</id>
+    <text>cccccccc</text>
+    <source>
+      &lt;a href="http://im.wo.com.cn"&gt;联通沃友&lt;/a&gt;
+    </source>
+    <mid>21212092144054427</mid>
+    <user>
+      <id>1907593004</id>
+      <screen_name>樱花-执念</screen_name>
+      <name>樱花-执念</name>
+      <province>36</province>
+      <city>4</city>
+      <location>江西 九江</location>
+      <description/>
+      <url/>
+      <profile_image_url>http://123.125.97.177:80/proxyserver/servlet/GetImgServlet/aHR0cDovL3RwMS5zaW5haW1nLmNuLzE5MDc1OTMwMDQvNTAvNTYyMjg5NzA3MC8x</profile_image_url>
+      <domain/>
+      <gender>m</gender>
+      <followers_count>27</followers_count>
+      <friends_count>497</friends_count>
+      <statuses_count>77</statuses_count>
+      <favourites_count>0</favourites_count>
+      <created_at>Fri Dec 24 23:59:07 +0800 2010</created_at>
+      <following>false</following>
+      <verified>false</verified>
+      <allow_all_act_msg>false</allow_all_act_msg>
+      <geo_enabled>true</geo_enabled>
+    </user>
+    <status>
+      <created_at>Fri Sep 21 13:42:05 +0800 2012</created_at>
+      <id>3492691994274075</id>
+      <text>【河南-郭亮村】进入太行山腹地,距河南辉县70公里,有一个海拔1752米的原始村庄一座绝壁上的村庄-郭亮村，而进村庄的必经之路，横空悬挂在九十度的陡崖上，这条绝壁长廊历时五年，全靠村民硬是在绝壁中一锤一锤凿出2万6千立方米,高5米、宽4米，全长1300米的石洞,叫郭亮洞牛！</text>
+      <source>
+        &lt;a href="http://m.weibo.com/web/cellphone.php#ipad"&gt;iPad客户端&lt;/a&gt;
+      </source>
+      <favorited>false</favorited>
+      <truncated>false</truncated>
+      <geo/>
+      <in_reply_to_status_id/>
+      <in_reply_to_user_id/>
+      <in_reply_to_screen_name/>
+      <thumbnail_pic>http://123.125.97.177:80/proxyserver/servlet/GetImgServlet/aHR0cDovL3d3My5zaW5haW1nLmNuL3RodW1ibmFpbC83Mjg4YjYxZWp3MWR4NDM4dXh5cHRqLmpwZw==</thumbnail_pic>
+      <bmiddle_pic>http://123.125.97.177:80/proxyserver/servlet/GetImgServlet/aHR0cDovL3d3My5zaW5haW1nLmNuL2JtaWRkbGUvNzI4OGI2MWVqdzFkeDQzOHV4eXB0ai5qcGc=</bmiddle_pic>
+      <original_pic>http://123.125.97.177:80/proxyserver/servlet/GetImgServlet/aHR0cDovL3d3My5zaW5haW1nLmNuL2xhcmdlLzcyODhiNjFlancxZHg0Mzh1eHlwdGouanBn</original_pic>
+      <mid>3492691994274075</mid>
+      <user>
+        <id>1921562142</id>
+        <screen_name>少爷程晨</screen_name>
+        <name>少爷程晨</name>
+        <province>31</province>
+        <city>15</city>
+        <location>上海 浦东新区</location>
+        <description>你永远都不会知道自己到底有多坚强，直到有一天你除了坚强别无选择。</description>
+        <url/>
+        <profile_image_url>http://123.125.97.177:80/proxyserver/servlet/GetImgServlet/aHR0cDovL3RwMy5zaW5haW1nLmNuLzE5MjE1NjIxNDIvNTAvNTYyODU2Nzg4OC8x</profile_image_url>
+        <domain/>
+        <gender>m</gender>
+        <followers_count>14796</followers_count>
+        <friends_count>79</friends_count>
+        <statuses_count>2853</statuses_count>
+        <favourites_count>11</favourites_count>
+        <created_at>Wed Jan 19 06:39:14 +0800 2011</created_at>
+        <following>false</following>
+        <verified>false</verified>
+        <allow_all_act_msg>false</allow_all_act_msg>
+        <geo_enabled>true</geo_enabled>
+      </user>
+    </status>
+  </comment>
+</mb>

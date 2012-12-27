@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mb>
+	<retn>0</retn>
+	<desc>OK</desc>
+	<status>
+		<created_at>Thu Sep 20 15:33:44 +0800 2012</created_at>
+		<id>3492357704124886</id>
+		<text>转发微博</text>
+		<source>
+			&lt;a href="http://im.wo.com.cn" rel="nofollow"&gt;联通沃友&lt;/a&gt;
+		</source>
+		<favorited>false</favorited>
+		<truncated>false</truncated>
+		<geo />
+		<in_reply_to_status_id>3492339668495065</in_reply_to_status_id>
+		<in_reply_to_user_id>1791902321</in_reply_to_user_id>
+		<in_reply_to_screen_name>YOKA男士网</in_reply_to_screen_name>
+		<mid>3492357704124886</mid>
+		<user>
+			<id>1658187771</id>
+			<screen_name>卡咔咔咖啡</screen_name>
+			<name>卡咔咔咖啡</name>
+			<province>11</province>
+			<city>8</city>
+			<location>北京 海淀区</location>
+			<description />
+			<url />
+			<profile_image_url>http://123.125.97.187:18080/proxyserver/servlet/GetImgServlet/aHR0cDovL3RwNC5zaW5haW1nLmNuLzE2NTgxODc3NzEvNTAvMC8x</profile_image_url>
+			<domain />
+			<gender>m</gender>
+			<followers_count>20</followers_count>
+			<friends_count>1400</friends_count>
+			<statuses_count>304</statuses_count>
+			<favourites_count>1</favourites_count>
+			<created_at>Fri Mar 23 10:00:47 +0800 2012</created_at>
+			<following>false</following>
+			<verified>false</verified>
+			<allow_all_act_msg>false</allow_all_act_msg>
+			<geo_enabled>false</geo_enabled>
+			<remark />
+		</user>
+		<retweeted_status>
+			<created_at>Thu Sep 20 14:22:04 +0800 2012</created_at>
+			<id>3492339668495065</id>
+			<text>1992年一艘从中国出发的货船在太平洋上遭遇强烈风暴,船上一个装满2.9万只塑料玩具鸭的集装箱坠入大海.难以置信的是,其中1万多只玩具鸭组成的"鸭子舰队"在海洋上漂流了14年之后,竟抵达英国海岸.后来,这些鸭子售价激涨百倍。一个人的价值并不在其出身，而在于他谱写什么样的人生履历.</text>
+			<source>
+				&lt;a href="http://www.yoka.com" rel="nofollow"&gt;YOKA时尚网&lt;/a&gt;
+			</source>
+			<favorited>false</favorited>
+			<truncated>false</truncated>
+			<geo />
+			<in_reply_to_status_id />
+			<in_reply_to_user_id />
+			<in_reply_to_screen_name />
+			<mid>3492339668495065</mid>
+			<deleted />
+		</retweeted_status>
+	</status>
+</mb>

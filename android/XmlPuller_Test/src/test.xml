@@ -1,0 +1,27 @@
+<result>
+	<gpInfoList>
+		<gpID>10000</gpID>
+		<gpMemItem>
+			<gpMemID>20000</gpMemID>
+			<gpMemInfoItem>
+				<gpMemInfoItemName>memberconfig_affiliation</gpMemInfoItemName>
+				<gpMemInfoItemVal>Member</gpMemInfoItemVal>
+			</gpMemInfoItem>
+			<gpMemInfoItem>
+				<gpMemInfoItemName>memberconfig_nick</gpMemInfoItemName>
+				<gpMemInfoItemVal>NO1</gpMemInfoItemVal>
+			</gpMemInfoItem>
+		</gpMemItem>
+		<gpMemItem>
+			<gpMemID>20001</gpMemID>
+			<gpMemInfoItem>
+				<gpMemInfoItemName>memberconfig_affiliation</gpMemInfoItemName>
+				<gpMemInfoItemVal>Member</gpMemInfoItemVal>
+			</gpMemInfoItem>
+			<gpMemInfoItem>
+				<gpMemInfoItemName>memberconfig_nick</gpMemInfoItemName>
+				<gpMemInfoItemVal>NO2</gpMemInfoItemVal>
+			</gpMemInfoItem>
+		</gpMemItem>
+	</gpInfoList>
+</result>
