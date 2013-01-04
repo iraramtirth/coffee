@@ -1,4 +1,4 @@
-package com.chinaunicom.woyou.utils.xml.parser;
+package coffee.xml.parser;
 
 import java.io.BufferedInputStream;
 import java.io.InputStream;
@@ -13,7 +13,7 @@ import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 import org.xmlpull.v1.XmlPullParserFactory;
 
-import com.chinaunicom.woyou.utils.xml.annotation.XmlElement;
+import coffee.xml.annotation.XmlElement;
 
 /**
  * 通用的普通xml解析器 使用情况： <result type="p"> <item id="1" mmbprice="12.50" price="20">

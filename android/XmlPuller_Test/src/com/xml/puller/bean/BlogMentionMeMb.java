@@ -3,8 +3,9 @@ package com.xml.puller.bean;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.chinaunicom.woyou.utils.xml.annotation.XmlElement;
-import com.chinaunicom.woyou.utils.xml.annotation.XmlRootElement;
+import coffee.xml.annotation.XmlElement;
+import coffee.xml.annotation.XmlRootElement;
+
 import com.xml.puller.bean.BlogListMb.BlogStatus;
 
 @XmlRootElement(name = "mb")

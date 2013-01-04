@@ -3,8 +3,8 @@ package com.xml.puller.bean;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.chinaunicom.woyou.utils.xml.annotation.XmlElement;
-import com.chinaunicom.woyou.utils.xml.annotation.XmlRootElement;
+import coffee.xml.annotation.XmlElement;
+import coffee.xml.annotation.XmlRootElement;
 
 /**
  * 从服务器获取blog列表

@@ -1,7 +1,8 @@
 package com.xml.puller;
 
-import com.chinaunicom.woyou.utils.lang.Reader;
-import com.chinaunicom.woyou.utils.xml.parser.XmlParser;
+import coffee.lang.Reader;
+import coffee.xml.parser.XmlParser;
+
 import com.xml.puller.bean.SingleBlogMb;
 
 public class Test {

@@ -1,11 +1,11 @@
-package com.chinaunicom.woyou.utils.xml.parser;
+package coffee.xml.parser;
 
 import java.lang.reflect.Field;
 
-import com.chinaunicom.woyou.utils.lang.TUtils;
-import com.chinaunicom.woyou.utils.xml.annotation.XmlElement;
-import com.chinaunicom.woyou.utils.xml.annotation.XmlElement.DEFAULT;
-import com.chinaunicom.woyou.utils.xml.annotation.XmlRootElement;
+import coffee.lang.TUtils;
+import coffee.xml.annotation.XmlElement;
+import coffee.xml.annotation.XmlRootElement;
+import coffee.xml.annotation.XmlElement.DEFAULT;
 
 /**
  * 该方法是基于注解的

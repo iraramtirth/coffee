@@ -4,8 +4,8 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.chinaunicom.woyou.utils.xml.annotation.XmlElement;
-import com.chinaunicom.woyou.utils.xml.annotation.XmlRootElement;
+import coffee.xml.annotation.XmlElement;
+import coffee.xml.annotation.XmlRootElement;
 
 /**
  * 

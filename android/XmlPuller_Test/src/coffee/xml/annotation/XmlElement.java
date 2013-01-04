@@ -1,4 +1,4 @@
-package com.chinaunicom.woyou.utils.xml.annotation;
+package coffee.xml.annotation;
 
 import static java.lang.annotation.ElementType.FIELD;
 import static java.lang.annotation.ElementType.METHOD;
@@ -7,7 +7,7 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 
-import com.chinaunicom.woyou.utils.xml.parser.TXmlUtils;
+import coffee.xml.parser.TXmlUtils;
 /**
  * 
  * 注意：Bean中的所有属性， 即使不加该属性， 也会进行反射的匹配

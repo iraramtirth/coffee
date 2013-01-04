@@ -1,6 +1,6 @@
 package com.xml.puller.bean;
 
-import com.chinaunicom.woyou.utils.xml.annotation.XmlRootElement;
+import coffee.xml.annotation.XmlRootElement;
 
 /**
  * 微博解绑

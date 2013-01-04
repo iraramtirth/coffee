@@ -1,4 +1,4 @@
-package com.chinaunicom.woyou.utils.lang;
+package coffee.lang;
 
 import java.io.BufferedReader;
 import java.io.FileInputStream;

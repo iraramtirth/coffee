@@ -1,4 +1,4 @@
-package com.chinaunicom.woyou.utils.lang;
+package coffee.lang;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
