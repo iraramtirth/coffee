@@ -1,4 +1,4 @@
-package coffee.collection;
+package coffee.util.lang;
 
 import java.text.CollationKey;
 import java.text.Collator;

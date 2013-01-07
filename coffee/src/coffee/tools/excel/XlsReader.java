@@ -13,8 +13,6 @@ import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.poifs.filesystem.POIFSFileSystem;
 
-import cn.demo.bean.User;
-
 /**
  * 读取excel
  * 
@@ -179,9 +177,9 @@ public class XlsReader {
 	
 		XlsReader reader = new XlsReader("c:/text.xls");
 		
-		List<Map<String, String>> items = reader.query(0, 0, 1);
-		List<User> userList = XlsUtils.toBeanList(items, User.class);
-		System.out.println(userList);
+//		List<Map<String, String>> items = reader.query(0, 0, 1);
+//		List<User> userList = XlsUtils.toBeanList(items, User.class);
+//		System.out.println(userList);
 		
 	}
 }

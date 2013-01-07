@@ -1,11 +1,8 @@
 package coffee.tools.xml;
 
 import java.lang.reflect.Field;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-
-import cn.demo.bean.User;
 
 /**
  * xml工具类
@@ -91,9 +88,6 @@ public class XmlUtils {
 	}
 	
 	public static void main(String[] args){
-		List<User> items = new ArrayList<User>();
-		items.add(new User(1,"wangtao","bb"));
-		toXml(items, "c:/df.xml", "id");
 		
 	}
 }
