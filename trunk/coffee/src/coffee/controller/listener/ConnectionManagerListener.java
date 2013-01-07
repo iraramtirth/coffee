@@ -11,10 +11,9 @@ import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 import javax.servlet.annotation.WebListener;
 
-import coffee.jdbc.ConnectionPool;
-import coffee.jdbc.SqlConnection;
-import coffee.jdbc.dao.util.Configuration;
-import coffee.jdbc.dao.util.Configuration.DialectType;
+import coffee.persistence.impl.Configuration;
+import coffee.util.database.ConnectionPool;
+import coffee.util.database.SqlConnection;
 
 /**
  * 初始化数据库
