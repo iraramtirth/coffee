@@ -2,8 +2,6 @@ package coffee.util.database.core;
 
 import java.lang.reflect.Field;
 
-import coffee.cms.admin.bean.TigUserBean;
-
 /**
  * 反射用到的工具
  * 
@@ -88,11 +86,11 @@ public class TUtils {
 
 	
 	public static void main(String[] args) {
-		TigUserBean user = new TigUserBean();
-		
-		setValue(user, "id", "12");
-		
-		System.out.println(user.getId());
+//		TigUserBean user = new TigUserBean();
+//		
+//		setValue(user, "id", "12");
+//		
+//		System.out.println(user.getId());
 		
 	}
 }
