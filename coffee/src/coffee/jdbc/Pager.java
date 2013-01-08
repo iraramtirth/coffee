@@ -1,8 +1,6 @@
 package coffee.jdbc;
 
 import java.util.List;
-
-import cn.demo.bean.User;
 /**
  * 分页 
  * @author wangtao
@@ -53,7 +51,7 @@ public class Pager<T>{
 	} 
 	
 	public static void main(String[] args) {
-		Pager<User> pager = new Pager<User>();
-		System.out.println(pager.getSize());
+//		Pager<User> pager = new Pager<User>();
+//		System.out.println(pager.getSize());
 	}
 }

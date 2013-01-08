@@ -6,8 +6,6 @@ import static coffee.jdbc.dao.util.TUtils.getTableName;
 
 import java.lang.reflect.Field;
 
-import cn.demo.bean.User;
-
 /**
  * 自动生成sql语句
  * 
@@ -47,6 +45,6 @@ public class TableCreator {
 	}
 
 	public static void main(String[] args) {
-		generateTableSql(User.class);
+		
 	}
 }
