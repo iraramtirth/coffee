@@ -87,6 +87,8 @@ public class DBUtils extends TUtils {
 		}
 		sql.deleteCharAt(sql.length() - 2);
 		sql.append(")\n");
+		
+		System.out.println(sql);
 		return sql.toString();
 	}
 
