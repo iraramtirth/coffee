@@ -1,4 +1,4 @@
-package coffee;
+package coffee.util.database.test;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -19,9 +19,8 @@ import java.util.Scanner;
 public class BackupData {
 	public static void main(String[] args) {
 		try {
-			String cmd = "mysql -hlocalhost -uroot -proot test";
 			
-			cmd = "mysqldump -u root -proot test>test_users.sql";
+			String cmd = "mysqldump -uroot -proot test>test_users.sql";
 
 
 			ProcessBuilder pb = new ProcessBuilder(cmd);

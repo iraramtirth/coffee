@@ -10,6 +10,13 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+/**
+ * ￥{
+ * 
+ * @author coffee
+ * 
+ *         2013-1-19 上午8:48:12
+ */
 public class CrawlerUtils {
 
 	private static String encode = "UTF-8";
@@ -27,8 +34,8 @@ public class CrawlerUtils {
 		try {
 			URL url = new URL(linkUrl);
 			URLConnection uc = url.openConnection();
-			BufferedReader in = new BufferedReader(new InputStreamReader(uc
-					.getInputStream(), encode));
+			BufferedReader in = new BufferedReader(new InputStreamReader(
+					uc.getInputStream(), encode));
 			String line = null;
 			while ((line = in.readLine()) != null) {
 				doc.append(line);
@@ -41,25 +48,24 @@ public class CrawlerUtils {
 	/**
 	 * ===================== [尝试指定的次数] ===================== 重载
 	 * 
-	 * @param count
+	 * @param linkUrl
+	 *            : 地址
+	 * @param tryCount
 	 *            : 失败后尝试的次数,最小为1
 	 * @return : 返回问道的源码
 	 */
-	public static String getDocumentHtml(String linkUrl, int tryCount) {
+	public static String getDocumentHtml(String linkUrl, int tryCount,
+			String encode) {
 		String docHtml = "";
 		try {
 			// 最低尝试一次
 			if (tryCount < 1) {
 				tryCount = 1;
 			}
+			if (encode != null) {
+				CrawlerUtils.encode = encode;
+			}
 			docHtml = CrawlerUtils.getDocumentHtml(linkUrl);
-			// 设置编码
-//			String regex = "content=\".+?charset=(.+)\"";
-//			Pattern ptn = Pattern.compile(regex);
-//			Matcher mat = ptn.matcher(docHtml);
-//			if (mat.find()) {
-//				encode = mat.group(1);
-//			}
 		} finally {
 			if (docHtml == null || docHtml.trim().length() == 0) {
 				for (int i = 0; i < tryCount - 1; i++) {
@@ -81,7 +87,7 @@ public class CrawlerUtils {
 	 * @return
 	 */
 	public static String getDocumentText(String linkUrl, int tryCount) {
-		String html = getDocumentHtml(linkUrl, tryCount);
+		String html = getDocumentHtml(linkUrl, tryCount, encode);
 		String text = html.replaceAll("<[^>]*?>", "");
 		return text;
 	}

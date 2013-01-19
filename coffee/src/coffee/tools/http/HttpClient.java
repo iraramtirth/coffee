@@ -57,7 +57,7 @@ public class HttpClient {
 			}
 			docHtml = getDocumentHtml(linkUrl);
 			// 设置编码
-			String regex = "content=\".+?charset=(.+)\"";
+			String regex = "content=\".+?charset=(.+?)\"";
 			Pattern ptn = Pattern.compile(regex);
 			Matcher mat = ptn.matcher(docHtml);
 			if (mat.find()) {
