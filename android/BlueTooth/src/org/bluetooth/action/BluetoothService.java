@@ -19,7 +19,6 @@ import android.bluetooth.BluetoothSocket;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Message;
-import android.provider.Settings;
 import android.widget.Toast;
 
 public class BluetoothService {
@@ -39,21 +38,21 @@ public class BluetoothService {
 	}
 
 	/**
-	 * 请求设备可见
+	 * 请求Local蓝牙设备可见
 	 */
 	public void requestDeviceDiscoverable() {
-		// Intent discoverIntent = new Intent(
-		// BluetoothAdapter.ACTION_REQUEST_DISCOVERABLE);
-		// discoverIntent.putExtra(BluetoothAdapter.EXTRA_DISCOVERABLE_DURATION,
-		// 300);
-		// context.startActivityForResult(discoverIntent,
-		// IActivity.REQUEST_MAKE_DISCOVERABLE);
-		Settings.System.putInt(context.getContentResolver(),Settings.System.BLUETOOTH_DISCOVERABILITY, 2);
-		Settings.System.putInt(context.getContentResolver(),Settings.System.BLUETOOTH_DISCOVERABILITY_TIMEOUT,120);
+		 Intent discoverIntent = new Intent(
+		 BluetoothAdapter.ACTION_REQUEST_DISCOVERABLE);
+		 discoverIntent.putExtra(BluetoothAdapter.EXTRA_DISCOVERABLE_DURATION,
+		 300);
+		 context.startActivityForResult(discoverIntent,
+		 IActivity.REQUEST_MAKE_DISCOVERABLE);
+//		Settings.System.putInt(context.getContentResolver(),Settings.System.BLUETOOTH_DISCOVERABILITY, 2);
+//		Settings.System.putInt(context.getContentResolver(),Settings.System.BLUETOOTH_DISCOVERABILITY_TIMEOUT,120);
 	}
 
 	/**
-	 * 请求打开蓝牙
+	 * 请求打开Local蓝牙设备
 	 */
 	public void requestDeviceOpen() {
 		Intent enableIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
@@ -61,7 +60,7 @@ public class BluetoothService {
 	}
 
 	/**
-	 * 请求配对
+	 * 请求与remote蓝牙设备配对
 	 * 当调用createBond时，请求[android.bluetooth.device.action.PAIRING_REQUEST]被响应
 	 */
 	public void requestPairing(BluetoothDevice remoteDevice, Activity activity) {
@@ -101,7 +100,7 @@ public class BluetoothService {
 	}
 
 	/**
-	 * 请求取消配对
+	 * 请求取消与remote蓝牙设备的配对
 	 */
 	public void requestCancelPairing(BluetoothDevice remoteDevice) {
 		try {
@@ -114,6 +113,12 @@ public class BluetoothService {
 		}
 	}
 
+	/**
+	 * 
+	 * @param remoteDevice
+	 * @param pinCode
+	 * @return
+	 */
 	public boolean setPin(BluetoothDevice remoteDevice, String pinCode) {
 		try {
 			Method setPin = remoteDevice.getClass().getDeclaredMethod("setPin",
@@ -167,7 +172,7 @@ public class BluetoothService {
 				System.out.println(line);
 				Message msg = mSocketHandler.obtainMessage();
 				msg.obj = new ChatItemBean(remoteDeviceName, line);
-				;
+				//
 				mSocketHandler.sendMessage(msg);
 			}
 		} catch (Exception e) {
