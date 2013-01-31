@@ -91,8 +91,11 @@ public class MainActivity extends Activity implements IActivity {
 				// manager.notify(111, notification);
 				BluetoothDevice btDevice = intent
 						.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
-//				btService.createBond(btDevice);
-				btService.setPairingConfirmation(btDevice, true);
+				if (btDevice.getBondState() != BluetoothDevice.BOND_BONDED) {
+					btService.setPin(btDevice, "123456");
+					btService.createBond(btDevice);
+				}
+				btService.setPairingConfirmation(btDevice, false);
 				btService.cancelPairingUserInput(btDevice);
 			}
 		}
@@ -178,5 +181,8 @@ public class MainActivity extends Activity implements IActivity {
 	protected void onDestroy() {
 		super.onDestroy();
 		btService.releaseAll();
+		if (mReceiver != null) {
+			unregisterReceiver(mReceiver);
+		}
 	}
 }
