@@ -91,7 +91,8 @@ public class MainActivity extends Activity implements IActivity {
 				// manager.notify(111, notification);
 				BluetoothDevice btDevice = intent
 						.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
-				btService.setPin(btDevice, "0000");
+//				btService.createBond(btDevice);
+				btService.setPairingConfirmation(btDevice, true);
 				btService.cancelPairingUserInput(btDevice);
 			}
 		}

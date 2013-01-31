@@ -41,14 +41,15 @@ public class BluetoothService {
 	 * 请求Local蓝牙设备可见
 	 */
 	public void requestDeviceDiscoverable() {
-		 Intent discoverIntent = new Intent(
-		 BluetoothAdapter.ACTION_REQUEST_DISCOVERABLE);
-		 discoverIntent.putExtra(BluetoothAdapter.EXTRA_DISCOVERABLE_DURATION,
-		 300);
-		 context.startActivityForResult(discoverIntent,
-		 IActivity.REQUEST_MAKE_DISCOVERABLE);
-//		Settings.System.putInt(context.getContentResolver(),Settings.System.BLUETOOTH_DISCOVERABILITY, 2);
-//		Settings.System.putInt(context.getContentResolver(),Settings.System.BLUETOOTH_DISCOVERABILITY_TIMEOUT,120);
+		Intent discoverIntent = new Intent(
+				BluetoothAdapter.ACTION_REQUEST_DISCOVERABLE);
+		discoverIntent.putExtra(BluetoothAdapter.EXTRA_DISCOVERABLE_DURATION,
+				300);
+		context.startActivityForResult(discoverIntent,
+				IActivity.REQUEST_MAKE_DISCOVERABLE);
+		// Settings.System.putInt(context.getContentResolver(),Settings.System.BLUETOOTH_DISCOVERABILITY,
+		// 2);
+		// Settings.System.putInt(context.getContentResolver(),Settings.System.BLUETOOTH_DISCOVERABILITY_TIMEOUT,120);
 	}
 
 	/**
@@ -75,12 +76,35 @@ public class BluetoothService {
 					new Class[] {});
 			createBond.invoke(remoteDevice, new Object[] {});
 			// 设置pin码
-			//setPin(remoteDevice, "0000");
+			// setPin(remoteDevice, "0000");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
 
+	public void createBond(BluetoothDevice remoteDevice) {
+		try {
+			Method createBond = remoteDevice.getClass().getMethod("createBond",
+					new Class[] {});
+			createBond.invoke(remoteDevice, new Object[] {});
+			// 设置pin码
+			// setPin(remoteDevice, "0000");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	public void setPairingConfirmation(BluetoothDevice device, boolean bool) {
+//		device = BluetoothAdapter.getDefaultAdapter().getRemoteDevice(
+//				BluetoothAdapter.getDefaultAdapter().getAddress());
+		try {
+			Method setPairingConfirmation = device.getClass().getMethod(
+					"setPairingConfirmation", new Class[] { boolean.class });
+			setPairingConfirmation.invoke(device, new Object[] { bool });
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 	/**
 	 * 远程设置收到配对请求后， 会弹出一个框，该方法会取消提示框
 	 * 
@@ -89,6 +113,8 @@ public class BluetoothService {
 	 */
 	public boolean cancelPairingUserInput(BluetoothDevice device) {
 		try {
+//			device = BluetoothAdapter.getDefaultAdapter().getRemoteDevice(
+//					BluetoothAdapter.getDefaultAdapter().getAddress());
 			Method createBondMethod = device.getClass().getMethod(
 					"cancelPairingUserInput");
 			boolean result = (Boolean) createBondMethod.invoke(device);
@@ -189,7 +215,8 @@ public class BluetoothService {
 					// 该行代码很重要。 如果不取消Discovery。将会无法connect设备
 					// mBtAdapter.getRemoteDevice(remoteDevice.getAddress());
 					socket = remoteDevice
-							.createRfcommSocketToServiceRecord(IActivity.uuid);
+							.createInsecureRfcommSocketToServiceRecord(IActivity.uuid);
+					// .createRfcommSocketToServiceRecord(IActivity.uuid);
 					socket.connect();
 
 					out = new BufferedWriter(new OutputStreamWriter(

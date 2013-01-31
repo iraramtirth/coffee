@@ -81,7 +81,8 @@ public class ScanDeviceActivity extends Activity implements IActivity{
     		menu.add(0, 2, 2, "解除配对");
     	}
     	else{
-    		menu.add(0, 1, 1, "配对");
+    		menu.add(0, 3, 1, "连接设备");
+    		menu.add(0, 1, 2, "配对");
     	}
     	selectedDeviceAddress = info.getDeviceAddress();
     }
