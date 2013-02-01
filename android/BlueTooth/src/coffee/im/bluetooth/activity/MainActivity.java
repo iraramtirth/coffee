@@ -1,57 +1,49 @@
 package coffee.im.bluetooth.activity;
 
-import coffee.im.bluetooth.R;
-
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import coffee.im.bluetooth.R;
 import coffee.im.bluetooth.activity.base.BaseActivityGroup;
 import coffee.im.bluetooth.constant.ConstMsg;
-import coffee.im.bluetooth.logic.TestLogic;
+
 /**
  * 程序的主类
  * 
- * @author wangtaoyfx
- * 		2013-1-21下午4:28:19
+ * @author coffee 2013-1-21下午4:28:19
  */
 public class MainActivity extends BaseActivityGroup implements OnClickListener {
 
-	private static MainActivity mainActivity;
+	private static MainActivity context;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		//
-		showViewGroup(Tab0Activity.class);
+		context = this;
 		//
 		mHandler = new Handler(this);
-		TestLogic.getInstance().addHandler(mHandler);
-		
-		//throw new NullPointerException();
+		showViewGroup(ConversationActivity.class);
 	}
 
 	@Override
 	protected void onResume() {
 		super.onResume();
-		//String abc = null;
-		//System.out.println(abc.length());
 	}
 
 	@Override
 	public void doInitView() {
 		this.setContentView(R.layout.main);
-		Button btn0 = (Button) this.findViewById(R.id.tab_0);
-		Button btn1 = (Button) this.findViewById(R.id.tab_1);
-		Button btn2 = (Button) this.findViewById(R.id.tab_2);
+		Button btn0 = (Button) this.findViewById(R.id.tab_conversation);
+		Button btn1 = (Button) this.findViewById(R.id.tab_contact);
+		Button btn2 = (Button) this.findViewById(R.id.tab_setting);
 
 		btn0.setOnClickListener(this);
 		btn1.setOnClickListener(this);
 		btn2.setOnClickListener(this);
 	}
-
 
 	@Override
 	public boolean handleMessage(Message msg) {
@@ -68,14 +60,14 @@ public class MainActivity extends BaseActivityGroup implements OnClickListener {
 	@Override
 	public void onClick(View v) {
 		switch (v.getId()) {
-		case R.id.tab_0:
-			showViewGroup(Tab0Activity.class);
+		case R.id.tab_conversation:
+			showViewGroup(ConversationActivity.class);
 			break;
-		case R.id.tab_1:
-			//showViewGroup(ChatActivity.class);
+		case R.id.tab_contact:
+			// showViewGroup(ChatActivity.class);
 			break;
-		case R.id.tab_2:
-			showViewGroup(Tab2Activity.class);
+		case R.id.tab_setting:
+			showViewGroup(SettingActivity.class);
 			break;
 		}
 	}
@@ -83,6 +75,6 @@ public class MainActivity extends BaseActivityGroup implements OnClickListener {
 	/********************* 以下是setter getter **************************/
 
 	public static MainActivity getContext() {
-		return mainActivity;
+		return context;
 	}
 }

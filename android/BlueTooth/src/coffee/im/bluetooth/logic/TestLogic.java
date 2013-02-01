@@ -6,7 +6,8 @@ import coffee.im.bluetooth.logic.base.BaseLogic;
 /**
  * 主要用于TestBean相关的操作
  * 
- * @author wangtaoyfx 2013-1-11上午11:11:02
+ * @author coffee <br>
+ *         2013-1-11上午11:11:02
  */
 public class TestLogic extends BaseLogic {
 

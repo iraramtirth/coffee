@@ -5,17 +5,23 @@ import coffee.im.bluetooth.R;
 import android.os.Bundle;
 import coffee.im.bluetooth.activity.base.BaseActivity;
 
-public class Tab1Activity extends BaseActivity {
+/**
+ * 联系人
+ * 
+ * @author coffee<br>
+ *         2013上午11:59:03
+ */
+public class ContactActivity extends BaseActivity {
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		activityToMgr = false;
 		super.onCreate(savedInstanceState);
-//		String abc = null;
-//		int a = abc.length();
-//		System.out.println(a);
-		
-//		throw new NullPointerException();
+		// String abc = null;
+		// int a = abc.length();
+		// System.out.println(a);
+
+		// throw new NullPointerException();
 	}
 
 	@Override

@@ -7,7 +7,13 @@ import coffee.im.bluetooth.activity.base.BaseActivity;
 import coffee.im.bluetooth.constant.ConstMsg;
 import coffee.im.bluetooth.logic.TestLogic;
 
-public class Tab2Activity extends BaseActivity {
+/**
+ * 设置
+ * 
+ * @author coffee<br>
+ *         2013上午11:59:45
+ */
+public class SettingActivity extends BaseActivity {
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {

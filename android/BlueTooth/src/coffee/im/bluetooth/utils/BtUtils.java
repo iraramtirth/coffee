@@ -15,10 +15,8 @@ import android.bluetooth.BluetoothServerSocket;
 import android.bluetooth.BluetoothSocket;
 import android.content.Intent;
 import android.os.AsyncTask;
-import android.os.Message;
 import android.widget.Toast;
 import coffee.im.bluetooth.IActivity;
-import coffee.im.bluetooth.adapter.bean.ChatItemBean;
 
 /**
  * 蓝牙工具类

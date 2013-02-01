@@ -11,7 +11,8 @@ import android.os.Message;
  * 
  * 基本方法有:消息的发送
  * 
- * @author wangtaoyfx 2013-1-14下午2:17:20
+ * @author coffee <br>
+ *         2013-1-14下午2:17:20
  */
 public class BaseLogic {
 
@@ -53,7 +54,7 @@ public class BaseLogic {
 			handler.sendMessage(msg);
 		}
 	}
-	
+
 	/******************** 以下代码为了兼容之前的架构 *********************/
 	// protected void addListenerToAgent(int... args) {
 	// if (args != null && args.length > 0) {

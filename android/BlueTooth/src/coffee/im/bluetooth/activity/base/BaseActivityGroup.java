@@ -31,7 +31,7 @@ public abstract class BaseActivityGroup extends BaseActivity {
 				savedInstanceState);
 		mActivityGroup.getLocalActivityManager().dispatchResume();
 		
-		mViewGroup = (ViewGroup) findViewById(R.id.view_group);
+		mViewGroup = (ViewGroup) findViewById(R.id.main_content);
 	}
 
 	/**

@@ -2,30 +2,32 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent">
+    <!-- TabActivity的内容 -->
+    <RelativeLayout
+        android:id="@+id/main_content"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_above="@+id/main_tab"/>
+    <!-- 底部tab -->
     <LinearLayout
         android:id="@+id/main_tab"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true">
         <Button
-            android:id="@+id/tab_0"
+            android:id="@+id/tab_conversation"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"/>
         <Button
-            android:id="@+id/tab_1"
+            android:id="@+id/tab_contact"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"/>
         <Button
-            android:id="@+id/tab_2"
+            android:id="@+id/tab_setting"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"/>
     </LinearLayout>
-    <RelativeLayout
-        android:id="@+id/view_group"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:layout_above="@id/main_tab"/>
 </RelativeLayout>
