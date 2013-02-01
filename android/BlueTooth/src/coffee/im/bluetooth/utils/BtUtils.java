@@ -202,10 +202,10 @@ public class BtUtils {
 			// 注意line必须 以'\n', '\r', "\r\n"结尾
 			while ((line = in.readLine()) != null) {
 				System.out.println(line);
-				Message msg = mSocketHandler.obtainMessage();
-				msg.obj = new ChatItemBean(remoteDeviceName, line);
+				//Message msg = mSocketHandler.obtainMessage();
+				//msg.obj = new ChatItemBean(remoteDeviceName, line);
 				//
-				mSocketHandler.sendMessage(msg);
+//				mSocketHandler.sendMessage(msg);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();

@@ -1,6 +1,6 @@
 package coffee.im.bluetooth.activity;
 
-import org.bluetooth.R;
+import coffee.im.bluetooth.R;
 
 import android.os.Bundle;
 import android.os.Handler;
@@ -25,7 +25,7 @@ public class MainActivity extends BaseActivityGroup implements OnClickListener {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		//
-		showViewGroup(TestActivity.class);
+		showViewGroup(Tab0Activity.class);
 		//
 		mHandler = new Handler(this);
 		TestLogic.getInstance().addHandler(mHandler);
@@ -69,10 +69,10 @@ public class MainActivity extends BaseActivityGroup implements OnClickListener {
 	public void onClick(View v) {
 		switch (v.getId()) {
 		case R.id.tab_0:
-			showViewGroup(TestActivity.class);
+			showViewGroup(Tab0Activity.class);
 			break;
 		case R.id.tab_1:
-			showViewGroup(ChatActivity.class);
+			//showViewGroup(ChatActivity.class);
 			break;
 		case R.id.tab_2:
 			showViewGroup(Tab2Activity.class);

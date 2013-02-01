@@ -3,7 +3,7 @@
  */
 package coffee.im.bluetooth.activity.base;
 
-import org.bluetooth.R;
+import coffee.im.bluetooth.R;
 
 import android.app.ActivityGroup;
 import android.content.Intent;

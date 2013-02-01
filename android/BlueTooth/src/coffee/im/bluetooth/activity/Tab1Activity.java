@@ -1,6 +1,6 @@
 package coffee.im.bluetooth.activity;
 
-import org.bluetooth.R;
+import coffee.im.bluetooth.R;
 
 import android.os.Bundle;
 import coffee.im.bluetooth.activity.base.BaseActivity;

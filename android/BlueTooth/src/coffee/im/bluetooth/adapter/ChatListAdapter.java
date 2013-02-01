@@ -2,7 +2,7 @@ package coffee.im.bluetooth.adapter;
 
 import java.util.Stack;
 
-import org.bluetooth.R;
+import coffee.im.bluetooth.R;
 
 import coffee.im.bluetooth.adapter.bean.ChatItemBean;
 

@@ -3,12 +3,7 @@ package coffee.im.bluetooth.activity;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.bluetooth.R;
-
-import coffee.im.bluetooth.IActivity;
-import coffee.im.bluetooth.adapter.DeviceInfoAdapter;
-import coffee.im.bluetooth.adapter.bean.DeviceInfoBean;
-import coffee.im.bluetooth.utils.BtUtils;
+import coffee.im.bluetooth.R;
 
 import android.app.Activity;
 import android.bluetooth.BluetoothAdapter;
@@ -25,6 +20,10 @@ import android.view.View;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
+import coffee.im.bluetooth.IActivity;
+import coffee.im.bluetooth.adapter.DeviceInfoAdapter;
+import coffee.im.bluetooth.adapter.bean.DeviceInfoBean;
+import coffee.im.bluetooth.utils.BtUtils;
 
 /**
  * 扫描蓝牙设备
@@ -69,7 +68,7 @@ public class ScanDeviceActivity extends Activity implements IActivity{
         mListAdapter = new DeviceInfoAdapter(this, infoList);
         mListView.setAdapter(mListAdapter);
         mProgressBar = (ProgressBar) this.findViewById(R.id.progress_bar);
-        btService = MainActivity.btService; 
+        //btService = MainActivity.btService; 
     }
     
     //选中的设备address

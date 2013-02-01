@@ -2,7 +2,7 @@ package coffee.im.bluetooth.adapter;
 
 import java.util.List;
 
-import org.bluetooth.R;
+import coffee.im.bluetooth.R;
 
 import coffee.im.bluetooth.adapter.bean.DeviceInfoBean;
 
