@@ -4,7 +4,7 @@ import java.util.Stack;
 
 import coffee.im.bluetooth.R;
 
-import coffee.im.bluetooth.adapter.bean.ChatItemBean;
+import coffee.im.bluetooth.bean.MessageBean;
 
 import android.app.Activity;
 import android.view.View;
@@ -18,7 +18,7 @@ import android.widget.TextView;
  */
 public class ChatListAdapter extends BaseAdapter {
 
-	public Stack<ChatItemBean> chatStack = new Stack<ChatItemBean>();
+	public Stack<MessageBean> chatStack = new Stack<MessageBean>();
 	
 	private Activity context;
 	
@@ -26,7 +26,7 @@ public class ChatListAdapter extends BaseAdapter {
 		this.context = context;
 	}
 	
-	public void addChatItem(ChatItemBean item){
+	public void addChatItem(MessageBean item){
 		chatStack.add(item);
 	}
 	

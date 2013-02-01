@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.lang.reflect.Method;
+import java.util.Set;
 import java.util.logging.SocketHandler;
 
 import android.app.Activity;
@@ -28,7 +29,6 @@ public class BtUtils {
 	private Activity context;
 
 	private BluetoothServerSocket serverSocket;
-
 	private BluetoothSocket socket;
 	private BufferedReader in;
 	private BufferedWriter out;
@@ -38,6 +38,21 @@ public class BtUtils {
 	public BtUtils(Activity context, SocketHandler mSocketHandler) {
 		this.context = context;
 		this.mSocketHandler = mSocketHandler;
+	}
+
+	/**
+	 * 获取所有的配对设备
+	 * 
+	 * @return
+	 */
+	public static Set<BluetoothDevice> getBondedDevices() {
+		Set<BluetoothDevice> devices = null;
+		try {
+			devices = BluetoothAdapter.getDefaultAdapter().getBondedDevices();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return devices;
 	}
 
 	/**
@@ -200,10 +215,10 @@ public class BtUtils {
 			// 注意line必须 以'\n', '\r', "\r\n"结尾
 			while ((line = in.readLine()) != null) {
 				System.out.println(line);
-				//Message msg = mSocketHandler.obtainMessage();
-				//msg.obj = new ChatItemBean(remoteDeviceName, line);
+				// Message msg = mSocketHandler.obtainMessage();
+				// msg.obj = new ChatItemBean(remoteDeviceName, line);
 				//
-//				mSocketHandler.sendMessage(msg);
+				// mSocketHandler.sendMessage(msg);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();

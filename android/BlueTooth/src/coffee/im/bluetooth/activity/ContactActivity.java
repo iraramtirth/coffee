@@ -1,9 +1,13 @@
 package coffee.im.bluetooth.activity;
 
-import coffee.im.bluetooth.R;
+import java.util.Set;
 
+import android.bluetooth.BluetoothDevice;
 import android.os.Bundle;
+import coffee.im.bluetooth.R;
 import coffee.im.bluetooth.activity.base.BaseActivity;
+import coffee.im.bluetooth.adapter.DeviceInfoBean;
+import coffee.im.bluetooth.utils.BtUtils;
 
 /**
  * 联系人
@@ -22,6 +26,11 @@ public class ContactActivity extends BaseActivity {
 		// System.out.println(a);
 
 		// throw new NullPointerException();
+		Set<BluetoothDevice> devices = BtUtils.getBondedDevices();
+		for (BluetoothDevice device : devices) {
+			DeviceInfoBean info = new DeviceInfoBean();
+			info.setDeviceName(device.getName());
+		}
 	}
 
 	@Override

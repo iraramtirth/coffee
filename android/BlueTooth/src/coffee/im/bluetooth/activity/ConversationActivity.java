@@ -21,7 +21,7 @@ public class ConversationActivity extends BaseActivity {
 
 	@Override
 	public void doInitView() {
-		setContentView(R.layout.main_tab0);
+		setContentView(R.layout.main_tab1);
 	}
 
 }

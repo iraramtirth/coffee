@@ -36,10 +36,13 @@ public class MainActivity extends BaseActivityGroup implements OnClickListener {
 	@Override
 	public void doInitView() {
 		this.setContentView(R.layout.main);
+		//会话界面
 		Button btn0 = (Button) this.findViewById(R.id.tab_conversation);
+		//联系人界面
 		Button btn1 = (Button) this.findViewById(R.id.tab_contact);
+		//设置界面
 		Button btn2 = (Button) this.findViewById(R.id.tab_setting);
-
+		//
 		btn0.setOnClickListener(this);
 		btn1.setOnClickListener(this);
 		btn2.setOnClickListener(this);
