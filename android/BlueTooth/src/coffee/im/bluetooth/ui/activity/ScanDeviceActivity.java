@@ -1,11 +1,14 @@
-package org.bluetooth;
+package coffee.im.bluetooth.ui.activity;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import org.bluetooth.action.BluetoothService;
-import org.bluetooth.adapter.DeviceInfoAdapter;
-import org.bluetooth.adapter.bean.DeviceInfoBean;
+import org.bluetooth.R;
+
+import coffee.im.bluetooth.IActivity;
+import coffee.im.bluetooth.ui.adapter.DeviceInfoAdapter;
+import coffee.im.bluetooth.ui.adapter.bean.DeviceInfoBean;
+import coffee.utils.device.BtUtils;
 
 import android.app.Activity;
 import android.bluetooth.BluetoothAdapter;
@@ -37,7 +40,7 @@ public class ScanDeviceActivity extends Activity implements IActivity{
 	private DeviceInfoAdapter mListAdapter;
 	
 	private ProgressBar mProgressBar;
-	private BluetoothService btService;
+	private BtUtils btService;
 	@Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

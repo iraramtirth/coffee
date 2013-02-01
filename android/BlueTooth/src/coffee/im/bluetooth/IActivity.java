@@ -1,4 +1,4 @@
-package org.bluetooth;
+package coffee.im.bluetooth;
 
 import java.util.UUID;
 

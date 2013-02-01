@@ -1,4 +1,4 @@
-package org.bluetooth.action;
+package coffee.utils.device;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -6,10 +6,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.lang.reflect.Method;
-
-import org.bluetooth.IActivity;
-import org.bluetooth.MainActivity.SocketHandler;
-import org.bluetooth.adapter.bean.ChatItemBean;
+import java.util.logging.SocketHandler;
 
 import android.app.Activity;
 import android.bluetooth.BluetoothAdapter;
@@ -20,8 +17,16 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Message;
 import android.widget.Toast;
+import coffee.im.bluetooth.IActivity;
+import coffee.im.bluetooth.ui.adapter.bean.ChatItemBean;
 
-public class BluetoothService {
+/**
+ * 蓝牙工具类
+ * 
+ * @author coffee<br>
+ *         2013上午11:09:03
+ */
+public class BtUtils {
 	private Activity context;
 
 	private BluetoothServerSocket serverSocket;
@@ -32,7 +37,7 @@ public class BluetoothService {
 
 	private final SocketHandler mSocketHandler;
 
-	public BluetoothService(Activity context, SocketHandler mSocketHandler) {
+	public BtUtils(Activity context, SocketHandler mSocketHandler) {
 		this.context = context;
 		this.mSocketHandler = mSocketHandler;
 	}
@@ -95,8 +100,8 @@ public class BluetoothService {
 	}
 
 	public void setPairingConfirmation(BluetoothDevice device, boolean bool) {
-//		device = BluetoothAdapter.getDefaultAdapter().getRemoteDevice(
-//				BluetoothAdapter.getDefaultAdapter().getAddress());
+		// device = BluetoothAdapter.getDefaultAdapter().getRemoteDevice(
+		// BluetoothAdapter.getDefaultAdapter().getAddress());
 		try {
 			Method setPairingConfirmation = device.getClass().getMethod(
 					"setPairingConfirmation", new Class[] { boolean.class });
@@ -105,6 +110,7 @@ public class BluetoothService {
 			e.printStackTrace();
 		}
 	}
+
 	/**
 	 * 远程设置收到配对请求后， 会弹出一个框，该方法会取消提示框
 	 * 
@@ -113,8 +119,8 @@ public class BluetoothService {
 	 */
 	public boolean cancelPairingUserInput(BluetoothDevice device) {
 		try {
-//			device = BluetoothAdapter.getDefaultAdapter().getRemoteDevice(
-//					BluetoothAdapter.getDefaultAdapter().getAddress());
+			// device = BluetoothAdapter.getDefaultAdapter().getRemoteDevice(
+			// BluetoothAdapter.getDefaultAdapter().getAddress());
 			Method createBondMethod = device.getClass().getMethod(
 					"cancelPairingUserInput");
 			boolean result = (Boolean) createBondMethod.invoke(device);

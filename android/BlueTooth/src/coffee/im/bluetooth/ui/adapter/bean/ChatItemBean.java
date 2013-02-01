@@ -1,4 +1,4 @@
-package org.bluetooth.adapter.bean;
+package coffee.im.bluetooth.ui.adapter.bean;
 
 /**
  * 聊天内容
