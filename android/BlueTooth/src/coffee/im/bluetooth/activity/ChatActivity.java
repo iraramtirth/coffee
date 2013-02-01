@@ -1,4 +1,4 @@
-package coffee.im.bluetooth.ui.activity;
+package coffee.im.bluetooth.activity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,8 +12,8 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.EditText;
 import android.widget.ListView;
+import coffee.im.bluetooth.activity.base.BaseActivity;
 import coffee.im.bluetooth.constant.ConstMsg;
-import coffee.im.bluetooth.ui.activity.base.BaseActivity;
 
 /**
  * 聊天界面

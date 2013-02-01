@@ -1,4 +1,4 @@
-package coffee.im.bluetooth.ui.activity;
+package coffee.im.bluetooth.activity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -6,8 +6,8 @@ import java.util.List;
 import org.bluetooth.R;
 
 import coffee.im.bluetooth.IActivity;
-import coffee.im.bluetooth.ui.adapter.DeviceInfoAdapter;
-import coffee.im.bluetooth.ui.adapter.bean.DeviceInfoBean;
+import coffee.im.bluetooth.adapter.DeviceInfoAdapter;
+import coffee.im.bluetooth.adapter.bean.DeviceInfoBean;
 import coffee.im.bluetooth.utils.BtUtils;
 
 import android.app.Activity;

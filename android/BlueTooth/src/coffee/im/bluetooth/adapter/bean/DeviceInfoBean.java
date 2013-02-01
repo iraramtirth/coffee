@@ -1,4 +1,4 @@
-package coffee.im.bluetooth.ui.adapter;
+package coffee.im.bluetooth.adapter.bean;
 
 public class DeviceInfoBean {
 	

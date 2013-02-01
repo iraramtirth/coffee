@@ -1,10 +1,10 @@
-package coffee.im.bluetooth.ui.adapter;
+package coffee.im.bluetooth.adapter;
 
 import java.util.Stack;
 
 import org.bluetooth.R;
 
-import coffee.im.bluetooth.ui.adapter.bean.ChatItemBean;
+import coffee.im.bluetooth.adapter.bean.ChatItemBean;
 
 import android.app.Activity;
 import android.view.View;

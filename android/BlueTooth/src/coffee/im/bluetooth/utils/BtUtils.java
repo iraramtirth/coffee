@@ -18,7 +18,7 @@ import android.os.AsyncTask;
 import android.os.Message;
 import android.widget.Toast;
 import coffee.im.bluetooth.IActivity;
-import coffee.im.bluetooth.ui.adapter.bean.ChatItemBean;
+import coffee.im.bluetooth.adapter.bean.ChatItemBean;
 
 /**
  * 蓝牙工具类

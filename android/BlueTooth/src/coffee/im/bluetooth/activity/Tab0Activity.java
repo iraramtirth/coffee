@@ -1,9 +1,9 @@
-package coffee.im.bluetooth.ui.activity;
+package coffee.im.bluetooth.activity;
+
+import org.bluetooth.R;
 
 import android.os.Bundle;
-import cn.com.fetion.R;
-
-import com.fetion.apad.ui.activity.base.BaseActivity;
+import coffee.im.bluetooth.activity.base.BaseActivity;
 
 public class Tab0Activity extends BaseActivity {
 

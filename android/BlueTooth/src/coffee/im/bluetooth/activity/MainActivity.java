@@ -1,4 +1,4 @@
-package coffee.im.bluetooth.ui.activity;
+package coffee.im.bluetooth.activity;
 
 import org.bluetooth.R;
 
@@ -8,9 +8,9 @@ import android.os.Message;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import coffee.im.bluetooth.activity.base.BaseActivityGroup;
 import coffee.im.bluetooth.constant.ConstMsg;
 import coffee.im.bluetooth.logic.TestLogic;
-import coffee.im.bluetooth.ui.activity.base.BaseActivityGroup;
 /**
  * 程序的主类
  * 

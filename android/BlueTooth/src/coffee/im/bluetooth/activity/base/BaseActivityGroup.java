@@ -1,7 +1,7 @@
 /**
  * 
  */
-package coffee.im.bluetooth.ui.activity.base;
+package coffee.im.bluetooth.activity.base;
 
 import org.bluetooth.R;
 

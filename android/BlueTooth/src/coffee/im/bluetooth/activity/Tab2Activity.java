@@ -1,11 +1,11 @@
-package coffee.im.bluetooth.ui.activity;
+package coffee.im.bluetooth.activity;
+
+import org.bluetooth.R;
 
 import android.os.Bundle;
-import cn.com.fetion.R;
-
-import com.fetion.apad.constant.ConstMsg;
-import com.fetion.apad.logic.TestLogic;
-import com.fetion.apad.ui.activity.base.BaseActivity;
+import coffee.im.bluetooth.activity.base.BaseActivity;
+import coffee.im.bluetooth.constant.ConstMsg;
+import coffee.im.bluetooth.logic.TestLogic;
 
 public class Tab2Activity extends BaseActivity {
 
