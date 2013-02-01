@@ -1,13 +1,11 @@
 package coffee.im.bluetooth.ui.activity;
 
+import org.bluetooth.R;
+
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
-import cn.com.fetion.R;
-import cn.com.fetion.android.logic.LogicMgr;
-
-import com.fetion.apad.logic.LoginLogic;
-import com.fetion.apad.ui.activity.base.BaseActivity;
+import coffee.im.bluetooth.ui.activity.base.BaseActivity;
 
 /**
  * Main

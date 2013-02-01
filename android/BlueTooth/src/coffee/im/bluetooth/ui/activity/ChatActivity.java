@@ -3,6 +3,8 @@ package coffee.im.bluetooth.ui.activity;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.bluetooth.R;
+
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -10,13 +12,8 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.EditText;
 import android.widget.ListView;
-import cn.com.fetion.R;
-
-import com.fetion.apad.constant.ConstMsg;
-import com.fetion.apad.logic.MsgLogic;
-import com.fetion.apad.model.MessageModel;
-import com.fetion.apad.ui.activity.base.BaseActivity;
-import com.fetion.apad.ui.adapter.ChatAdapter;
+import coffee.im.bluetooth.constant.ConstMsg;
+import coffee.im.bluetooth.ui.activity.base.BaseActivity;
 
 /**
  * 聊天界面

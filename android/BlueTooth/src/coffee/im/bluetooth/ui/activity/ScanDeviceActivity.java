@@ -8,7 +8,7 @@ import org.bluetooth.R;
 import coffee.im.bluetooth.IActivity;
 import coffee.im.bluetooth.ui.adapter.DeviceInfoAdapter;
 import coffee.im.bluetooth.ui.adapter.bean.DeviceInfoBean;
-import coffee.utils.device.BtUtils;
+import coffee.im.bluetooth.utils.BtUtils;
 
 import android.app.Activity;
 import android.bluetooth.BluetoothAdapter;

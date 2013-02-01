@@ -5,10 +5,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-
-import com.fetion.apad.FetionApp;
-import com.fetion.apad.util.ActivityMgr;
-import com.fetion.util.log.Log;
+import coffee.im.bluetooth.App;
+import coffee.im.bluetooth.utils.ActivityMgr;
+import coffee.utils.log.Log;
 
 public abstract class BaseActivity extends Activity implements Handler.Callback {
 
@@ -19,8 +18,8 @@ public abstract class BaseActivity extends Activity implements Handler.Callback 
 	 */
 	protected boolean activityToMgr = true;
 
-	protected FetionApp getApp() {
-		return (FetionApp) getApplication();
+	protected App getApp() {
+		return (App) getApplication();
 	}
 
 	protected void onCreate(Bundle savedInstanceState) {

@@ -3,13 +3,14 @@
  */
 package coffee.im.bluetooth.ui.activity.base;
 
+import org.bluetooth.R;
+
 import android.app.ActivityGroup;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout.LayoutParams;
-import cn.com.fetion.R;
 
 public abstract class BaseActivityGroup extends BaseActivity {
 	protected View mFocusView = null;
