@@ -1,7 +1,7 @@
 package org.coffee.activity;
 
 import org.coffee.R;
-import org.coffee.view.RoundCornerImageView;
+import org.coffee.util.view.RoundCornerImageView;
 
 import android.app.Activity;
 import android.graphics.Color;

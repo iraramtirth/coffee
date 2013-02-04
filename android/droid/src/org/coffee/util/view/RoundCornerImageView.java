@@ -1,4 +1,4 @@
-package org.coffee.view;
+package org.coffee.util.view;
 
 import android.content.Context;
 import android.graphics.Bitmap;

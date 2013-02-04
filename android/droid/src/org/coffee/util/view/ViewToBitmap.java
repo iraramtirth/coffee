@@ -1,4 +1,4 @@
-package org.coffee.view;
+package org.coffee.util.view;
 
 import org.coffee.http.HttpClient;
 import org.coffee.util.view.BitmapUtils;

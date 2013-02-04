@@ -1,4 +1,4 @@
-package org.coffee.view;
+package org.coffee.util.view;
 
 import org.coffee.util.adapter.OnGestureEvent;
 import org.coffee.util.res.RES;
