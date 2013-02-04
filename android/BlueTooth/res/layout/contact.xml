@@ -4,17 +4,16 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
-    <!-- 联系人标题 -->
-    <TextView
-        android:id="@+id/contact_title"
+    <include
+        android:id="@+id/title_layout"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
-        android:text="联系人列表"/>
+        layout="@layout/inc_title"/>
     <!-- 联系人列表 -->
     <ListView
         android:id="@+id/contact_list"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/contact_title"/>
+        android:layout_below="@id/title_layout"/>
 </RelativeLayout>
