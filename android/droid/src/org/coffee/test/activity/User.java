@@ -1,7 +1,7 @@
 package org.coffee.test.activity;
 
-import org.coffee.sqlite.annotation.Column;
-import org.coffee.sqlite.annotation.Id;
+import org.coffee.util.sqlite.annotation.Column;
+import org.coffee.util.sqlite.annotation.Id;
 
 public class User {
 	@Id

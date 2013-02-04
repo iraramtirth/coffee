@@ -1,7 +1,7 @@
 /*
  * @(#)Log.java 11-10-9 下午3:00 CopyRight 2011. All rights reserved
  */
-package org.coffee.os;
+package org.coffee.util.log;
 
 import java.io.File;
 import java.io.FileNotFoundException;

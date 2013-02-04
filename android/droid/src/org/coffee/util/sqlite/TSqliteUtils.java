@@ -1,4 +1,4 @@
-package org.coffee.sqlite;
+package org.coffee.util.sqlite;
 
 import java.lang.reflect.Field;
 import java.text.SimpleDateFormat;
@@ -9,10 +9,10 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import org.coffee.sqlite.annotation.Bean;
-import org.coffee.sqlite.annotation.Column;
-import org.coffee.sqlite.annotation.Id;
-import org.coffee.sqlite.annotation.Transient;
+import org.coffee.util.sqlite.annotation.Bean;
+import org.coffee.util.sqlite.annotation.Column;
+import org.coffee.util.sqlite.annotation.Id;
+import org.coffee.util.sqlite.annotation.Transient;
 
 import android.database.Cursor;
 

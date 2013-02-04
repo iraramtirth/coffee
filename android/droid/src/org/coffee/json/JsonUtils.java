@@ -7,8 +7,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import org.coffee.sqlite.TUtils;
-import org.coffee.sqlite.annotation.Column;
+import org.coffee.util.sqlite.TUtils;
+import org.coffee.util.sqlite.annotation.Column;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;

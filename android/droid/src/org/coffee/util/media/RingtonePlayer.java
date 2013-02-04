@@ -6,7 +6,7 @@ package org.coffee.util.media;
 
 import org.coffee.App;
 import org.coffee.R;
-import org.coffee.os.Log;
+import org.coffee.util.log.Log;
 
 import android.content.Context;
 import android.content.res.AssetFileDescriptor;

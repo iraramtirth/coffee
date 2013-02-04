@@ -1,4 +1,4 @@
-package org.coffee.sqlite;
+package org.coffee.util.sqlite;
 
 import java.util.ArrayList;
 import java.util.List;

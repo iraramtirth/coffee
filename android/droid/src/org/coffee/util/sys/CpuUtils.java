@@ -1,7 +1,9 @@
-package org.coffee.os;
+package org.coffee.util.sys;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
+
+import org.coffee.util.log.Log;
 
 import android.os.Process;
 

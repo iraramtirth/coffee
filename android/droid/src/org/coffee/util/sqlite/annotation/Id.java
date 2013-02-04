@@ -1,4 +1,4 @@
-package org.coffee.sqlite.annotation;
+package org.coffee.util.sqlite.annotation;
 
 import static java.lang.annotation.ElementType.FIELD;
 import static java.lang.annotation.ElementType.METHOD;

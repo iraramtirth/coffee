@@ -2,7 +2,7 @@ package org.coffee.util.xml.parser;
 
 import java.lang.reflect.Field;
 
-import org.coffee.sqlite.TUtils;
+import org.coffee.util.sqlite.TUtils;
 import org.coffee.util.xml.parser.annotation.GenericType;
 import org.coffee.util.xml.parser.annotation.XmlElement;
 import org.coffee.util.xml.parser.annotation.XmlRootElement;

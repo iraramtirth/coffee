@@ -1,7 +1,7 @@
 package org.coffee.util.activity;
 
 import org.coffee.R;
-import org.coffee.os.Log;
+import org.coffee.util.log.Log;
 
 import android.content.res.Configuration;
 import android.os.Bundle;

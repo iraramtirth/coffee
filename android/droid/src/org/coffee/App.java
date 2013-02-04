@@ -1,6 +1,6 @@
 package org.coffee;
 
-import org.coffee.os.CpuUtils;
+import org.coffee.util.sys.CpuUtils;
 
 import android.app.Application;
 import android.content.Context;

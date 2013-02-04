@@ -1,6 +1,6 @@
 package org.coffee.provider;
 
-import org.coffee.sqlite.DbHelper;
+import org.coffee.util.sqlite.DbHelper;
 
 import android.content.ContentProvider;
 import android.content.ContentValues;
