@@ -1,6 +1,6 @@
 package org.coffee.util.view;
 
-import org.coffee.http.HttpClient;
+import org.coffee.util.http.HttpClient;
 import org.coffee.util.view.BitmapUtils;
 
 import android.app.Activity;

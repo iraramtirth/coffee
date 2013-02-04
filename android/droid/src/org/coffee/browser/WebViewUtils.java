@@ -1,7 +1,7 @@
 package org.coffee.browser;
 
 import org.coffee.browser.activity.BrowserActivity;
-import org.coffee.http.HttpClient;
+import org.coffee.util.http.HttpClient;
 import org.coffee.util.lang.RegexUtils;
 
 /**

@@ -1,4 +1,4 @@
-package org.coffee.http;
+package org.coffee.util.http;
 
 import java.io.IOException;
 import java.util.ArrayList;
