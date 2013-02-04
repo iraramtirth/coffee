@@ -1,4 +1,4 @@
-package org.coffee.util.res;
+package org.coffee.util.framework;
 
 
 public class RES {

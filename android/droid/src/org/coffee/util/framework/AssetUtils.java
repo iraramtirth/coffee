@@ -1,4 +1,4 @@
-package org.coffee.util.res;
+package org.coffee.util.framework;
 
 import java.io.BufferedInputStream;
 import java.io.IOException;
