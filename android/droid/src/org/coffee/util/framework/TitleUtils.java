@@ -1,4 +1,4 @@
-package org.coffee.util.window;
+package org.coffee.util.framework;
 
 import android.app.Activity;
 import android.view.View;
