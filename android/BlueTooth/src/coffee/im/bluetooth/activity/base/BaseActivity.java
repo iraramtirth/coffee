@@ -10,27 +10,35 @@ import android.view.Window;
 import android.widget.Button;
 import android.widget.ImageButton;
 import coffee.im.bluetooth.App;
+import coffee.im.bluetooth.R;
 import coffee.im.bluetooth.utils.ActivityMgr;
 import coffee.utils.log.Log;
 
 /**
+ * 基类：<br>
+ * 注意: 基类要处理字段两个字段 <br>
+ * 1)activityToMgr：标志位,如果为true 则该类会被加入到{@link ActivityMgr}管理<br>
+ * 2)layoutResource：子类需要在子类的onCreate的首行代码中设置该字段
  * 
- * @author coffee
- * 
+ * @author coffee<br>
+ *         2013-2-5上午7:39:05
  */
 public abstract class BaseActivity extends Activity implements Handler.Callback {
 
 	protected Handler mHandler;
 
 	/**
-	 * 是否需要将activity放到ActivityMgr管理 注意:ActivityGroup中管理的activity不需要加入
+	 * 是否需要将activity放到ActivityMgr管理 注意:ActivityGroup中管理的activity不需要加入<br>
+	 * 此类activity需要在onCreate的第一行代码中设置super.activityToMgr = false;
 	 */
 	protected boolean activityToMgr = true;
 
+	protected int layoutResource = -1;
+	
 	/**
 	 * 标题栏左右两侧按钮,中间TextView
 	 */
-	protected View mTitleViewLeft,mTitleViewCenter, mTitleViewRight;
+	protected View mTitleViewLeft, mTitleViewCenter, mTitleViewRight;
 	/**
 	 * 标题栏内容(左、中、右)
 	 */
@@ -44,8 +52,10 @@ public abstract class BaseActivity extends Activity implements Handler.Callback 
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
-		Log.i("Base_" + this, "onCreate");
+		
 		doInitView();
+		// 初始化标题栏,标题栏在父类中初始化，如果无特殊要求，不需要覆盖
+		doInitTitle();
 		if (activityToMgr) {
 			ActivityMgr.push(this);
 		}
@@ -64,6 +74,12 @@ public abstract class BaseActivity extends Activity implements Handler.Callback 
 	 * 初始化控件
 	 */
 	public abstract void doInitView();
+
+	private void doInitTitle() {
+		mTitleViewLeft = findViewById(R.id.title_left);
+		mTitleViewCenter = findViewById(R.id.title_center);
+		mTitleViewRight = findViewById(R.id.title_right);
+	}
 
 	/**
 	 * 设置标题的相关属性
@@ -90,9 +106,10 @@ public abstract class BaseActivity extends Activity implements Handler.Callback 
 		if (this.mTitleViewRight != null) {
 			this.mTitleViewRight.setOnClickListener(rightOnClick);
 		}
-		//设置内容
+		// 设置内容
 		this.setTitleViewContent(this.mTitleViewLeft, this.mTitleContentleft);
-		this.setTitleViewContent(this.mTitleViewCenter, this.mTitleContentCenter);
+		this.setTitleViewContent(this.mTitleViewCenter,
+				this.mTitleContentCenter);
 		this.setTitleViewContent(this.mTitleViewRight, this.mTitleContentRight);
 	}
 
@@ -108,6 +125,8 @@ public abstract class BaseActivity extends Activity implements Handler.Callback 
 		if (titleView == null || titleContent == null) {
 			return;
 		}
+		// 设置可见
+		titleView.setVisibility(View.VISIBLE);
 		// 一种是：View为Button; Content为String
 		if (titleContent instanceof String && titleView instanceof Button) {
 			((Button) titleView).setText(String.valueOf(titleContent));

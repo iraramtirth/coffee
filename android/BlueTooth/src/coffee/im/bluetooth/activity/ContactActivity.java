@@ -6,6 +6,8 @@ import java.util.Set;
 
 import android.bluetooth.BluetoothDevice;
 import android.os.Bundle;
+import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.ListView;
 import coffee.im.bluetooth.R;
 import coffee.im.bluetooth.activity.base.BaseActivity;
@@ -25,11 +27,7 @@ public class ContactActivity extends BaseActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		activityToMgr = false;
 		super.onCreate(savedInstanceState);
-		// String abc = null;
-		// int a = abc.length();
-		// System.out.println(a);
-
-		// throw new NullPointerException();
+		 
 		Set<BluetoothDevice> devices = BtUtils.getBondedDevices();
 		for (BluetoothDevice device : devices) {
 			// DeviceInfoBean info = new DeviceInfoBean();
@@ -49,6 +47,13 @@ public class ContactActivity extends BaseActivity {
 		ListView listView = (ListView) this.findViewById(R.id.contact_list);
 		DeviceInfoAdapter adapter = new DeviceInfoAdapter(mDevices, this);
 		listView.setAdapter(adapter);
+		
+		setTitle(null, new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				
+			}
+		}, null, "联系人", "扫描");
 	}
 
 }
