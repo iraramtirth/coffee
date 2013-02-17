@@ -13,7 +13,7 @@ import android.view.View;
 /**
  * 正在启动界面的Text
  * 
- * @author wangtao
+ * @author coffee
  */
 public class MaskedTextView extends View {
 	private Paint txtPaint;

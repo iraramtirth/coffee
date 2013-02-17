@@ -7,7 +7,7 @@ import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 /**
- * @author wangtao
+ * @author coffee
  */
 public class FileUtils {
 	private static String enc = "UTF-8";

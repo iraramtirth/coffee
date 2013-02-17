@@ -8,11 +8,12 @@ import java.io.OutputStream;
 import java.net.URLDecoder;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 
 
 /**
  * 文件 | 控制台输出流 
- * @author wangtao
+ * @author coffee
  */
 public class Outer {
 	private static OutputStream out;
@@ -77,7 +78,7 @@ public class Outer {
 	 * 返回当前时间
 	 */
 	private static String currentTime(){
-		SimpleDateFormat sdf = new SimpleDateFormat(timePattern);
+		SimpleDateFormat sdf = new SimpleDateFormat(timePattern, Locale.getDefault());
 		return sdf.format(new Date());
 	}
 	/**

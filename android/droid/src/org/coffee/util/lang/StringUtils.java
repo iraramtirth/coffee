@@ -3,7 +3,7 @@ package org.coffee.util.lang;
 /**
  * 数值型变量工具类
  *  
- * @author wangtao
+ * @author coffee
  */
 public class StringUtils {
 	

@@ -6,7 +6,7 @@ import java.util.List;
 /**
  * 测试用的
  * 打印对象的值
- * @author wangtao
+ * @author coffee
  */
 public class Printer {
 	public static void info(Object obj){

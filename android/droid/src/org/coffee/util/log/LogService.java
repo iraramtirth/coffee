@@ -1,4 +1,4 @@
-package org.coffee.util.framework;
+package org.coffee.util.log;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;

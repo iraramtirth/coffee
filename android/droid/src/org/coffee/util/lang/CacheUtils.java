@@ -5,7 +5,7 @@ import java.io.File;
 import android.os.Environment;
 /**
  * 清空缓存
- * @author wangtao
+ * @author coffee
  */
 public class CacheUtils {
 	private static final String CACHE_DIR = Environment.getExternalStorageDirectory() + "/cache";

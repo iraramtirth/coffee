@@ -1,4 +1,4 @@
-package org.coffee.util;
+package org.coffee.test.activity;
 
 import org.coffee.util.framework.InputMethodUtils;
 

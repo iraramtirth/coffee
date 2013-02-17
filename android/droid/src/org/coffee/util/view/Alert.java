@@ -4,7 +4,6 @@ import org.coffee.App;
 
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.ProgressDialog;
 import android.content.DialogInterface.OnClickListener;
 import android.view.View;
 import android.widget.Toast;
