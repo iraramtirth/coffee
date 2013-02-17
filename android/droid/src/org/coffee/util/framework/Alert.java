@@ -1,4 +1,4 @@
-package org.coffee.util.view;
+package org.coffee.util.framework;
 
 import org.coffee.App;
 
@@ -48,17 +48,25 @@ public class Alert {
 	 * @param listeners
 	 */
 	public static void dialog(Activity context, int stringArray,
-			final OnClickListener[] listeners) {
+			final OnClickListener... listeners) {
 		AlertDialog.Builder builder = new AlertDialog.Builder(context);
 		String[] arr = context.getResources().getStringArray(stringArray);
-		System.out.println(arr);
-//		builder.setIcon();
-		builder.setTitle("蓝牙设备未打开");
-//		builder.setMessage(messageId);
-//		builder.setNegativeButton(text, listener)
+		int iconRes = context.getResources().getIdentifier(arr[0], "drawable",
+				null);
+		builder.setIcon(iconRes);
+		builder.setTitle(arr[1]);
+		builder.setMessage(arr[2]);
+		if (listeners.length == 2) {
+			builder.setPositiveButton(arr[3], listeners[0]);
+			builder.setNegativeButton(arr[5], listeners[1]);
+		} else if (listeners.length == 3) {
+			builder.setPositiveButton(arr[3], listeners[0]);
+			builder.setNeutralButton(arr[4], listeners[1]);
+			builder.setNegativeButton(arr[5], listeners[2]);
+		}
+		builder.show();
 	}
 
-	 
 	/**
 	 * 
 	 * @param view
