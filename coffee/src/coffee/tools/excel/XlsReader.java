@@ -101,37 +101,38 @@ public class XlsReader {
 	/**
 	 * 重载：默认把第一行的列作为索引列
 	 * 仅支持连续的行,整行
-	 * @param ix	:	索引所在的起始行
-	 * @param iy	:	索引所在的起始列
-	 * @param cx	:	内容起始行：列索引已经根据ix,iy保存下来了
+	 * @param ix	:	索引所在的起始行 (从1开始计数)
+	 * @param iy	:	索引所在的起始列 (从1开始计数)
+	 * @param contentStart	:	内容起始行(包含该行)：列索引及与iy的值一致
+	 * @param contentEnd	:	内容结束行(包含该行)。如果contentEnd的值 <= 0则读取从contentStart开始的剩余所有行
 	 * @return
 	 */
-	public List<Map<String,String>> query(int ix, int iy, int cx) {
+	public List<Map<String,String>> query(int ix, int iy, int contentStartX, int contentEnd) {
 		if (sheet == null) {
 			return new ArrayList<Map<String,String>>();
 		}
-		String[] columns = null;
+		//因为是从1开始计数,所以先处理一下 ix, iy
+		ix--;
+		iy--;
+		contentStartX--;
+		contentEnd--;
+		//---------------------------
 		HSSFRow row = sheet.getRow(ix);
-		if (row != null) {
-			String value = "";
-			columns = new String[row.getLastCellNum()-iy];
-			for (int j = iy; j < row.getLastCellNum(); j++) {
-				value = XlsUtils.getCellValue(row.getCell(j));
-				if(value != null){
-					value = XlsUtils.getColumnName(value);
-					columns[j-iy] = value;
-				}
-			}
-		}
+		//获取标题的Title
+		String[] titles = getTitles(row, ix, iy);
 		//
 		List<Map<String,String>> items = new ArrayList<Map<String,String>>();
-		for (int i = cx; i < sheet.getPhysicalNumberOfRows(); i++) {
+		//
+		if (contentEnd <= 0) {
+			contentEnd = sheet.getPhysicalNumberOfRows();
+		}
+		for (int i = contentStartX; i <= contentEnd; i++) {
 			row = sheet.getRow(i);
 			if (row != null) {
 				// LinkedHashMap 保持key的顺序
 				Map<String,String> item = new LinkedHashMap<String,String>();
-				for (int j = 0; j < columns.length; j++) {
-					item.put(columns[j], XlsUtils.getCellValue(row.getCell(j)));
+				for (int j = 0; j < titles.length; j++) {
+					item.put(titles[j], XlsUtils.getCellValue(row.getCell(iy + j)));
 				}
 				if(item.size() > 0){
 					items.add(item);
@@ -141,6 +142,28 @@ public class XlsReader {
 		return items;
 	}
 	
+	/**
+	 * 重载：默认把第一行的列作为索引列
+	 * 仅支持连续的行,整行
+	 * @param ix	:	索引所在的起始行 (从1开始计数)
+	 * @param iy	:	索引所在的起始列 (从1开始计数)
+	 **/
+	private String[] getTitles(HSSFRow row, int ix, int iy)
+	{
+		String[] titles = null;
+		if (row != null) {
+			String value = "";
+			titles = new String[row.getLastCellNum() - iy];
+			for (int j = iy; j < row.getLastCellNum(); j++) {
+				value = XlsUtils.getCellValue(row.getCell(j));
+				if(value != null){
+					value = XlsUtils.getColumnName(value);
+					titles[j-iy] = value;
+				}
+			}
+		}
+		return titles;
+	}
 	
 	/**
 	 *  读取所有sheet的name
@@ -175,7 +198,7 @@ public class XlsReader {
 //		System.out.println(result);
 		
 	
-		XlsReader reader = new XlsReader("c:/text.xls");
+//		XlsReader reader = new XlsReader("c:/text.xls");
 		
 //		List<Map<String, String>> items = reader.query(0, 0, 1);
 //		List<User> userList = XlsUtils.toBeanList(items, User.class);

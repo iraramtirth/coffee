@@ -7,6 +7,7 @@ import coffee.common.util.io.Outer;
 import coffee.tools.crawl.CrawlerUtils;
 
 public class IDCard {
+	
 	public static void main(String[] args) {
 		String linkUrl = "http://qq.ip138.com/idsearch/index.asp?action=idcard&userid=";
 		String content = null;
@@ -17,7 +18,7 @@ public class IDCard {
 			Outer.setPath("~/idcard.txt", true, false);
 			// 石家庄—130101-8 保定130600-4
 			String idcard = "";
-			for (int i = 0; i < 9; i++) {
+			for (int i = 1; i < 9; i++) {
 				for (int j = 0; j < 10000; j++) {
 					idcard = "13010" + i + "19891224" + format.format(j);
 					content = CrawlerUtils.getDocumentHtml(linkUrl + idcard, 3,
