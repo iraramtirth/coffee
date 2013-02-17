@@ -128,7 +128,7 @@ public class FileUtils {
 	 * 获取工程的根目录 可以在web/java工程中调用
 	 */
 	public static String getProjectBasePath() {
-		return FileUtils.class.getClassLoader().getResource("/").getPath();
+		return FileUtils.class.getClassLoader().getResource("").getPath();
 	}
 
 	/**

@@ -1,10 +1,10 @@
 package coffee.util.database;
 
+import java.io.FileInputStream;
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.util.ResourceBundle;
+import java.util.Properties;
 
-import coffee.Config;
 import coffee.util.database.core.Configuration;
 import coffee.util.database.core.Configuration.DialectType;
 
@@ -24,12 +24,15 @@ public class SqlConnection {
 
 	private static void initConnectionPool() throws SQLException {
 		try {
-			ResourceBundle prop = ResourceBundle
-					.getBundle(Config.DB_JDBC_PROPS);
-			url = prop.getString("url");
-			username = prop.getString("username");
-			password = prop.getString("password");
-			driver = prop.getString("driver");
+//			ResourceBundle prop = ResourceBundle
+//					.getBundle(Config.DB_JDBC_PROPS);
+			Properties prop = new Properties();
+			prop.load(new FileInputStream(SqlConnection.class.getResource("/conf/jdbc.properties").getFile()));
+			
+			url = prop.getProperty("url");
+			username = prop.getProperty("username");
+			password = prop.getProperty("password");
+			driver = prop.getProperty("driver");
 			if (driver.toUpperCase().contains("ORACLE")) {
 				Configuration.dialect = DialectType.ORACLE;
 			} else if (driver.toUpperCase().contains("MYSQL")) {

@@ -43,7 +43,7 @@ public class MailSender {
 		imgMap.put("image", "c:/mmb.jpg");
 		
 		XlsReader reader = new XlsReader("F:\\工作任务\\5000 QQ号.xls");
-		List<Map<String,String>> itemsMap = reader.query(0, 0, 0);
+		List<Map<String,String>> itemsMap = reader.query(0, 0, 0,0 );
 		List<String> qqList = XlsUtils.toStringList(itemsMap);
 		System.out.println(qqList);
 		Outer.setPath("c:/email_qq.log", true, true);

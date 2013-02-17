@@ -65,7 +65,8 @@ public class XlsUtils {
 				cellValue = sdf.format(date);
 			} else {// 2011-06-09修改-end
 				try {
-					cellValue = (int) cell.getNumericCellValue() + "";
+					//注意要转型为long 如果转为int 则有可能发生溢出
+					cellValue = String.valueOf((long) cell.getNumericCellValue());
 				} catch (Exception e) {
 					cellValue = cell.getNumericCellValue() + "";
 				}
