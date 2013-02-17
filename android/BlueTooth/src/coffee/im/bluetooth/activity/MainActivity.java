@@ -13,7 +13,8 @@ import coffee.im.bluetooth.constant.ConstMsg;
 /**
  * 程序的主类
  * 
- * @author coffee 2013-1-21下午4:28:19
+ * @author coffee<br>
+ *         2013-1-21下午4:28:19
  */
 public class MainActivity extends BaseActivityGroup implements OnClickListener {
 

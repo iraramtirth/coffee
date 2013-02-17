@@ -18,25 +18,30 @@ public class ContactBean {
 	/**
 	 * 蓝牙的mac地址
 	 */
-	private String mac;
-	
+	private String address;
+
 	//
 	public int getId() {
 		return id;
 	}
+
 	public void setId(int id) {
 		this.id = id;
 	}
+
 	public String getName() {
 		return name;
 	}
+
 	public void setName(String name) {
 		this.name = name;
 	}
-	public String getMac() {
-		return mac;
+
+	public String getAddress() {
+		return address;
 	}
-	public void setMac(String mac) {
-		this.mac = mac;
+
+	public void setAddress(String address) {
+		this.address = address;
 	}
 }

@@ -2,4 +2,12 @@
 <resources>
     <string name="hello">Hello World, BlueToothActivity!</string>
     <string name="app_name">chat_blue</string>
+    <string-array name="alert_bluetooth_open">
+        <item>icon</item>
+        <item>title</item>
+        <item>message</item>
+        <item>sure</item>
+        <item>@null</item>
+        <item>cancel</item>
+    </string-array>
 </resources>

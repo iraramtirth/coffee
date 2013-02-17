@@ -6,9 +6,13 @@ import android.app.Activity;
 import android.bluetooth.BluetoothDevice;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 import coffee.im.bluetooth.R;
+import coffee.im.bluetooth.activity.ChatActivity;
+import coffee.im.bluetooth.activity.base.BaseActivity;
 import coffee.im.bluetooth.adapter.base.BaseAdapter;
+import coffee.im.bluetooth.constant.ConstIntent;
 
 /**
  * 蓝牙设备信息
@@ -37,34 +41,37 @@ public class DeviceInfoAdapter extends BaseAdapter<BluetoothDevice> {
 		if (convertView == null) {
 			holder = new ViewHolder();
 			convertView = View.inflate(mContext, R.layout.device_item, null);
-			holder.name = (TextView) convertView
-					.findViewById(R.id.contact_name);
+			holder.name = (TextView) convertView.findViewById(R.id.device_name);
 			holder.address = (TextView) convertView
-					.findViewById(R.id.contact_address);
-			holder.pair = convertView.findViewById(R.id.contact_pair);
+					.findViewById(R.id.device_address);
+			holder.action = convertView.findViewById(R.id.device_action);
 			convertView.setTag(holder);
 		} else {
 			holder = (ViewHolder) convertView.getTag();
 		}
-		BluetoothDevice device = getItem(position);
+		final BluetoothDevice device = getItem(position);
 		// 设置值
 		holder.name.setText(device.getName());
 		holder.address.setText(device.getAddress());
 		// 如果还未配对
 		if (device.getBondState() != BluetoothDevice.BOND_BONDED) {
+			((Button) holder.action).setText("配对");
 			// 配对
-			holder.pair.setOnClickListener(new View.OnClickListener() {
+			holder.action.setOnClickListener(new View.OnClickListener() {
 				@Override
 				public void onClick(View v) {
 					//
 				}
 			});
 		} else {
+			((Button) holder.action).setText("聊天");
 			// 聊天
-			holder.pair.setOnClickListener(new View.OnClickListener() {
+			holder.action.setOnClickListener(new View.OnClickListener() {
 				@Override
 				public void onClick(View v) {
-					//
+					((BaseActivity) mContext).startActivity(ChatActivity.class,
+							ConstIntent.EXTRA_BLUETOOTH_DEVICE,
+							device.getAddress());
 				}
 			});
 		}
@@ -75,7 +82,7 @@ public class DeviceInfoAdapter extends BaseAdapter<BluetoothDevice> {
 	private class ViewHolder {
 		TextView name;
 		TextView address;
-		View pair; // 配对 button 或者ImageButton
+		View action; // 配对\聊天 button 或者ImageButton
 	}
 
 }

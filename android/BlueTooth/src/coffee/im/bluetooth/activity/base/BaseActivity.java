@@ -12,8 +12,8 @@ import android.widget.ImageButton;
 import coffee.im.bluetooth.App;
 import coffee.im.bluetooth.R;
 import coffee.im.bluetooth.utils.ActivityMgr;
-import coffee.utils.log.Log;
 
+ 
 /**
  * 基类：<br>
  * 注意: 基类要处理字段两个字段 <br>
@@ -33,8 +33,9 @@ public abstract class BaseActivity extends Activity implements Handler.Callback 
 	 */
 	protected boolean activityToMgr = true;
 
+ 
 	protected int layoutResource = -1;
-	
+
 	/**
 	 * 标题栏左右两侧按钮,中间TextView
 	 */
@@ -52,10 +53,19 @@ public abstract class BaseActivity extends Activity implements Handler.Callback 
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
-		
-		doInitView();
+		if (layoutResource != -1) {
+			setContentView(layoutResource);
+		}
 		// 初始化标题栏,标题栏在父类中初始化，如果无特殊要求，不需要覆盖
 		doInitTitle();
+		// 初始化其他view
+		requestWindowFeature(Window.FEATURE_NO_TITLE);
+
+		doInitView();
+
+		// 初始化标题栏,标题栏在父类中初始化，如果无特殊要求，不需要覆盖
+		doInitTitle();
+
 		if (activityToMgr) {
 			ActivityMgr.push(this);
 		}
@@ -71,10 +81,11 @@ public abstract class BaseActivity extends Activity implements Handler.Callback 
 
 	/* TODO**************** BaseActivity定义的抽象方法 ********************* */
 	/**
-	 * 初始化控件
+	 * 初始化控件(出标题栏之外的)
 	 */
 	public abstract void doInitView();
-
+   
+	/* TODO**************** 父类的实现 ********************* */
 	private void doInitTitle() {
 		mTitleViewLeft = findViewById(R.id.title_left);
 		mTitleViewCenter = findViewById(R.id.title_center);
@@ -140,6 +151,7 @@ public abstract class BaseActivity extends Activity implements Handler.Callback 
 	}
 
 	/* TODO**************** 父类的实现 ********************* */
+  
 	@Override
 	public boolean handleMessage(Message msg) {
 		System.out.println(msg);
@@ -148,14 +160,24 @@ public abstract class BaseActivity extends Activity implements Handler.Callback 
 
 	/* TODO**************** 以下重写Activity的方法 ********************* */
 
-	public void startActivity(Intent intent) {
-		intent.addFlags(Intent.FLAG_ACTIVITY_NO_USER_ACTION);
-		super.startActivity(intent);
+	public void startActivity(Class<?> activityClass, Object... params) {
+		Intent intent = new Intent();
+		// intent.setAction(action);
+		intent.setClass(this, activityClass);
+		for (int i = 0; i < params.length; i += 2) {
+			if (i + 1 < params.length) {
+				intent.putExtra(String.valueOf(params[i]),
+						String.valueOf(params[i + 1]));
+			}
+		}
+		ActivityMgr.peek().startActivity(intent);
 	}
 
-	public void startActivityForResult(Intent intent, int requestCode) {
-		intent.addFlags(Intent.FLAG_ACTIVITY_NO_USER_ACTION);
-		super.startActivityForResult(intent, requestCode);
+	public String getExtra(String paramName) {
+		if (getIntent() != null && getIntent().getExtras() != null) {
+			return String.valueOf(getIntent().getExtras().get(paramName));
+		}
+		return null;
 	}
 
 	/* TODO**************** 以下是 setter getter ********************* */

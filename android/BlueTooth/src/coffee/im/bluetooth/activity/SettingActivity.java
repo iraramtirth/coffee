@@ -17,7 +17,8 @@ public class SettingActivity extends BaseActivity {
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-		activityToMgr = false;
+		super.activityToMgr = false;
+		super.layoutResource = R.layout.main_tab2;
 		super.onCreate(savedInstanceState);
 		//
 		TestLogic.getInstance().sendMessageDelayed(ConstMsg.MSG_APP_EXIT, null,
@@ -26,7 +27,6 @@ public class SettingActivity extends BaseActivity {
 
 	@Override
 	public void doInitView() {
-		setContentView(R.layout.main_tab2);
 	}
 
 }

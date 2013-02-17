@@ -2,25 +2,34 @@
 <!-- 设备 list item -->
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    android:orientation="vertical">
+    android:layout_height="wrap_content"
+    android:background="#000000"
+    android:orientation="vertical"
+    android:padding="5dip">
     <!-- 联系人姓名  (默认是蓝牙的BluetoothDevice.getName()值) -->
     <TextView
-        android:id="@+id/contact_name"
-        android:layout_width="fill_parent"
+        android:id="@+id/device_name"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:gravity="center_vertical"
-        android:minHeight="?android:attr/listPreferredItemHeight"
-        android:paddingLeft="6dip"
-        android:textAppearance="?android:attr/textAppearanceLarge"/>
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_toLeftOf="@+id/device_action"
+        android:gravity="left"/>
     <!-- 联系人 address (默认是蓝牙的BluetoothDevice.getMacAddress()值) -->
     <TextView
-        android:id="@+id/contact_address"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"/>
-    <!-- 配对操作 -->
+        android:id="@+id/device_address"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@id/device_name"
+        android:layout_marginTop="5dip"
+        android:layout_toLeftOf="@+id/device_action"
+        android:gravity="left"/>
+    <!-- 操作 -->
     <Button
-        android:id="@+id/contact_pair"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"/>
+        android:id="@+id/device_action"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"/>
 </RelativeLayout>
