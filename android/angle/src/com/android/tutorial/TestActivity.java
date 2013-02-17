@@ -1,5 +1,6 @@
 package com.android.tutorial;
 
+import coffee.angle.CoffeeSurfaceView;
 import android.app.Activity;
 import android.os.Bundle;
 import android.widget.LinearLayout;
