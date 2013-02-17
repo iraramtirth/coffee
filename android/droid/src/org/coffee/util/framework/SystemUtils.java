@@ -14,7 +14,7 @@ import android.text.format.Formatter;
 
 /**
  * 系统工具类
- * @author wangtao
+ * @author coffee
  */
 public class SystemUtils {
 	/**

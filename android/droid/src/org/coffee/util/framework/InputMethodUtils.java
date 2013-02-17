@@ -12,7 +12,7 @@ import android.view.inputmethod.InputMethodManager;
 /**
  * 输入法工具类
  * 
- * @author wangtao
+ * @author coffee
  */
 public class InputMethodUtils {
 	private static InputMethodManager imm;
