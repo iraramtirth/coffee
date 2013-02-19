@@ -1,7 +1,3 @@
-/*
- * 文件名: RingtonePlayer.java 版 权： Copyright Huawei Tech. Co. Ltd. All Rights
- * Reserved. 描 述: [该类的简要描述] 创建人: 刘鲁宁 创建时间:Mar 26, 2012 修改人： 修改时间: 修改内容：[修改内容]
- */
 package org.coffee.util.media;
 
 import org.coffee.App;
@@ -18,7 +14,7 @@ import android.net.Uri;
 /**
  * 铃声播放器
  * 
- * @author wangato
+ * @author coffee
  */
 public class RingtonePlayer
 {
