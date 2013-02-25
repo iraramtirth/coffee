@@ -15,7 +15,7 @@ public class DbHelper extends SQLiteOpenHelper {
 	private SQLiteDatabase db;
 	
 	public DbHelper(){
-		this(App.context);
+		this(App.getContext());
 	}
 	 /**
      * @param name of the database file, or null for an in-memory database
@@ -32,7 +32,7 @@ public class DbHelper extends SQLiteOpenHelper {
 			//打开数据库
 			this.db = getWritableDatabase();
 			if(!db.isOpen()){
-				this.db.openDatabase(App.context.getDatabasePath(App.DB_NAME).getPath(), 
+				this.db.openDatabase(App.getContext().getDatabasePath(App.DB_NAME).getPath(), 
 						null, SQLiteDatabase.OPEN_READWRITE);
 			}
 		}
