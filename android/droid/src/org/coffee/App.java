@@ -13,7 +13,7 @@ import android.util.Log;
  */
 public class App extends Application {
 	private final String TAG = App.class.getCanonicalName();
-	public static Context context;
+	private static Context context;
 	public static final String DB_NAME = "COFFEE";
 
 	public static int count = 100;
