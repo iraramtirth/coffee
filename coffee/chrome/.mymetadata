@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project-module
+  type="WEB"
+  name="chrome"
+  id="myeclipse.1361610681629"
+  context-root="/chrome"
+  j2ee-spec="6.0"
+  archive="chrome.war">
+  <attributes>
+    <attribute name="webrootdir" value="WebRoot" />
+  </attributes>
+</project-module>
+
