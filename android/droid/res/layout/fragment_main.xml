@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- 主界面布局 -->
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/main_fragment"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent">
+    <!-- 顶部导航 -->
+    <LinearLayout
+        android:id="@+id/main_fragment_top"
+        android:layout_width="fill_parent"
+        android:layout_height="56dip"
+        android:layout_alignParentLeft="true"/>
+    <!-- 主体布局 -->
+    <FrameLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_below="@id/main_fragment_top"
+        android:background="#f7f7f7">
+        <RelativeLayout
+            android:id="@+id/main_fragment_main"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent">
+            <!-- 好友 -->
+            <RelativeLayout
+                android:id="@+id/main_fragment_left"
+                android:layout_width="300dip"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:background="#ffffff"/>
+            <!-- 中间布局 （聊天等界面） -->
+            <RelativeLayout
+                android:id="@+id/main_fragment_center"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:layout_toRightOf="@id/main_fragment_left"
+                android:background="#ffffff"/>
+        </RelativeLayout>
+        <!-- 上层布局,主要以Dialog形式呈现 -->
+        <RelativeLayout
+            android:id="@+id/main_fragment_dialog"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:gravity="center"
+            android:visibility="gone">
+        </RelativeLayout>
+        <!-- 底部表情 -->
+        <RelativeLayout
+            android:id="@+id/main_fragment_emotion"
+            android:layout_width="fill_parent"
+            android:layout_height="130dip"
+            android:layout_gravity="bottom"
+            android:visibility="gone">
+        </RelativeLayout>
+    </FrameLayout>
+</RelativeLayout>

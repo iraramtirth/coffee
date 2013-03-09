@@ -1,7 +1,6 @@
 package org.coffee.util.view;
 
 import org.coffee.R;
-import org.coffee.util.adapter.OnGestureEvent;
 import org.coffee.util.framework.RES;
 
 import android.content.Context;
