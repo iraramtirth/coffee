@@ -7,7 +7,7 @@ import java.util.logging.Logger;
 /**
  * 日期工具类
  * 主要负责处理时间java.util.Date与String类型的转换
- * @author wangtao
+ * @author coffee
  */
 public class DateUtils {
 	private static Logger log = Logger.getLogger(DateUtils.class.toString());
