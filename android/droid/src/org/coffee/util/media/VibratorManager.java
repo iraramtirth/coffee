@@ -19,7 +19,7 @@ public class VibratorManager
     /**
      * 震动时间
      * 
-     * @author wangtao
+     * @author coffee
      */
     public static enum ViberatorPeroid
     {

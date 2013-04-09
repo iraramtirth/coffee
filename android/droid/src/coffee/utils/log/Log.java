@@ -15,12 +15,12 @@ import android.os.Environment;
 /**
  * 日志打印
  * 
- * @author wangtaoyfx
+ * @author coffee
  * 		2013-1-11下午3:15:58
  */
 public abstract class Log {
 	// 打印日志预设值
-	private static boolean isPrintLog = true;
+	private static boolean isPrintLog = false;
 
 	// 打印日志到SDCard文件的预设值
 	private static boolean isPrintLogSD = isPrintLog;

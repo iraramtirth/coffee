@@ -41,7 +41,7 @@ public class ContactFragment extends BaseDroidFragment {
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
-		super.layoutResId = R.layout.contact;
+		//super.layoutResId = R.layout.contact;
 		View layout = super.onCreateView(inflater, container,
 				savedInstanceState);
 

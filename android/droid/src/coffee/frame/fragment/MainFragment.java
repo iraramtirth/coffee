@@ -36,7 +36,6 @@ public class MainFragment extends FragmentActivity implements
 		mContext = this;
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 
-		this.setContentView(R.layout.fragment_main);
 		this.setContentView(R.layout.main);
 		// 会话界面
 		Button btn0 = (Button) this.findViewById(R.id.tab_conversation);
@@ -50,7 +49,7 @@ public class MainFragment extends FragmentActivity implements
 		btn2.setOnClickListener(this);
 
 		FragmentMgr.beginTransaction();
-		FragmentMgr.add(R.id.tab_conversation, new ConversationFragment());
+		FragmentMgr.add(R.id.main_content, new ConversationFragment());
 		FragmentMgr.commit();
 	}
 

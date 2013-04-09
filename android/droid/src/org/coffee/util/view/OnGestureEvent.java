@@ -10,7 +10,7 @@ import android.view.View;
  * 手势事件 onDown method return true it will forword callback to onScroll
  * onScrollmethod return true it will forword callback to onFling
  * 
- * @author wangtaoyfx 2013-1-24下午2:31:08
+ * @author coffee 2013-1-24下午2:31:08
  */
 public class OnGestureEvent implements View.OnTouchListener, OnGestureListener,
 		OnDoubleTapListener {

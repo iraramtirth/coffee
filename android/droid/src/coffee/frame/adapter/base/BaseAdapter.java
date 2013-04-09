@@ -6,7 +6,12 @@ import java.util.List;
 import android.app.Activity;
 import android.view.View;
 import android.view.ViewGroup;
-
+/**
+ * 
+ *
+ * @author coffee<br>
+ * @param <T>2013下午4:11:51
+ */
 public abstract class BaseAdapter<T> extends android.widget.BaseAdapter {
 
 	protected Activity mContext;

@@ -12,7 +12,7 @@ import android.widget.LinearLayout;
 import android.widget.TimePicker;
 /**
  * 发送广播 
- * @author wangtao
+ * @author coffee
  */
 public class AlarmDemo extends Activity{
 

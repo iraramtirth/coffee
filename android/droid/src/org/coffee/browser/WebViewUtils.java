@@ -1,8 +1,8 @@
 package org.coffee.browser;
 
 import org.coffee.browser.activity.BrowserActivity;
-import org.coffee.util.http.HttpClient;
 import org.coffee.util.lang.RegexUtils;
+import org.coffee.util.net.HttpClient;
 
 /**
  * webview的相关工具类

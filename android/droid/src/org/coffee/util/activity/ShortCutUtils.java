@@ -16,7 +16,7 @@ import android.net.Uri;
  * 需要权限 <uses-permission
  * android:name="com.android.launcher.permission.INSTALL_SHORTCUT"/>
  * 
- * @author wangtao
+ * @author coffee
  */
 public class ShortCutUtils {
 

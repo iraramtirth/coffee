@@ -71,23 +71,24 @@ public abstract class BaseDroidFragment extends BaseFragment {
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
-		if (layoutResId != -1) {
-			View layout = inflater.inflate(layoutResId, container, false);
-			// ImageButton fragmentClose = (ImageButton) layout
-			// .findViewById(R.id.fragment);
-			// if (fragmentClose != null) {
-			// fragmentClose.setOnClickListener(new View.OnClickListener() {
-			//
-			// @Override
-			// public void onClick(View v) {
-			// FragmentMgr.remove(BaseDroidFragment.this);
-			// }
-			// });
-			// }
-			return layout;
-		} else {
-			return super.onCreateView(inflater, container, savedInstanceState);
-		}
+//		if (layoutResId != -1) {
+//			View layout = inflater.inflate(layoutResId, container, false);
+//			// ImageButton fragmentClose = (ImageButton) layout
+//			// .findViewById(R.id.fragment);
+//			// if (fragmentClose != null) {
+//			// fragmentClose.setOnClickListener(new View.OnClickListener() {
+//			//
+//			// @Override
+//			// public void onClick(View v) {
+//			// FragmentMgr.remove(BaseDroidFragment.this);
+//			// }
+//			// });
+//			// }
+//			return layout;
+//		} else {
+//			return super.onCreateView(inflater, container, savedInstanceState);
+//		}
+		return super.onCreateView(inflater, container, savedInstanceState);
 	}
 
 }

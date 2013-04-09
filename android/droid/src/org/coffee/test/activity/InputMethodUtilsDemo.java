@@ -14,7 +14,7 @@ import android.widget.LinearLayout;
 /**
  * 输入法工具类
  *  
- * @author wangtao
+ * @author coffee
  */
 public class InputMethodUtilsDemo extends Activity implements OnClickListener{
 	private Button btnShow;

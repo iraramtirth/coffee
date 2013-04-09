@@ -11,7 +11,7 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 /**
  * 发送广播 
- * @author wangtao
+ * @author coffee
  */
 public class BroadcastSenderDemo extends Activity{
 
