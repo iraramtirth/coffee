@@ -6,6 +6,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
+
 /**
  * @author coffee
  */
@@ -21,20 +22,30 @@ public class FileUtils {
 		byte[] buffer = new byte[1024];
 		int len = -1;
 		StringBuilder sb = new StringBuilder();
+		BufferedInputStream bin = null;
 		try {
-			BufferedInputStream bin = new BufferedInputStream(
-					new FileInputStream(filePath));
+			bin = new BufferedInputStream(new FileInputStream(filePath));
 			while ((len = bin.read(buffer)) != -1) {
 				sb.append(new String(buffer, 0, len));
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
+		} finally {
+			if (bin != null) {
+				try {
+					bin.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
 		}
 		return sb.toString();
 	}
 
 	/**
-	 * 创建文件或者目录
+	 * 创建文件或者目录<br>
+	 * 注意：需要权限 android.permission.WRITE_EXTERNAL_STORAGE<br>
+	 * 
 	 * @param path
 	 * @return
 	 */
@@ -51,9 +62,6 @@ public class FileUtils {
 							.substring(0, path.lastIndexOf("/"));
 					File parent = new File(parentPath);
 					if (parent.exists() == false) {
-						/**
-						 * 注意：需要权限 android.permission.WRITE_EXTERNAL_STORAGE
-						 */
 						bool = parent.mkdirs();
 					}
 					bool = file.createNewFile();
@@ -67,10 +75,11 @@ public class FileUtils {
 
 	/**
 	 * 删除文件或者目录以及其下的子目录
+	 * 
 	 * @param filepath
 	 * @return
 	 */
-	public static boolean delFileOrDir(String filePath){
+	public static boolean delFileOrDir(String filePath) {
 		boolean bool = true;
 		File f = new File(filePath);// 定义文件路径
 		if (f.exists() && f.isDirectory()) {// 判断是文件还是目录
@@ -81,18 +90,19 @@ public class FileUtils {
 				int i = f.listFiles().length;
 				for (int j = 0; j < i; j++) {
 					if (delFile[j].isDirectory()) {
-						bool = bool && delFileOrDir(delFile[j].getAbsolutePath());// 递归调用del方法并取得子目录路径
+						bool = bool
+								&& delFileOrDir(delFile[j].getAbsolutePath());// 递归调用del方法并取得子目录路径
 					}
 					bool = bool && delFile[j].delete();// 删除文件
-				}//end for
+				}// end for
 			}
 		}
 		return bool;
 	}
 
 	/**
-	 * 解密文件路径
-	 * 一般用于将%20等符号转化为空格，等
+	 * 解密文件路径 一般用于将%20等符号转化为空格，等
+	 * 
 	 * @param path
 	 *            :
 	 * @return : 返回解码后的文件路径
