@@ -25,23 +25,23 @@ public class ActivityConfigChanged extends ActivityCycle{
 	    if (this.getResources().getConfiguration().orientation 
 	            == Configuration.ORIENTATION_LANDSCAPE) {
 	        //当前为横屏， 在此处添加额外的处理代码
-	    	Log.info(TAG, "当前为横屏");
+	    	Log.i(TAG, "当前为横屏");
 	    }
 	    else if (this.getResources().getConfiguration().orientation 
 	            == Configuration.ORIENTATION_PORTRAIT) {
 	        //当前为竖屏， 在此处添加额外的处理代码
-	    	Log.info(TAG, "当前为竖屏");
+	    	Log.i(TAG, "当前为竖屏");
 	    }
 	    //检测实体键盘的状态：推出或者合上    
 	    if (newConfig.hardKeyboardHidden 
 	            == Configuration.HARDKEYBOARDHIDDEN_NO){ 
 	        //实体键盘处于推出状态，在此处添加额外的处理代码
-	    	Log.info(TAG, "实体键盘处于推出状态");
+	    	Log.i(TAG, "实体键盘处于推出状态");
 	    } 
 	    else if (newConfig.hardKeyboardHidden
 	            == Configuration.HARDKEYBOARDHIDDEN_YES){ 
 	        //实体键盘处于合上状态，在此处添加额外的处理代码\
-	    	Log.info(TAG, "实体键盘处于合上状态");
+	    	Log.i(TAG, "实体键盘处于合上状态");
 	    }
 	}
 	

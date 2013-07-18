@@ -4,211 +4,111 @@
 package org.coffee.util.log;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.PrintWriter;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 
 import android.os.Environment;
 
 /**
  * 日志打印
  * 
+ * @author wangtaoyfx <br>
+ *         2013-1-11下午3:15:58
  */
 public abstract class Log {
-	/**
-	 * 日期格式
-	 */
-	private static SimpleDateFormat dateFormat = new SimpleDateFormat(
-			"yyyy-MM-dd HH:mm:ss");
-
 	// 打印日志预设值
 	private static boolean isPrintLog = true;
 
 	// 打印日志到SDCard文件的预设值
-	private static boolean isPrintLogSD = isPrintLog;
+	private static boolean isPrintLogSD = false;
 
-	private static long currentTime = System.currentTimeMillis();
+	// 相对于sdcard的目录
+	private static final String LOG_FILE = "Fetion/apad/log.txt";
 
-	public static long getCurrentTime() {
-		currentTime = System.currentTimeMillis();
-		return currentTime;
+	/**
+	 * 日期格式
+	 */
+	private static SimpleDateFormat dateFormat = new SimpleDateFormat(
+			"yyyy-MM-dd HH:mm:ss", Locale.CHINA);
+
+	private static Object handleMsgOrTag(Object msgOrTag) {
+		if (msgOrTag == null) {
+			msgOrTag = "[null]";
+		} else if (msgOrTag.toString().trim().length() == 0) {
+			msgOrTag = "[\"\"]";
+		} else {
+			msgOrTag = msgOrTag.toString().trim();
+		}
+		return msgOrTag;
 	}
 
-	public static long getConsumeTime() {
-		long consumeTime = System.currentTimeMillis() - currentTime;
-		currentTime = System.currentTimeMillis();
-		return consumeTime;
+	public static void d(Object tag, Object msg) {
+		tag = handleMsgOrTag(tag);
+		msg = handleMsgOrTag(msg);
+		if (isPrintLogSD) {
+			storeLog("d", tag, msg);
+		}
+		if (isPrintLog) {
+			android.util.Log.d(String.valueOf(tag), String.valueOf(msg));
+		}
 	}
 
 	/**
-	 * 
-	 * 打印debug级别的日志<BR>
-	 * [功能详细描述]
-	 * 
 	 * @param obj
-	 *            tag标记，传入当前调用的类对象即可，方法会转化为该对象对应的类名
+	 *            : 可以傳入 Class/String等类型的tag
 	 * @param text
-	 *            日志内容
 	 */
-	public static void debug(Object obj, String text) {
+	public static void i(Object tag, Object msg) {
+		tag = handleMsgOrTag(tag);
+		msg = handleMsgOrTag(msg);
 		if (isPrintLogSD) {
-			storeLog("d", obj.getClass().getSimpleName(), text);
+			storeLog("i", tag, msg);
 		}
-
-		if (obj != null && isPrintLog) {
-			debug(obj.getClass().getSimpleName(), text);
-		}
-	}
-
-	/**
-	 * 打印debug级别的日志
-	 * 
-	 * @param tag
-	 *            标记
-	 * @param text
-	 *            日志内容
-	 */
-	public static void debug(String tag, String text) {
-		if (isPrintLogSD) {
-			storeLog("d", tag, text);
-		}
-
 		if (isPrintLog) {
-			android.util.Log.d(tag, text);
+			android.util.Log.i(String.valueOf(tag), String.valueOf(msg));
 		}
 	}
 
-	/**
-	 * 打印info级别的日志
-	 * 
-	 * @param tag
-	 *            标记
-	 * @param text
-	 *            日志内容
-	 */
-	public static void info(String tag, String text) {
+	public static void w(Object tag, Object msg, Throwable throwable) {
+		tag = handleMsgOrTag(tag);
+		msg = handleMsgOrTag(msg);
 		if (isPrintLogSD) {
-			storeLog("i", tag, text);
+			storeLog("w", tag, msg);
 		}
-
 		if (isPrintLog) {
-			text = text.replaceAll("[\\n\\r]", "");
-			android.util.Log.i(tag, text);
+			if (throwable == null) {
+				android.util.Log.w(String.valueOf(tag), String.valueOf(msg));
+			} else {
+				android.util.Log.w(String.valueOf(tag), String.valueOf(msg),
+						throwable);
+			}
 		}
 	}
 
-	/**
-	 * 打印warn级别的日志
-	 * 
-	 * @param tag
-	 *            标记
-	 * @param text
-	 *            日志内容
-	 */
-	public static void warn(String tag, String text) {
+	public static void e(Object tag, Object msg, Throwable throwable) {
+		tag = handleMsgOrTag(tag);
+		msg = handleMsgOrTag(msg);
 		if (isPrintLogSD) {
-			storeLog("w", tag, text);
+			storeLog("e", tag, msg);
 		}
-
 		if (isPrintLog) {
-			android.util.Log.w(tag, text);
+			if (throwable == null) {
+				android.util.Log.e(String.valueOf(tag), String.valueOf(msg));
+			} else {
+				android.util.Log.e(String.valueOf(tag), String.valueOf(msg),
+						throwable);
+			}
 		}
 	}
 
-	/**
-	 * 打印warn级别的日志
-	 * 
-	 * @param tag
-	 *            标记
-	 * @param text
-	 *            日志内容
-	 * @param throwable
-	 *            异常信息
-	 */
-	public static void warn(String tag, String text, Throwable throwable) {
-		if (isPrintLogSD) {
-			storeLog("w", tag, text);
-		}
-
-		if (isPrintLog) {
-			text = text.replaceAll("[\\n\\r]", "");
-			android.util.Log.w(tag, text, throwable);
-		}
-	}
-
-	/**
-	 * 打印error级别的日志
-	 * 
-	 * @param tag
-	 *            标记
-	 * @param text
-	 *            日志内容
-	 */
-	public static void error(String tag, String text) {
-		if (isPrintLogSD) {
-			storeLog("e", tag, text);
-		}
-
-		if (isPrintLog) {
-			text = text.replaceAll("[\\n\\r]", "");
-			android.util.Log.e(tag, text);
-		}
-	}
-
-	/**
-	 * 打印error级别的日志
-	 * 
-	 * @param tag
-	 *            标记
-	 * @param text
-	 *            日志内容
-	 * @param throwable
-	 *            异常信息
-	 */
-	public static void error(String tag, String text, Throwable throwable) {
-		if (isPrintLogSD) {
-			storeLog("e", tag, text);
-		}
-
-		if (isPrintLog) {
-			android.util.Log.e(tag, text, throwable);
-		}
-	}
-
-	/**
-	 * 打印file日志，不打到log，直接输出到sd卡文件
-	 * 
-	 * @param tag
-	 *            标记
-	 * @param text
-	 *            日志内容
-	 */
-	public static void file(String tag, String text) {
-		if (isPrintLogSD) {
-			storeLog("f", tag, text);
-		}
-	}
-
-	/**
-	 * 
-	 * [用于存取错误日志信息] [功能详细描述]
-	 * 
-	 * @param type
-	 *            type
-	 * @param strModule
-	 *            module
-	 * @param strErrMsg
-	 *            message
-	 */
-	public static void storeLog(String type, String tag, String strErrMsg) {
-		File file = openFile("uim.log");
-
+	private static void storeLog(String type, Object tag, Object strErrMsg) {
+		File file = openFile(LOG_FILE);
 		if (file == null) {
 			return;
 		}
-
 		try {
 			// 输出
 			FileOutputStream fos = new FileOutputStream(file, true);
@@ -234,13 +134,9 @@ public abstract class Log {
 				out.println(dateNowStr + " File:>>" + tag + "<<   " + strErrMsg
 						+ '\r');
 			}
-
 			out.flush();
 			out.close();
 			out = null;
-
-		} catch (FileNotFoundException e1) {
-			e1.printStackTrace();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -256,11 +152,8 @@ public abstract class Log {
 	 * @return 返回文件
 	 */
 	private static File openFile(String name) {
-		String logFileDir = Environment.getExternalStorageDirectory()
-				+ "/coffee/log.txt";
-
+		String logFileDir = Environment.getExternalStorageDirectory() + name;
 		File fileDir = new File(logFileDir);
-
 		// 判断目录是否已经存在
 		if (!fileDir.exists()) {
 			android.util.Log.i("Log", "fileDir is no exists!");
@@ -268,31 +161,7 @@ public abstract class Log {
 				return null;
 			}
 		}
-
 		return new File(logFileDir, name);
 	}
 
-	/**
-	 * [一句话功能简述]<BR>
-	 * [功能详细描述]
-	 * 
-	 * @param string
-	 * @param string2
-	 */
-	public static void start(String tag, String text) {
-		currentTime = System.currentTimeMillis();
-		info(tag, text + "[start]");
-	}
-
-	/**
-	 * [一句话功能简述]<BR>
-	 * [功能详细描述]
-	 * 
-	 * @param string
-	 * @param string2
-	 */
-	public static void end(String tag, String text) {
-		info(tag, text + "[end]-[耗时]-"
-				+ (System.currentTimeMillis() - currentTime) + "ms");
-	}
 }
