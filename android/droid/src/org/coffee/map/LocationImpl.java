@@ -1,5 +1,3 @@
-/**
- */
 package org.coffee.map;
 
 import java.io.BufferedReader;
@@ -29,10 +27,8 @@ import android.util.Log;
 
 /**
  * 
- * [一句话功能简述]<BR>
- * [功能详细描述]
- * 
- * @author
+ * @author coffee <br>
+ *          2013-7-22上午9:39:21
  */
 public final class LocationImpl {
 	private static LocationImpl mLocationImpl;

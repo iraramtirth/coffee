@@ -7,7 +7,12 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.TextView;
-
+/**
+ * 
+ * @author coffee <br>
+ *          2013-7-22上午9:36:21
+ *          测试地图的
+ */
 public class LocationActivity extends Activity {
 
 	private final String TAG = "LocationActivity";

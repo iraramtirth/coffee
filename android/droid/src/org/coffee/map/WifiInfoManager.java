@@ -12,7 +12,11 @@ import android.content.Context;
 import android.net.wifi.ScanResult;
 import android.net.wifi.WifiManager;
 import android.util.Log;
-
+/**
+ * 
+ * @author coffee <br>
+ *          2013-7-22上午9:39:50
+ */
 public class WifiInfoManager {
 	private static final String TAG = "WifiInfoManager";
 	private WifiManager wifiManager;

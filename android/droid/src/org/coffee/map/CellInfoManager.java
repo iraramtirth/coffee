@@ -16,7 +16,11 @@ import android.telephony.TelephonyManager;
 import android.telephony.cdma.CdmaCellLocation;
 import android.telephony.gsm.GsmCellLocation;
 import android.util.Log;
-
+/**
+ * 
+ * @author coffee <br>
+ *          2013-7-22上午9:40:56
+ */
 public class CellInfoManager {
 	private int cid; // cellId
 	private int lac; // location area code
@@ -163,8 +167,8 @@ public class CellInfoManager {
 			if (cellInfo.getCid() <= 0 || cellInfo.getCid() == 65535) {
 				continue;
 			}
-			aryCells[++m] = cellInfo.getCid();
-			aryCells[++m] = cellInfo.getRssi();
+			aryCells[m++] = cellInfo.getCid();
+			aryCells[m++] = cellInfo.getRssi();
 		}
 		return aryCells;
 
