@@ -15,91 +15,96 @@ import android.os.Environment;
 /**
  * 日志打印
  * 
- * @author coffee
- * 		2013-1-11下午3:15:58
+ * @author wangtaoyfx <br>
+ *         2013-1-11下午3:15:58
  */
 public abstract class Log {
 	// 打印日志预设值
-	private static boolean isPrintLog = false;
+	private static boolean isPrintLog = true;
 
 	// 打印日志到SDCard文件的预设值
-	private static boolean isPrintLogSD = isPrintLog;
+	private static boolean isPrintLogSD = false;
 
-	//相对于sdcard的目录
+	// 相对于sdcard的目录
 	private static final String LOG_FILE = "Fetion/apad/log.txt";
-	
+
 	/**
 	 * 日期格式
 	 */
 	private static SimpleDateFormat dateFormat = new SimpleDateFormat(
 			"yyyy-MM-dd HH:mm:ss", Locale.CHINA);
-	
-	public static void d(String tag, String text) {
+
+	private static Object handleMsgOrTag(Object msgOrTag) {
+		if (msgOrTag == null) {
+			msgOrTag = "[null]";
+		} else if (msgOrTag.toString().trim().length() == 0) {
+			msgOrTag = "[\"\"]";
+		} else {
+			msgOrTag = msgOrTag.toString().trim();
+		}
+		return msgOrTag;
+	}
+
+	public static void d(Object tag, Object msg) {
+		tag = handleMsgOrTag(tag);
+		msg = handleMsgOrTag(msg);
 		if (isPrintLogSD) {
-			storeLog("d", tag, text);
+			storeLog("d", tag, msg);
 		}
 		if (isPrintLog) {
-			android.util.Log.d(tag, text);
+			android.util.Log.d(String.valueOf(tag), String.valueOf(msg));
 		}
 	}
-	
+
 	/**
-	 * @param obj 	: 可以傳入 Class/String等类型的tag 
+	 * @param obj
+	 *            : 可以傳入 Class/String等类型的tag
 	 * @param text
 	 */
-	public static void i(Object tag, String text) {
+	public static void i(Object tag, Object msg) {
+		tag = handleMsgOrTag(tag);
+		msg = handleMsgOrTag(msg);
 		if (isPrintLogSD) {
-			storeLog("i", tag, text);
+			storeLog("i", tag, msg);
 		}
 		if (isPrintLog) {
-			android.util.Log.i(String.valueOf(tag), text);
+			android.util.Log.i(String.valueOf(tag), String.valueOf(msg));
 		}
 	}
 
-	public static void w(Object tag, String text) {
+	public static void w(Object tag, Object msg, Throwable throwable) {
+		tag = handleMsgOrTag(tag);
+		msg = handleMsgOrTag(msg);
 		if (isPrintLogSD) {
-			storeLog("w", tag, text);
+			storeLog("w", tag, msg);
 		}
 		if (isPrintLog) {
-			android.util.Log.w(String.valueOf(tag), text);
+			if (throwable == null) {
+				android.util.Log.w(String.valueOf(tag), String.valueOf(msg));
+			} else {
+				android.util.Log.w(String.valueOf(tag), String.valueOf(msg),
+						throwable);
+			}
 		}
 	}
 
-	public static void w(Object tag, String text, Throwable throwable) {
+	public static void e(Object tag, Object msg, Throwable throwable) {
+		tag = handleMsgOrTag(tag);
+		msg = handleMsgOrTag(msg);
 		if (isPrintLogSD) {
-			storeLog("w", tag, text);
+			storeLog("e", tag, msg);
 		}
 		if (isPrintLog) {
-			android.util.Log.w(String.valueOf(tag), text, throwable);
+			if (throwable == null) {
+				android.util.Log.e(String.valueOf(tag), String.valueOf(msg));
+			} else {
+				android.util.Log.e(String.valueOf(tag), String.valueOf(msg),
+						throwable);
+			}
 		}
 	}
 
-	public static void e(Object tag, String text) {
-		if (isPrintLogSD) {
-			storeLog("e", tag, text);
-		}
-
-		if (isPrintLog) {
-			android.util.Log.e(String.valueOf(tag), text);
-		}
-	}
-
-	public static void e(Object tag, String text, Throwable throwable) {
-		if (isPrintLogSD) {
-			storeLog("e", tag, text);
-		}
-		if (isPrintLog) {
-			android.util.Log.e(String.valueOf(tag), text, throwable);
-		}
-	}
-
-	public static void file(String tag, String text) {
-		if (isPrintLogSD) {
-			storeLog("f", tag, text);
-		}
-	}
-
-	private static void storeLog(String type, Object tag, String strErrMsg) {
+	private static void storeLog(String type, Object tag, Object strErrMsg) {
 		File file = openFile(LOG_FILE);
 		if (file == null) {
 			return;
@@ -147,8 +152,7 @@ public abstract class Log {
 	 * @return 返回文件
 	 */
 	private static File openFile(String name) {
-		String logFileDir = Environment.getExternalStorageDirectory()
-				+ name;
+		String logFileDir = Environment.getExternalStorageDirectory() + name;
 		File fileDir = new File(logFileDir);
 		// 判断目录是否已经存在
 		if (!fileDir.exists()) {
@@ -159,5 +163,5 @@ public abstract class Log {
 		}
 		return new File(logFileDir, name);
 	}
-	 
+
 }
