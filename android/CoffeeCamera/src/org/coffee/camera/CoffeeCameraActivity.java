@@ -1,6 +1,6 @@
 package org.coffee.camera;
 
-import org.coffee.camera.view.MySurfaceView;
+import org.coffee.camera.view.CameraSurfaceView;
 
 import android.app.Activity;
 import android.content.Context;
@@ -16,12 +16,12 @@ public class CoffeeCameraActivity extends Activity{
 	private int currentMediaVolume = 0;
 	private AudioManager audioManager;
 	
-	private MySurfaceView mSurfaceView;
+	private CameraSurfaceView mSurfaceView;
     
 	@Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mSurfaceView = new MySurfaceView(this);
+        mSurfaceView = new CameraSurfaceView(this);
         mSurfaceView.setLayoutParams(new LinearLayout.LayoutParams(10, 10));
     	LinearLayout lnLayout = new LinearLayout(this);
 		lnLayout.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT,LayoutParams.WRAP_CONTENT));

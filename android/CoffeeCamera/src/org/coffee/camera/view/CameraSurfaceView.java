@@ -14,24 +14,33 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.hardware.Camera;
+import android.hardware.Camera.CameraInfo;
 import android.hardware.Camera.ErrorCallback;
 import android.hardware.Camera.PictureCallback;
+import android.os.Environment;
 import android.util.Log;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
-public class MySurfaceView extends SurfaceView {
+/**
+ * 拍照预览面板
+ * 
+ * @author coffee <br>
+ *         2013-7-25上午9:04:51
+ */
+public class CameraSurfaceView extends SurfaceView {
 	private Camera mCamera;
-//	private Context context;
-	//当前Camera状态：预览|非预览
+	// private Context context;
+	// 当前Camera状态：预览|非预览
 	private boolean isPreview = false;
-	public MySurfaceView(Context context) {
+
+	public CameraSurfaceView(Context context) {
 		super(context);
-		this.getHolder().addCallback(new MyCallBack());
+		this.getHolder().addCallback(new CameraCallBack());
 		// 表明该Surface不包含原生数据，Surface用到的数据由其他对象提供
 		// 如果不设置, 或者设置成其他数据则不能预览
 		this.getHolder().setType(SurfaceHolder.SURFACE_TYPE_PUSH_BUFFERS);
-//		this.context = context;
+		// this.context = context;
 	}
 
 	/**
@@ -42,13 +51,13 @@ public class MySurfaceView extends SurfaceView {
 	 */
 	public void takePicture() {
 		int i = 0;
-		while(true){
-			if(this.isPreview){
-				//拍照
+		while (true) {
+			if (this.isPreview) {
+				// 拍照
 				this.mCamera.takePicture(null, null, jpeg);
-				//接收完图片之后系统会执行stopPreview
+				// 接收完图片之后系统会执行stopPreview
 				this.isPreview = false;
-			}else{//开启预览
+			} else {// 开启预览
 				this.mCamera.startPreview();
 				this.isPreview = true;
 			}
@@ -56,10 +65,10 @@ public class MySurfaceView extends SurfaceView {
 				Thread.sleep(1000 * 1);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
-				break;//结束循环
+				break;// 结束循环
 			}
 			i++;
-			if(i == 10){
+			if (i == 10) {
 				break;
 			}
 		}
@@ -71,24 +80,23 @@ public class MySurfaceView extends SurfaceView {
 		public void onPictureTaken(byte[] data, Camera camera) {
 			Bitmap srcBm = BitmapFactory.decodeByteArray(data, 0, data.length);
 			try {
-				//加水印
+				// 加水印
 				Bitmap newBm = Bitmap.createBitmap(srcBm);
 				Canvas c = new Canvas(newBm);
 				Paint paint = new Paint();
-				paint.setColor(Color.RED);	
+				paint.setColor(Color.RED);
 				paint.setTextSize(15);
-				c.drawText("Spring Coffee", newBm.getWidth()-145, newBm.getHeight()-45, paint);
-				c.save( Canvas.ALL_SAVE_FLAG );//保存
-				c.restore();//存储
+				c.drawText("Spring Coffee", newBm.getWidth() - 145, newBm.getHeight() - 45, paint);
+				c.save(Canvas.ALL_SAVE_FLAG);// 保存
+				c.restore();// 存储
 
-				//将加水印的图片保存到/sdcard
-				File file = new File("/sdcard/Carema/"
-						+ System.currentTimeMillis() + ".jpg");
+				// 将加水印的图片保存到/sdcard
+				File file = new File(Environment.getExternalStorageDirectory().getPath() + System.currentTimeMillis()
+						+ ".jpg");
 				if (file.exists() == false) {
 					FileUtils.createNewFileOrDirectory(file);
 				}
-				BufferedOutputStream bos = new BufferedOutputStream(
-						new FileOutputStream(file));
+				BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(file));
 				newBm.compress(Bitmap.CompressFormat.JPEG, 100, bos);
 				bos.flush();
 				bos.close();
@@ -102,28 +110,38 @@ public class MySurfaceView extends SurfaceView {
 		return mCamera;
 	}
 
-	public boolean isPreview(){
+	public boolean isPreview() {
 		return isPreview;
 	}
-	public void setPreview(Boolean isPreview){
+
+	public void setPreview(Boolean isPreview) {
 		this.isPreview = isPreview;
 	}
-	
-	class MyCallBack implements SurfaceHolder.Callback {
+
+	class CameraCallBack implements SurfaceHolder.Callback {
 		@Override
 		public void surfaceCreated(SurfaceHolder holder) {
 			try {
-				mCamera = Camera.open();
-				//设置预览面板
+				// 默认后置
+				int cameraId = 0;
+				CameraInfo cameraInfo = new CameraInfo();
+				for (int i = 0; i < Camera.getNumberOfCameras(); i++) {
+					Camera.getCameraInfo(i, cameraInfo);
+					if (cameraInfo.facing == CameraInfo.CAMERA_FACING_FRONT) {
+						cameraId = i;
+					}
+				}
+				mCamera = Camera.open(cameraId);
+				// 设置预览面板
 				mCamera.setPreviewDisplay(holder);
-				//设置ErrorCallback
+				// 设置ErrorCallback
 				mCamera.setErrorCallback(new ErrorCallback() {
 					@Override
 					public void onError(int error, Camera camera) {
 						mCamera.release();
 					}
 				});
-				//开启预览
+				// 开启预览
 				mCamera.startPreview();
 				isPreview = true;
 			} catch (IOException e) {
@@ -136,14 +154,14 @@ public class MySurfaceView extends SurfaceView {
 		 * size) have been made to the surface.
 		 */
 		@Override
-		public void surfaceChanged(SurfaceHolder holder, int format, int width,
-				int height) {
-				// 程序第一次启动的时候，调用该方法
-				if(isPreview == false){
-					
-					isPreview = true;
-				}
+		public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
+			// 程序第一次启动的时候，调用该方法
+			if (isPreview == false) {
+
+				isPreview = true;
+			}
 		}
+
 		@Override
 		public void surfaceDestroyed(SurfaceHolder holder) {
 			mCamera.stopPreview();// 停止预览
