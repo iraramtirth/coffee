@@ -1,10 +1,7 @@
 package org.coffee.activity;
 
-import org.coffee.provider.AppContentProvider;
-
 import android.app.Activity;
-import android.database.Cursor;
-import android.net.Uri;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 /**
@@ -26,13 +23,9 @@ public class ActivityCycle extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		Log.e(TAG, "onCreate");
-		
-		Cursor cursor = getContentResolver()
-			.query(Uri.parse("content://"+AppContentProvider.AUTH_ORITIES+"/user")
-				,null, null, null, null);
-		if(cursor != null){
-			System.out.println(cursor);
-		}
+		Intent intent = new Intent();
+		intent.setClass(this, ActivityCycle_A.class);
+		startActivity(intent);
 	}
 	
 	@Override
