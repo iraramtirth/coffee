@@ -1,5 +1,5 @@
 /**
- * @author wangtao
+ * @author coffee
  * 表单验证：
  * required ： 必填项		/^\s*$/	
  * real 	: 实数		/^-?\d+(\.\d+)?$/
@@ -49,7 +49,7 @@ function checkForm() {
 	/**
 	 * 验证图片类型
 	 */
-	var imgs  = $("input[class*='img']");
+	var imgs = $("input[class*='img']");
 	for(var i=0;i<imgs.length;i++){
 		if (/^\s*$/.test(imgs.eq(i).val()) == false) {
 			if (checkImgType_2(imgs.eq(i).attr("id")) == false) {
