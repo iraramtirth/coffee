@@ -1,5 +1,6 @@
 package test;
 
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -9,6 +10,9 @@ public class Test {
 		Lst lst = new Lst(items);
 		items.add("xxxx");
 		lst.print();
+		
+		String s = "Step1:Comment on 2 games, and now you\'ve get {0}";
+		System.out.println(MessageFormat.format(s, 8));
 	}
 }
 
