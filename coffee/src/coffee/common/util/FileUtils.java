@@ -54,8 +54,7 @@ public class FileUtils {
 		file.listFiles(new FileFilter() {
 			@Override
 			public boolean accept(File file) {
-				Matcher mat = ptn.matcher(file.getPath().substring(
-						file.getPath().lastIndexOf('.') + 1));
+				Matcher mat = ptn.matcher(file.getPath().substring(file.getPath().lastIndexOf('.') + 1));
 				if (file.isDirectory()) {
 					traverse(file, extRegx);
 				} else {
@@ -84,8 +83,7 @@ public class FileUtils {
 				if (file.isDirectory()) {
 					bool = file.mkdirs();
 				} else {
-					String parentPath = path
-							.substring(0, path.lastIndexOf("/"));
+					String parentPath = path.substring(0, path.lastIndexOf("/"));
 					File parent = new File(parentPath);
 					if (parent.exists() == false) {
 						bool = parent.mkdirs();
@@ -160,8 +158,7 @@ public class FileUtils {
 				out.write(buffer, 0, num);
 			}
 		} catch (IOException e) {
-			Logger.getLogger(FileUtils.class.getName()).log(Level.SEVERE, null,
-					e);
+			Logger.getLogger(FileUtils.class.getName()).log(Level.SEVERE, null, e);
 		} finally {
 			try {
 				if (in != null)
@@ -169,8 +166,7 @@ public class FileUtils {
 				if (out != null)
 					out.close();
 			} catch (IOException ex) {
-				Logger.getLogger(FileUtils.class.getName()).log(Level.SEVERE,
-						null, ex);
+				Logger.getLogger(FileUtils.class.getName()).log(Level.SEVERE, null, ex);
 			}
 		}
 	}
