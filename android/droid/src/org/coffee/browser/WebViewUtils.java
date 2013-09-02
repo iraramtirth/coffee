@@ -108,15 +108,19 @@ import android.util.Base64;
 	
 	/**
 	 * @param url
-	 *            : 该URL是不需要\或者是已经处理过得标准的、完整的URL 即是：主机 +URI
+	 *            
 	 * @return : 返回网页的标题<title></title>
 	 */
 	public static String loadUrl(BrowserActivity context, String linkUrl) {
 		String title = "";
 		try {
 			String doc = "";
+			//本地assets目录中读取
+			if(linkUrl.startsWith("file:///android_asset/")){
+				
+			}
 			//查看图片
-			if(linkUrl.matches(".+?\\.(jpg|gif|jpeg|png)+.*?")){
+			else if(linkUrl.matches(".+?\\.(jpg|gif|jpeg|png)+.*?")){
 				charset = null;
 				byte[] data = (byte[]) new HttpClient().get(linkUrl, 1); 
 				doc = Base64.encodeToString(data, Base64.DEFAULT);

@@ -76,7 +76,7 @@ public class BrowserActivity extends Activity{
 	}
 	
 	protected void loadUrl(String url) {
-		//WebViewUtils.loadUrl(context, url);
+		WebViewUtils.loadUrl(context, url);
 		mWebView.loadUrl("file:///android_asset/test.html");
 		mWebView.setWebChromeClient(new WebChromeClient(){
 			@Override
