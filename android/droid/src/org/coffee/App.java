@@ -1,7 +1,5 @@
 package org.coffee;
 
-import org.coffee.util.framework.CpuUtils;
-
 import android.app.Application;
 import android.content.Context;
 import android.util.Log;
@@ -17,28 +15,11 @@ public class App extends Application {
 	public static final String DB_NAME = "COFFEE";
 
 	public static int count = 100;
+
 	@Override
 	public void onCreate() {
 		Log.i(TAG, "onCreate application....");
 		context = this;
-		//
-		//Thread.setDefaultUncaughtExceptionHandler(new GlobalUncaughtExceptionHandler());
-
-		new Thread(new Runnable() {
-
-			@Override
-			public void run() {
-				while (true) {
-					try {
-						Thread.sleep(1000 * 3);
-
-						CpuUtils.info();
-					} catch (InterruptedException e) {
-						e.printStackTrace();
-					}
-				}
-			}
-		}).start();
 	}
 
 	public static Context getContext() {

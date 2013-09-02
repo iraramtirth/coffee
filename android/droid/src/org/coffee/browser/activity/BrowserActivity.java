@@ -38,10 +38,14 @@ public class BrowserActivity extends Activity{
 		//开启js支持， 否则无法单击网页中的button。 即无法提交表单等操作
 		mWebSettings.setJavaScriptEnabled(true);
 		mWebSettings.setJavaScriptCanOpenWindowsAutomatically(true);
-		//mWebView.addJavascriptInterface(obj, interfaceName)
+		mWebSettings.setSupportZoom(true);
+		mWebSettings.setBuiltInZoomControls(true);
+		mWebSettings.setUseWideViewPort(true);//设置无限缩放、
+		mWebView.setInitialScale(50);
+//		mWebView.addJavascriptInterface(obj, interfaceName)
 		
 		String url = "http://wap.baidu.com";
-
+		url = "http://a.hiphotos.baidu.com/album/w%3D2048/sign=0a938b00d53f8794d3ff4f2ee6230cf4/faedab64034f78f06fe0f24b78310a55b2191c9a.jpg";
 		loadUrl(url);
 		
 	}
@@ -72,9 +76,8 @@ public class BrowserActivity extends Activity{
 	}
 	
 	protected void loadUrl(String url) {
-		
-		WebViewUtils.loadUrl(context, url);
-		
+		//WebViewUtils.loadUrl(context, url);
+		mWebView.loadUrl("file:///android_asset/test.html");
 		mWebView.setWebChromeClient(new WebChromeClient(){
 			@Override
 			 public void onProgressChanged(WebView view, int progress)   

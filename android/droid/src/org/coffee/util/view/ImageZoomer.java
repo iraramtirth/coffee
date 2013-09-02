@@ -87,7 +87,7 @@ public class ImageZoomer extends FrameLayout implements OnClickListener{
 		inParams.gravity = Gravity.BOTTOM | Gravity.RIGHT;
 		this.addView(lLayout, inParams);
 		
-		//
+		//\\\\\
 		this.setOnTouchListener(onGestureEvent);
 	}
 	
@@ -101,12 +101,12 @@ public class ImageZoomer extends FrameLayout implements OnClickListener{
 			int dstHeight = (int) (mBitmap.getHeight() * scale);
 			Bitmap matrixBitmap = Bitmap.createScaledBitmap(mBitmap, dstWidth, dstHeight, false);
 			if(left == 0){
-				left = (this.getWidth() - dstWidth )/2;
+				left = (this.getWidth() - dstWidth)/2;
 			}else{
 				left += moveLength[0];
 			}
 			if(top == 0){
-				top = (this.getHeight() - dstHeight )/2;
+				top = (this.getHeight() - dstHeight)/2;
 			}else{
 				top += moveLength[1];
 			} 
