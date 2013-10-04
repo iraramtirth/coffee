@@ -45,9 +45,14 @@ public class DbHelper extends SQLiteOpenHelper {
 	@Override
 	public void onCreate(SQLiteDatabase db) {
 		this.db = db;	//该代码仅执行一次
-//		this.createTable(UserBean.class);
-//		this.createTable(ShopBean.class);
-//		this.createTable(ProductBean.class);
+		String sqls = new Sql().getCreate();
+		for (String sql : sqls.split(";")) {
+			try {
+				db.execSQL(sql);
+			} catch (Exception e) {
+				LogDb.w("DB_onCreate", sql, e);
+			}
+		}
 	}
 	/**
 	 CREATE TABLE IF NOT EXISTS mmb_sale(
