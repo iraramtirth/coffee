@@ -15,8 +15,8 @@ public class Sql {
 		sb.append("(");
 		sb.append("_id integer primary key autoincrement,");
 		sb.append("fetionId varchat(20) not null,");// 联系人表关联
-		sb.append("userId varchat(20),");// 联系人userId 详见Contact#getId 
-		sb.append("userName varchat(20),");//  联系人姓名  详见Contact#getLocalName 
+		sb.append("userId varchat(20),");// 联系人userId 详见Contact#getId
+		sb.append("userName varchat(20),");// 联系人姓名 详见Contact#getLocalName
 		sb.append("type integer default 0,");// 消息类型 #
 		sb.append("content varchar(255) not null,");
 		sb.append("time integer not null,");
@@ -35,8 +35,8 @@ public class Sql {
 		sb.append("_id integer primary key autoincrement,");
 		sb.append("fetionId varchat(20) not null,");// 联系人表关联
 		sb.append("uri varchat(50) not null,");// 联系人uri
-		sb.append("userId varchat(20),");// 联系人userId 详见Contact#getId 
-		sb.append("userName varchat(20),");// 联系人姓名  详见Contact#getLocalName
+		sb.append("userId varchat(20),");// 联系人userId 详见Contact#getId
+		sb.append("userName varchat(20),");// 联系人姓名 详见Contact#getLocalName
 		sb.append("type integer default 0,");// 消息类型 #
 		sb.append("content varchar(255) not null,");
 		sb.append("time integer not null");
@@ -48,7 +48,9 @@ public class Sql {
 	 * 目前不接受param为null的情况
 	 * 
 	 * @param sql
+	 *            格式: select * from table where name = ? and sex = ?;
 	 * @param params
+	 *            格式: coffee 1
 	 * @return
 	 */
 	public static String parse(String sql, Object... params) {
@@ -61,8 +63,7 @@ public class Sql {
 			index = sb.indexOf("?", index);
 			if (param instanceof String) {
 				sb.replace(index, index + 1, "'" + param + "'");
-			} else if (param instanceof Integer || param instanceof Long
-					|| param instanceof Double) {
+			} else if (param instanceof Integer || param instanceof Long || param instanceof Double) {
 				sb.replace(index, index + 1, String.valueOf(param));
 			} else {
 				continue;
