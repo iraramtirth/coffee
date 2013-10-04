@@ -1,10 +1,9 @@
-package com.fetion.util.sqlite;
+package org.coffee.util.sqlite;
 
 public class Sql {
 
 	/**
 	 * 
-	 * @return
 	 */
 	public String getCreate() {
 		StringBuilder sb = new StringBuilder();

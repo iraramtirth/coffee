@@ -7,17 +7,18 @@ import android.view.MotionEvent;
 import android.view.View;
 
 /**
- * 手势事件 onDown method return true it will forword callback to onScroll
- * onScrollmethod return true it will forword callback to onFling
+ * 手势事件适配器类 <br>
+ * onDown method return true it will forword callback to onScroll <br>
+ * onScroll method return true it will forword callback to onFling <br>
  * 
  * @author coffee 2013-1-24下午2:31:08
  */
-public class OnGestureEvent implements View.OnTouchListener, OnGestureListener,
-		OnDoubleTapListener {
+public class OnGestureEvent implements View.OnTouchListener, OnGestureListener, OnDoubleTapListener {
 
 	private GestureDetector gestureDetector;
-//	private MotionEvent preEvent;
-//	private MotionEvent nextEvent;
+
+	// private MotionEvent preEvent;
+	// private MotionEvent nextEvent;
 
 	public OnGestureEvent() {
 		gestureDetector = new GestureDetector(this);
@@ -28,19 +29,19 @@ public class OnGestureEvent implements View.OnTouchListener, OnGestureListener,
 	 */
 	@Override
 	public boolean onTouch(View v, MotionEvent event) {
-//		if (preEvent == null) {
-//			preEvent = MotionEvent.obtain(event); // 第一次触发
-//		} else {
-//			preEvent = MotionEvent.obtain(nextEvent);
-//		}
-//		nextEvent = MotionEvent.obtain(event);
-//		// 重置preEvent/nextEvent， 该操作很重要
-//		if (event.getAction() == MotionEvent.ACTION_UP) {
-////			preEvent = null;
-////			nextEvent = null;
-//		} else {
-//			this.onScroll(preEvent, nextEvent);
-//		}
+		// if (preEvent == null) {
+		// preEvent = MotionEvent.obtain(event); // 第一次触发
+		// } else {
+		// preEvent = MotionEvent.obtain(nextEvent);
+		// }
+		// nextEvent = MotionEvent.obtain(event);
+		// // 重置preEvent/nextEvent， 该操作很重要
+		// if (event.getAction() == MotionEvent.ACTION_UP) {
+		// // preEvent = null;
+		// // nextEvent = null;
+		// } else {
+		// this.onScroll(preEvent, nextEvent);
+		// }
 		return this.gestureDetector.onTouchEvent(event);
 	}
 
@@ -53,7 +54,7 @@ public class OnGestureEvent implements View.OnTouchListener, OnGestureListener,
 		return true;
 	}
 
-	////////一下方法是实现子自OnGuestureListener
+	// //////一下方法是实现子自OnGuestureListener
 	/**
 	 * 与接触屏幕时触发 (该事件当触摸屏幕时候(不管是scrll还是...其他==)一定发生)
 	 */
@@ -66,8 +67,7 @@ public class OnGestureEvent implements View.OnTouchListener, OnGestureListener,
 	 * 滑动后up时触发
 	 */
 	@Override
-	public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX,
-			float velocityY) {
+	public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
 		// if(e1.getX() - e2.getX() >50 && Math.abs(velocityX) > 20){
 		// Toast.makeText(context, "向左", Toast.LENGTH_SHORT).show();
 		//
@@ -94,8 +94,7 @@ public class OnGestureEvent implements View.OnTouchListener, OnGestureListener,
 	 * 当划屏的时候，会连续激发该事件 e1：只触发1次。e2随着划屏不断触发
 	 */
 	@Override
-	public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX,
-			float distanceY) {
+	public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
 		return true;
 	}
 

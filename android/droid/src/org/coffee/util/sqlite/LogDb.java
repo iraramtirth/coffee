@@ -1,4 +1,4 @@
-package com.fetion.util.sqlite;
+package org.coffee.util.sqlite;
 
 /**
  * 数据库的log代理类
@@ -8,10 +8,10 @@ package com.fetion.util.sqlite;
 public class LogDb {
 
 	public static void d(String tag, String msg) {
-		com.fetion.util.log.Log.d(tag, msg);
+		
 	}
 
 	public static void w(String tag, String msg, Throwable throwable) {
-		com.fetion.util.log.Log.w(tag, msg, throwable);
+		 
 	}
 }
