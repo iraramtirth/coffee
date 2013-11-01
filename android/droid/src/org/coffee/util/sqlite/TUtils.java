@@ -1,5 +1,6 @@
 package org.coffee.util.sqlite;
 
+
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 
@@ -29,9 +30,8 @@ public class TUtils {
 	/**
 	 * 获取某个字段的值
 	 */
-	public static <T> Object getValue(T obj, String fieldName){
+	public static <T> Object getValue(T obj, Field field){
 		try {
-			Field field = obj.getClass().getDeclaredField(fieldName);
 			field.setAccessible(true);
 			return field.get(obj);
 		} catch (Exception e) {

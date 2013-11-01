@@ -126,18 +126,6 @@ public class TSqliteUtils extends TUtils {
 	}
 
 	/**
-	 * 判断列是否可为空 return : false-不可为空 ; true-可为空
-	 */
-	public static <T> boolean isNull(Class<T> clazz, Field field) {
-		Column column = field.getAnnotation(Column.class);
-		if (column != null) {
-			return column.nullable();
-		} else {
-			return true;
-		}
-	}
-
-	/**
 	 * 判断指定class的prop是否被映射到数据库
 	 * 
 	 * @return 如果被映射，返回true ； 没被映射， 即 nullMap != null 返回false
@@ -156,8 +144,8 @@ public class TSqliteUtils extends TUtils {
 	}
 
 	// 将ResultSet组装成List
-	public static <T> List<T> processResultSetToList(Cursor rs, Class<T> clazz) throws Exception {
-		List<T> ls = new ArrayList<T>();
+	public static <T> ArrayList<T> processResultSetToList(Cursor rs, Class<T> clazz) throws Exception {
+		ArrayList<T> ls = new ArrayList<T>();
 		Field[] fields = clazz.getDeclaredFields();
 		while (rs.moveToNext()) {
 			T tt = clazz.newInstance();
@@ -223,9 +211,9 @@ public class TSqliteUtils extends TUtils {
 	 * @param fieldName
 	 *            : 字段名
 	 */
-	public static <T> boolean isPrimaryKey(Class<T> entityClass, String fieldName) {
+	public static <T> boolean isPrimaryKey(Class<T> entityClass, Field field) {
 		try {
-			Id id = entityClass.getDeclaredField(fieldName).getAnnotation(Id.class);
+			Id id = field.getAnnotation(Id.class);
 			if (id != null) {
 				return true;
 			}
@@ -243,12 +231,9 @@ public class TSqliteUtils extends TUtils {
 	 * @param fieldName
 	 *            : 字段名
 	 */
-	public static <T> boolean isGenerationTypeAuto(Class<T> entityClass, String fieldName) {
+	public static <T> boolean isGenerationTypeAuto(Class<T> entityClass, Field field) {
 		try {
-			if (isPrimaryKey(entityClass, fieldName) == false) {
-				return false;
-			}
-			Id id = entityClass.getDeclaredField(fieldName).getAnnotation(Id.class);
+			Id id = field.getAnnotation(Id.class);
 			if (id != null && id.isAuto()) {
 				return true;
 			}
@@ -259,15 +244,19 @@ public class TSqliteUtils extends TUtils {
 	}
 
 	/**
-	 * 返回更新实体的命令语句
+	 * 返回更新实体的命令语句<br>
+	 * 支持多主键
 	 * 
 	 * @param <T>
 	 * @param t
-	 * @param token
 	 */
 	public static <T> String getUpdateSql(T t) throws Exception {
 		StringBuffer sql = new StringBuffer("update ").append(TSqliteUtils.getTableName(t.getClass())).append(" set ");
 		long id = 0;
+		// 主键值
+		ArrayList<Long> values = new ArrayList<Long>();
+		// 主键名
+		ArrayList<String> pks = new ArrayList<String>();
 		Class<?> clazz = t.getClass();
 		Field[] fields = clazz.getDeclaredFields();
 		for (int i = 0; i < fields.length; i++) {
@@ -276,9 +265,13 @@ public class TSqliteUtils extends TUtils {
 				continue;
 			}
 			String columnName = getColumnName(clazz, fields[i]);
-			Object value = getValue(t, fields[i].getName());
-			if (TSqliteUtils.isPrimaryKey(t.getClass(), fields[i].getName())) {
-				id = Long.valueOf(value.toString());
+			Object value = getValue(t, fields[i]);
+			if (TSqliteUtils.isPrimaryKey(t.getClass(), fields[i])) {
+				if(value != null){
+					id = Long.valueOf(value.toString());
+					values.add(id);
+					pks.add(columnName);
+				}
 				continue;
 			} else {
 				if (value == null) {
@@ -310,7 +303,13 @@ public class TSqliteUtils extends TUtils {
 		if (sql.toString().endsWith(",")) {// 除去末尾的 ,
 			sql.deleteCharAt(sql.length() - 1);
 		}
-		sql.append(" where id = ").append(id);
+		sql.append(" where ");
+		for (int i = 0; i < pks.size(); i++) {
+			sql.append(pks.get(i)).append("=").append(values.get(i));
+			if (i + 1 < pks.size()) {
+				sql.append(" and ");
+			}
+		}
 		return sql.toString();
 	}
 
@@ -330,9 +329,10 @@ public class TSqliteUtils extends TUtils {
 				continue;
 			}
 			// 非基本数据类型 ， 也非String类型
-			if (!field.getType().isPrimitive() && field.getType() != String.class) {
-				continue;
-			}
+			// if (!field.getType().isPrimitive() && field.getType() !=
+			// String.class) {
+			// continue;
+			// }
 			Column column = field.getAnnotation(Column.class);
 			String columnName = field.getName();
 			if (column != null && !"".equals(column.name())) {
@@ -350,10 +350,10 @@ public class TSqliteUtils extends TUtils {
 		sql.append(")values(");
 		for (String column : propMap.keySet()) {
 			Field field = propMap.get(column);
-			if (isPrimaryKey(t.getClass(), field.getName()) && isGenerationTypeAuto(t.getClass(), field.getName())) {
+			if (isGenerationTypeAuto(t.getClass(), field)) {
 				sql.append("null");
 			} else {
-				Object fieldValue = getValue(t, field.getName());
+				Object fieldValue = getValue(t, field);
 				switch (getMappedType(field.getType())) {
 				case Type.Integer:
 				case Type.Long:
@@ -406,6 +406,7 @@ public class TSqliteUtils extends TUtils {
 		byte Date = 10;
 		byte Object = 11;
 	};
+
 	/**
 	 * 支持基本数据类型以及其封装类型
 	 * 

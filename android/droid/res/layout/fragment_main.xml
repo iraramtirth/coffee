@@ -9,7 +9,8 @@
         android:id="@+id/main_fragment_top"
         android:layout_width="fill_parent"
         android:layout_height="56dip"
-        android:layout_alignParentLeft="true"/>
+        android:layout_alignParentLeft="true"
+        android:orientation="horizontal"/>
     <!-- 主体布局 -->
     <FrameLayout
         android:layout_width="fill_parent"

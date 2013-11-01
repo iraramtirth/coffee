@@ -4,7 +4,7 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     >
-    <org.coffee.view.ImageZoomer
+    <org.coffee.util.view.ImageZoomer
 			android:id="@+id/test"
 			android:layout_height="fill_parent"
 			android:layout_width="fill_parent"

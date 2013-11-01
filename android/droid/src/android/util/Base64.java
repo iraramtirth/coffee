@@ -16,6 +16,7 @@
 
 package android.util;
 
+import android.annotation.SuppressLint;
 import java.io.UnsupportedEncodingException;
 
 /**
@@ -23,7 +24,7 @@ import java.io.UnsupportedEncodingException;
  * See RFCs <a href="http://www.ietf.org/rfc/rfc2045.txt">2045</a> and <a
  * href="http://www.ietf.org/rfc/rfc3548.txt">3548</a>.
  */
-public class Base64 {
+@SuppressLint("NewApi") public class Base64 {
 	/**
 	 * Default values for encoder/decoder flags.
 	 */
