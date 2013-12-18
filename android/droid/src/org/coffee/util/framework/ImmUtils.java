@@ -14,7 +14,7 @@ import android.view.inputmethod.InputMethodManager;
  * 
  * @author coffee
  */
-public class InputMethodUtils {
+public class ImmUtils {
 	private static InputMethodManager imm;
 
 	// 显示输入法

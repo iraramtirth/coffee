@@ -1,6 +1,6 @@
 package org.coffee.test.activity;
 
-import org.coffee.util.framework.InputMethodUtils;
+import org.coffee.util.framework.ImmUtils;
 
 import android.app.Activity;
 import android.os.Bundle;
@@ -46,10 +46,10 @@ public class InputMethodUtilsDemo extends Activity implements OnClickListener{
 		if(v == btnShow){
 			//InputMethodUtils.toggle(this);
 			//InputMethodUtils.isShow(this,editText);
-			InputMethodUtils.show(this, editText);
+			ImmUtils.show(this, editText);
 		}
 		if(v == btnHide){
-			 InputMethodUtils.hide(this);
+			 ImmUtils.hide(this);
 		}
 	}
 	 

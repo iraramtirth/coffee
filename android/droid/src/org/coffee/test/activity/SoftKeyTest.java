@@ -1,6 +1,6 @@
 package org.coffee.test.activity;
 
-import org.coffee.util.framework.InputMethodUtils;
+import org.coffee.util.framework.ImmUtils;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -28,7 +28,7 @@ public class SoftKeyTest extends Activity {
 				} catch (InterruptedException e) {
 					e.printStackTrace();
 				}
-				InputMethodUtils.show(context, editText);
+				ImmUtils.show(context, editText);
 				System.out.println("xx");
 			}
 		});
