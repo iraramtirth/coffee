@@ -2,6 +2,7 @@ package coffee.frame;
 
 import android.app.Application;
 import android.content.Context;
+import android.os.Handler;
 
 /**
  * 
@@ -11,13 +12,21 @@ import android.content.Context;
  */
 public class App extends Application {
 	private static Context context;
-
+	
+	private static Handler mHandler;
 	@Override
 	public void onCreate() {
 		context = this;
+		mHandler = new Handler(){
+			
+		};
 	}
 	
 	public static Context getContext(){
 		return context;
+	}
+	
+	public static Handler getHandler(){
+		return mHandler;
 	}
 }

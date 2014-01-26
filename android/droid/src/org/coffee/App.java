@@ -20,6 +20,7 @@ public class App extends Application {
 	public void onCreate() {
 		Log.i(TAG, "onCreate application....");
 		context = this;
+		Thread.setDefaultUncaughtExceptionHandler(new CrashHandler(this));
 	}
 
 	public static Context getContext() {

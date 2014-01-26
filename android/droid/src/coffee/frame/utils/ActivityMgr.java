@@ -32,4 +32,14 @@ public class ActivityMgr {
 		}
 		return null;
 	}
+
+	/**
+	 * 结束所有的activity
+	 */
+	public static void finishAll() {
+		while (stack.isEmpty() == false) {
+			Activity act = stack.pop();
+			act.finish();
+		}
+	}
 }

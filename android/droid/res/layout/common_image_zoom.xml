@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent">
+    <!-- 下载用的进度条 -->
+    <LinearLayout
+        android:id="@+id/zoom_download_notice"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:gravity="center"
+        android:orientation="vertical">
+        <!-- 默认背景图 -->
+        <ImageView
+            android:id="@+id/zoom_default_image"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:adjustViewBounds="true"
+            android:scaleType="fitXY"/>
+        <!-- 文字:背景图 -->
+        <TextView
+            android:id="@+id/zoom_progress_text"
+            android:layout_width="160dip"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="25.3dp"
+            android:textColor="#999999"
+            android:textSize="12dip"/>
+        <!-- 进度条 -->
+        <ProgressBar
+            android:id="@+id/zoom_progress_bar"
+            android:layout_width="160dip"
+            android:layout_height="8dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="13.3dp"
+            android:indeterminateOnly="false"
+            android:progress="0"
+            android:scrollbarStyle="outsideInset"
+            android:visibility="gone"/>
+    </LinearLayout>
+    <!-- 要显示的图片 -->
+    <com.fetion.apad.ui.imagezoom.ImageZoomView
+        android:id="@+id/zoom_image"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:visibility="gone"/>
+    <Button
+        android:id="@+id/zoom_save"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:layout_marginRight="5dip"
+        android:text="保存"/>
+    <!-- 缩放按钮 -->
+    <ZoomControls
+        android:id="@+id/zoom_controls"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"/>
+</RelativeLayout>

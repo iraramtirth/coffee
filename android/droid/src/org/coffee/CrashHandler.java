@@ -63,7 +63,7 @@ public class CrashHandler implements UncaughtExceptionHandler {
 			}
 		}.start();
 	}
-
+	
 	public static void sendCrashReports(final String errorMsg) {
 
 		// 跑线程, 将报错信息发送到指定的邮箱
