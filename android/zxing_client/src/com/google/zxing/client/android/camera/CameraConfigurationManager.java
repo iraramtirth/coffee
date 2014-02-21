@@ -16,6 +16,14 @@
 
 package com.google.zxing.client.android.camera;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Iterator;
+import java.util.List;
+
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Point;
@@ -27,14 +35,6 @@ import android.view.WindowManager;
 
 import com.google.zxing.client.android.PreferencesActivity;
 import com.google.zxing.client.android.camera.metering.MeteringInterface;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.Iterator;
-import java.util.List;
 
 /**
  * A class which deals with reading, parsing, and setting the camera parameters which are used to
