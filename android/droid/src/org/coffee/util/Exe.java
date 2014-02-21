@@ -22,8 +22,7 @@ public class Exe {
 	 * @param methodName
 	 * @param paramValues
 	 */
-	public synchronized static Object run(Object obj, String methodName,
-			Object... paramValues) {
+	public synchronized static Object run(Object obj, String methodName, Object... paramValues) {
 
 		Object result = null;
 		try {
@@ -31,9 +30,7 @@ public class Exe {
 			if (obj instanceof String) {
 				// 加载静态类
 				objClass = Class.forName(obj + "");
-			}
-			else
-			{
+			} else {
 				objClass = obj.getClass();
 			}
 

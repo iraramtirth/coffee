@@ -49,32 +49,28 @@ public class RegexUtils {
 		if (group == 0) {
 			group = matcher.groupCount();
 		}
-		if(matcher.find())
-		{
-			for (int i = 1; i <= group ; i++) {
+		if (matcher.find()) {
+			for (int i = 1; i <= group; i++) {
 				item = matcher.group(i);
 				items.add(item);
 			}
 		}
-		
+
 		return items.toArray(new String[0]);
 	}
 
 	public static void main(String[] args) {
-		String data = "	<voip> " + "<from>100025@im.wo.com.cn/woclient</from>"
-				+ "<session-id>C6ZWHr11</session-id>"
-				+ "<call-type>voip-voice</call-type>" + "<voip>";
+		String data = "	<voip> " + "<from>100025@im.wo.com.cn/woclient</from>" + "<session-id>C6ZWHr11</session-id>" + "<call-type>voip-voice</call-type>" + "<voip>";
 		// String[] str = "三星SGH_i728".split("[^(\\w|\\s)]+");
-		String[] str = RegexUtils
-				.matchAll(
-						data,
-						".+?\\<from\\>(.+?)\\</from\\>.*?(\\<session-id\\>.+?\\</session-id\\>)",
-						0);
+		String[] str = RegexUtils.matchAll(data, ".+?\\<from\\>(.+?)\\</from\\>.*?(\\<session-id\\>.+?\\</session-id\\>)", 0);
 
 		for (String s : str) {
 			System.out.println(s);
 		}
 
+		String  from = match(data, "<from>(.+?)</from>", 1);
+		System.out.println(from);
+		
 	}
 
 }
