@@ -304,8 +304,9 @@ public final class CaptureActivity extends Activity implements SurfaceHolder.Cal
 			if (requestCode == HISTORY_REQUEST_CODE) {
 				int itemNumber = intent.getIntExtra(Intents.History.ITEM_NUMBER, -1);
 				if (itemNumber >= 0) {
-					//HistoryItem historyItem = historyManager.buildHistoryItem(itemNumber);
-					//decodeOrStoreSavedBitmap(null, historyItem.getResult());
+					// HistoryItem historyItem =
+					// historyManager.buildHistoryItem(itemNumber);
+					// decodeOrStoreSavedBitmap(null, historyItem.getResult());
 				}
 			}
 		}
@@ -493,12 +494,16 @@ public final class CaptureActivity extends Activity implements SurfaceHolder.Cal
 		TextView supplementTextView = (TextView) findViewById(R.id.contents_supplement_text_view);
 		supplementTextView.setText("");
 		supplementTextView.setOnClickListener(null);
-		if (PreferenceManager.getDefaultSharedPreferences(this).getBoolean(PreferencesActivity.KEY_SUPPLEMENTAL, true)) {
-			//SupplementalInfoRetriever.maybeInvokeRetrieval(supplementTextView, resultHandler.getResult(), historyManager, this);
-		}
+
 		if (copyToClipboard && !resultHandler.areContentsSecure()) {
 			ClipboardInterface.setText(displayContents, this);
 		}
+
+		// coffee add
+		Intent data = new Intent();
+		data.putExtra("code", displayContents);
+		setResult(RESULT_OK, data);
+		finish();
 	}
 
 	// Briefly show the contents of the barcode, then handle the result outside
