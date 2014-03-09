@@ -521,7 +521,7 @@ public final class Bootstrap {
                                    System.getProperty("user.dir"));
             }
         } else {
-            System.setProperty(Globals.CATALINA_HOME_PROP,
+            System.setProperty("catalina.home",
                                System.getProperty("user.dir"));
         }
 
