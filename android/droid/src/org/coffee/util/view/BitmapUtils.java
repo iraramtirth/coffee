@@ -105,7 +105,7 @@ public class BitmapUtils {
 	/**
 	 * 获取缓存路径
 	 */
-	private static String getCachePath(String fileName){
+	public static String getCachePath(String fileName){
 		File file = null;
 		String status = Environment.getExternalStorageState();
 		//判断是否有sdcard

@@ -30,8 +30,7 @@ import coffee.utils.log.Log;
  * @author coffee
  * 
  */
-public abstract class BaseFragment extends Fragment implements
-		android.os.Handler.Callback {
+public abstract class BaseFragment extends Fragment implements android.os.Handler.Callback {
 
 	private final String TAG = "BaseFragment";
 
@@ -170,8 +169,7 @@ public abstract class BaseFragment extends Fragment implements
 	 * 注意： 子类重载该类的时候需要，在第一行代码设置变量layoutResId <br>
 	 */
 	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container,
-			Bundle savedInstanceState) {
+	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		return super.onCreateView(inflater, container, savedInstanceState);
 	}
 

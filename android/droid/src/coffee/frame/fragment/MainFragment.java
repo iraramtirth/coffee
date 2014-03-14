@@ -25,8 +25,7 @@ import coffee.utils.log.Log;
  * 
  * @author coffee
  */
-public class MainFragment extends FragmentActivity implements
-		android.os.Handler.Callback, OnClickListener {
+public class MainFragment extends FragmentActivity implements android.os.Handler.Callback, OnClickListener {
 
 	private static MainFragment mContext;
 
@@ -94,24 +93,20 @@ public class MainFragment extends FragmentActivity implements
 	protected void onSaveInstanceState(Bundle outState) {
 	}
 
-	@Override
-	public boolean dispatchTouchEvent(MotionEvent ev) {
-		Log.i("fragment", "dispatchTouchEvent");
-		Map<Class<? extends BaseFragment>, View> viewsContainer = FragmentMgr
-				.getBaseFragmentViewsContainer();
-		for (Class<?> fragmentClass : viewsContainer.keySet()) {
-			View view = viewsContainer.get(fragmentClass);
-			if (ev.getX() > view.getLeft() && ev.getX() < view.getRight()
-					&& ev.getY() > view.getTop()
-					&& ev.getY() < view.getBottom()) {
-				// view.dispatchTouchEvent(ev);
-				view.onTouchEvent(ev);
-			}
-			FragmentMgr.getBaseFragments().get(fragmentClass)
-					.dispatchTouchEvent(ev);
-		}
-		return super.dispatchTouchEvent(ev);
-	}
+//	@Override
+//	public boolean dispatchTouchEvent(MotionEvent ev) {
+//		Log.i("fragment", "dispatchTouchEvent");
+//		Map<Class<? extends BaseFragment>, View> viewsContainer = FragmentMgr.getBaseFragmentViewsContainer();
+//		for (Class<?> fragmentClass : viewsContainer.keySet()) {
+//			View view = viewsContainer.get(fragmentClass);
+//			if (ev.getX() > view.getLeft() && ev.getX() < view.getRight() && ev.getY() > view.getTop() && ev.getY() < view.getBottom()) {
+//				// view.dispatchTouchEvent(ev);
+//				view.onTouchEvent(ev);
+//			}
+//			FragmentMgr.getBaseFragments().get(fragmentClass).dispatchTouchEvent(ev);
+//		}
+//		return super.dispatchTouchEvent(ev);
+//	}
 
 	/************************************* Getter Setter -Start *****************************************/
 	public static MainFragment getMainFragment() {

@@ -3,7 +3,6 @@ package coffee.frame.imagezoom;
 import java.lang.ref.SoftReference;
 
 import org.coffee.R;
-import org.coffee.util.lang.FileUtils;
 import org.coffee.util.view.BitmapUtils;
 
 import android.content.Intent;
@@ -53,7 +52,7 @@ public class ImageZoomActivity extends BaseActivity {
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.common_image_zoom);
 		Intent intent = getIntent();
-		mFileName = intent.getStringExtra(EXTRA_ARG1);
+		mFileName = intent.getStringExtra("");
 		mFilePath = mFileName;
 		// 显示下载进度
 		loadFromLocalOrNet(mFilePath);
@@ -85,7 +84,7 @@ public class ImageZoomActivity extends BaseActivity {
 					///File file = new File(mFilePath);
 					//file.renameTo(new File(mFilePath + ".jpg"));
 					//MsgLogic.getInstance().updateImageSave(mFileName);
-					FileUtils.copy(mFilePath, mFilePath + ".jpg");
+					//FileUtils.copy(mFilePath, mFilePath + ".jpg");
 				}
 				Toast.makeText(ImageZoomActivity.this, info, Toast.LENGTH_LONG)
 						.show();
