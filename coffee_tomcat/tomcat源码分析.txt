@@ -1,0 +1,36 @@
+1: 我们先来看一下程序的启动类 Bootstrap
+
+这个类比较干净没有继承。也不能被final 
+这里面主要有
+    
+
+//自身类的引用。static生命周期是全局的。也就是说从server的启动到停止，这个对象一直存在的。 在当前类的作用就是为了防止启动多个实例。当第二次启动的时候判断该变量不为空，则不会执行init初始化操作。
+程序会报错。但是之前的Bootstrap实例还可以继续执行
+。我们可以尝试一下 多次启动该类。然后访问   localhost:8080
+private static Bootstrap daemon = null;
+ 
+来看一个第二个重要的对象。Catalina实例
+以下四个变量的实例化都在 init方法中
+
+    private Object catalinaDaemon = null;
+
+
+    protected ClassLoader commonLoader = null;
+    protected ClassLoader catalinaLoader = null;
+    protected ClassLoader sharedLoader = null;
+
+2：重点讲一下 Catalina类
+这个类也没有父类。可以被继承
+
+先看一下构造方法
+
+public Catalina() {
+	setSecurityProtection();
+}
+
+里面有几个比较重要的字段
+/**
+ * The server component we are starting or stopping.
+ */
+protected Server server
+用来启动或者停止服务的组件
