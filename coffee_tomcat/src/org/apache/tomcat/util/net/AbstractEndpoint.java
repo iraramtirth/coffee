@@ -563,7 +563,7 @@ public abstract class AbstractEndpoint {
     public abstract boolean getUseComet();
     public abstract boolean getUseCometTimeout();
     
-    protected LimitLatch initializeConnectionLatch() {
+	protected LimitLatch initializeConnectionLatch() {
         if (connectionLimitLatch==null) {
             connectionLimitLatch = new LimitLatch(getMaxConnections());
         }

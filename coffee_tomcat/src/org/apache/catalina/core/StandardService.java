@@ -228,7 +228,7 @@ public class StandardService extends LifecycleMBeanBase implements Service {
      */
     @Override
     public void addConnector(Connector connector) {
-
+    	System.out.println(connector.getClass());
         synchronized (connectors) {
             connector.setService(this);
             Connector results[] = new Connector[connectors.length + 1];
