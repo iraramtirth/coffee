@@ -5,6 +5,7 @@ import android.content.Context;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewConfiguration;
 import android.view.animation.DecelerateInterpolator;
 import android.view.animation.Interpolator;
 import android.widget.LinearLayout;
@@ -19,36 +20,30 @@ public abstract class BasePullRefreshView<T extends View> extends LinearLayout {
 
 	protected LoadingLayout mHeaderLayout;
 	protected LoadingLayout mFooterLayout;
+	private int mTouchSlop;
 
 	public BasePullRefreshView(Context context, AttributeSet attrs) {
 		super(context, attrs);
 		setOrientation(LinearLayout.VERTICAL);
 		mHeaderLayout = new LoadingLayout(context);
 		mFooterLayout = new LoadingLayout(context);
+		// 依次添加
 		this.addView(mHeaderLayout, 0);
 		this.addView(createRefreshableView(context, attrs));
 		this.addView(mFooterLayout);
-
-		scrollTo(0, mHeaderLayout.getWidth());
-
+		//
+		mTouchSlop = ViewConfiguration.get(context).getScaledTouchSlop();
 		setPadding(0, -100, 0, 0);
 	}
 
 	protected abstract T createRefreshableView(Context context, AttributeSet attrs);
 
-	private State mState = State.RESET;
+	// 通过这俩操作判断手势方向--向下还是向上
+	private float mInitialMotionY;
+	private float mLastMotionY;
 
-	public final boolean isRefreshing() {
-		return mState == State.REFRESHING || mState == State.MANUAL_REFRESHING;
-	}
-
-	public final void onRefreshComplete() {
-		if (isRefreshing()) {
-			mState = State.RESET;
-		}
-	}
-
-	int paddTop = -100;
+	private final int maxPaddingTop = -200;
+	private int paddTop = -100;
 
 	/**
 	 * Helper method which just calls scrollTo() in the correct scrolling
@@ -66,28 +61,35 @@ public abstract class BasePullRefreshView<T extends View> extends LinearLayout {
 	}
 
 	@Override
-	public boolean dispatchTouchEvent(MotionEvent event) {
-		Log.d("coffee_scroll", event.getAction());
+	public boolean onTouchEvent(MotionEvent event) {
 		switch (event.getAction()) {
 		case MotionEvent.ACTION_MOVE: {
 			// smoothScrollTo(getScrollY() -50, 100, 0, null);
-			Log.d("coffee_scroll", paddTop -= 3);
-			scrollTo(0, paddTop);
+			mLastMotionY = event.getY();
+			// 向下滑
+			Log.d("coffee_scroll", mLastMotionY + " " + mInitialMotionY);
+			if (mLastMotionY - mInitialMotionY > mTouchSlop) {
+				Log.d("coffee_scroll", paddTop -= 15);
+				if (paddTop > maxPaddingTop) {
+					setHeaderScroll(paddTop);
+				}
+				mInitialMotionY = event.getY();
+			}
 			return true;
 		}
 
 		case MotionEvent.ACTION_DOWN: {
 			paddTop = 0;
-			scrollTo(0, 0);
-
+			setHeaderScroll(0);
+			mInitialMotionY = event.getY();
+			mLastMotionY = event.getY();
 			break;
 		}
 
 		case MotionEvent.ACTION_CANCEL:
-		case MotionEvent.ACTION_UP: {
-			smoothScrollTo(0, 300, 0, null);
+		case MotionEvent.ACTION_UP:
+			smoothScrollTo(0, 300, 0, null);// 重置位置
 			break;
-		}
 		}
 
 		return true;
@@ -177,7 +179,7 @@ public abstract class BasePullRefreshView<T extends View> extends LinearLayout {
 		}
 	}
 
-	static interface OnSmoothScrollFinishedListener {
+	interface OnSmoothScrollFinishedListener {
 		void onSmoothScrollFinished();
 	}
 }
