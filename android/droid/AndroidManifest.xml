@@ -29,6 +29,14 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
+        <activity
+            android:name="org.coffee.browser.activity.BrowserActivity"
+            android:label="webview">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
+        </activity>
         <activity android:name="org.coffee.activity.ActivityCycle_A">
         </activity>
         <activity android:name="org.coffee.activity.ActivityCycle_B">

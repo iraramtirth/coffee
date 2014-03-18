@@ -4,8 +4,9 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
+import android.view.View;
 import android.widget.BaseAdapter;
-import android.widget.ListAdapter;
+import android.widget.FrameLayout;
 import android.widget.ListView;
 
 /**
@@ -28,7 +29,24 @@ public class XListView extends BasePullRefreshView<ListView> {
 
 		// Set it to this so it can be used in ListActivity/ListFragment
 		mListView.setId(android.R.id.list);
+		if (super.mFooterLayout != null) {
+			FrameLayout footerParent = new FrameLayout(context);
+			footerParent.addView(mFooterLayout);
+			mListView.addFooterView(footerParent);
+			//setMoreNo();
+			setMoreHas("xxx");
+		}
 		return mListView;
+	}
+
+	public void setMoreHas(String text) {
+		mFooterLayout.setVisibility(View.VISIBLE);
+		mFooterLayout.setPullLabel("单击加载更多");
+	}
+
+	public void setMoreNo() {
+		mFooterLayout.setPullLabel("单击加载更多");
+		mFooterLayout.setVisibility(View.GONE);
 	}
 
 	protected class InternalListView extends ListView {
@@ -59,7 +77,7 @@ public class XListView extends BasePullRefreshView<ListView> {
 			 * the issue so that it doesn't cause an FC. See Issue #66.
 			 */
 			try {
-				if (getFirstVisiblePosition() == 0) {
+				if (isReadyForPull() || XListView.super.getScrollY() != 0) {
 					XListView.this.onTouchEvent(ev);
 				}
 				return super.dispatchTouchEvent(ev);
@@ -69,12 +87,11 @@ public class XListView extends BasePullRefreshView<ListView> {
 			}
 		}
 
-		@Override
-		public void setAdapter(ListAdapter adapter) {
+	}
 
-			super.setAdapter(adapter);
-		}
-
+	@Override
+	protected boolean isReadyForPull() {
+		return mListView != null && mListView.getFirstVisiblePosition() == 0;
 	}
 
 	public void setAdapter(BaseAdapter adapter) {
