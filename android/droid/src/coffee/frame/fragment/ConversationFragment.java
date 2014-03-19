@@ -7,7 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import coffee.frame.fragment.base.BaseDroidFragment;
-import coffee.frame.view.XListView;
+import coffee.frame.pull2refresh.XListView;
 
 /**
  * 

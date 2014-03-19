@@ -1,4 +1,4 @@
-package coffee.frame.view;
+package coffee.frame.pull2refresh;
 
 import org.coffee.R;
 
@@ -11,6 +11,7 @@ import android.view.ViewConfiguration;
 import android.view.animation.DecelerateInterpolator;
 import android.view.animation.Interpolator;
 import android.widget.LinearLayout;
+import coffee.frame.view.ViewCompat;
 import coffee.utils.log.Log;
 
 /**

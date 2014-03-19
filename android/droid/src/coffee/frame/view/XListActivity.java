@@ -2,6 +2,7 @@ package coffee.frame.view;
 
 import org.coffee.R;
 
+import coffee.frame.pull2refresh.XListView;
 import android.app.Activity;
 import android.os.Bundle;
 import android.view.View;

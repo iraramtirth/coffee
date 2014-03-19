@@ -1,4 +1,4 @@
-package coffee.frame.view;
+package coffee.frame.pull2refresh;
 
 import android.content.Context;
 import android.graphics.Canvas;
