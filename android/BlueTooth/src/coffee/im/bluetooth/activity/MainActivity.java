@@ -71,7 +71,7 @@ public class MainActivity extends BaseActivityGroup implements OnClickListener {
 			showViewGroup(ContactActivity.class);
 			break;
 		case R.id.tab_setting:
-			showViewGroup(SettingActivity.class);
+			showViewGroup(ScanDeviceActivity.class);
 			break;
 		}
 	}

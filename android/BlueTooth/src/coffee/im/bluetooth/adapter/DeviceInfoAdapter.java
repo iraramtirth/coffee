@@ -13,6 +13,7 @@ import coffee.im.bluetooth.activity.ChatActivity;
 import coffee.im.bluetooth.activity.base.BaseActivity;
 import coffee.im.bluetooth.adapter.base.BaseAdapter;
 import coffee.im.bluetooth.constant.ConstIntent;
+import coffee.im.bluetooth.utils.BtUtils;
 
 /**
  * 蓝牙设备信息
@@ -42,8 +43,7 @@ public class DeviceInfoAdapter extends BaseAdapter<BluetoothDevice> {
 			holder = new ViewHolder();
 			convertView = View.inflate(mContext, R.layout.device_item, null);
 			holder.name = (TextView) convertView.findViewById(R.id.device_name);
-			holder.address = (TextView) convertView
-					.findViewById(R.id.device_address);
+			holder.address = (TextView) convertView.findViewById(R.id.device_address);
 			holder.action = convertView.findViewById(R.id.device_action);
 			convertView.setTag(holder);
 		} else {
@@ -61,6 +61,7 @@ public class DeviceInfoAdapter extends BaseAdapter<BluetoothDevice> {
 				@Override
 				public void onClick(View v) {
 					//
+					BtUtils.requestPairing(device, mContext);
 				}
 			});
 		} else {
@@ -69,9 +70,7 @@ public class DeviceInfoAdapter extends BaseAdapter<BluetoothDevice> {
 			holder.action.setOnClickListener(new View.OnClickListener() {
 				@Override
 				public void onClick(View v) {
-					((BaseActivity) mContext).startActivity(ChatActivity.class,
-							ConstIntent.EXTRA_BLUETOOTH_DEVICE,
-							device.getAddress());
+					((BaseActivity) mContext).startActivity(ChatActivity.class, ConstIntent.EXTRA_BLUETOOTH_DEVICE, device.getAddress());
 				}
 			});
 		}

@@ -20,8 +20,7 @@ import coffee.im.bluetooth.activity.base.BaseBluetoothListActivity;
  * @author coffee<br>
  *         2013下午12:00:02
  */
-public class ScanDeviceActivity extends BaseBluetoothListActivity implements
-		IActivity {
+public class ScanDeviceActivity extends BaseBluetoothListActivity implements IActivity {
 
 	private BluetoothAdapter mBtAdapter;
 	// 选中的设备address
@@ -69,8 +68,7 @@ public class ScanDeviceActivity extends BaseBluetoothListActivity implements
 			String action = intent.getAction();
 			if (BluetoothDevice.ACTION_FOUND.equals(action)) {
 				// Get the BluetoothDevice object from the Intent
-				BluetoothDevice remoteDevice = intent
-						.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
+				BluetoothDevice remoteDevice = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
 				mListAdapter.notifyAdd(remoteDevice, true);
 			}
 			if (BluetoothAdapter.ACTION_DISCOVERY_FINISHED.equals(action)) {

@@ -59,12 +59,9 @@ public class BtUtils {
 	 *            注意该activity不能为{@link ActivityGroup}中的子Activity
 	 */
 	public static void requestDeviceDiscoverable(Activity context) {
-		Intent discoverIntent = new Intent(
-				BluetoothAdapter.ACTION_REQUEST_DISCOVERABLE);
-		discoverIntent.putExtra(BluetoothAdapter.EXTRA_DISCOVERABLE_DURATION,
-				300);
-		context.startActivityForResult(discoverIntent,
-				IActivity.REQUEST_MAKE_DISCOVERABLE);
+		Intent discoverIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_DISCOVERABLE);
+		discoverIntent.putExtra(BluetoothAdapter.EXTRA_DISCOVERABLE_DURATION, 300);
+		context.startActivityForResult(discoverIntent, IActivity.REQUEST_MAKE_DISCOVERABLE);
 		// Settings.System.putInt(context.getContentResolver(),Settings.System.BLUETOOTH_DISCOVERABILITY,
 		// 2);
 		// Settings.System.putInt(context.getContentResolver(),Settings.System.BLUETOOTH_DISCOVERABILITY_TIMEOUT,120);
@@ -85,16 +82,13 @@ public class BtUtils {
 	 * 请求与remote蓝牙设备配对
 	 * 当调用createBond时，请求[android.bluetooth.device.action.PAIRING_REQUEST]被响应
 	 */
-	public void requestPairing(BluetoothDevice remoteDevice, Activity activity) {
+	public static void requestPairing(BluetoothDevice remoteDevice, Activity activity) {
 		String methodName = "createBond";
 		// BluetoothDevice. android.bluetooth.device.action.PAIRING_REQUEST
-		Intent enableIntent = new Intent(
-				"android.bluetooth.device.action.PAIRING_REQUEST");
-		activity.startActivityForResult(enableIntent,
-				IActivity.REQUEST_CODE_PAIR);
+		Intent enableIntent = new Intent("android.bluetooth.device.action.PAIRING_REQUEST");
+		activity.startActivityForResult(enableIntent, IActivity.REQUEST_CODE_PAIR);
 		try {
-			Method createBond = remoteDevice.getClass().getMethod(methodName,
-					new Class[] {});
+			Method createBond = remoteDevice.getClass().getMethod(methodName, new Class[] {});
 			createBond.invoke(remoteDevice, new Object[] {});
 			// 设置pin码
 			// setPin(remoteDevice, "0000");
@@ -103,10 +97,9 @@ public class BtUtils {
 		}
 	}
 
-	public void createBond(BluetoothDevice remoteDevice) {
+	public static void createBond(BluetoothDevice remoteDevice) {
 		try {
-			Method createBond = remoteDevice.getClass().getMethod("createBond",
-					new Class[] {});
+			Method createBond = remoteDevice.getClass().getMethod("createBond", new Class[] {});
 			createBond.invoke(remoteDevice, new Object[] {});
 			// 设置pin码
 			// setPin(remoteDevice, "0000");
@@ -115,12 +108,11 @@ public class BtUtils {
 		}
 	}
 
-	public void setPairingConfirmation(BluetoothDevice device, boolean bool) {
+	public static void setPairingConfirmation(BluetoothDevice device, boolean bool) {
 		// device = BluetoothAdapter.getDefaultAdapter().getRemoteDevice(
 		// BluetoothAdapter.getDefaultAdapter().getAddress());
 		try {
-			Method setPairingConfirmation = device.getClass().getMethod(
-					"setPairingConfirmation", new Class[] { boolean.class });
+			Method setPairingConfirmation = device.getClass().getMethod("setPairingConfirmation", new Class[] { boolean.class });
 			setPairingConfirmation.invoke(device, new Object[] { bool });
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -133,12 +125,11 @@ public class BtUtils {
 	 * @param device
 	 * @return
 	 */
-	public boolean cancelPairingUserInput(BluetoothDevice device) {
+	public static boolean cancelPairingUserInput(BluetoothDevice device) {
 		try {
 			// device = BluetoothAdapter.getDefaultAdapter().getRemoteDevice(
 			// BluetoothAdapter.getDefaultAdapter().getAddress());
-			Method createBondMethod = device.getClass().getMethod(
-					"cancelPairingUserInput");
+			Method createBondMethod = device.getClass().getMethod("cancelPairingUserInput");
 			boolean result = (Boolean) createBondMethod.invoke(device);
 			return result;
 		} catch (Exception e) {
@@ -150,11 +141,10 @@ public class BtUtils {
 	/**
 	 * 请求取消与remote蓝牙设备的配对
 	 */
-	public void requestCancelPairing(BluetoothDevice remoteDevice) {
+	public static void requestCancelPairing(BluetoothDevice remoteDevice) {
 		try {
 			String methodName = "removeBond";
-			Method createBond = remoteDevice.getClass().getMethod(methodName,
-					new Class[] {});
+			Method createBond = remoteDevice.getClass().getMethod(methodName, new Class[] {});
 			createBond.invoke(remoteDevice, new Object[] {});
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -167,12 +157,10 @@ public class BtUtils {
 	 * @param pinCode
 	 * @return
 	 */
-	public boolean setPin(BluetoothDevice remoteDevice, String pinCode) {
+	public static boolean setPin(BluetoothDevice remoteDevice, String pinCode) {
 		try {
-			Method setPin = remoteDevice.getClass().getDeclaredMethod("setPin",
-					new Class[] { byte[].class });
-			Boolean result = (Boolean) setPin.invoke(remoteDevice,
-					new Object[] { pinCode.getBytes() });
+			Method setPin = remoteDevice.getClass().getDeclaredMethod("setPin", new Class[] { byte[].class });
+			Boolean result = (Boolean) setPin.invoke(remoteDevice, new Object[] { pinCode.getBytes() });
 			return result;
 		} catch (Exception e) {
 			e.printStackTrace();

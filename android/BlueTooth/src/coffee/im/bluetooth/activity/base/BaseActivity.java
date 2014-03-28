@@ -58,9 +58,6 @@ public abstract class BaseActivity extends Activity implements Handler.Callback 
 		}
 		// 初始化标题栏,标题栏在父类中初始化，如果无特殊要求，不需要覆盖
 		doInitTitle();
-		// 初始化其他view
-		requestWindowFeature(Window.FEATURE_NO_TITLE);
-
 		doInitView();
 
 		// 初始化标题栏,标题栏在父类中初始化，如果无特殊要求，不需要覆盖
