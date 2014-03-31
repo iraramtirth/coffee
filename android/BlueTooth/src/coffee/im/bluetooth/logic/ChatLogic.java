@@ -32,8 +32,7 @@ public class ChatLogic extends BaseLogic {
 	private BufferedReader in;
 	private BufferedWriter out;
 
-	public static UUID uuid = UUID
-			.fromString("92411435-1a7e-400f-b09a-9d6f0d08382a");
+	public static UUID uuid = UUID.fromString("92411435-1a7e-400f-b09a-9d6f0d08382a");
 
 	public static String SDP = uuid.toString();
 
@@ -65,15 +64,11 @@ public class ChatLogic extends BaseLogic {
 			@Override
 			protected Void doInBackground(Void... params) {
 				try {
-					serverSocket = BluetoothAdapter.getDefaultAdapter()
-							.listenUsingInsecureRfcommWithServiceRecord(SDP,
-									uuid);
+					serverSocket = BluetoothAdapter.getDefaultAdapter().listenUsingInsecureRfcommWithServiceRecord(SDP, uuid);
 					// 开启服务. 如果设备不可见。 则客户端无法连接
 					socket = serverSocket.accept();
-					in = new BufferedReader(new InputStreamReader(
-							socket.getInputStream()));
-					out = new BufferedWriter(new OutputStreamWriter(
-							socket.getOutputStream()));
+					in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+					out = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
 					readContent(socket.getRemoteDevice().getName());
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -102,23 +97,19 @@ public class ChatLogic extends BaseLogic {
 
 	// 连接远程服务
 	public void connectionServer(final String remoteAddress) {
-		final BluetoothDevice remoteDevice = BluetoothAdapter
-				.getDefaultAdapter().getRemoteDevice(remoteAddress);
+		final BluetoothDevice remoteDevice = BluetoothAdapter.getDefaultAdapter().getRemoteDevice(remoteAddress);
 		new AsyncTask<Void, Void, Void>() {
 			@Override
 			protected Void doInBackground(Void... params) {
 				try {
 					// 该行代码很重要。 如果不取消Discovery。将会无法connect设备
 					// mBtAdapter.getRemoteDevice(remoteDevice.getAddress());
-					socket = remoteDevice
-							.createInsecureRfcommSocketToServiceRecord(uuid);
+					socket = remoteDevice.createInsecureRfcommSocketToServiceRecord(uuid);
 					// .createRfcommSocketToServiceRecord(IActivity.uuid);
 					socket.connect();
 
-					out = new BufferedWriter(new OutputStreamWriter(
-							socket.getOutputStream()));
-					in = new BufferedReader(new InputStreamReader(
-							socket.getInputStream()));
+					out = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
+					in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 					// 接收服务端传输过来的数据
 					readContent(remoteDevice.getName());
 				} catch (Exception e) {
@@ -139,8 +130,7 @@ public class ChatLogic extends BaseLogic {
 				out.write(content);
 				out.flush();
 			} else {
-				Toast.makeText(App.getContext(), "未连接远程设备", Toast.LENGTH_SHORT)
-						.show();
+				Toast.makeText(App.getContext(), "未连接远程设备", Toast.LENGTH_SHORT).show();
 			}
 		} catch (IOException e) {
 			e.printStackTrace();

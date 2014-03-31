@@ -1,5 +1,8 @@
 package coffee.im.bluetooth.activity;
 
+import java.util.ArrayList;
+import java.util.Set;
+
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.content.BroadcastReceiver;
@@ -13,6 +16,7 @@ import android.widget.Toast;
 import coffee.im.bluetooth.IActivity;
 import coffee.im.bluetooth.R;
 import coffee.im.bluetooth.activity.base.BaseBluetoothListActivity;
+import coffee.im.bluetooth.utils.BtUtils;
 
 /**
  * 扫描蓝牙设备
@@ -51,6 +55,8 @@ public class ScanDeviceActivity extends BaseBluetoothListActivity implements IAc
 			Toast.makeText(this, "蓝牙设备未开启", Toast.LENGTH_SHORT).show();
 			this.finish();
 		}
+		Set<BluetoothDevice> devices = BtUtils.getBondedDevices();
+		mListAdapter.notifyData(new ArrayList<BluetoothDevice>(devices), false);
 		// 开始搜索设备， 异步
 		mBtAdapter.startDiscovery();
 	}

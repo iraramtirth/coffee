@@ -11,9 +11,9 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import coffee.im.bluetooth.App;
 import coffee.im.bluetooth.R;
+import coffee.im.bluetooth.activity.MainActivity;
 import coffee.im.bluetooth.utils.ActivityMgr;
 
- 
 /**
  * 基类：<br>
  * 注意: 基类要处理字段两个字段 <br>
@@ -33,18 +33,12 @@ public abstract class BaseActivity extends Activity implements Handler.Callback 
 	 */
 	protected boolean activityToMgr = true;
 
- 
 	protected int layoutResource = -1;
 
 	/**
 	 * 标题栏左右两侧按钮,中间TextView
 	 */
 	protected View mTitleViewLeft, mTitleViewCenter, mTitleViewRight;
-	/**
-	 * 标题栏内容(左、中、右)
-	 */
-	protected Object mTitleContentleft, mTitleContentCenter,
-			mTitleContentRight;
 
 	protected App getApp() {
 		return (App) getApplication();
@@ -81,7 +75,7 @@ public abstract class BaseActivity extends Activity implements Handler.Callback 
 	 * 初始化控件(出标题栏之外的)
 	 */
 	public abstract void doInitView();
-   
+
 	/* TODO**************** 父类的实现 ********************* */
 	private void doInitTitle() {
 		mTitleViewLeft = findViewById(R.id.title_left);
@@ -103,9 +97,7 @@ public abstract class BaseActivity extends Activity implements Handler.Callback 
 	 * @param rightContent
 	 *            右侧view的内容，同leftContent类似
 	 */
-	public void setTitle(View.OnClickListener leftOnClick,
-			View.OnClickListener rightOnClick, Object leftContent,
-			Object centerContent, Object rightContent) {
+	public void setTitle(View.OnClickListener leftOnClick, View.OnClickListener rightOnClick, Object leftContent, Object centerContent, Object rightContent) {
 		// 左侧按钮单机事件
 		if (this.mTitleViewLeft != null) {
 			this.mTitleViewLeft.setOnClickListener(leftOnClick);
@@ -115,10 +107,9 @@ public abstract class BaseActivity extends Activity implements Handler.Callback 
 			this.mTitleViewRight.setOnClickListener(rightOnClick);
 		}
 		// 设置内容
-		this.setTitleViewContent(this.mTitleViewLeft, this.mTitleContentleft);
-		this.setTitleViewContent(this.mTitleViewCenter,
-				this.mTitleContentCenter);
-		this.setTitleViewContent(this.mTitleViewRight, this.mTitleContentRight);
+		this.setTitleViewContent(this.mTitleViewLeft, leftContent);
+		this.setTitleViewContent(this.mTitleViewCenter, centerContent);
+		this.setTitleViewContent(this.mTitleViewRight, rightContent);
 	}
 
 	/**
@@ -140,18 +131,15 @@ public abstract class BaseActivity extends Activity implements Handler.Callback 
 			((Button) titleView).setText(String.valueOf(titleContent));
 		}
 		// 一种是 View为ImageButton;content为Integer(即Drawable资源文件)
-		else if (titleContent instanceof Integer
-				&& titleView instanceof ImageButton) {
-			((ImageButton) titleView).setImageResource(Integer.valueOf(String
-					.valueOf(titleContent)));
+		else if (titleContent instanceof Integer && titleView instanceof ImageButton) {
+			((ImageButton) titleView).setImageResource(Integer.valueOf(String.valueOf(titleContent)));
 		}
 	}
 
 	/* TODO**************** 父类的实现 ********************* */
-  
+
 	@Override
 	public boolean handleMessage(Message msg) {
-		System.out.println(msg);
 		return true;
 	}
 
@@ -163,11 +151,14 @@ public abstract class BaseActivity extends Activity implements Handler.Callback 
 		intent.setClass(this, activityClass);
 		for (int i = 0; i < params.length; i += 2) {
 			if (i + 1 < params.length) {
-				intent.putExtra(String.valueOf(params[i]),
-						String.valueOf(params[i + 1]));
+				intent.putExtra(String.valueOf(params[i]), String.valueOf(params[i + 1]));
 			}
 		}
-		ActivityMgr.peek().startActivity(intent);
+		if (ActivityMgr.peek() == null) {
+			MainActivity.getContext().startActivity(intent);
+		} else {
+			ActivityMgr.peek().startActivity(intent);
+		}
 	}
 
 	public String getExtra(String paramName) {
