@@ -34,7 +34,7 @@ public abstract class BaseActivity extends Activity implements Handler.Callback 
 	protected boolean activityToMgr = true;
 
 	protected int layoutResource = -1;
-	
+
 	/**
 	 * 标题栏左右两侧按钮,中间TextView
 	 */
@@ -42,8 +42,7 @@ public abstract class BaseActivity extends Activity implements Handler.Callback 
 	/**
 	 * 标题栏内容(左、中、右)
 	 */
-	protected Object mTitleContentleft, mTitleContentCenter,
-			mTitleContentRight;
+	protected Object mTitleContentleft, mTitleContentCenter, mTitleContentRight;
 
 	protected App getApp() {
 		return (App) getApplication();
@@ -52,7 +51,7 @@ public abstract class BaseActivity extends Activity implements Handler.Callback 
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
-		
+
 		doInitView();
 		// 初始化标题栏,标题栏在父类中初始化，如果无特殊要求，不需要覆盖
 		doInitTitle();
@@ -95,9 +94,7 @@ public abstract class BaseActivity extends Activity implements Handler.Callback 
 	 * @param rightContent
 	 *            右侧view的内容，同leftContent类似
 	 */
-	public void setTitle(View.OnClickListener leftOnClick,
-			View.OnClickListener rightOnClick, Object leftContent,
-			Object centerContent, Object rightContent) {
+	public void setTitle(View.OnClickListener leftOnClick, View.OnClickListener rightOnClick, Object leftContent, Object centerContent, Object rightContent) {
 		// 左侧按钮单机事件
 		if (this.mTitleViewLeft != null) {
 			this.mTitleViewLeft.setOnClickListener(leftOnClick);
@@ -108,8 +105,7 @@ public abstract class BaseActivity extends Activity implements Handler.Callback 
 		}
 		// 设置内容
 		this.setTitleViewContent(this.mTitleViewLeft, this.mTitleContentleft);
-		this.setTitleViewContent(this.mTitleViewCenter,
-				this.mTitleContentCenter);
+		this.setTitleViewContent(this.mTitleViewCenter, this.mTitleContentCenter);
 		this.setTitleViewContent(this.mTitleViewRight, this.mTitleContentRight);
 	}
 
@@ -132,17 +128,14 @@ public abstract class BaseActivity extends Activity implements Handler.Callback 
 			((Button) titleView).setText(String.valueOf(titleContent));
 		}
 		// 一种是 View为ImageButton;content为Integer(即Drawable资源文件)
-		else if (titleContent instanceof Integer
-				&& titleView instanceof ImageButton) {
-			((ImageButton) titleView).setImageResource(Integer.valueOf(String
-					.valueOf(titleContent)));
+		else if (titleContent instanceof Integer && titleView instanceof ImageButton) {
+			((ImageButton) titleView).setImageResource(Integer.valueOf(String.valueOf(titleContent)));
 		}
 	}
 
 	/* TODO**************** 父类的实现 ********************* */
 	@Override
 	public boolean handleMessage(Message msg) {
-		System.out.println(msg);
 		return true;
 	}
 

@@ -4,6 +4,9 @@ import java.io.File;
 import java.lang.ref.SoftReference;
 import java.lang.reflect.Constructor;
 
+import org.coffee.util.lang.FileUtils;
+import org.coffee.util.view.BitmapUtils;
+
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
@@ -11,15 +14,10 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.view.View;
 import android.view.Window;
-import android.widget.Button;
 import android.widget.ImageView;
 import coffee.frame.Config;
-import coffee.lib.R;
-
-import com.pzh365.activity.base.BaseActivity;
-import com.util.image.BitmapUtils;
-import com.util.lang.FileUtils;
-import com.util.log.Log;
+import coffee.frame.activity.base.BaseActivity;
+import coffee.utils.log.Log;
 
 /**
  * 浏览图片|拍照 <br>
@@ -122,49 +120,49 @@ public class ImageScanActivity extends BaseActivity implements View.OnClickListe
 	}
 
 	@Override
-	public void findViewById() {
-		this.setContentView(R.layout.common_image_scan);
-		this.mImage = (ImageView) findViewById(R.id.image);
-		Button btn = (Button) findViewById(R.id.image_reset);
-		btn.setOnClickListener(this);
-		findViewById(R.id.image_send).setOnClickListener(this);
-		findViewById(R.id.image_rotation_left).setOnClickListener(this);
-		findViewById(R.id.image_rotation_right).setOnClickListener(this);
-		// 重选|重拍
-		if (type == 1) {
-			btn.setText("重拍");
-		} else {
-			btn.setText("重选");
-		}
+	public void doInitView() {
+//		this.setContentView(R.layout.common_image_scan);
+//		this.mImage = (ImageView) findViewById(R.id.image);
+//		Button btn = (Button) findViewById(R.id.image_reset);
+//		btn.setOnClickListener(this);
+//		findViewById(R.id.image_send).setOnClickListener(this);
+//		findViewById(R.id.image_rotation_left).setOnClickListener(this);
+//		findViewById(R.id.image_rotation_right).setOnClickListener(this);
+//		// 重选|重拍
+//		if (type == 1) {
+//			btn.setText("重拍");
+//		} else {
+//			btn.setText("重选");
+//		}
 	}
 
 	@Override
 	public void onClick(View v) {
-		int id = v.getId();
-		if (id == R.id.image_reset) {
-			finish();
-			Intent intent = new Intent();
-			intent.setClass(context, this.getClass());
-			intent.putExtra("type", type);
-			startActivity(intent);
-		} else if (id == R.id.image_rotation_left) {
-			position--;
-			mBitmap = BitmapUtils.toRotation(mBitmap, -90);
-			this.mImage.setImageBitmap(mBitmap);
-		} else if (id == R.id.image_rotation_right) {
-			this.position++;
-			// 创建操作图片用的matrix对象
-			mBitmap = BitmapUtils.toRotation(mBitmap, 90);
-			this.mImage.setImageBitmap(mBitmap);
-		} else if (id == R.id.image_send) {
-			if (position != 0) {
-				mImageBig = BitmapUtils.cacheBitmapToFile(mBitmap, mImageBig);
-			}
-			Intent data = new Intent();
-			data.putExtra("imgPath", mImageBig);
-			setResult(RESULT_OK, data);
-			finish();
-		}
+//		int id = v.getId();
+//		if (id == R.id.image_reset) {
+//			finish();
+//			Intent intent = new Intent();
+//			intent.setClass(context, this.getClass());
+//			intent.putExtra("type", type);
+//			startActivity(intent);
+//		} else if (id == R.id.image_rotation_left) {
+//			position--;
+//			mBitmap = BitmapUtils.toRotation(mBitmap, -90);
+//			this.mImage.setImageBitmap(mBitmap);
+//		} else if (id == R.id.image_rotation_right) {
+//			this.position++;
+//			// 创建操作图片用的matrix对象
+//			mBitmap = BitmapUtils.toRotation(mBitmap, 90);
+//			this.mImage.setImageBitmap(mBitmap);
+//		} else if (id == R.id.image_send) {
+//			if (position != 0) {
+//				mImageBig = BitmapUtils.cacheBitmapToFile(mBitmap, mImageBig);
+//			}
+//			Intent data = new Intent();
+//			data.putExtra("imgPath", mImageBig);
+//			setResult(RESULT_OK, data);
+//			finish();
+//		}
 	}
 
 	/**
@@ -282,11 +280,6 @@ public class ImageScanActivity extends BaseActivity implements View.OnClickListe
 			e.printStackTrace();
 		}
 		return rotation;
-	}
-
-	@Override
-	protected void processBiz() {
-
 	}
 
 }

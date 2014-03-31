@@ -15,8 +15,7 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.provider.MediaStore;
 import coffee.frame.App;
-
-import com.util.log.Log;
+import coffee.utils.log.Log;
 
 /**
  * URI工具类
