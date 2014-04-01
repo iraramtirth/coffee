@@ -11,7 +11,7 @@ import coffee.jdbc.dao.util.Configuration.DialectType;
 /**
  * 数据链连接
  * 
- * @author wangtao
+ * @author coffee
  */
 public class SqlConnection {
 

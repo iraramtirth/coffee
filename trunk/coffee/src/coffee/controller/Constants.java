@@ -3,7 +3,7 @@ package coffee.controller;
 /**
  * struts 中的常量
  * 
- * @author wangtao
+ * @author coffee
  */
 public interface Constants {
 	final String SUCCESS = "success";

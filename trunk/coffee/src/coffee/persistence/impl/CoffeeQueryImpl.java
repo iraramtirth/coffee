@@ -17,7 +17,7 @@ import javax.persistence.Query;
 import javax.persistence.TemporalType;
 /**
  * persistence接口的实现 
- * @author wangtao
+ * @author coffee
  */
 public class CoffeeQueryImpl implements CoffeeQuery{
 

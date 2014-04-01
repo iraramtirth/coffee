@@ -6,7 +6,7 @@ import java.sql.SQLException;
 import javax.persistence.EntityTransaction;
 /**
  * JDBC的事务实现 
- * @author wangtao
+ * @author coffee
  */
 public class JDBCTransaction implements EntityTransaction{
 

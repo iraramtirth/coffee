@@ -14,7 +14,7 @@ import coffee.common.util.FileUtils;
 
 /**
  * 文件 | 控制台输出流 
- * @author wangtao
+ * @author coffee
  */
 public class Outer {
 	private static OutputStream out;

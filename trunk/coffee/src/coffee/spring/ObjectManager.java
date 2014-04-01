@@ -17,7 +17,7 @@ import coffee.spring.ioc.annotation.Service;
 
 /**
  * 对象管理器
- * @author wangtao
+ * @author coffee
  */
 public class ObjectManager {
 	//

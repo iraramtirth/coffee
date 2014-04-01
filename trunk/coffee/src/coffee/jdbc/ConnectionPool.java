@@ -13,7 +13,7 @@ import java.util.Vector;
  * 
  * 由tomcat配置的数据源代替
  * 
- * @author wangtao
+ * @author coffee
  */
 public class ConnectionPool {
 	private String jdbcDriver = ""; // 数据库驱动

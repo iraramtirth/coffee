@@ -30,7 +30,7 @@ import coffee.jdbc.dao.util.Configuration.MappedType;
 /**
  * 数据库的通用工具类
  * 适用于  mysql Oracle等数据库 
- * @author wangtao
+ * @author coffee
  */
 public class TUtils {
 

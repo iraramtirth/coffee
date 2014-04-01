@@ -11,7 +11,7 @@ import coffee.controller.Action;
  * BeanInfo 工具类
  * 主要用于操纵
  * BeanInfo Introspector PropertyDescriptor
- * @author wangtao
+ * @author coffee
  */
 public class BeanUtils {
 	

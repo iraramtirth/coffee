@@ -4,7 +4,7 @@ package coffee.server.http;
 /**
  * 处理 Request请求
  * 
- * @author wangtao
+ * @author coffee
  */
 public class RequestHandler{
 	

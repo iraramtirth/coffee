@@ -20,7 +20,7 @@ import coffee.server.servlet.bean.ServletBean;
 /**
  * web.xml配置信息
  * 
- * @author wangtao
+ * @author coffee
  */
 public class WebConfig {
 	private static Logger log = Logger.getLogger(WebConfig.class.toString());

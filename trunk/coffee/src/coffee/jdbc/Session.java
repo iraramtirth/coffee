@@ -7,7 +7,7 @@ import coffee.spring.ioc.annotation.Repository;
 /**
  * 相对于TDaoImpl
  * Session主要增加了对Connection的管理(创建、关闭,开启关闭事务)
- * @author wangtao
+ * @author coffee
  */
 @Repository(name="session")
 public class Session extends TDaoImpl{

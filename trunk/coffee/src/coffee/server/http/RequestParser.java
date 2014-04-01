@@ -4,7 +4,7 @@ import java.util.StringTokenizer;
 
 /**
  * 解析http请求
- * @author wangtao 
+ * @author coffee 
  */
 public class RequestParser {
 	

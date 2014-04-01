@@ -16,7 +16,7 @@ import org.xml.sax.helpers.DefaultHandler;
 /**
  * server.xml 的映射信息
  * 
- * @author wangtao
+ * @author coffee
  *
  */
 public class ServerConfig {

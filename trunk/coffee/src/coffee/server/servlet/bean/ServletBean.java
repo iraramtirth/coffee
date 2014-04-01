@@ -4,7 +4,7 @@ package coffee.server.servlet.bean;
  * 
  * xml�ļ��¶�Ӧ��Servlet����
  * 
- * @author wangtao
+ * @author coffee
  */
 public class ServletBean {
 	/**
