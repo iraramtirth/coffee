@@ -17,7 +17,7 @@ import coffee.server.http.RequestHandler;
 import coffee.server.http.RequestParser;
 
 /**
- * @author wangtao
+ * @author coffee
  */
 public class HttpServer {
 

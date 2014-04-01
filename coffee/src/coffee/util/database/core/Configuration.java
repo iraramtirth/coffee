@@ -37,7 +37,7 @@ public class Configuration {
 	/**
 	 * 数据库方言；用于指定数据库类型； 主要用来处理不同数据库对sql命令中的时间类型的处理存在差异
 	 * 
-	 * @author wangtao
+	 * @author coffee
 	 */
 	public enum DialectType {
 		ORACLE, MYSQL, HSQLDB

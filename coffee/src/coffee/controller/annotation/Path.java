@@ -7,7 +7,7 @@ import java.lang.annotation.Target;
 
 /**
  * 
- * @author wangtao
+ * @author coffee
  *
  */
 @Retention(RetentionPolicy.RUNTIME) 

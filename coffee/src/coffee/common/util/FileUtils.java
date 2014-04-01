@@ -17,7 +17,7 @@ import java.util.regex.Pattern;
 /**
  * 文件相关操作
  * 
- * @author wangtao
+ * @author coffee
  */
 public class FileUtils {
 	private static String enc = "UTF-8";

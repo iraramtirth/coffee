@@ -32,7 +32,7 @@ import coffee.persistence.impl.EntityManagerExtUtils.EntityProperty;
 
 /**
  * 每个EntityManager关联着一个数据库连接，一个事务 
- * @author wangtao
+ * @author coffee
  */
 public class EntityManagerExtImpl implements EntityManagerExt{
 	/**

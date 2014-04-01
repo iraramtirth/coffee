@@ -4,7 +4,7 @@ package coffee.server.http;
 /**
  * http 请求信息 
  * 
- * @author wangtao
+ * @author coffee
  */
 public class Request {
 	/**

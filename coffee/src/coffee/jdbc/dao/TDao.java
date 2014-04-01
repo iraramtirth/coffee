@@ -9,7 +9,7 @@ import javax.sql.rowset.CachedRowSet;
 import coffee.jdbc.Pager;
 /**
  * 系统DAO的公共/通用父类接口 
- * @author wangtao
+ * @author coffee
  */
 public interface TDao {
 	//获取当前数据库连接

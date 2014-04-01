@@ -3,7 +3,7 @@ package coffee.jdbc;
 import java.util.List;
 /**
  * 分页 
- * @author wangtao
+ * @author coffee
  * @param <T>
  */
 public class Pager<T>{

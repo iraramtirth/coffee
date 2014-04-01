@@ -12,7 +12,7 @@ import coffee.util.database.Session;
 /**
  * 研究生
  * 
- * @author wangtaoyfx
+ * @author coffee
  */
 public class GraduateMain {
 	public static void main(String[] args) {

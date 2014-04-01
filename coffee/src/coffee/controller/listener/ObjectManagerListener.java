@@ -10,7 +10,7 @@ import coffee.spring.ObjectManager;
 /**
  * 监听器
  * 通过AOP创建对象 
- * @author wangtao
+ * @author coffee
  */
 @WebListener
 public class ObjectManagerListener implements

@@ -5,7 +5,7 @@ import java.util.Map;
 
 /**
  *  
- * @author wangtao
+ * @author coffee
  *
  **/
 public class ServletRequest extends Request {

@@ -3,7 +3,7 @@ package coffee.persistence.impl;
 import javax.persistence.EntityManager;
 /**
  *  
- * @author wangtao
+ * @author coffee
  */
 public interface EntityManagerExt extends EntityManager{
 	
