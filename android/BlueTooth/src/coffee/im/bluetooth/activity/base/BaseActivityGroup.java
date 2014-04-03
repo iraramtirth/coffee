@@ -28,6 +28,7 @@ public abstract class BaseActivityGroup extends BaseActivity {
 		//
 		mActivityGroup.getLocalActivityManager().dispatchCreate(savedInstanceState);
 		mActivityGroup.getLocalActivityManager().dispatchResume();
+		mActivityGroup.getLocalActivityManager().destroyActivity(this.getClass().getName(), true);
 		mViewGroup = (ViewGroup) findViewById(R.id.main_content);
 	}
 
