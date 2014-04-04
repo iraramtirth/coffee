@@ -17,9 +17,6 @@ import android.net.Uri;
  * @author coffee
  */
 public class RingtonePlayer {
-	/**
-	 * TAG
-	 */
 	private final String TAG = "RingtonePlayer";
 
 	/**
@@ -158,8 +155,7 @@ public class RingtonePlayer {
 	/**
 	 * 播放器内部播放线程
 	 * 
-	 * @author 刘鲁宁
-	 * @version [RCS Client V100R001C03, Mar 26, 2012]
+	 * @author coffee
 	 */
 	private class InnerThread extends Thread {
 		/**
@@ -171,8 +167,7 @@ public class RingtonePlayer {
 			try {
 				int currentVolume = mAudioManager.getStreamVolume(AudioManager.STREAM_RING);
 				if (null == mMediaPlayer || !mMediaPlayer.isPlaying()) {
-					mAudioManager.setStreamVolume(AudioManager.STREAM_RING, currentVolume,
-							AudioManager.FLAG_ALLOW_RINGER_MODES);
+					mAudioManager.setStreamVolume(AudioManager.STREAM_RING, currentVolume, AudioManager.FLAG_ALLOW_RINGER_MODES);
 
 					createMediaPlayer();
 					// 设置听筒播放
@@ -199,8 +194,7 @@ public class RingtonePlayer {
 					int vibrateSetting = mAudioManager.getVibrateSetting(AudioManager.VIBRATE_TYPE_RINGER);
 
 					if (ringerMode == AudioManager.RINGER_MODE_NORMAL) {
-						if (vibrateSetting == AudioManager.VIBRATE_SETTING_OFF
-								|| vibrateSetting == AudioManager.VIBRATE_SETTING_ONLY_SILENT) {
+						if (vibrateSetting == AudioManager.VIBRATE_SETTING_OFF || vibrateSetting == AudioManager.VIBRATE_SETTING_ONLY_SILENT) {
 							// 震动关闭,nothing to do
 						}
 						if (vibrateSetting == AudioManager.VIBRATE_SETTING_ON) {
