@@ -1,8 +1,10 @@
 package s;
 
-import java.net.*;
-import java.io.*;
-import java.util.*;
+import java.net.DatagramPacket;
+import java.net.DatagramSocket;
+import java.net.InetAddress;
+import java.net.SocketException;
+import java.util.Date;
 
 public class UDPClientB {
 	// 服务器端IP和端口
@@ -16,8 +18,7 @@ public class UDPClientB {
 
 			// 接收数据包
 			byte recvBuf[] = new byte[1000];
-			DatagramPacket receivePacket = new DatagramPacket(recvBuf,
-					recvBuf.length);
+			DatagramPacket receivePacket = new DatagramPacket(recvBuf, recvBuf.length);
 			String strData;
 			String clientAIp = "";
 			int clientAPort = 0;
@@ -28,18 +29,13 @@ public class UDPClientB {
 			byte[] sendBuf = new byte[100];
 			sendBuf = strSend.getBytes();
 
-			DatagramPacket sendPacket = new DatagramPacket(sendBuf,
-					strSend.length(), InetAddress.getByName(serverIp),
-					serverPort);
+			DatagramPacket sendPacket = new DatagramPacket(sendBuf, strSend.length(), InetAddress.getByName(serverIp), serverPort);
 			sendSocket.send(sendPacket);
 			System.out.println("send the data: 'ClientB' to server.");
 			while (true) {
 				sendSocket.receive(receivePacket);
-				strData = new String(receivePacket.getData(), 0,
-						receivePacket.getLength());
-				System.out.println(new Date()
-						+ " ---- receive data from server:" + strData
-						+ " host ip:" + receivePacket.getAddress().toString());
+				strData = new String(receivePacket.getData(), 0, receivePacket.getLength());
+				System.out.println(new Date() + " ---- receive data from server:" + strData + " host ip:" + receivePacket.getAddress().toString());
 				if (strData.indexOf("-") != -1) {
 					String[] clientA = strData.split("-");
 					clientAIp = clientA[0];
@@ -47,9 +43,7 @@ public class UDPClientB {
 				}
 
 				if (!clientAIp.equals("")) {
-					DatagramPacket sendPkA = new DatagramPacket(
-							strSendToA.getBytes(), strSendToA.length(),
-							InetAddress.getByName(clientAIp), clientAPort);
+					DatagramPacket sendPkA = new DatagramPacket(strSendToA.getBytes(), strSendToA.length(), InetAddress.getByName(clientAIp), clientAPort);
 					sendSocket.send(sendPkA);
 					try {
 						Thread.sleep(1000);

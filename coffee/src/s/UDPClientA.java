@@ -13,12 +13,10 @@ public class UDPClientA {
 
 	public static void main(String args[]) {
 		try {
-
 			DatagramSocket sendSocket = new DatagramSocket(8802);
 			// 接收数据包
 			byte recvBuf[] = new byte[1000];
-			DatagramPacket receivePacket = new DatagramPacket(recvBuf,
-					recvBuf.length);
+			DatagramPacket receivePacket = new DatagramPacket(recvBuf, recvBuf.length);
 			String strData;
 			String clientBIp = "";
 			int clientBPort = 0;
@@ -28,18 +26,13 @@ public class UDPClientA {
 			String strSendToB = "this msg is from A";
 			byte[] sendBuf = strSend.getBytes();
 
-			DatagramPacket sendPacket = new DatagramPacket(sendBuf,
-					strSend.length(), InetAddress.getByName(serverIp),
-					serverPort);
+			DatagramPacket sendPacket = new DatagramPacket(sendBuf, strSend.length(), InetAddress.getByName(serverIp), serverPort);
 			sendSocket.send(sendPacket);
 			System.out.println("send the data: 'ClientA' to server.");
 			while (true) {
 				sendSocket.receive(receivePacket);
-				strData = new String(receivePacket.getData(), 0,
-						receivePacket.getLength());
-				System.out.println(new Date()
-						+ " ---- receive data from server:" + strData
-						+ " host ip:" + receivePacket.getAddress().toString());
+				strData = new String(receivePacket.getData(), 0, receivePacket.getLength());
+				System.out.println(new Date() + " ---- receive data from server:" + strData + " host ip:" + receivePacket.getAddress().toString());
 				if (strData.indexOf("-") != -1) {
 					String[] clientB = strData.split("-");
 					clientBIp = clientB[0];
@@ -47,9 +40,7 @@ public class UDPClientA {
 				}
 
 				if (!clientBIp.equals("")) {
-					DatagramPacket sendPkA = new DatagramPacket(
-							strSendToB.getBytes(), strSendToB.length(),
-							InetAddress.getByName(clientBIp), clientBPort);
+					DatagramPacket sendPkA = new DatagramPacket(strSendToB.getBytes(), strSendToB.length(), InetAddress.getByName(clientBIp), clientBPort);
 					sendSocket.send(sendPkA);
 					try {
 						Thread.sleep(1000);
