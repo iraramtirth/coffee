@@ -21,7 +21,7 @@ public class UDPServerNat {
 
 	public UDPServerNat() {
 		try {
-			natSocket = new DatagramSocket(Config.PORT_UDP_NAT);
+			natSocket = new DatagramSocket();
 		} catch (SocketException e) {
 			e.printStackTrace();
 		}

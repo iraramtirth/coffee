@@ -4,6 +4,7 @@ import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
 
+import android.os.AsyncTask;
 import coffee.server.Config;
 
 /**
@@ -14,7 +15,7 @@ import coffee.server.Config;
 public class Broadcast {
 
 	private final String host = "255.255.255.255";
-	private final int port = Config.PORT_UDP;
+	private final int portTarget = Config.PORT_UDP;
 
 	/**
 	 * 发送上线、离线通知 <br>
@@ -26,17 +27,42 @@ public class Broadcast {
 	 * @param regOrUn
 	 *            true 表示通知用户上线, false 用户下线
 	 */
-	public void send(final boolean regOrUn) {
-		new Thread(new Runnable() {
+	public void sendBroadcast(final boolean regOrUn) {
+		new AsyncTask<Void, Void, Void>() {
 			@Override
-			public void run() {
+			protected Void doInBackground(Void... params) {
 				DatagramSocket socket = null;
 				try {
 					// 创建用来发送数据报包的套接字
 					socket = new DatagramSocket();
 					String dataStr = regOrUn ? "syn=1,reg" : "syn=0,unreg";
 					byte[] data = dataStr.getBytes();
-					DatagramPacket dp = new DatagramPacket(data, data.length, InetAddress.getByName(host), port);
+					DatagramPacket dp = new DatagramPacket(data, data.length, InetAddress.getByName(host), portTarget);
+					//
+					socket.send(dp);
+				} catch (Exception e) {
+					e.printStackTrace();
+				} finally {
+					if(socket != null){
+						socket.close();
+					}
+				}
+				return null;
+			}
+		}.execute();
+	}
+
+	public void sendRegMessage(final String targetHost) {
+		new AsyncTask<Void, Void, Void>() {
+			@Override
+			protected Void doInBackground(Void... params) {
+				DatagramSocket socket = null;
+				try {
+					// 创建用来发送数据报包的套接字
+					socket = new DatagramSocket();
+					String dataStr = "syn=0,reg";
+					byte[] data = dataStr.getBytes();
+					DatagramPacket dp = new DatagramPacket(data, data.length, InetAddress.getByName(targetHost), portTarget);
 					//
 					socket.send(dp);
 				} catch (Exception e) {
@@ -44,8 +70,9 @@ public class Broadcast {
 				} finally {
 					socket.close();
 				}
+				return null;
 			}
-		}).start();
+		}.execute();
 	}
 
 	/**

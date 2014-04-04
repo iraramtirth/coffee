@@ -28,7 +28,7 @@ public abstract class BaseActivityGroup extends BaseActivity {
 		//
 		mActivityGroup.getLocalActivityManager().dispatchCreate(savedInstanceState);
 		mActivityGroup.getLocalActivityManager().dispatchResume();
-		mActivityGroup.getLocalActivityManager().destroyActivity(this.getClass().getName(), true);
+		mActivityGroup.getLocalActivityManager().dispatchDestroy(true);
 		mViewGroup = (ViewGroup) findViewById(R.id.main_content);
 	}
 
@@ -37,29 +37,28 @@ public abstract class BaseActivityGroup extends BaseActivity {
 	 * 
 	 * @param cla
 	 */
-	protected synchronized void showViewGroup(Class<?> cla) {
-		// 每次都去调用LocalActivityManager的startActivity方法，
-		// 该方法会对launchMode及intent的flag进行检查，在创建过该activity的情况下是否需要再创建，
-		// 目前的设置是不会再创建一个的，即不管调用多少次永远只创建了一个对应的View，并且该方法
-		// 会去调用Activity的生命周期方法，这样在切换tab的时候onResume也会被调用了
+	protected synchronized void showViewGroup(Class<?> activityClass) {
 		try {
-			/**
-			 * java.lang.IllegalStateException: Activities can't be added until
-			 * the containing group has been created. 解决办法： <br/>
-			 * 1) mActivityGroup.getLocalActivityManager().dispatchCreate(
-			 * savedInstanceState); <br/>
-			 * 该代码会执行mActivityGroup#onCreate否则会报上述异常 <br/>
-			 * 2) 通过将该类继承ActivityGroup解决 <br/>
-			 */
-			mFocusView = mActivityGroup.getLocalActivityManager().startActivity(cla.getSimpleName(), new Intent(this, cla)).getDecorView();
+			// 结束Activity
+			destroyCurrentActivity();
+			//
+			mFocusView = mActivityGroup.getLocalActivityManager().startActivity(activityClass.getSimpleName(), new Intent(this, activityClass)).getDecorView();
 			// 不能缓存mFocusView，否则弹出各个子Activity的菜单会出现问题
 			mViewGroup.removeAllViews();
 			mViewGroup.addView(mFocusView, mmViewGroupParams);
-
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+	}
 
+	private void destroyCurrentActivity() {
+		String id = mActivityGroup.getLocalActivityManager().getCurrentId();
+		mActivityGroup.getLocalActivityManager().destroyActivity(id, true);
+	}
+
+	protected void onDestroy() {
+		destroyCurrentActivity();
+		super.onDestroy();
 	}
 
 }

@@ -1,7 +1,6 @@
 package coffee.server;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.HashMap;
 
 /**
  * 保存在线用户的列表<br>
@@ -10,6 +9,52 @@ import java.util.Set;
  *         2014年4月3日下午2:59:17
  */
 public class Online {
+
+	private static HashMap<String, Integer> udps = new HashMap<String, Integer>();
+	private static HashMap<String, Integer> tcps = new HashMap<String, Integer>();
+
+	/**
+	 * @param host
+	 * @param port
+	 * @param type
+	 *            0-udp .1-tcp
+	 */
+	public static void reg(String host, int port, int type) {
+		if (type == 0) {
+			udps.put(host, port);
+		} else if (type == 1) {
+			tcps.put(host, port);
+		}
+	}
+
+	public static void unReg(String host, int type) {
+		if (type == 0) {
+			udps.remove(host);
+		} else if (type == 1) {
+			tcps.remove(host);
+		}
+	}
+
+	public static HashMap<String, Integer> getItems(int type) {
+		if (type == 0) {
+			return udps;
+		} else if (type == 1) {
+			return tcps;
+		}
+		return null;
+	}
+
+	public static int getPort(String host, int type) {
+		Integer port = 0;
+		if (type == 0) {
+			port = udps.get(host);
+		} else if (type == 1) {
+			port = tcps.get(host);
+		}
+		return port == null ? 0 : port;
+	}
+
+	// /////////////////////////////////////////
 	public static class Reg {
 		private String host;
 		private int port;
@@ -68,21 +113,5 @@ public class Online {
 			return true;
 		}
 
-	}
-
-	private static Set<Reg> items = new HashSet<Reg>();
-
-	public static void reg(String host, int port) {
-		Reg reg = new Reg(host, port);
-		items.add(reg);
-	}
-
-	public static void unReg(String host, int port) {
-		Reg reg = new Reg(host, port);
-		items.remove(reg);
-	}
-
-	public static Set<Reg> getItems() {
-		return items;
 	}
 }

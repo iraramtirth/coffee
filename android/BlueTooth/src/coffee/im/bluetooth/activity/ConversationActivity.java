@@ -23,11 +23,9 @@ public class ConversationActivity extends BaseActivity {
 
 	private Client client;
 
-	// 192.168.137.18 -- note2
-	// 192.168.137.2 -- note3
-	private int localPort = Config.PORT_UDP;
-	private int targetPort = Config.PORT_UDP;
-	private String targetHost = "192.168.137.2";
+	// 192.168.137.153 -- note2
+	// 192.168.137.188 -- note3
+	private String targetHost = "192.168.137.188";
 
 	//
 	private AudioRecorder audioRecorder;
@@ -42,7 +40,7 @@ public class ConversationActivity extends BaseActivity {
 		audioRecorder = new AudioRecorder();
 		audioTracker = new AudioTracker();
 		//
-		client = new Client(localPort, new Client.MessageCallback() {
+		client = new Client(Config.PORT_UDP, new Client.MessageCallback() {
 			@Override
 			public void execute(byte[] data) {
 				try {
@@ -54,6 +52,7 @@ public class ConversationActivity extends BaseActivity {
 			}
 		});
 		client.receiveMessage();
+		client.broadcast(true);
 	}
 
 	@Override
@@ -66,7 +65,8 @@ public class ConversationActivity extends BaseActivity {
 				audioRecorder.startRecord(true, audioRecorder.new Callback() {
 					@Override
 					public void execute(byte[] data) {
-						client.sendMessage(data, targetHost, targetPort);
+						int port = Online.getPort(targetHost, 0);
+						client.sendMessage(data, targetHost, port);
 					}
 				});
 			}
@@ -84,7 +84,7 @@ public class ConversationActivity extends BaseActivity {
 		online.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				onlineText.setText(Online.getItems().toString());
+				onlineText.setText(Online.getItems(0).toString());
 			}
 		});
 	}
