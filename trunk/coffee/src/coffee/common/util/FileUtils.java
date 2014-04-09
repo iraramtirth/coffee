@@ -171,6 +171,20 @@ public class FileUtils {
 		}
 	}
 
+	public static void write(String fileName, String fileContent) {
+		try {
+			File dir = new File(fileName);
+			if (!dir.exists()) {
+				createNewFileOrDirectory(fileName);
+			}
+			FileOutputStream fos = new FileOutputStream(fileName);
+			fos.write(fileContent.getBytes());
+			fos.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
 	public static void main(String[] args) {
 		String path = "E:/2010登记全部导入表";
 		List<String> ls = listFiles(path, "xls");
