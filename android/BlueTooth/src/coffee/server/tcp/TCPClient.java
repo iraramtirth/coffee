@@ -93,6 +93,7 @@ public class TCPClient extends MessageParser {
 	 * @param message
 	 */
 	public void sendMessage(String message) {
+		System.out.println("message:send " + message);
 		byte[] data = message.getBytes();
 		try {
 			if (clientOutput == null) {

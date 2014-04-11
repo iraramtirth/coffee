@@ -11,6 +11,7 @@ import coffee.server.tcp.TCPClient;
 public class ClientService extends Service {
 
 	private TCPClient tcpClient;
+	private String username;
 
 	@Override
 	public void onCreate() {
@@ -28,7 +29,7 @@ public class ClientService extends Service {
 				tcpClient = new TCPClient();
 				tcpClient.connectServer(Config.SERVER_TCP, Config.PORT_TCP);
 				if (tcpClient.getSocket().isConnected()) {
-					tcpClient.set
+					tcpClient.setUsername(username);
 					tcpClient.listenServer();
 					// 通知在线
 					tcpClient.sendMessageOnline(1);
@@ -40,6 +41,7 @@ public class ClientService extends Service {
 
 	@Override
 	public int onStartCommand(Intent intent, int flags, int startId) {
+		username = intent.getStringExtra("username");
 		return super.onStartCommand(intent, flags, startId);
 	}
 
