@@ -1,6 +1,8 @@
 package coffee.server;
 
 public class Config {
+	public final static String SERVER_TCP = "192.168.226.7";
+	
 	/**
 	 * 服务器端口
 	 */

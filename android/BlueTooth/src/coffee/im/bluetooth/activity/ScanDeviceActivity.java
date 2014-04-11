@@ -27,15 +27,12 @@ import coffee.im.bluetooth.utils.BtUtils;
 public class ScanDeviceActivity extends BaseBluetoothListActivity implements IActivity {
 
 	private BluetoothAdapter mBtAdapter;
-	// 选中的设备address
-	private String selectedDeviceAddress;
 
 	private ProgressBar mProgressBar;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.activityToMgr = true;
-		super.layoutResource = R.layout.scan_device;
 		//
 		super.onCreate(savedInstanceState);
 		mBtAdapter = BluetoothAdapter.getDefaultAdapter();
@@ -62,8 +59,9 @@ public class ScanDeviceActivity extends BaseBluetoothListActivity implements IAc
 	}
 
 	@Override
-	public void doInitView() {
-		super.doInitView();
+	public void findViewById() {
+		setContentView(R.layout.scan_device);
+		super.findViewById();
 		mProgressBar = (ProgressBar) this.findViewById(R.id.progress_bar);
 	}
 

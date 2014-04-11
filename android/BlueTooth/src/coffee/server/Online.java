@@ -10,8 +10,11 @@ import java.util.HashMap;
  */
 public class Online {
 
-	private static HashMap<String, Integer> udps = new HashMap<String, Integer>();
-	private static HashMap<String, Integer> tcps = new HashMap<String, Integer>();
+	/**
+	 * k-用户名或者IP
+	 */
+	private static HashMap<String, Reg> udps = new HashMap<String, Reg>();
+	private static HashMap<String, Reg> tcps = new HashMap<String, Reg>();
 
 	/**
 	 * @param host
@@ -19,23 +22,24 @@ public class Online {
 	 * @param type
 	 *            0-udp .1-tcp
 	 */
-	public static void reg(String host, int port, int type) {
+	public static void reg(String user, String host, int port, int type) {
+		Reg reg = new Reg(user, host, port);
 		if (type == 0) {
-			udps.put(host, port);
+			udps.put(user, reg);
 		} else if (type == 1) {
-			tcps.put(host, port);
+			tcps.put(user, reg);
 		}
 	}
 
-	public static void unReg(String host, int type) {
+	public static void unReg(String username, int type) {
 		if (type == 0) {
-			udps.remove(host);
+			udps.remove(username);
 		} else if (type == 1) {
-			tcps.remove(host);
+			tcps.remove(username);
 		}
 	}
 
-	public static HashMap<String, Integer> getItems(int type) {
+	public static HashMap<String, Reg> getItems(int type) {
 		if (type == 0) {
 			return udps;
 		} else if (type == 1) {
@@ -47,21 +51,36 @@ public class Online {
 	public static int getPort(String host, int type) {
 		Integer port = 0;
 		if (type == 0) {
-			port = udps.get(host);
+			Reg reg = udps.get(host);
+			if(reg != null){
+				port = reg.getPort();
+			}
 		} else if (type == 1) {
-			port = tcps.get(host);
+			Reg reg = tcps.get(host);
+			if(reg != null){
+				port = reg.getPort();
+			}
 		}
 		return port == null ? 0 : port;
 	}
 
 	// /////////////////////////////////////////
 	public static class Reg {
+		private String user;
 		private String host;
 		private int port;
 
-		public Reg(String host, int port) {
+		public Reg(String user, String host, int port) {
 			this.host = host;
 			this.port = port;
+		}
+
+		public String getUser() {
+			return user;
+		}
+
+		public void setUser(String user) {
+			this.user = user;
 		}
 
 		public String getHost() {

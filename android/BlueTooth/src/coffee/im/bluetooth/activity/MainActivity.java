@@ -26,7 +26,7 @@ public class MainActivity extends BaseActivityGroup implements OnClickListener {
 		context = this;
 		//
 		mHandler = new Handler(this);
-		showViewGroup(ConversationActivity.class);
+		//showViewGroup(ConversationActivity.class);
 	}
 
 	@Override
@@ -35,7 +35,7 @@ public class MainActivity extends BaseActivityGroup implements OnClickListener {
 	}
 
 	@Override
-	public void doInitView() {
+	public void findViewById() {
 		this.setContentView(R.layout.main);
 		// 会话界面
 		Button btn0 = (Button) this.findViewById(R.id.tab_conversation);
@@ -65,7 +65,7 @@ public class MainActivity extends BaseActivityGroup implements OnClickListener {
 	public void onClick(View v) {
 		switch (v.getId()) {
 		case R.id.tab_conversation:
-			showViewGroup(ConversationActivity.class);
+			//showViewGroup(ConversationActivity.class);
 			break;
 		case R.id.tab_contact:
 			showViewGroup(ContactActivity.class);

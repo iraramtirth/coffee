@@ -11,7 +11,6 @@ import coffee.im.bluetooth.R;
 import coffee.im.bluetooth.activity.base.BaseActivity;
 import coffee.im.bluetooth.adapter.ChatListAdapter;
 import coffee.im.bluetooth.bean.MessageBean;
-import coffee.im.bluetooth.constant.ConstIntent;
 import coffee.im.bluetooth.constant.ConstMsg;
 import coffee.im.bluetooth.logic.ChatLogic;
 import coffee.im.bluetooth.utils.BtUtils;
@@ -42,21 +41,12 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.activityToMgr = true;
-		super.layoutResource = R.layout.chat_main;
 		super.onCreate(savedInstanceState);
-		mRemoteAddress = getExtra(ConstIntent.EXTRA_BLUETOOTH_DEVICE);
-
+		mRemoteAddress = getExtra("device");
 		super.mHandler = new Handler(this);
-
 		mChatLogic.startServer();
-		mChatLogic.addHandler(getHandler());
 	}
 
-	@Override
-	protected void onDestroy() {
-		super.onDestroy();
-		mChatLogic.removeHandler(getHandler());
-	}
 
 	@Override
 	public boolean handleMessage(Message msg) {
@@ -71,7 +61,8 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener {
 	}
 
 	@Override
-	public void doInitView() {
+	public void findViewById() {
+		setContentView(R.layout.chat_main);
 		mListView = (ListView) this.findViewById(R.id.chat_list);
 		mListAdapter = new ChatListAdapter(null, this);
 		mListView.setAdapter(mListAdapter);
@@ -80,7 +71,7 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener {
 		chatSend.setOnClickListener(this);
 		mChatWords = (EditText) this.findViewById(R.id.chat_words);
 
-		this.setTitle(this, this, "开启", "聊天", "连接");
+		//this.setTitle(this, this, "开启", "聊天", "连接");
 	}
 
 	@Override
@@ -97,12 +88,12 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener {
 				mListView.setSelection(mListView.getBottom());
 			}
 			break;
-		case R.id.title_left:
+		case R.id.title_left_text:
 			if (!mChatLogic.isConnected()) {
 				mChatLogic.startServer();
 			}
 			break;
-		case R.id.title_right:
+		case R.id.title_right_text:
 			if (!mChatLogic.isConnected()) {
 				mChatLogic.connectionServer(mRemoteAddress);
 			}

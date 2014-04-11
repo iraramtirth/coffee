@@ -8,7 +8,15 @@ import java.io.InputStreamReader;
 import java.net.InetSocketAddress;
 import java.net.Socket;
 
-public class Client {
+import coffee.server.Online;
+import coffee.server.tcp.base.MessageParser;
+
+/**
+ * 
+ * @author coffee <br>
+ *         2014年4月11日下午2:41:52
+ */
+public class TCPClient extends MessageParser {
 
 	private Socket clientSocket;
 	// 客户端输入流
@@ -16,11 +24,11 @@ public class Client {
 	// 客户端输出流
 	private BufferedOutputStream clientOutput;
 
-	public Client() {
+	public TCPClient() {
 		clientSocket = new Socket();
 	}
 
-	public Client(Socket socket) {
+	public TCPClient(Socket socket) {
 		clientSocket = socket;
 	}
 
@@ -33,7 +41,7 @@ public class Client {
 	 * @param port
 	 *            服务器端口号
 	 */
-	public void connectServer(String hostname, int port) {
+	public void connectServer(final String hostname, final int port) {
 		try {
 			clientSocket.connect(new InetSocketAddress(hostname, port));
 			clientOutput = new BufferedOutputStream(clientSocket.getOutputStream());
@@ -46,7 +54,7 @@ public class Client {
 	/**
 	 * 监听服务器端发回的数据
 	 */
-	private void listenServer() {
+	public void listenServer() {
 		new Thread(new Runnable() {
 			@Override
 			public void run() {
@@ -55,7 +63,21 @@ public class Client {
 				int len = -1;
 				try {
 					while ((len = clientInput.read(data)) != -1) {
-						System.out.println("Server: " + new String(data, 0, len));
+						String message = new String(data, 0, len);
+						String fromUser = getUserFrom(message);
+						// 收到好友的上线通知
+						if (message.startsWith(MessageParser.Action.ONLINE)) {
+							String state = getOnlineState(message);
+							if ("1".equals(state)) {
+								Online.reg(fromUser, null, 0, 1);
+								System.out.println("msg:online " + fromUser + "上线");
+								sendMessage(getOnlineAck(fromUser, 1));
+							} else if ("-1".equals(state)) {
+								Online.unReg(fromUser, 1);
+							}
+						} else if (message.startsWith(MessageParser.Action.MESSAGE)) {
+							System.out.println("msg:message " + message);
+						}
 					}
 				} catch (IOException e) {
 					e.printStackTrace();
@@ -77,10 +99,21 @@ public class Client {
 				clientOutput = new BufferedOutputStream(clientSocket.getOutputStream());
 			}
 			clientOutput.write(data, 0, data.length);
+			// 注意flush, 否则对方可能收不到消息
 			clientOutput.flush();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+	}
+
+	/**
+	 * 发送在线状态
+	 * 
+	 * @param state
+	 */
+	public void sendMessageOnline(int onlineState) {
+		String message = getOnlineToServer(onlineState);
+		sendMessage(message);
 	}
 
 	/**
@@ -104,7 +137,7 @@ public class Client {
 	}
 
 	public static void main(String[] args) {
-		Client client = new Client();
+		TCPClient client = new TCPClient();
 		try {
 			client.connectServer("localhost", 8888);
 			client.listenServer();

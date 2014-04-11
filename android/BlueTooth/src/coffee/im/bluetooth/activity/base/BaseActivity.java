@@ -1,176 +1,340 @@
 package coffee.im.bluetooth.activity.base;
 
-import android.app.Activity;
-import android.content.Intent;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import android.os.Bundle;
-import android.os.Handler;
 import android.os.Message;
 import android.view.View;
-import android.view.Window;
-import android.widget.Button;
-import android.widget.ImageButton;
-import coffee.im.bluetooth.App;
-import coffee.im.bluetooth.R;
-import coffee.im.bluetooth.activity.MainActivity;
-import coffee.im.bluetooth.utils.ActivityMgr;
+import android.view.View.OnClickListener;
+import android.view.ViewGroup;
+import android.widget.AbsListView;
+import android.widget.GridView;
+import android.widget.ImageView;
+import android.widget.ListView;
+import android.widget.ProgressBar;
+import android.widget.TextView;
+import android.widget.ViewSwitcher;
+import coffee.utils.framework.ImmUtils;
 
 /**
- * 基类：<br>
- * 注意: 基类要处理字段两个字段 <br>
- * 1)activityToMgr：标志位,如果为true 则该类会被加入到{@link ActivityMgr}管理<br>
- * 2)layoutResource：子类需要在子类的onCreate的首行代码中设置该字段
+ * 添加了一些适应具体界面|业务需求的功能
  * 
- * @author coffee<br>
- *         2013-2-5上午7:39:05
+ * @author coffee
+ * 
+ *         2013年12月19日下午7:08:30
  */
-public abstract class BaseActivity extends Activity implements Handler.Callback {
-
-	protected Handler mHandler;
-
+public abstract class BaseActivity extends FrameBaseActivity {
+	private ViewSwitcher mTitleLeft, mTitleRight;
+	private View mTitleMiddle;
 	/**
-	 * 是否需要将activity放到ActivityMgr管理 注意:ActivityGroup中管理的activity不需要加入<br>
-	 * 此类activity需要在onCreate的第一行代码中设置super.activityToMgr = false;
+	 * 返回到上一页||通用Title
 	 */
-	protected boolean activityToMgr = true;
-
-	protected int layoutResource = -1;
-
-	/**
-	 * 标题栏左右两侧按钮,中间TextView
-	 */
-	protected View mTitleViewLeft, mTitleViewCenter, mTitleViewRight;
-
-	protected App getApp() {
-		return (App) getApplication();
-	}
-
+	protected TitleRes mBackTitle;
+	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		requestWindowFeature(Window.FEATURE_NO_TITLE);
-		if (layoutResource != -1) {
-			setContentView(layoutResource);
-		}
-		// 初始化标题栏,标题栏在父类中初始化，如果无特殊要求，不需要覆盖
-		doInitTitle();
-		doInitView();
-
-		// 初始化标题栏,标题栏在父类中初始化，如果无特殊要求，不需要覆盖
-		doInitTitle();
-
-		if (activityToMgr) {
-			ActivityMgr.push(this);
-		}
 	}
+
+	private ProgressBar mProgressBar;
+	private TextView mEmptyView;
 
 	@Override
-	protected void onDestroy() {
-		super.onDestroy();
-		if (activityToMgr) {
-			ActivityMgr.pop();
+	protected void findViewById() {
+		initTitle();
+		int loadingId = getResources().getIdentifier("loading_progressBar", "id", getPackageName());
+		mProgressBar = (ProgressBar) findViewById(loadingId);
+		if (mProgressBar != null) {
+			mProgressBar.setVisibility(View.GONE);
+		}
+		int emptyId = getResources().getIdentifier("empty_text", "id", getPackageName());
+		mEmptyView = (TextView) findViewById(emptyId);
+		if (mEmptyView != null) {
+			((ViewGroup) mEmptyView.getParent()).setVisibility(View.GONE);
 		}
 	}
 
-	/* TODO**************** BaseActivity定义的抽象方法 ********************* */
-	/**
-	 * 初始化控件(出标题栏之外的)
-	 */
-	public abstract void doInitView();
+	private void initTitle() {
+		int resBack = getResources().getIdentifier("title_back", "drawable", getPackageName());
+		int resLeft = getResources().getIdentifier("title_left_switcher", "id", getPackageName());
+		int resMiddle = getResources().getIdentifier("title_middle", "id", getPackageName());
+		int resRight = getResources().getIdentifier("title_right_switcher", "id", getPackageName());
+		//
+		mTitleLeft = (ViewSwitcher) findViewById(resLeft);
+		mTitleMiddle = findViewById(resMiddle);
+		mTitleRight = (ViewSwitcher) findViewById(resRight);
+		//
+		mBackTitle = new TitleRes(1, resBack, new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				finish();
+			}
+		});
+	}
 
-	/* TODO**************** 父类的实现 ********************* */
-	private void doInitTitle() {
-		mTitleViewLeft = findViewById(R.id.title_left);
-		mTitleViewCenter = findViewById(R.id.title_center);
-		mTitleViewRight = findViewById(R.id.title_right);
+	public class TitleRes {
+		/**
+		 * 0 文本, 1图片
+		 */
+		private int type;
+		/**
+		 * 字符串或者int资源(其中资源包括文本或图片)
+		 */
+		private Object res;
+
+		private View.OnClickListener clickListener;
+
+		public int getType() {
+			return type;
+		}
+
+		//
+		public TitleRes(int type, Object res, OnClickListener clickListener) {
+			super();
+			this.type = type;
+			this.res = res;
+			this.clickListener = clickListener;
+		}
+
+		/**
+		 * 适用于标题是文字的。没单击事件
+		 * 
+		 * @param title
+		 */
+		public TitleRes(String title) {
+			this.type = 0;
+			this.res = title;
+			this.clickListener = null;
+		}
+
+		/**
+		 * 适用于title右侧文本单击事件
+		 * 
+		 * @param title
+		 * @param clickListener
+		 */
+		public TitleRes(String title, OnClickListener clickListener) {
+			this.type = 0;
+			this.res = title;
+			this.clickListener = clickListener;
+		}
+
+		public TitleRes(int imageIcon, OnClickListener clickListener) {
+			this.type = 1;
+			this.res = imageIcon;
+			this.clickListener = clickListener;
+		}
+
+		public void setType(int type) {
+			this.type = type;
+		}
+
+		public Object getRes() {
+			return res;
+		}
+
+		public void setRes(Object res) {
+			this.res = res;
+		}
+
+		public View.OnClickListener getClickListener() {
+			return clickListener;
+		}
+
+		public void setClickListener(View.OnClickListener clickListener) {
+			this.clickListener = clickListener;
+		}
 	}
 
 	/**
-	 * 设置标题的相关属性
+	 * 显示通用Title<br>
+	 * 调用该方法时需要确保子类成功调用了 {@link #findViewById()}
+	 */
+	public void setCommonTitle(String titleText) {
+		setTitle(new TitleRes[] { mBackTitle, new TitleRes(0, titleText, null), null });
+	}
+
+	protected void setTitle(TitleRes... reses) {
+		for (int i = 0; i < reses.length; i++) {
+			TitleRes res = reses[i];
+			if (i == 0) {
+				handleTitle(mTitleLeft, res, 0);
+			} else if (i == 1) {
+				handleTitle(mTitleMiddle, res, 1);
+			} else if (i == 2) {
+				handleTitle(mTitleRight, res, 2);
+			}
+		}
+	}
+
+	/**
+	 * 设置右侧按钮
 	 * 
-	 * @param leftOnClick
-	 *            左侧view的单击事件
-	 * @param rightOnClick
-	 *            右侧view的单机事件
-	 * @param leftContent
-	 *            左侧view的内容，一般为String（文字）或者Integer(R.drawable)图片资源
-	 * @param centerContent
-	 *            中间view的内容，一般为String类型
-	 * @param rightContent
-	 *            右侧view的内容，同leftContent类似
+	 * @param res
 	 */
-	public void setTitle(View.OnClickListener leftOnClick, View.OnClickListener rightOnClick, Object leftContent, Object centerContent, Object rightContent) {
-		// 左侧按钮单机事件
-		if (this.mTitleViewLeft != null) {
-			this.mTitleViewLeft.setOnClickListener(leftOnClick);
-		}
-		// 右侧按钮单机事件
-		if (this.mTitleViewRight != null) {
-			this.mTitleViewRight.setOnClickListener(rightOnClick);
-		}
-		// 设置内容
-		this.setTitleViewContent(this.mTitleViewLeft, leftContent);
-		this.setTitleViewContent(this.mTitleViewCenter, centerContent);
-		this.setTitleViewContent(this.mTitleViewRight, rightContent);
+	protected void setTitleRight(TitleRes res) {
+		handleTitle(mTitleRight, res, 2);
 	}
 
 	/**
-	 * 设置标题View内容,分两种情况 :<br>
-	 * 一种是：View为Button; Content为String <br>
-	 * 一种是 View为ImageButton;content为Integer(即Drawable资源文件)<br>
+	 * 设置组件可见性
 	 * 
-	 * @param titleView
-	 * @param titleContent
+	 * @param position
+	 *            0-左 1-中 2-右
+	 * @param visibility
+	 *            {@link View#VISIBLE View#GONE}
 	 */
-	private void setTitleViewContent(View titleView, Object titleContent) {
-		if (titleView == null || titleContent == null) {
+	protected void setTitleVisibility(int position, int visibility) {
+		if (position == 0) {
+			mTitleLeft.setVisibility(visibility);
+		} else if (position == 1) {
+			mTitleMiddle.setVisibility(visibility);
+		} else if (position == 2) {
+			mTitleRight.setVisibility(visibility);
+		}
+	}
+
+	private void handleTitle(View view, TitleRes res, int position) {
+		if (res == null) {
+			view.setVisibility(View.INVISIBLE);
+			// 让该view占指定资源的空间
+			// view.setBackgroundResource(R.drawable.title_back);
 			return;
 		}
-		// 设置可见
-		titleView.setVisibility(View.VISIBLE);
-		// 一种是：View为Button; Content为String
-		if (titleContent instanceof String && titleView instanceof Button) {
-			((Button) titleView).setText(String.valueOf(titleContent));
+		view.setVisibility(View.VISIBLE);
+		// 文本
+		if (res.getType() == 0) {
+			TextView textView = null;
+			if (position == 0 || position == 2) {
+				ViewSwitcher viewSwitcher = (ViewSwitcher) view;
+				viewSwitcher.setDisplayedChild(0);
+				textView = (TextView) viewSwitcher.getChildAt(0);
+			} else {
+				textView = (TextView) view;
+			}
+			if (res.getRes() instanceof Integer) {
+				textView.setText(Integer.valueOf(res.getRes().toString()));
+			} else {
+				textView.setText(String.valueOf(res.getRes()));
+			}
+			//
+			if (res.getClickListener() != null) {
+				textView.setOnClickListener(res.getClickListener());
+			}
 		}
-		// 一种是 View为ImageButton;content为Integer(即Drawable资源文件)
-		else if (titleContent instanceof Integer && titleView instanceof ImageButton) {
-			((ImageButton) titleView).setImageResource(Integer.valueOf(String.valueOf(titleContent)));
+		// 图片
+		else {
+			ImageView imageView = null;
+			if (position == 0 || position == 2) {
+				ViewSwitcher viewSwitcher = (ViewSwitcher) view;
+				viewSwitcher.setDisplayedChild(1);
+				imageView = (ImageView) viewSwitcher.getChildAt(1);
+			} else {
+				imageView = (ImageView) view;
+			}
+			imageView.setImageResource(Integer.valueOf(res.getRes().toString()));
+
+			if (res.getClickListener() != null) {
+				imageView.setOnClickListener(res.getClickListener());
+			}
 		}
 	}
 
-	/* TODO**************** 父类的实现 ********************* */
+	// 隐藏键盘输入法
+	public final static int MSG_IMM_HIDE = 1000;
+	public final static int MSG_IMM_SHOW = 1000 + 1;
 
 	@Override
 	public boolean handleMessage(Message msg) {
-		return true;
+		switch (msg.what) {
+		case MSG_IMM_HIDE:
+			ImmUtils.hide(context);
+		}
+		return false;
 	}
 
-	/* TODO**************** 以下重写Activity的方法 ********************* */
+	// ******************************************************************************************
 
-	public void startActivity(Class<?> activityClass, Object... params) {
-		Intent intent = new Intent();
-		// intent.setAction(action);
-		intent.setClass(this, activityClass);
-		for (int i = 0; i < params.length; i += 2) {
-			if (i + 1 < params.length) {
-				intent.putExtra(String.valueOf(params[i]), String.valueOf(params[i + 1]));
+	public boolean isEmpty(Object str) {
+		if (str == null || str.toString().trim().length() == 0) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+	/**
+	 * 判断Http请求是否返回1000
+	 * 
+	 * @param ret
+	 * @return
+	 */
+	public boolean isRetOK(Object ret) {
+		try {
+			if (isEmpty(ret)) {
+				return false;
+			}
+			JSONObject json = new JSONObject(ret + "");
+			//
+			if (json.has("ret")) {
+				if ("1000".equals(json.getString("ret"))) {
+					return true;
+				}
+			}
+		} catch (JSONException e) {
+			e.printStackTrace();
+		}
+		return false;
+	}
+
+	public void showLoadingBar() {
+		if (mProgressBar != null) {
+			mProgressBar.setVisibility(View.VISIBLE);
+		}
+	}
+
+	public void cancelLoadingBar() {
+		if (mProgressBar != null) {
+			mProgressBar.setVisibility(View.GONE);
+		}
+	}
+
+	/**
+	 * 该方法主要考虑到一个界面里多个EmptyView
+	 * 
+	 * @param emptyText
+	 */
+	protected void setEmptyTextView(TextView emptyText) {
+		this.mEmptyView = emptyText;
+	}
+
+	public void setEmptyView(ViewGroup viewGroup, String emptyText) {
+		if (mEmptyView == null) {
+			return;
+		}
+		//
+		if (viewGroup instanceof ListView || viewGroup instanceof GridView) {
+			AbsListView mAbsListView = (AbsListView) viewGroup;
+			if (mAbsListView == null || mAbsListView.getAdapter() == null || mAbsListView.getAdapter().getCount() == 0) {
+				((View) mEmptyView.getParent()).setVisibility(View.VISIBLE);
+				if (isEmpty(emptyText) == false) {
+					mEmptyView.setText(emptyText);
+				}
+			} else {
+				((View) mEmptyView.getParent()).setVisibility(View.GONE);
 			}
 		}
-		if (ActivityMgr.peek() == null) {
-			MainActivity.getContext().startActivity(intent);
-		} else {
-			ActivityMgr.peek().startActivity(intent);
-		}
-	}
-
-	public String getExtra(String paramName) {
-		if (getIntent() != null && getIntent().getExtras() != null) {
-			return String.valueOf(getIntent().getExtras().get(paramName));
-		}
-		return null;
-	}
-
-	/* TODO**************** 以下是 setter getter ********************* */
-
-	public Handler getHandler() {
-		return mHandler;
+//		else if (viewGroup instanceof XListView) {
+//			XListView xListView = (XListView) viewGroup;
+//			// XListView含有Footer
+//			if (xListView == null || xListView.getListView().getAdapter() == null || xListView.getListView().getAdapter().getCount() <= 1) {
+//				((View) mEmptyView.getParent()).setVisibility(View.VISIBLE);
+//				if (isEmpty(emptyText) == false) {
+//					mEmptyView.setText(emptyText);
+//				}
+//			} else {
+//				((View) mEmptyView.getParent()).setVisibility(View.GONE);
+//			}
+//		}
 	}
 }

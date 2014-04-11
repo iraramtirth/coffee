@@ -11,13 +11,14 @@ import java.net.UnknownHostException;
 import android.util.Log;
 import coffee.server.Config;
 import coffee.server.Online;
+import coffee.server.tcp.base.MessageParser;
 
 /**
  * 
  * @author coffee <br>
  *         2014年4月2日上午10:02:19
  */
-public class Client {
+public class UDPClient extends MessageParser {
 	private DatagramSocket clientSocket;
 
 	private MessageCallback callback;
@@ -32,7 +33,7 @@ public class Client {
 		public void execute(byte[] data);
 	}
 
-	public Client(int port, MessageCallback callback) {
+	public UDPClient(int port, MessageCallback callback) {
 		try {
 			this.callback = callback;
 			clientSocket = new DatagramSocket(port);
@@ -41,7 +42,7 @@ public class Client {
 		}
 	}
 
-	public Client(DatagramSocket clientSocket, MessageCallback callback) {
+	public UDPClient(DatagramSocket clientSocket, MessageCallback callback) {
 		this.callback = callback;
 		this.clientSocket = clientSocket;
 	}
@@ -76,22 +77,22 @@ public class Client {
 					int fromPort = receivePacket.getPort();
 					System.out.println("新消息：" + fromHost + "端口：" + fromPort);
 					try {
-						String strData = new String(receivePacket.getData(), 0, receivePacket.getLength(), "utf-8");
-						System.out.println(">>> " + strData);
+						String message = new String(receivePacket.getData(), 0, receivePacket.getLength(), "utf-8");
+						System.out.println(">>> " + message);
 						// 广播接口
 						if (fromPort != Config.PORT_UDP) {
-							if (strData.startsWith("syn=")) {
-								if (Broadcast.isNewReg(strData)) {
-									Log.d("reg", "新用户上线: " + fromHost + ":" + fromPort);
-									Online.reg(fromHost, Config.PORT_UDP, 0);
-									new Broadcast().sendRegMessage(fromHost);
-								} else if (Broadcast.isReg(strData)) {
-									Log.d("reg", "通知在线: " + fromHost + ":" + fromPort);
-									Online.reg(fromHost, Config.PORT_UDP, 0);
-								} else if (Broadcast.isUnReg(strData)) {
-									Log.d("reg", "下线: " + fromHost + ":" + fromPort);
-									Online.unReg(fromHost, 0);
-								}
+							String fromUser = getUserFrom(message);
+							// 收到好友的上线通知
+							if (message.startsWith(MessageParser.Action.ONLINE)) {
+								Online.reg(fromUser, fromHost, Config.PORT_UDP, 0);
+								System.out.println("msg:online " + fromUser + "上线");
+								String onlineAck = getOnlineAck(fromUser, 1);
+								new UDPBroadcast().sendRegMessage(onlineAck, fromHost);
+							} else if (message.startsWith(MessageParser.Action.ONLINE_ACK)) {
+								Log.d("reg", "通知在线: " + fromHost + ":" + fromPort);
+								Online.reg(fromHost, fromHost, Config.PORT_UDP, 0);
+							} else if (message.startsWith(MessageParser.Action.MESSAGE)) {
+								System.out.println("msg:message " + fromUser + " " + message);
 							}
 						} else {
 							if (callback != null) {
@@ -114,7 +115,7 @@ public class Client {
 	 * @param regOrUn
 	 */
 	public void broadcast(boolean regOrUn) {
-		new Broadcast().sendBroadcast(regOrUn);
+		new UDPBroadcast().sendBroadcast(regOrUn);
 	}
 
 	public void close() {

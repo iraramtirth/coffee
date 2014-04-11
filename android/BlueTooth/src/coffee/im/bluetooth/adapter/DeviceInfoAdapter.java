@@ -12,7 +12,6 @@ import coffee.im.bluetooth.R;
 import coffee.im.bluetooth.activity.ChatActivity;
 import coffee.im.bluetooth.activity.base.BaseActivity;
 import coffee.im.bluetooth.adapter.base.BaseAdapter;
-import coffee.im.bluetooth.constant.ConstIntent;
 import coffee.im.bluetooth.utils.BtUtils;
 
 /**
@@ -70,7 +69,7 @@ public class DeviceInfoAdapter extends BaseAdapter<BluetoothDevice> {
 			holder.action.setOnClickListener(new View.OnClickListener() {
 				@Override
 				public void onClick(View v) {
-					((BaseActivity) mContext).startActivity(ChatActivity.class, ConstIntent.EXTRA_BLUETOOTH_DEVICE, device.getAddress());
+					((BaseActivity) mContext).startActivity(ChatActivity.class, "device", device.getAddress());
 				}
 			});
 		}

@@ -1,0 +1,99 @@
+package coffee.server.tcp.base;
+
+/**
+ * 主要处理消息的解析
+ * 
+ * @author coffee <br>
+ *         2014年4月11日上午11:38:50
+ */
+public abstract class MessageParser {
+
+	/**
+	 * 消息的行为
+	 */
+	public interface Action {
+		String SERV = "serv";
+		String ONLINE = "online";
+		String ONLINE_ACK = "online-ack";
+		String MESSAGE = "message";
+		String TAG = ":";
+	}
+
+	/**
+	 * 处理Server/Client发送过来的原始消息
+	 * 
+	 * @param oriMessage
+	 */
+	protected void dispatchMessage(String oriMessage) {
+
+	}
+
+	/**
+	 * 获取消息的来源
+	 * 
+	 * @param message
+	 * @return
+	 */
+	public String getUserFrom(String message) {
+		String[] str = message.split(":");
+		String username = str[1];
+		return username;
+	}
+
+	/**
+	 * 获取消息的去向
+	 * 
+	 * @return
+	 */
+	public String getUserTo(String message) {
+		String[] str = message.split(":");
+		String username = str[2];
+		return username;
+	}
+
+	public String getOnlineState(String message) {
+		String[] str = message.split(":");
+		String state = str[3];
+		return state;
+	}
+
+	/**
+	 * online:coffee:serv::
+	 * 
+	 * @return
+	 */
+	public String getOnlineToServer(int onlineState) {
+		String onlineToServer = getMessage(Action.ONLINE, getMyUsername(), Action.SERV, "" + onlineState, "");
+		return onlineToServer;
+	}
+
+	/**
+	 * online-ack:client:coffee::
+	 * 
+	 * @param toUser
+	 * @param myUsername
+	 * @return
+	 */
+	public String getOnlineAck(String toUser, int onlineState) {
+		return getMessage(Action.ONLINE_ACK, toUser, getMyUsername(), "" + onlineState, "");
+	}
+
+	private String getMessage(String... segment) {
+		StringBuilder sb = new StringBuilder();
+		for (String str : segment) {
+			sb.append(str).append(Action.TAG);
+		}
+		return sb.substring(0, sb.length() - 1);
+	}
+
+	private String getMyUsername() {
+		String username = MessageParser.username;
+		return username;
+	}
+
+	private static String username = "";
+
+	public static void setUsername(String username) {
+		MessageParser.username = username;
+	}
+}

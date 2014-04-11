@@ -1,0 +1,60 @@
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
+    <style name="AppBaseTheme" parent="android:Theme.Light"></style>
+    <style name="AppTheme" parent="AppBaseTheme"></style>
+    <style name="MenuTextStyle" parent="@android:style/TextAppearance.Medium">
+        <item name="android:textColor">#6F6B6B</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">14sp</item>
+    </style>
+    <!-- 整体layout样式 -->
+    <style name="common_layout_style">
+        <item name="android:background">#ffffff</item>
+    </style>
+    <!-- 顶部title样式 -->
+    <style name="common_title_style">
+        <item name="android:layout_width">fill_parent</item>
+        <item name="android:layout_height">50dip</item>
+        <item name="android:background">@drawable/title_background</item>
+    </style>
+    <!-- ListView通用样式 -->
+    <style name="common_list_style">
+        <item name="android:divider">@drawable/common_list_line</item>
+        <item name="android:scrollbars">none</item>
+        <item name="android:dividerHeight">1dip</item>
+        <item name="android:paddingLeft">3dip</item>
+        <item name="android:paddingRight">3dip</item>
+        <item name="android:cacheColorHint">#00000000</item>
+    </style>
+    <!-- 通用列表EmptyView(TextView)样式 -->
+    <style name="common_list_empty_view">
+        <item name="android:textSize">20dip</item>
+        <item name="android:textColor">#666666</item>
+    </style>
+    <!-- 通用列表标题样式 -->
+    <style name="common_item_title">
+        <item name="android:textColor">#000000</item>
+        <item name="android:textSize">20dip</item>
+    </style>
+    <!-- 通用列表内容样式 -->
+    <style name="common_item_desc">
+        <item name="android:textColor">#666666</item>
+    </style>
+    <!-- 1px水平横线颜色样式 -->
+    <style name="common_line_bg">
+        <item name="android:background">#C9C9C9</item>
+    </style>
+    <!-- 通用列表分割 -->
+    <style name="shop_segment">
+        <item name="android:layout_height">15dip</item>
+        <item name="android:background">#EFEFF4</item>
+    </style>
+    <!-- 开店, 销售信息 -->
+    <style name="shop_sell_info_item_1">
+        <item name="android:textColor">#666666</item>
+    </style>
+    <!-- TableLayout布局左侧文本通用样式 -->
+    <style name="common_table_left">
+        <item name="android:textSize">16dip</item>
+        <item name="android:layout_marginLeft">5dip</item>
+    </style>
+</resources>

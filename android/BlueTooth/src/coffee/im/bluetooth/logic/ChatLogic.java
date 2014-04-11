@@ -14,8 +14,8 @@ import android.bluetooth.BluetoothSocket;
 import android.os.AsyncTask;
 import android.widget.Toast;
 import coffee.im.bluetooth.App;
+import coffee.im.bluetooth.activity.base.HandlerMgr;
 import coffee.im.bluetooth.constant.ConstMsg;
-import coffee.im.bluetooth.logic.base.BaseLogic;
 
 /**
  * 聊天业务
@@ -23,7 +23,7 @@ import coffee.im.bluetooth.logic.base.BaseLogic;
  * @author coffee<br>
  *         2013上午8:25:28
  */
-public class ChatLogic extends BaseLogic {
+public class ChatLogic {
 
 	private static ChatLogic instance;
 
@@ -88,7 +88,7 @@ public class ChatLogic extends BaseLogic {
 			// '\n', '\r', "\r\n" or the end of the reader.
 			// 注意line必须 以'\n', '\r', "\r\n"结尾
 			while ((line = in.readLine()) != null) {
-				sendMessage(ConstMsg.MSG_IM_RECV_MESSAGE, line);
+				HandlerMgr.sendMessage(ConstMsg.MSG_IM_RECV_MESSAGE, line);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();

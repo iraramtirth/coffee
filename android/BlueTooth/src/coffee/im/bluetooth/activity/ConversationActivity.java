@@ -10,7 +10,7 @@ import coffee.im.bluetooth.R;
 import coffee.im.bluetooth.activity.base.BaseActivity;
 import coffee.server.Config;
 import coffee.server.Online;
-import coffee.server.udp.Client;
+import coffee.server.udp.UDPClient;
 import coffee.util.media.AudioRecorder;
 import coffee.util.media.AudioTracker;
 
@@ -21,7 +21,7 @@ import coffee.util.media.AudioTracker;
  */
 public class ConversationActivity extends BaseActivity {
 
-	private Client client;
+	private UDPClient client;
 
 	// 192.168.137.153 -- note2
 	// 192.168.137.188 -- note3
@@ -34,13 +34,12 @@ public class ConversationActivity extends BaseActivity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.activityToMgr = false;
-		super.layoutResource = R.layout.main_tab1;
 		super.onCreate(savedInstanceState);
 		//
 		audioRecorder = new AudioRecorder();
 		audioTracker = new AudioTracker();
 		//
-		client = new Client(Config.PORT_UDP, new Client.MessageCallback() {
+		client = new UDPClient(Config.PORT_UDP, new UDPClient.MessageCallback() {
 			@Override
 			public void execute(byte[] data) {
 				try {
@@ -56,8 +55,8 @@ public class ConversationActivity extends BaseActivity {
 	}
 
 	@Override
-	public void doInitView() {
-
+	public void findViewById() {
+		setContentView(R.layout.main_tab1);
 		View startRecord = findViewById(R.id.start_record);
 		startRecord.setOnClickListener(new View.OnClickListener() {
 			@Override

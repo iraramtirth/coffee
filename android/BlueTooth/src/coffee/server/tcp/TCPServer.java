@@ -14,14 +14,14 @@ import java.util.concurrent.Executors;
  * @author coffee <br>
  *         2014年3月31日下午3:57:52
  */
-public class Server {
+public class TCPServer {
 
 	private ServerSocket serverSocket;
 
-	private Vector<Client> clients;
+	private Vector<TCPClient> clients;
 
-	private Server() {
-		clients = new Vector<Client>();
+	private TCPServer() {
+		clients = new Vector<TCPClient>();
 	}
 
 	/**
@@ -44,14 +44,14 @@ public class Server {
 	 * 分发消息<br>
 	 * 处理Client请求
 	 */
-	private void dispatchMessage(Client fromSocket, String message) {
+	private void dispatchMessage(TCPClient fromSocket, String message) {
 		synchronized (clients) {
 			// 一对一
 			// 约定协议规范to:id:消息内容
 			// 例如to:10086:hello
 			if (message.startsWith("to:")) {
 				String port = message.substring("to:".length(), message.indexOf(":", 3));
-				for (Client client : clients) {
+				for (TCPClient client : clients) {
 					if (port.equals(client.getSocket().getPort() + "")) {
 						message = fromSocket.getInfo() + ">>>" + message;
 						client.sendMessage(message);
@@ -61,7 +61,7 @@ public class Server {
 			}
 			// 群聊
 			else {
-				for (Client client : clients) {
+				for (TCPClient client : clients) {
 					message = fromSocket.getInfo() + ">>>" + message;
 					client.sendMessage(message);
 				}
@@ -74,7 +74,7 @@ public class Server {
 	 * 
 	 * @param message
 	 */
-	public void responseRequest(Client fromSocket, String message) {
+	public void responseRequest(TCPClient fromSocket, String message) {
 		System.out.println(message);
 		StringBuilder sb = new StringBuilder();
 		// GET请求
@@ -101,10 +101,10 @@ public class Server {
 	 * 处理客户端请求
 	 */
 	private class SocketRunnable implements Runnable {
-		private Client client;
+		private TCPClient client;
 
 		public SocketRunnable(Socket socket) {
-			this.client = new Client(socket);
+			this.client = new TCPClient(socket);
 		}
 
 		@Override
@@ -147,7 +147,7 @@ public class Server {
 	}
 
 	public static void main(String[] args) {
-		Server server = new Server();
+		TCPServer server = new TCPServer();
 		server.start();
 	}
 }

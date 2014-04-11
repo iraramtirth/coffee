@@ -12,7 +12,7 @@ import coffee.server.Config;
  * @author coffee <br>
  *         2014年4月3日下午3:32:09
  */
-public class Broadcast {
+public class UDPBroadcast {
 
 	private final String host = "255.255.255.255";
 	private final int portTarget = Config.PORT_UDP;
@@ -52,7 +52,11 @@ public class Broadcast {
 		}.execute();
 	}
 
-	public void sendRegMessage(final String targetHost) {
+	/**
+	 * 
+	 * @param onlineAck
+	 */
+	public void sendRegMessage(final String targetHost, final String onlineAck) {
 		new AsyncTask<Void, Void, Void>() {
 			@Override
 			protected Void doInBackground(Void... params) {
@@ -60,8 +64,7 @@ public class Broadcast {
 				try {
 					// 创建用来发送数据报包的套接字
 					socket = new DatagramSocket();
-					String dataStr = "syn=0,reg";
-					byte[] data = dataStr.getBytes();
+					byte[] data = onlineAck.getBytes();
 					DatagramPacket dp = new DatagramPacket(data, data.length, InetAddress.getByName(targetHost), portTarget);
 					//
 					socket.send(dp);
@@ -74,34 +77,5 @@ public class Broadcast {
 			}
 		}.execute();
 	}
-
-	/**
-	 * 新上线的用户,广播给全部在线用户
-	 * 
-	 * @param data
-	 * @return
-	 */
-	public static boolean isNewReg(String data) {
-		return "syn=1,reg".equals(data);
-	}
-
-	/**
-	 * 接收到广播以后, 通知新上线的用户，我也在线
-	 * 
-	 * @param data
-	 * @return
-	 */
-	public static boolean isReg(String data) {
-		return "syn=0,reg".equals(data);
-	}
-
-	/**
-	 * 广播全部在线用户,我已上线
-	 * 
-	 * @param data
-	 * @return
-	 */
-	public static boolean isUnReg(String data) {
-		return "syn=1,unreg".equals(data);
-	}
+	
 }
