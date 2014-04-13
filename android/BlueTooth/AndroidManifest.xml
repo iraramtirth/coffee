@@ -30,6 +30,6 @@
         <activity android:name=".activity.ScanDeviceActivity"/>
         <activity android:name=".activity.ConversationActivity"/>
         <activity android:name=".activity.ContactActivity"/>
-        <activity android:name=".activity.SettingActivity"/>
+        <activity android:name=".activity.MessageLogActivity"/>
     </application>
 </manifest>

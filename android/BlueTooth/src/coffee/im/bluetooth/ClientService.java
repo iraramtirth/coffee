@@ -3,6 +3,7 @@ package coffee.im.bluetooth;
 import android.app.Service;
 import android.content.Intent;
 import android.os.IBinder;
+import android.util.Log;
 import coffee.im.bluetooth.activity.base.HandlerMgr;
 import coffee.im.bluetooth.constant.ConstMsg;
 import coffee.server.Config;
@@ -19,6 +20,7 @@ public class ClientService extends Service {
 	public void onCreate() {
 		super.onCreate();
 		instance = this;
+		Log.d("thread-client-service", Thread.currentThread().getId() + "");
 	}
 
 	public static ClientService getInstance() {
@@ -54,25 +56,8 @@ public class ClientService extends Service {
 		}).start();
 	}
 
-	/**
-	 * 
-	 */
-	public void listenServer() {
-		new Thread(new Runnable() {
-			@Override
-			public void run() {
-				tcpClient.listenServer();
-			}
-		}).start();
-	}
-	
-	public void sendMessage(final String message){
-		new Thread(new Runnable() {
-			@Override
-			public void run() {
-				tcpClient.sendMessage(message);
-			}
-		}).start();
+	public void sendMessage(final String message) {
+		tcpClient.sendMessage(message);
 	}
 
 	@Override
@@ -87,6 +72,7 @@ public class ClientService extends Service {
 	@Override
 	public void onDestroy() {
 		super.onDestroy();
+		Log.d("client-service", "destroy");
 		if (tcpClient != null) {
 			tcpClient.close();
 			tcpClient = null;

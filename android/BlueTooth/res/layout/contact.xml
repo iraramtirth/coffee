@@ -13,7 +13,7 @@
         layout="@layout/common_title"/>
     <!-- 联系人列表 -->
     <ListView
-        android:id="@+id/device_list"
+        android:id="@+id/contact_list"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/title_layout"/>

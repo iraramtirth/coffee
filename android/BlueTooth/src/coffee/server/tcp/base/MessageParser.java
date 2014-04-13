@@ -20,24 +20,29 @@ public abstract class MessageParser {
 	}
 
 	/**
-	 * 处理Server/Client发送过来的原始消息
-	 * 
-	 * @param oriMessage
-	 */
-	protected void dispatchMessage(String oriMessage) {
-
-	}
-
-	/**
 	 * 获取消息的来源
 	 * 
 	 * @param message
 	 * @return
 	 */
-	public String getUserFrom(String message) {
+	public static String getUserFrom(String message) {
 		String[] str = message.split(":");
-		String username = str[1];
-		return username;
+		if (str.length > 1) {
+			String username = str[1];
+			return username;
+		} else {
+			return "no-name";
+		}
+	}
+
+	public static String getMessageBody(String message) {
+		String[] str = message.split(":");
+		if (str.length > 3) {
+			String body = str[3];
+			return body;
+		} else {
+			return message;
+		}
 	}
 
 	/**
@@ -83,7 +88,7 @@ public abstract class MessageParser {
 	}
 
 	/**
-	 * online-ack:client:coffee::
+	 * online-ack:client:coffee:1:
 	 * 
 	 * @param toUser
 	 * @param myUsername

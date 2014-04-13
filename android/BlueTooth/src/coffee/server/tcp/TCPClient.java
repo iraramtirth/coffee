@@ -7,6 +7,8 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.InetSocketAddress;
 import java.net.Socket;
+import java.util.ArrayList;
+import java.util.List;
 
 import coffee.im.bluetooth.activity.base.HandlerMgr;
 import coffee.im.bluetooth.constant.ConstMsg;
@@ -25,6 +27,10 @@ public class TCPClient extends MessageParser {
 	private BufferedInputStream clientInput;
 	// 客户端输出流
 	private BufferedOutputStream clientOutput;
+	//
+	private Thread sender, receiver;
+	private List<String> messages;
+	private boolean isRunning = true;
 
 	public TCPClient() {
 		clientSocket = new Socket();
@@ -48,15 +54,54 @@ public class TCPClient extends MessageParser {
 			clientSocket.connect(new InetSocketAddress(hostname, port));
 			clientOutput = new BufferedOutputStream(clientSocket.getOutputStream());
 			clientInput = new BufferedInputStream(clientSocket.getInputStream());
+			start();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
 
 	/**
+	 * 开启收发消息的线程
+	 */
+	public void start() {
+		messages = new ArrayList<String>();
+		// 发送消息的线程
+		sender = new Thread(new Runnable() {
+			@Override
+			public void run() {
+				while (isRunning) {
+					if (messages.isEmpty()) {
+						try {
+							System.out.println("wait");
+							synchronized (sender) {
+								sender.wait();
+							}
+							System.out.println("wait-notify");
+						} catch (InterruptedException e) {
+							e.printStackTrace();
+						}
+					} else {
+						String message = messages.get(0);
+						send(message);
+						messages.remove(message);
+					}
+				}
+			}
+		});
+		receiver = new Thread(new Runnable() {
+			@Override
+			public void run() {
+				listenServer();
+			}
+		});
+		receiver.start();
+		sender.start();
+	}
+
+	/**
 	 * 监听服务器端发回的数据
 	 */
-	public void listenServer() {
+	private void listenServer() {
 		System.out.println("msg:开始监听服务器发回的数据:");
 		byte[] data = new byte[128];
 		int len = -1;
@@ -86,18 +131,16 @@ public class TCPClient extends MessageParser {
 		} catch (IOException e) {
 			e.printStackTrace();
 		} finally {
-			System.out.println("listenServer");
+			System.out.println("listenServer-stop");
 		}
 	}
 
 	/**
-	 * 发送文本消息到服务器端
+	 * 真正发送数据的地方
 	 * 
 	 * @param message
 	 */
-	public void sendMessage(String message) {
-		System.out.println("msg:send " + message);
-		HandlerMgr.sendMessage(ConstMsg.IM_MESSAGE_SEND, message);
+	private void send(String message) {
 		try {
 			byte[] data = message.getBytes("UTF-8");
 			if (clientOutput == null) {
@@ -111,6 +154,24 @@ public class TCPClient extends MessageParser {
 		}
 	}
 
+	/**
+	 * 发送文本消息到服务器端
+	 * 
+	 * @param message
+	 */
+	public void sendMessage(String message) {
+		System.out.println("msg:send " + message);
+		HandlerMgr.sendMessage(ConstMsg.IM_MESSAGE_SEND, message);
+		if (messages != null) {// 运行在客户端
+			messages.add(message);
+			synchronized (sender) {
+				sender.notify();
+			}
+		} else {
+			// 运行在服务器端
+			send(message);
+		}
+	}
 	/**
 	 * 发送在线状态
 	 * 
@@ -126,6 +187,7 @@ public class TCPClient extends MessageParser {
 	 */
 	public void close() {
 		try {
+			isRunning = false;
 			if (clientInput != null) {
 				clientInput.close();
 			}
@@ -147,7 +209,6 @@ public class TCPClient extends MessageParser {
 		TCPClient client = new TCPClient();
 		try {
 			client.connectServer("localhost", 8888);
-			client.listenServer();
 			String line = null;
 			while ((line = client.readLine()) != null) {
 				client.sendMessage(line);

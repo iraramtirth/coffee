@@ -29,8 +29,6 @@ public class LoginActivity extends BaseActivity {
 				switch (msg.what) {
 				case ConstMsg.LOGIN_TCP:
 					if (msg.obj == null) {
-						ClientService.getInstance().listenServer();
-						//
 						Intent intent = new Intent();
 						intent.setClass(context, MainActivity.class);
 						context.startActivity(intent);

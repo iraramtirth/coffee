@@ -15,21 +15,22 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true">
         <Button
-            android:id="@+id/tab_conversation"
+            android:id="@+id/tab_1"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="日志"/>
+        <Button
+            android:id="@+id/tab_2"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="会话"/>
         <Button
-            android:id="@+id/tab_contact"
+            android:id="@+id/tab_3"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="联系人"/>
-        <Button
-            android:id="@+id/tab_setting"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"/>
     </LinearLayout>
 </RelativeLayout>

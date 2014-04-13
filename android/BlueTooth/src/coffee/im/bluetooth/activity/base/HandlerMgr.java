@@ -1,6 +1,6 @@
 package coffee.im.bluetooth.activity.base;
 
-import java.util.Hashtable;
+import java.util.HashMap;
 
 import android.os.Handler;
 import android.os.Message;
@@ -16,7 +16,7 @@ public class HandlerMgr {
 	/**
 	 * key: 一般以Activity名字命名
 	 */
-	private static Hashtable<String, Handler> map = new Hashtable<String, Handler>();
+	private static HashMap<String, Handler> map = new HashMap<String, Handler>();
 
 	public static void put(String activityName, Handler handler) {
 		map.put(activityName, handler);
@@ -36,20 +36,20 @@ public class HandlerMgr {
 	}
 
 	public static void sendMessageDelayed(int what, Object obj, int delayMillis) {
-		Message msg = Message.obtain();
-		msg.what = what;
-		msg.obj = obj;
 		for (Handler handler : map.values()) {
+			Message msg = Message.obtain();
+			msg.what = what;
+			msg.obj = obj;
 			boolean result = handler.sendMessageDelayed(msg, delayMillis);
 			System.out.println(result);
 		}
 	}
 
 	public static void sendMessage(int what, Object obj) {
-		Message msg = Message.obtain();
-		msg.what = what;
-		msg.obj = obj;
 		for (Handler handler : map.values()) {
+			Message msg = Message.obtain();
+			msg.what = what;
+			msg.obj = obj;
 			handler.sendMessage(msg);
 		}
 	}

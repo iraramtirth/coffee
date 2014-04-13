@@ -1,6 +1,5 @@
 package coffee.im.bluetooth.activity;
 
-import android.location.Address;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -57,7 +56,10 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener {
 	public boolean handleMessage(Message msg) {
 		switch (msg.what) {
 		case ConstMsg.IM_MESSAGE_RECV:
-			mListAdapter.notifyAdd(new MessageBean(BtUtils.getLocalAddress(), String.valueOf(msg.obj)), true);
+			String message = String.valueOf(msg.obj);
+			String messageBody = MessageParser.getMessageBody(message);
+			String userFrom = MessageParser.getUserFrom(message);
+			mListAdapter.notifyAdd(new MessageBean(userFrom, messageBody), true);
 			mListView.setSelection(mListView.getBottom());
 			break;
 		}
