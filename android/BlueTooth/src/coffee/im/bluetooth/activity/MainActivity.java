@@ -1,11 +1,13 @@
 package coffee.im.bluetooth.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import coffee.im.bluetooth.ClientService;
 import coffee.im.bluetooth.R;
 import coffee.im.bluetooth.activity.base.BaseActivityGroup;
 import coffee.im.bluetooth.constant.ConstMsg;
@@ -26,7 +28,7 @@ public class MainActivity extends BaseActivityGroup implements OnClickListener {
 		context = this;
 		//
 		mHandler = new Handler(this);
-		//showViewGroup(ConversationActivity.class);
+		showViewGroup(MessageLogActivity.class);
 	}
 
 	@Override
@@ -38,11 +40,11 @@ public class MainActivity extends BaseActivityGroup implements OnClickListener {
 	public void findViewById() {
 		this.setContentView(R.layout.main);
 		// 会话界面
-		Button btn0 = (Button) this.findViewById(R.id.tab_conversation);
+		Button btn0 = (Button) this.findViewById(R.id.tab_1);
 		// 联系人界面
-		Button btn1 = (Button) this.findViewById(R.id.tab_contact);
+		Button btn1 = (Button) this.findViewById(R.id.tab_2);
 		// 设置界面
-		Button btn2 = (Button) this.findViewById(R.id.tab_setting);
+		Button btn2 = (Button) this.findViewById(R.id.tab_3);
 		//
 		btn0.setOnClickListener(this);
 		btn1.setOnClickListener(this);
@@ -64,14 +66,14 @@ public class MainActivity extends BaseActivityGroup implements OnClickListener {
 	@Override
 	public void onClick(View v) {
 		switch (v.getId()) {
-		case R.id.tab_conversation:
-			//showViewGroup(ConversationActivity.class);
+		case R.id.tab_1:
+			showViewGroup(MessageLogActivity.class);
 			break;
-		case R.id.tab_contact:
+		case R.id.tab_2:
+//			showViewGroup(ContactActivity.class);
+			break;
+		case R.id.tab_3:
 			showViewGroup(ContactActivity.class);
-			break;
-		case R.id.tab_setting:
-			showViewGroup(ScanDeviceActivity.class);
 			break;
 		}
 	}
@@ -80,5 +82,12 @@ public class MainActivity extends BaseActivityGroup implements OnClickListener {
 
 	public static MainActivity getContext() {
 		return context;
+	}
+
+	@Override
+	protected void onDestroy() {
+		super.onDestroy();
+		Intent intent = new Intent(this, ClientService.class);
+		stopService(intent);
 	}
 }

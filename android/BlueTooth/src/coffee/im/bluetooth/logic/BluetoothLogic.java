@@ -18,14 +18,14 @@ import coffee.im.bluetooth.activity.base.HandlerMgr;
 import coffee.im.bluetooth.constant.ConstMsg;
 
 /**
- * 聊天业务
+ * 蓝牙聊天相关
  * 
  * @author coffee<br>
  *         2013上午8:25:28
  */
-public class ChatLogic {
+public class BluetoothLogic {
 
-	private static ChatLogic instance;
+	private static BluetoothLogic instance;
 
 	private BluetoothServerSocket serverSocket;
 	private BluetoothSocket socket;
@@ -36,13 +36,13 @@ public class ChatLogic {
 
 	public static String SDP = uuid.toString();
 
-	private ChatLogic() {
+	private BluetoothLogic() {
 
 	}
 
-	public static ChatLogic getInstance() {
+	public static BluetoothLogic getInstance() {
 		if (instance == null) {
-			instance = new ChatLogic();
+			instance = new BluetoothLogic();
 		}
 		return instance;
 	}
@@ -88,7 +88,7 @@ public class ChatLogic {
 			// '\n', '\r', "\r\n" or the end of the reader.
 			// 注意line必须 以'\n', '\r', "\r\n"结尾
 			while ((line = in.readLine()) != null) {
-				HandlerMgr.sendMessage(ConstMsg.MSG_IM_RECV_MESSAGE, line);
+				HandlerMgr.sendMessage(ConstMsg.IM_MESSAGE_RECV, line);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();

@@ -28,10 +28,16 @@ public class LoginActivity extends BaseActivity {
 			public void handleMessage(Message msg) {
 				switch (msg.what) {
 				case ConstMsg.LOGIN_TCP:
-					Intent intent = new Intent();
-					intent.setClass(context, MainActivity.class);
-					context.startActivity(intent);
-					finish();
+					if (msg.obj == null) {
+						ClientService.getInstance().listenServer();
+						//
+						Intent intent = new Intent();
+						intent.setClass(context, MainActivity.class);
+						context.startActivity(intent);
+						finish();
+					} else {
+						Alert.toast("登录失败");
+					}
 					break;
 				default:
 					break;

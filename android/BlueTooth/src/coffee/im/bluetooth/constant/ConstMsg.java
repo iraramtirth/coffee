@@ -20,5 +20,6 @@ public class ConstMsg {
 	public static final int MSG_APP_EXIT = MSG_APP_BASE + 1;
 
 	/********************** IM **************************/
-	public static final int MSG_IM_RECV_MESSAGE = MSG_IM_BASE + 1;
+	public static final int IM_MESSAGE_RECV = MSG_IM_BASE + 1;
+	public static final int IM_MESSAGE_SEND = MSG_IM_BASE + 2;
 }

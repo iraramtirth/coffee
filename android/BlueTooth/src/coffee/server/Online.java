@@ -71,6 +71,7 @@ public class Online {
 		private int port;
 
 		public Reg(String user, String host, int port) {
+			this.user = user;
 			this.host = host;
 			this.port = port;
 		}

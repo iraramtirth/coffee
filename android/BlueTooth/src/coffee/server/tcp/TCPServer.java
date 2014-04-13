@@ -4,9 +4,11 @@ import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.Vector;
+import java.util.Hashtable;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+
+import coffee.server.tcp.base.MessageParser;
 
 /**
  * 处理ServerSocket监听到的请求
@@ -14,14 +16,14 @@ import java.util.concurrent.Executors;
  * @author coffee <br>
  *         2014年3月31日下午3:57:52
  */
-public class TCPServer {
+public class TCPServer extends MessageParser {
 
 	private ServerSocket serverSocket;
 
-	private Vector<TCPClient> clients;
+	private Hashtable<String, TCPClient> clients;
 
 	private TCPServer() {
-		clients = new Vector<TCPClient>();
+		clients = new Hashtable<String, TCPClient>();
 	}
 
 	/**
@@ -46,24 +48,14 @@ public class TCPServer {
 	 */
 	private void dispatchMessage(TCPClient fromSocket, String message) {
 		synchronized (clients) {
-			// 一对一
-			// 约定协议规范to:id:消息内容
-			// 例如to:10086:hello
-			if (message.startsWith("to:")) {
-				String port = message.substring("to:".length(), message.indexOf(":", 3));
-				for (TCPClient client : clients) {
-					if (port.equals(client.getSocket().getPort() + "")) {
-						message = fromSocket.getInfo() + ">>>" + message;
-						client.sendMessage(message);
-						break;
+			// 用户上线
+			if (message.startsWith(Action.ONLINE)) {
+				String msgWrap = message + System.currentTimeMillis();
+				for (TCPClient client : clients.values()) {
+					if (fromSocket.equals(client)) {
+						continue;
 					}
-				}
-			}
-			// 群聊
-			else {
-				for (TCPClient client : clients) {
-					message = fromSocket.getInfo() + ">>>" + message;
-					client.sendMessage(message);
+					client.sendMessage(msgWrap);
 				}
 			}
 		}
@@ -82,17 +74,17 @@ public class TCPServer {
 			sb.append("HTTP/1.1 404 Not Found\r\n" + //
 					"Date: Sat, 31 Dec 2005 23:59:59 GMT\r\n" + //
 					"Content-Type: text/html;charset=ISO-8859-1\r\n" + //
-//					"Content-Length: 122\n" + //
-					"\r\n" ); //
-//					"<html>" + //
-//					"<head>" + //
-//					"<title>Wrox Homepage</title>" + //
-//					"</head>" + //
-//					"<body>" + //
-//					" hello world " + System.currentTimeMillis() + //
-//					"</body>" + //
-//					"</html>"
-//);
+					// "Content-Length: 122\n" + //
+					"\r\n"); //
+			// "<html>" + //
+			// "<head>" + //
+			// "<title>Wrox Homepage</title>" + //
+			// "</head>" + //
+			// "<body>" + //
+			// " hello world " + System.currentTimeMillis() + //
+			// "</body>" + //
+			// "</html>"
+			// );
 		}
 		fromSocket.sendMessage(sb.toString());
 	}
@@ -105,14 +97,14 @@ public class TCPServer {
 
 		public SocketRunnable(Socket socket) {
 			this.client = new TCPClient(socket);
+			clients.put(client.toString(), client);
 		}
 
 		@Override
 		public void run() {
-			clients.add(client);
 			BufferedInputStream bin = null;
 			try {
-				System.out.println("监听到" + client.getInfo() + "发来的连接:");
+				System.out.println("监听到" + client + "发来的连接:");
 				bin = new BufferedInputStream(client.getSocket().getInputStream());
 				byte[] data = new byte[1024];
 				int len = -1;

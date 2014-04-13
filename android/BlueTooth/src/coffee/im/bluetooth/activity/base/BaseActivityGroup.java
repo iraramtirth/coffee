@@ -23,7 +23,7 @@ public abstract class BaseActivityGroup extends BaseActivity {
 
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		mmViewGroupParams = new LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT);
+		mmViewGroupParams = new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
 		mActivityGroup = new ActivityGroup();
 		//
 		mActivityGroup.getLocalActivityManager().dispatchCreate(savedInstanceState);
@@ -40,9 +40,10 @@ public abstract class BaseActivityGroup extends BaseActivity {
 	protected synchronized void showViewGroup(Class<?> activityClass) {
 		try {
 			// 结束Activity
-			destroyCurrentActivity();
+			//destroyCurrentActivity();
 			//
-			mFocusView = mActivityGroup.getLocalActivityManager().startActivity(activityClass.getSimpleName(), new Intent(this, activityClass)).getDecorView();
+			Intent intent = new Intent(this, activityClass);
+			mFocusView = mActivityGroup.getLocalActivityManager().startActivity(activityClass.getSimpleName(), intent).getDecorView();
 			// 不能缓存mFocusView，否则弹出各个子Activity的菜单会出现问题
 			mViewGroup.removeAllViews();
 			mViewGroup.addView(mFocusView, mmViewGroupParams);

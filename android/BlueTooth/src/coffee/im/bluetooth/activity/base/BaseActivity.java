@@ -196,7 +196,9 @@ public abstract class BaseActivity extends FrameBaseActivity {
 
 	private void handleTitle(View view, TitleRes res, int position) {
 		if (res == null) {
-			view.setVisibility(View.INVISIBLE);
+			if(view != null){
+				view.setVisibility(View.INVISIBLE);
+			}
 			// 让该view占指定资源的空间
 			// view.setBackgroundResource(R.drawable.title_back);
 			return;

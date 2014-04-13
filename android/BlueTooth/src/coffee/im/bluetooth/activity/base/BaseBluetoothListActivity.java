@@ -32,7 +32,7 @@ public abstract class BaseBluetoothListActivity extends BaseActivity {
 
 	@Override
 	public void findViewById() {
-		mListView = (ListView) this.findViewById(R.id.device_list);
+		mListView = (ListView) this.findViewById(R.id.contact_list);
 		mListAdapter = new DeviceInfoAdapter(mDevices, this);
 		mListView.setAdapter(mListAdapter);
 	}

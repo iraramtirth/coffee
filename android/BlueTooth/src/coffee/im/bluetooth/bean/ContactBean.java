@@ -1,7 +1,7 @@
 package coffee.im.bluetooth.bean;
 
 /**
- * 蓝牙设备信息
+ * 联系人
  * 
  * @author coffee<br>
  *         2013下午1:40:37
@@ -16,9 +16,11 @@ public class ContactBean {
 	 */
 	private String name;
 	/**
-	 * 蓝牙的mac地址
+	 * 蓝牙的mac地址/IP地址
 	 */
 	private String address;
+	
+	private int port;
 
 	//
 	public int getId() {
@@ -43,5 +45,13 @@ public class ContactBean {
 
 	public void setAddress(String address) {
 		this.address = address;
+	}
+
+	public int getPort() {
+		return port;
+	}
+
+	public void setPort(int port) {
+		this.port = port;
 	}
 }

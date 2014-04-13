@@ -8,6 +8,8 @@ import java.io.InputStreamReader;
 import java.net.InetSocketAddress;
 import java.net.Socket;
 
+import coffee.im.bluetooth.activity.base.HandlerMgr;
+import coffee.im.bluetooth.constant.ConstMsg;
 import coffee.server.Online;
 import coffee.server.tcp.base.MessageParser;
 
@@ -55,36 +57,37 @@ public class TCPClient extends MessageParser {
 	 * 监听服务器端发回的数据
 	 */
 	public void listenServer() {
-		new Thread(new Runnable() {
-			@Override
-			public void run() {
-				System.out.println("开始监听服务器发回的数据:");
-				byte[] data = new byte[128];
-				int len = -1;
-				try {
-					while ((len = clientInput.read(data)) != -1) {
-						String message = new String(data, 0, len);
-						String fromUser = getUserFrom(message);
-						// 收到好友的上线通知
-						if (message.startsWith(MessageParser.Action.ONLINE)) {
-							String state = getOnlineState(message);
-							if ("1".equals(state)) {
-								Online.reg(fromUser, null, 0, 1);
-								System.out.println("msg:online " + fromUser + "上线");
-								sendMessage(getOnlineAck(fromUser, 1));
-							} else if ("-1".equals(state)) {
-								Online.unReg(fromUser, 1);
-							}
-						} else if (message.startsWith(MessageParser.Action.MESSAGE)) {
-							System.out.println("msg:message " + message);
-						}
+		System.out.println("msg:开始监听服务器发回的数据:");
+		byte[] data = new byte[128];
+		int len = -1;
+		try {
+			while ((len = clientInput.read(data)) != -1) {
+				String message = new String(data, 0, len, "UTF-8");
+				//
+				HandlerMgr.sendMessage(ConstMsg.IM_MESSAGE_RECV, message);
+				String fromUser = getUserFrom(message);
+				String action = getMessageAction(message);
+				// 收到好友的上线通知
+				if (Action.ONLINE.equals(action) || Action.ONLINE_ACK.equals(action)) {
+					String state = getOnlineState(message);
+					if ("1".equals(state)) {
+						Online.reg(fromUser, null, 0, 1);
+						System.out.println("msg:online " + fromUser + "上线");
+					} else if ("-1".equals(state)) {
+						Online.unReg(fromUser, 1);
 					}
-				} catch (IOException e) {
-					e.printStackTrace();
+					if (Action.ONLINE.equals(action)) {
+						sendMessage(getOnlineAck(fromUser, 1));
+					}
+				} else if (Action.MESSAGE.equals(action)) {
+					System.out.println("msg:message " + message);
 				}
-				System.out.println("连接关闭");
 			}
-		}).start();
+		} catch (IOException e) {
+			e.printStackTrace();
+		} finally {
+			System.out.println("listenServer");
+		}
 	}
 
 	/**
@@ -93,9 +96,10 @@ public class TCPClient extends MessageParser {
 	 * @param message
 	 */
 	public void sendMessage(String message) {
-		System.out.println("message:send " + message);
-		byte[] data = message.getBytes();
+		System.out.println("msg:send " + message);
+		HandlerMgr.sendMessage(ConstMsg.IM_MESSAGE_SEND, message);
 		try {
+			byte[] data = message.getBytes("UTF-8");
 			if (clientOutput == null) {
 				clientOutput = new BufferedOutputStream(clientSocket.getOutputStream());
 			}
@@ -134,6 +138,8 @@ public class TCPClient extends MessageParser {
 			System.out.println("连接关闭 >>> " + clientSocket.getInetAddress() + ":" + clientSocket.getPort());
 		} catch (Exception e) {
 			e.printStackTrace();
+		} finally {
+			Online.unReg(getUsername(), 1);
 		}
 	}
 
@@ -162,7 +168,8 @@ public class TCPClient extends MessageParser {
 		return this.clientSocket;
 	}
 
-	public String getInfo() {
+	@Override
+	public String toString() {
 		String info = getSocket().getInetAddress() + ":" + getSocket().getPort();
 		return info;
 	}

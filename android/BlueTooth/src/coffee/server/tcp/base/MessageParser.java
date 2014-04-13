@@ -58,12 +58,27 @@ public abstract class MessageParser {
 	}
 
 	/**
+	 * 消息类型<br>
+	 * 
+	 * @return
+	 */
+	public String getMessageAction(String message) {
+		int index = message.indexOf(":");
+		if (index != -1) {
+			String action = message.substring(0, index);
+			return action;
+		} else {
+			return "";
+		}
+	}
+
+	/**
 	 * online:coffee:serv::
 	 * 
 	 * @return
 	 */
 	public String getOnlineToServer(int onlineState) {
-		String onlineToServer = getMessage(Action.ONLINE, getMyUsername(), Action.SERV, "" + onlineState, "");
+		String onlineToServer = getMessage(Action.ONLINE, getUsername(), Action.SERV, "" + onlineState, "");
 		return onlineToServer;
 	}
 
@@ -75,10 +90,14 @@ public abstract class MessageParser {
 	 * @return
 	 */
 	public String getOnlineAck(String toUser, int onlineState) {
-		return getMessage(Action.ONLINE_ACK, toUser, getMyUsername(), "" + onlineState, "");
+		return getMessage(Action.ONLINE_ACK, getUsername(), toUser, "" + onlineState, "");
 	}
 
-	private String getMessage(String... segment) {
+	public static String getMessageSend(String toUser, String messageBody) {
+		return getMessage(Action.MESSAGE, getUsername(), toUser, messageBody);
+	}
+
+	private static String getMessage(String... segment) {
 		StringBuilder sb = new StringBuilder();
 		for (String str : segment) {
 			sb.append(str).append(Action.TAG);
@@ -86,7 +105,7 @@ public abstract class MessageParser {
 		return sb.substring(0, sb.length() - 1);
 	}
 
-	private String getMyUsername() {
+	public static String getUsername() {
 		String username = MessageParser.username;
 		return username;
 	}
