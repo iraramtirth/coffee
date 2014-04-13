@@ -83,7 +83,7 @@ public abstract class MessageParser {
 	 * @return
 	 */
 	public String getOnlineToServer(int onlineState) {
-		String onlineToServer = getMessage(Action.ONLINE, getUsername(), Action.SERV, "" + onlineState, "");
+		String onlineToServer = getMessage(Action.ONLINE, getUsername(), Action.SERV, "" + onlineState);
 		return onlineToServer;
 	}
 
@@ -95,7 +95,7 @@ public abstract class MessageParser {
 	 * @return
 	 */
 	public String getOnlineAck(String toUser, int onlineState) {
-		return getMessage(Action.ONLINE_ACK, getUsername(), toUser, "" + onlineState, "");
+		return getMessage(Action.ONLINE_ACK, getUsername(), toUser, "" + onlineState);
 	}
 
 	public static String getMessageSend(String toUser, String messageBody) {
@@ -107,7 +107,7 @@ public abstract class MessageParser {
 		for (String str : segment) {
 			sb.append(str).append(Action.TAG);
 		}
-		return sb.substring(0, sb.length() - 1);
+		return sb.toString();
 	}
 
 	public static String getUsername() {
