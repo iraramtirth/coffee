@@ -83,7 +83,7 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener {
 			isBluetooth = true;
 			setTitle(new TitleRes("开启服务"), new TitleRes("聊天"), new TitleRes("连接"));
 		} else {
-			setCommonTitle("title");
+			setCommonTitle("与" + remoteAddress + "聊天中");
 		}
 		// this.setTitle(this, this, "开启", "聊天", "连接");
 	}
@@ -100,7 +100,7 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener {
 				} else {
 					String message = MessageParser.getMessageSend(remoteAddress, content);
 					ClientService.getInstance().sendMessage(message);
-					mListAdapter.notifyAdd(new MessageBean("me:", content), true);
+					mListAdapter.notifyAdd(new MessageBean("me", content), true);
 				}
 				mChatWords.setText("");
 				mListView.setSelection(mListView.getBottom());

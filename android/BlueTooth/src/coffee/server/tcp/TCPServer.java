@@ -62,11 +62,14 @@ public class TCPServer extends MessageParser {
 				client.sendMessage(msgWrap);
 			}
 		} else {
-			TCPClient client = clients.get(userFrom);
-			if (client != null) {
-				client.sendMessage(msgWrap);
+			String userTo = getUserTo(message);
+			TCPClient toClient = clients.get(userTo);
+			if (toClient != null) {
+				toClient.sendMessage(msgWrap);
 			} else {
-				System.out.println("收:" + fromSocket + ":" + message);
+				String tmp = fromSocket + ":" + message;
+				fromSocket.sendMessage("消息已收到>>>" + tmp);
+				System.out.println("收:" + tmp);
 			}
 		}
 	}
@@ -117,9 +120,8 @@ public class TCPServer extends MessageParser {
 				bin = new BufferedInputStream(client.getSocket().getInputStream());
 				byte[] data = new byte[1024];
 				int len = -1;
-				// if (bin.available() > 0) {
 				while ((len = bin.read(data)) != -1) {
-					String message = new String(data, 0, len);
+					String message = new String(data, 0, len, "UTF-8");
 					// HTTP请求
 					if (message.startsWith("GET")) {
 						responseRequest(client, message);
@@ -128,7 +130,6 @@ public class TCPServer extends MessageParser {
 						dispatchMessage(client, message);
 					}
 				}
-				// }
 			} catch (IOException e) {
 				e.printStackTrace();
 				System.err.println(e.getMessage() + "\n" + e.getCause());

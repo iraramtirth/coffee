@@ -1,6 +1,8 @@
 package coffee.server.udp;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
@@ -74,24 +76,25 @@ public class UDPClient extends MessageParser {
 					}
 					String fromHost = receivePacket.getAddress().getHostAddress();
 					int fromPort = receivePacket.getPort();
-					System.out.println("新消息：" + fromHost + "端口：" + fromPort);
+					System.out.println("新消息：" + fromHost + ":" + fromPort);
 					try {
 						String message = new String(receivePacket.getData(), 0, receivePacket.getLength(), "utf-8");
 						System.out.println(">>> " + message);
+						String action = getMessageAction(message);
 						// 广播接口
 						if (fromPort != Config.PORT_UDP) {
 							String fromUser = getUserFrom(message);
 							// 收到好友的上线通知
-							if (message.startsWith(MessageParser.Action.ONLINE)) {
+							if (Action.ONLINE.equals(action)) {
 								Online.reg(fromUser, fromHost, Config.PORT_UDP, 0);
 								System.out.println("msg:online " + fromUser + "上线");
 								String onlineAck = getOnlineAck(fromUser, 1);
 								new UDPBroadcast().sendRegMessage(onlineAck, fromHost);
-							} else if (message.startsWith(MessageParser.Action.ONLINE_ACK)) {
+							} else if (Action.ONLINE_ACK.equals(action)) {
 								System.out.println("msg:online" + "通知在线: " + fromHost + ":" + fromPort);
 								Online.reg(fromHost, fromHost, Config.PORT_UDP, 0);
-							} else if (message.startsWith(MessageParser.Action.MESSAGE)) {
-								System.out.println("msg:message " + fromUser + " " + message);
+							} else if (Action.MESSAGE.equals(action)) {
+								//
 							}
 						} else {
 							if (callback != null) {
@@ -123,5 +126,56 @@ public class UDPClient extends MessageParser {
 			broadcast(false);
 			clientSocket.close();
 		}
+	}
+
+	/**
+	 * message:from:toHost:toPort:body:time
+	 * 
+	 * @param args
+	 */
+	public static void main(String[] args) {
+		String clientName = "";
+		int localPort = 9999;
+
+		if (args.length > 1) {
+			clientName = args[0];
+			localPort = Integer.valueOf(args[1]);
+		} else {
+			System.out.println("usgae >> 需要传入四个参数 clientName localPort");
+			return;
+		}
+		UDPClient client = new UDPClient(localPort, new MessageCallback() {
+			@Override
+			public void execute(byte[] data) {
+				System.out.println("收: " + new String(data));
+			}
+		});
+		client.setUsername(clientName);
+		// 通知局域网用户在线
+		client.broadcast(true);
+		// 准备接收数据
+		client.receiveMessage();
+
+		String line = null;
+		try {
+			while ((line = readLine()) != null) {
+				String[] arr = line.split(":");
+				if (arr.length < 6) {
+					System.out.println("消息格式错误");
+					System.out.println("message:from:toHost:toPort:body:time");
+					continue;
+				}
+				String targetHost = arr[2];
+				int targetPort = Integer.valueOf(arr[3]);
+				client.sendMessage(line.getBytes(client.charsetName), targetHost, targetPort);
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+	private static String readLine() throws IOException {
+		BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
+		return reader.readLine();
 	}
 }

@@ -5,24 +5,20 @@ import java.net.DatagramSocket;
 import java.net.InetAddress;
 
 import coffee.server.Config;
+import coffee.server.tcp.base.MessageParser;
 
 /**
  * 
  * @author coffee <br>
  *         2014年4月3日下午3:32:09
  */
-public class UDPBroadcast {
+public class UDPBroadcast extends MessageParser {
 
 	private final String host = "255.255.255.255";
 	private final int portTarget = Config.PORT_UDP;
 
 	/**
 	 * 发送上线、离线通知 <br>
-	 * udp协议规定:发送如下报文广播到局域网 <br>
-	 * syn=1,reg <br>
-	 * 下线之前发送报文 <br>
-	 * syn=0,unreg <br>
-	 * 
 	 * @param regOrUn
 	 *            true 表示通知用户上线, false 用户下线
 	 */
@@ -34,10 +30,10 @@ public class UDPBroadcast {
 				try {
 					// 创建用来发送数据报包的套接字
 					socket = new DatagramSocket();
-					String dataStr = regOrUn ? "syn=1,reg" : "syn=0,unreg";
-					byte[] data = dataStr.getBytes();
+					String message = regOrUn ? getOnlineToServer(1) : getOnlineToServer(0);
+					byte[] data = message.getBytes(charsetName);
+					System.out.println("udp: broadcast >>> " + message);
 					DatagramPacket dp = new DatagramPacket(data, data.length, InetAddress.getByName(host), portTarget);
-					//
 					socket.send(dp);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -47,7 +43,7 @@ public class UDPBroadcast {
 					}
 				}
 			}
-		});
+		}).start();
 	}
 
 	/**

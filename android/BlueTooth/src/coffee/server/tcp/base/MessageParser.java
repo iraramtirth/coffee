@@ -8,6 +8,8 @@ package coffee.server.tcp.base;
  */
 public abstract class MessageParser {
 
+	protected String charsetName = "UTF-8";
+	
 	/**
 	 * 消息的行为
 	 */
