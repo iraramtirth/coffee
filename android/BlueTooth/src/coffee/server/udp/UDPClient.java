@@ -8,7 +8,6 @@ import java.net.InetAddress;
 import java.net.SocketException;
 import java.net.UnknownHostException;
 
-import android.util.Log;
 import coffee.server.Config;
 import coffee.server.Online;
 import coffee.server.tcp.base.MessageParser;
@@ -89,7 +88,7 @@ public class UDPClient extends MessageParser {
 								String onlineAck = getOnlineAck(fromUser, 1);
 								new UDPBroadcast().sendRegMessage(onlineAck, fromHost);
 							} else if (message.startsWith(MessageParser.Action.ONLINE_ACK)) {
-								Log.d("reg", "通知在线: " + fromHost + ":" + fromPort);
+								System.out.println("msg:online" + "通知在线: " + fromHost + ":" + fromPort);
 								Online.reg(fromHost, fromHost, Config.PORT_UDP, 0);
 							} else if (message.startsWith(MessageParser.Action.MESSAGE)) {
 								System.out.println("msg:message " + fromUser + " " + message);

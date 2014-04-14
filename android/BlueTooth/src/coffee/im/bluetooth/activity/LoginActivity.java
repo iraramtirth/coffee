@@ -10,6 +10,7 @@ import coffee.im.bluetooth.ClientService;
 import coffee.im.bluetooth.R;
 import coffee.im.bluetooth.activity.base.BaseActivity;
 import coffee.im.bluetooth.constant.ConstMsg;
+import coffee.server.Config;
 import coffee.utils.framework.Alert;
 
 /**
@@ -20,6 +21,8 @@ import coffee.utils.framework.Alert;
  */
 public class LoginActivity extends BaseActivity {
 	private EditText mUsername;
+
+	private EditText mHost;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -46,11 +49,18 @@ public class LoginActivity extends BaseActivity {
 	}
 
 	@Override
+	protected void onResume() {
+		super.onResume();
+		mUsername.requestFocus();
+	}
+
+	@Override
 	public void findViewById() {
 		setContentView(R.layout.login);
 		super.findViewById();
 		setTitle(null, new TitleRes("登录"), null);
 		mUsername = (EditText) findViewById(R.id.username);
+		mHost = (EditText) findViewById(R.id.host);
 		//
 		findViewById(R.id.login_btn).setOnClickListener(new View.OnClickListener() {
 			@Override
@@ -60,6 +70,7 @@ public class LoginActivity extends BaseActivity {
 					Alert.toast("请输入用户名");
 					return;
 				}
+				Config.SERVER_TCP = mHost.getText().toString();
 				Intent intent = new Intent();
 				intent.setClass(context, ClientService.class);
 				intent.putExtra("username", username);

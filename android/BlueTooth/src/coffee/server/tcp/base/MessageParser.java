@@ -117,7 +117,7 @@ public abstract class MessageParser {
 
 	private static String username = "";
 
-	public static void setUsername(String username) {
+	public void setUsername(String username) {
 		MessageParser.username = username;
 	}
 }

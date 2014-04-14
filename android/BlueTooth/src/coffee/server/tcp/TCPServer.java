@@ -8,6 +8,7 @@ import java.util.Hashtable;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+import coffee.server.Config;
 import coffee.server.tcp.base.MessageParser;
 
 /**
@@ -32,7 +33,8 @@ public class TCPServer extends MessageParser {
 	private void start() {
 		try {
 			ExecutorService executors = Executors.newCachedThreadPool();
-			serverSocket = new ServerSocket(8888);
+			serverSocket = new ServerSocket(Config.PORT_TCP);
+			System.out.println("服务开启, 正在监听端口: " + Config.PORT_TCP);
 			while (true) {
 				Socket socket = serverSocket.accept();
 				executors.execute(new SocketRunnable(socket));
@@ -47,16 +49,24 @@ public class TCPServer extends MessageParser {
 	 * 处理Client请求
 	 */
 	private void dispatchMessage(TCPClient fromSocket, String message) {
-		synchronized (clients) {
-			// 用户上线
-			if (message.startsWith(Action.ONLINE)) {
-				String msgWrap = message + System.currentTimeMillis();
-				for (TCPClient client : clients.values()) {
-					if (fromSocket.equals(client)) {
-						continue;
-					}
-					client.sendMessage(msgWrap);
+		String userFrom = getUserFrom(message);
+		String msgWrap = message + System.currentTimeMillis();
+		// 用户上线
+		if (message.startsWith(Action.ONLINE)) {
+			clients.put(userFrom, fromSocket);
+			fromSocket.setUsername(userFrom);
+			for (TCPClient client : clients.values()) {
+				if (fromSocket.equals(client)) {
+					continue;
 				}
+				client.sendMessage(msgWrap);
+			}
+		} else {
+			TCPClient client = clients.get(userFrom);
+			if (client != null) {
+				client.sendMessage(msgWrap);
+			} else {
+				System.out.println("收:" + fromSocket + ":" + message);
 			}
 		}
 	}
@@ -97,7 +107,6 @@ public class TCPServer extends MessageParser {
 
 		public SocketRunnable(Socket socket) {
 			this.client = new TCPClient(socket);
-			clients.put(client.toString(), client);
 		}
 
 		@Override

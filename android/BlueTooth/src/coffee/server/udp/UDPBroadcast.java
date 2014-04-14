@@ -4,7 +4,6 @@ import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
 
-import android.os.AsyncTask;
 import coffee.server.Config;
 
 /**
@@ -28,9 +27,9 @@ public class UDPBroadcast {
 	 *            true 表示通知用户上线, false 用户下线
 	 */
 	public void sendBroadcast(final boolean regOrUn) {
-		new AsyncTask<Void, Void, Void>() {
+		new Thread(new Runnable() {
 			@Override
-			protected Void doInBackground(Void... params) {
+			public void run() {
 				DatagramSocket socket = null;
 				try {
 					// 创建用来发送数据报包的套接字
@@ -43,13 +42,12 @@ public class UDPBroadcast {
 				} catch (Exception e) {
 					e.printStackTrace();
 				} finally {
-					if(socket != null){
+					if (socket != null) {
 						socket.close();
 					}
 				}
-				return null;
 			}
-		}.execute();
+		});
 	}
 
 	/**
@@ -57,9 +55,9 @@ public class UDPBroadcast {
 	 * @param onlineAck
 	 */
 	public void sendRegMessage(final String targetHost, final String onlineAck) {
-		new AsyncTask<Void, Void, Void>() {
+		new Thread(new Runnable() {
 			@Override
-			protected Void doInBackground(Void... params) {
+			public void run() {
 				DatagramSocket socket = null;
 				try {
 					// 创建用来发送数据报包的套接字
@@ -73,9 +71,8 @@ public class UDPBroadcast {
 				} finally {
 					socket.close();
 				}
-				return null;
 			}
-		}.execute();
+		});
 	}
-	
+
 }
