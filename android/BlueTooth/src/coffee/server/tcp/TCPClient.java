@@ -72,11 +72,11 @@ public class TCPClient extends MessageParser {
 				while (isRunning) {
 					if (messages.isEmpty()) {
 						try {
-							System.out.println("wait");
+							System.out.println("wait-sendMessage");
 							synchronized (sender) {
 								sender.wait();
 							}
-							System.out.println("wait-notify");
+							System.out.println("send-ok");
 						} catch (InterruptedException e) {
 							e.printStackTrace();
 						}
@@ -126,6 +126,9 @@ public class TCPClient extends MessageParser {
 					}
 				} else if (Action.MESSAGE.equals(action)) {
 					System.out.println("msg:message " + message);
+				}else{
+					// 客户端可以接收到消息。
+					System.out.println("收:" + getSocket().getRemoteSocketAddress() + "--" + message);
 				}
 			}
 		} catch (IOException e) {
