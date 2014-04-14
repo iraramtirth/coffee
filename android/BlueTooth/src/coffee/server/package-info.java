@@ -13,6 +13,8 @@
  * 1:用户上线
  * 客户端coffee:发送指令给服务端进行用户注册
  * 		online:coffee:serv:在线状态:
+ * 		在线状态有三部分组成: 状态ID,Socket地址,Socket端口 
+ * 		三部分用逗号分隔,其中(UDP协议下)地址、端口可以省略
  * 服务器收到指令广播给当前在线的客户端 (消息原样转发)
  * 		online:coffee:serv:在线状态:time
  * 其他客户端client将自己的状态告知新上线的客户端coffee

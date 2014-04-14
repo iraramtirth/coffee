@@ -9,7 +9,7 @@ package coffee.server.tcp.base;
 public abstract class MessageParser {
 
 	protected String charsetName = "UTF-8";
-	
+
 	/**
 	 * 消息的行为
 	 */
@@ -58,10 +58,18 @@ public abstract class MessageParser {
 		return username;
 	}
 
+	/**
+	 * 消息体格式为
+	 * 
+	 * @param message
+	 * 
+	 * @return
+	 */
 	public String getOnlineState(String message) {
 		String[] str = message.split(":");
 		String state = str[3];
-		return state;
+		String[] stateArr = state.split(",");
+		return stateArr[0];
 	}
 
 	/**
@@ -80,12 +88,12 @@ public abstract class MessageParser {
 	}
 
 	/**
-	 * online:coffee:serv::
+	 * online:coffee:serv:1,localhost,localPort:
 	 * 
 	 * @return
 	 */
-	public String getOnlineToServer(int onlineState) {
-		String onlineToServer = getMessage(Action.ONLINE, getUsername(), Action.SERV, "" + onlineState);
+	public String getOnlineToServer(String onlineState) {
+		String onlineToServer = getMessage(Action.ONLINE, getUsername(), Action.SERV, onlineState);
 		return onlineToServer;
 	}
 

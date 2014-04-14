@@ -30,7 +30,7 @@ public class UDPBroadcast extends MessageParser {
 				try {
 					// 创建用来发送数据报包的套接字
 					socket = new DatagramSocket();
-					String message = regOrUn ? getOnlineToServer(1) : getOnlineToServer(0);
+					String message = regOrUn ? getOnlineToServer("1") : getOnlineToServer("0");
 					byte[] data = message.getBytes(charsetName);
 					System.out.println("udp: broadcast >>> " + message);
 					DatagramPacket dp = new DatagramPacket(data, data.length, InetAddress.getByName(host), portTarget);

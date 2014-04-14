@@ -126,7 +126,7 @@ public class TCPClient extends MessageParser {
 					}
 				} else if (Action.MESSAGE.equals(action)) {
 					System.out.println("msg:message " + message);
-				}else{
+				} else {
 					// 客户端可以接收到消息。
 					System.out.println("收:" + getSocket().getRemoteSocketAddress() + "--" + message);
 				}
@@ -175,13 +175,17 @@ public class TCPClient extends MessageParser {
 			send(message);
 		}
 	}
+
 	/**
 	 * 发送在线状态
 	 * 
 	 * @param state
 	 */
 	public void sendMessageOnline(int onlineState) {
-		String message = getOnlineToServer(onlineState);
+		String localHost = getSocket().getLocalAddress().getHostAddress();
+		int localPort = getSocket().getLocalPort();
+		String onlineBody = onlineState + "," + localHost + "," + localPort;
+		String message = getOnlineToServer(onlineBody);
 		sendMessage(message);
 	}
 

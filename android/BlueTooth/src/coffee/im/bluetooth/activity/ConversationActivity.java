@@ -35,6 +35,9 @@ public class ConversationActivity extends BaseActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.activityToMgr = false;
 		super.onCreate(savedInstanceState);
+		if(getIntent() != null){
+			targetHost = getIntent().getStringExtra("address");
+		}
 		//
 		audioRecorder = new AudioRecorder();
 		audioTracker = new AudioTracker();
