@@ -25,11 +25,21 @@
             android:gravity="left"/>
     </LinearLayout>
     <!-- 操作 -->
-    <Button
+    <LinearLayout
         android:id="@+id/contact_action"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
-        android:layout_centerVertical="true"
-        android:text="聊天"/>
+        android:layout_centerVertical="true">
+        <Button
+            android:id="@+id/contact_action_1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="聊天"/>
+        <Button
+            android:id="@+id/contact_action_2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="VoIP"/>
+    </LinearLayout>
 </RelativeLayout>

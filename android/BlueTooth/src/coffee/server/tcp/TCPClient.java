@@ -114,15 +114,15 @@ public class TCPClient extends MessageParser {
 				String action = getMessageAction(message);
 				// 收到好友的上线通知
 				if (Action.ONLINE.equals(action) || Action.ONLINE_ACK.equals(action)) {
-					String state = getOnlineState(message);
-					if ("1".equals(state)) {
-						Online.reg(fromUser, null, 0, 1);
+					String[] state = getOnlineState(message);
+					if ("1".equals(state[0])) {
+						Online.reg(fromUser, state[1], state[2], 1);
 						System.out.println("msg:online " + fromUser + "上线");
 					} else if ("-1".equals(state)) {
 						Online.unReg(fromUser, 1);
 					}
 					if (Action.ONLINE.equals(action)) {
-						sendMessage(getOnlineAck(fromUser, 1));
+						sendMessageOnlineAck(fromUser, 1);
 					}
 				} else if (Action.MESSAGE.equals(action)) {
 					System.out.println("msg:message " + message);
@@ -186,6 +186,14 @@ public class TCPClient extends MessageParser {
 		int localPort = getSocket().getLocalPort();
 		String onlineBody = onlineState + "," + localHost + "," + localPort;
 		String message = getOnlineToServer(onlineBody);
+		sendMessage(message);
+	}
+
+	public void sendMessageOnlineAck(String userTo, int onlineState) {
+		String localHost = getSocket().getLocalAddress().getHostAddress();
+		int localPort = getSocket().getLocalPort();
+		String onlineBody = onlineState + "," + localHost + "," + localPort;
+		String message = getOnlineAck(userTo, onlineBody);
 		sendMessage(message);
 	}
 

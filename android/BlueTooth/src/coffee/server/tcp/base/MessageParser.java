@@ -65,11 +65,11 @@ public abstract class MessageParser {
 	 * 
 	 * @return
 	 */
-	public String getOnlineState(String message) {
+	public String[] getOnlineState(String message) {
 		String[] str = message.split(":");
 		String state = str[3];
 		String[] stateArr = state.split(",");
-		return stateArr[0];
+		return stateArr;
 	}
 
 	/**
@@ -104,7 +104,7 @@ public abstract class MessageParser {
 	 * @param myUsername
 	 * @return
 	 */
-	public String getOnlineAck(String toUser, int onlineState) {
+	public String getOnlineAck(String toUser, String onlineState) {
 		return getMessage(Action.ONLINE_ACK, getUsername(), toUser, "" + onlineState);
 	}
 

@@ -12,6 +12,7 @@ import coffee.im.bluetooth.ClientService;
 import coffee.im.bluetooth.R;
 import coffee.im.bluetooth.activity.base.BaseActivityGroup;
 import coffee.im.bluetooth.constant.ConstMsg;
+import coffee.server.Online;
 
 /**
  * 程序的主类
@@ -89,6 +90,7 @@ public class MainActivity extends BaseActivityGroup implements OnClickListener {
 	@Override
 	protected void onDestroy() {
 		super.onDestroy();
+		Online.clearAll();
 		Intent intent = new Intent(this, ClientService.class);
 		stopService(intent);
 	}

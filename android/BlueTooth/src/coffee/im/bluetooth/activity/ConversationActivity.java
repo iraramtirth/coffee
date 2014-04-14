@@ -5,6 +5,7 @@ import java.io.UnsupportedEncodingException;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.TextView;
 import coffee.im.bluetooth.R;
 import coffee.im.bluetooth.activity.base.BaseActivity;
@@ -26,7 +27,7 @@ public class ConversationActivity extends BaseActivity {
 	// 192.168.137.153 -- note2
 	// 192.168.137.188 -- note3
 	private String targetHost = "192.168.137.188";
-
+	private EditText mHost;
 	//
 	private AudioRecorder audioRecorder;
 	private AudioTracker audioTracker;
@@ -34,10 +35,13 @@ public class ConversationActivity extends BaseActivity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.activityToMgr = false;
-		super.onCreate(savedInstanceState);
-		if(getIntent() != null){
+		if (getIntent() != null) {
 			targetHost = getIntent().getStringExtra("address");
 		}
+		super.onCreate(savedInstanceState);
+	}
+
+	private void init() {
 		//
 		audioRecorder = new AudioRecorder();
 		audioTracker = new AudioTracker();
@@ -60,15 +64,26 @@ public class ConversationActivity extends BaseActivity {
 	@Override
 	public void findViewById() {
 		setContentView(R.layout.main_tab1);
+		mHost = (EditText) findViewById(R.id.remote_address);
+		mHost.setText(targetHost);
+		//
+		View init = findViewById(R.id.init);
+		init.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				init();
+			}
+		});
 		View startRecord = findViewById(R.id.start_record);
 		startRecord.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
+				targetHost = mHost.getText().toString();
 				audioRecorder.startRecord(true, audioRecorder.new Callback() {
 					@Override
 					public void execute(byte[] data) {
-						int port = Online.getPort(targetHost, 0);
-						client.sendMessage(data, targetHost, port);
+						//int port = Online.getPort(targetHost, 0);
+						client.sendMessage(data, targetHost, Config.PORT_UDP);
 					}
 				});
 			}
@@ -94,9 +109,15 @@ public class ConversationActivity extends BaseActivity {
 	@Override
 	protected void onDestroy() {
 		super.onDestroy();
-		this.audioRecorder.stop();
-		this.audioTracker.stop();
-		this.client.close();
+		if (this.audioRecorder != null) {
+			this.audioRecorder.stop();
+		}
+		if (this.audioTracker != null) {
+			this.audioTracker.stop();
+		}
+		if (this.client != null) {
+			this.client.close();
+		}
 	}
 
 }

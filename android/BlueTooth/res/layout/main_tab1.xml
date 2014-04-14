@@ -7,6 +7,16 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:text="main_tab1"/>
+    <EditText
+        android:id="@+id/remote_address"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text=""/>
+    <Button
+        android:id="@+id/init"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="初始化"/>
     <Button
         android:id="@+id/start_record"
         android:layout_width="fill_parent"
@@ -22,8 +32,7 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:text="在线用户列表"/>
-    
-     <TextView
+    <TextView
         android:id="@+id/online_text"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"

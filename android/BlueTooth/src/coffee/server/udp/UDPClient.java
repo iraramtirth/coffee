@@ -86,13 +86,13 @@ public class UDPClient extends MessageParser {
 							String fromUser = getUserFrom(message);
 							// 收到好友的上线通知
 							if (Action.ONLINE.equals(action)) {
-								Online.reg(fromUser, fromHost, Config.PORT_UDP, 0);
+								Online.reg(fromUser, fromHost, Config.PORT_UDP + "", 0);
 								System.out.println("msg:online " + fromUser + "上线");
-								String onlineAck = getOnlineAck(fromUser, 1);
+								String onlineAck = getOnlineAck(fromUser, "1");
 								new UDPBroadcast().sendRegMessage(onlineAck, fromHost);
 							} else if (Action.ONLINE_ACK.equals(action)) {
 								System.out.println("msg:online" + "通知在线: " + fromHost + ":" + fromPort);
-								Online.reg(fromHost, fromHost, Config.PORT_UDP, 0);
+								Online.reg(fromHost, fromHost, Config.PORT_UDP + "", 0);
 							} else if (Action.MESSAGE.equals(action)) {
 								//
 							}

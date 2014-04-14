@@ -22,8 +22,9 @@ public class Online {
 	 * @param type
 	 *            0-udp .1-tcp
 	 */
-	public static void reg(String user, String host, int port, int type) {
-		Reg reg = new Reg(user, host, port);
+	public static void reg(String user, String host, String port, int type) {
+		int portInt = Integer.valueOf(port);
+		Reg reg = new Reg(user, host, portInt);
 		if (type == 0) {
 			udps.put(user, reg);
 		} else if (type == 1) {
@@ -52,16 +53,21 @@ public class Online {
 		Integer port = 0;
 		if (type == 0) {
 			Reg reg = udps.get(host);
-			if(reg != null){
+			if (reg != null) {
 				port = reg.getPort();
 			}
 		} else if (type == 1) {
 			Reg reg = tcps.get(host);
-			if(reg != null){
+			if (reg != null) {
 				port = reg.getPort();
 			}
 		}
 		return port == null ? 0 : port;
+	}
+
+	public static void clearAll() {
+		tcps.clear();
+		udps.clear();
 	}
 
 	// /////////////////////////////////////////
