@@ -40,7 +40,7 @@ public class ClientService extends Service {
 				}
 				try {
 					tcpClient = new TCPClient();
-					tcpClient.connectServer(Config.SERVER_TCP, Config.PORT_TCP);
+					tcpClient.connectServer(Config.getServerHost(), Config.PORT_TCP);
 					if (tcpClient.getSocket().isConnected()) {
 						tcpClient.setUsername(username);
 						// 通知在线

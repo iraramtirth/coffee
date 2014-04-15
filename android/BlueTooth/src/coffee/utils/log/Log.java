@@ -15,7 +15,7 @@ import android.os.Environment;
 /**
  * 日志打印
  * 
- * @author wangtaoyfx
+ * @author coffee
  * 		2013-1-11下午3:15:58
  */
 public abstract class Log {

@@ -61,6 +61,7 @@ public class LoginActivity extends BaseActivity {
 		setTitle(null, new TitleRes("登录"), null);
 		mUsername = (EditText) findViewById(R.id.username);
 		mHost = (EditText) findViewById(R.id.host);
+		mHost.setText(Config.getServerHost());
 		//
 		findViewById(R.id.login_btn).setOnClickListener(new View.OnClickListener() {
 			@Override
@@ -70,7 +71,7 @@ public class LoginActivity extends BaseActivity {
 					Alert.toast("请输入用户名");
 					return;
 				}
-				Config.SERVER_TCP = mHost.getText().toString();
+				Config.setServerHost(mHost.getText().toString());
 				Intent intent = new Intent();
 				intent.setClass(context, ClientService.class);
 				intent.putExtra("username", username);
