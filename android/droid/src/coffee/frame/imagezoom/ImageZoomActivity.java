@@ -60,7 +60,7 @@ public class ImageZoomActivity extends BaseActivity {
 	}
 
 	@Override
-	public void doInitView() {
+	public void findViewById() {
 		mZoomView = (ImageZoomView) findViewById(R.id.zoom_image);
 		mDownloadNotice = (LinearLayout) findViewById(R.id.zoom_download_notice);
 		// mSymbol = (ImageView) findViewById(R.id.symbol);

@@ -36,7 +36,7 @@ public class MainActivity extends BaseActivityGroup implements OnClickListener {
 	}
 
 	@Override
-	public void doInitView() {
+	public void findViewById() {
 		this.setContentView(R.layout.main);
 		// 会话界面
 		Button btn0 = (Button) this.findViewById(R.id.tab_conversation);

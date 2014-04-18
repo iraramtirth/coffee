@@ -120,7 +120,7 @@ public class ImageScanActivity extends BaseActivity implements View.OnClickListe
 	}
 
 	@Override
-	public void doInitView() {
+	public void findViewById() {
 //		this.setContentView(R.layout.common_image_scan);
 //		this.mImage = (ImageView) findViewById(R.id.image);
 //		Button btn = (Button) findViewById(R.id.image_reset);
