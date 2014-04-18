@@ -10,7 +10,6 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
-import android.graphics.Path.FillType;
 import android.graphics.PointF;
 import android.graphics.Region;
 import android.util.DisplayMetrics;
@@ -27,11 +26,14 @@ import android.widget.Scroller;
  *         2014年4月17日上午10:58:19
  */
 public class BaseBookPage extends View {
-	//屏幕宽高
+	// 屏幕宽高
 	private int mWidth;
 	private int mHeight;
-	
-	protected int mCornerX = 0; // 拖拽点对应的页脚
+
+	/**
+	 * 右下角、右上角、左侧、右侧
+	 */
+	protected int mCornerX = 0; // 拖拽点对应的页脚()
 	protected int mCornerY = 0;
 
 	protected Path mPath0;
@@ -54,7 +56,7 @@ public class BaseBookPage extends View {
 
 	private float mMiddleX;
 	private float mMiddleY;
-	//touch点与其靠近的翻起角的直线距离
+	// touch点与其靠近的翻起角的直线距离
 	protected float mTouchToCornerDis;
 	private Scroller mScroller;
 
@@ -93,23 +95,19 @@ public class BaseBookPage extends View {
 	}
 
 	public void calcCornerXY(float x, float y) {
-		if (x <= mWidth / 2) {
+		if (x <= mWidth * 1 / 2) {
 			mCornerX = 0;
+			mCornerX = mHeight / 2;
 		} else {
 			mCornerX = mWidth;
+			if (y <= mHeight * 1 / 3) {
+				mCornerY = 0;
+			} else if (y <= mHeight * 2 / 3) {
+				mCornerY = mHeight / 2;
+			} else {
+				mCornerY = mHeight;
+			}
 		}
-		if (y <= mHeight / 2) {
-			mCornerY = 0;
-		} else {
-			mCornerY = mHeight;
-		}
-		// mCornerX = (int) x;
-		// mCornerY = (int) y;
-		// if ((mCornerX == 0 && mCornerY == mHeight) || (mCornerX == mWidth &&
-		// mCornerY == 0))
-		// mIsRTandLB = true;
-		// else
-		// mIsRTandLB = false;
 	}
 
 	private void calcPoints() {
@@ -126,9 +124,10 @@ public class BaseBookPage extends View {
 		// 当mBezierStart1.x < 0或者mBezierStart1.x > 480时
 		// 如果继续翻页，会出现BUG故在此限制
 		if (mTouch.x > 0 && mTouch.x < mWidth) {
-			if (mBezierStart1.x < 0 || mBezierStart1.x > mWidth) {
-				if (mBezierStart1.x < 0){
-					mBezierStart1.x = mWidth - mBezierStart1.x;
+			float minStart1X = -1.0F * mWidth / 3.6F; minStart1X =0;
+			if (mBezierStart1.x < minStart1X || mBezierStart1.y < 0) {
+				if (mBezierStart1.x < minStart1X) {
+					mBezierStart1.x = mWidth - mBezierStart1.x - Math.abs(minStart1X);//
 				}
 
 				float f1 = Math.abs(mCornerX - mTouch.x);
@@ -148,6 +147,7 @@ public class BaseBookPage extends View {
 				mBezierControl2.y = mMiddleY - (mCornerX - mMiddleX) * (mCornerX - mMiddleX) / (mCornerY - mMiddleY);
 				mBezierStart1.x = mBezierControl1.x - (mCornerX - mBezierControl1.x) / 2;
 			}
+			System.out.println("mBezierStart1.x" + mBezierStart1.x);
 		}
 		mBezierStart2.x = mCornerX;
 		mBezierStart2.y = mBezierControl2.y - (mCornerY - mBezierControl2.y) / 2;
@@ -168,18 +168,40 @@ public class BaseBookPage extends View {
 		mBeziervertex2.y = (2 * mBezierControl2.y + mBezierStart2.y + mBezierEnd2.y) / 4;
 	}
 
+	// 这两个x判断是向左还是向右滑动
+	private float x1;
+	private float x2;
+
+	private boolean isFlipToRight = false;
+	private boolean isFlipToLeft = false;
+
 	public boolean onTouchEvent(MotionEvent event) {
 		if (event.getAction() == MotionEvent.ACTION_MOVE) {
 			mTouch.x = event.getX();
 			mTouch.y = event.getY();
-			this.postInvalidate();
-
+			x2 = event.getX();
+			// 往右滑动
+			if (x2 - x1 > 10) {
+				isFlipToRight = true;
+			}
+			// 向左滑动
+			else if (x1 - x2 > 10) {
+				// calcCornerXY(mTouch.x, mTouch.y);
+				isFlipToRight = true;
+			}
+			if (isFlipToLeft || isFlipToRight) {
+				this.postInvalidate();
+			}
 		}
+		// 按下的时候需要初始化数据
 		if (event.getAction() == MotionEvent.ACTION_DOWN) {
+			isFlipToLeft = false;
+			isFlipToRight = false;
+			x1 = event.getX();
+			x2 = event.getX();
 			mTouch.x = event.getX();
 			mTouch.y = event.getY();
 			calcCornerXY(mTouch.x, mTouch.y);
-			// this.postInvalidate();
 		}
 		if (event.getAction() == MotionEvent.ACTION_UP) {
 			// if (canDragOver()) {
@@ -224,9 +246,20 @@ public class BaseBookPage extends View {
 	@Override
 	protected void onDraw(Canvas canvas) {
 		canvas.drawColor(0xFFAAAAAA);
-		calcPoints();
-		drawCurrentPageArea(canvas);
-		drawNextPageAreaAndShadow(canvas);
+		System.out.println("xxx " + this.mCornerX + " " + this.mCornerY);
+		// 从左往右滑动, 查看上一页 ()
+		if (this.mCornerX == 0) {
+
+		} else {
+			// 查看下一页
+			if (this.mCornerY == this.mHeight / 2) {
+
+			} else {
+				calcPoints();
+				drawCurrentPageArea(canvas);
+				drawNextPageAreaAndShadow(canvas);
+			}
+		}
 	}
 
 	private void drawCurrentPageArea(Canvas canvas) {
@@ -238,9 +271,10 @@ public class BaseBookPage extends View {
 		mPath0.quadTo(mBezierControl2.x, mBezierControl2.y, mBezierStart2.x, mBezierStart2.y);
 		mPath0.lineTo(mCornerX, mCornerY);
 		mPath0.close();
-		mPath0.setFillType(FillType.WINDING);
 		//
 		mPaint.setColor(Color.BLUE);
+		mPaint.setStrokeWidth(1);
+		mPaint.setStyle(Paint.Style.STROKE);
 		canvas.save();
 		canvas.clipPath(mPath0, Region.Op.XOR);
 		canvas.drawBitmap(mCurPageBitmap, 0, 0, null);

@@ -13,7 +13,7 @@ import android.view.ViewGroup;
  */
 public class Measurer {
 	public int getViewWidth(Activity activity, View view) {
-		if (view.getHeight() == ViewGroup.LayoutParams.FILL_PARENT) {
+		if (view.getHeight() == ViewGroup.LayoutParams.MATCH_PARENT) {
 			// view.m
 			return getDisplayMetrics(activity).widthPixels;
 		}
@@ -21,7 +21,7 @@ public class Measurer {
 	}
 
 	public int getViewHeight(Activity activity, View view) {
-		if (view.getHeight() == ViewGroup.LayoutParams.FILL_PARENT) {
+		if (view.getHeight() == ViewGroup.LayoutParams.MATCH_PARENT) {
 			// view.m
 			return getDisplayMetrics(activity).heightPixels;
 		}
