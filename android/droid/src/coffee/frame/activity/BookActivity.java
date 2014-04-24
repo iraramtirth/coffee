@@ -20,21 +20,32 @@ public class BookActivity extends BaseActivity {
 
 	private BookPage[] pages;
 	private BookPageView mPageView;
+	private boolean isScroll = false;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		mPageView = new BookPageView(this);
 		pages = new BookPage[3];
-		pages[0] = null;
+		pages[0] = createPage(1);
 		pages[1] = createPage(1);// current page
 		pages[2] = createPage(2); //
 		//
 		mPageView.setPage(pages[0], pages[1], pages[2]);
 		mPageView.setPageCallback(new PageCallback() {
 			@Override
+			public void onStart() {
+				isScroll = true;
+			}
+
+			@Override
 			public void onComplete(int action) {
+				isScroll = false;
 				currentPage += action;
+				if (currentPage == 0) {
+					currentPage = 1;
+					return;
+				}
 				// 翻到下一页
 				if (action > 0) {
 					pages[0] = pages[1];
@@ -58,8 +69,9 @@ public class BookActivity extends BaseActivity {
 		 */
 	}
 
-	private float x1;
-	private float x2;
+	private float touchDownX;
+	private float touchDownY;
+	private float touchMoveX;
 	/**
 	 * 是否提示当前页是第一页或者当前是最后一页。<br>
 	 * 当该值为false的提示
@@ -78,14 +90,17 @@ public class BookActivity extends BaseActivity {
 			Log.d("event-", "----------------------------------------开始划屏");
 			mPageView.stopScroll();
 			showTip = false;
-			x1 = event.getX();
+			touchDownX = event.getX();
+			touchDownY = event.getY();
 		}
 		if (event.getAction() == MotionEvent.ACTION_MOVE) {
-			x2 = event.getX();
-			if (x2 - x1 > 0) {
+			touchMoveX = event.getX();
+			if (touchMoveX - touchDownX > 0) {
 				// Log.d("dispatch-pm", mPageView.getPath0Lenght());
-				Log.d("activity-cornerXY", "拖拽点 " + mPageView.getCornerPosition());
-				if (currentPage == 1 && mPageView.getCornerPosition() == 1) {
+				int cornerPosition = mPageView.getCornerPosition(touchDownX, touchDownY);
+				Log.d("activity-cornerXY", "拖拽点 " + cornerPosition);
+				Log.d("path_measure------", isScroll + " , " + currentPage);
+				if (isScroll == false && currentPage == 1 && (cornerPosition == 1 || cornerPosition == 3)) {
 					if (showTip == false) {
 						showTip = true;
 						Alert.toast("已经是第一页了");
@@ -100,8 +115,8 @@ public class BookActivity extends BaseActivity {
 			}
 		}
 		if (event.getAction() == MotionEvent.ACTION_UP) {
-			if (x2 - x1 > 0) {
-				if (currentPage == 1) {
+			if (touchMoveX - touchDownX > 0) {
+				if (isScroll == false && currentPage == 1) {
 					return false;
 				}
 			}

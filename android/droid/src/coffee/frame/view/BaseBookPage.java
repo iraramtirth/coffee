@@ -98,6 +98,11 @@ public abstract class BaseBookPage extends View {
 
 	public interface PageCallback {
 		/**
+		 * 当path0的区域面积大于0的时候调用该方法
+		 */
+		public void onStart();
+
+		/**
 		 * 翻页动作完成后的回调
 		 * 
 		 * @param action
@@ -112,7 +117,6 @@ public abstract class BaseBookPage extends View {
 		mPages[0] = prePage;
 		mPages[1] = currentPage;
 		mPages[2] = nextPage;
-
 		Log.d("BookPage--设置Page", mPages[0] + "  ---  " + mPages[1] + "  ---  " + mPages[2]);
 	}
 
@@ -288,7 +292,7 @@ public abstract class BaseBookPage extends View {
 		if (event.getAction() == MotionEvent.ACTION_UP) {
 			Log.d("View-touch-up", mTouch.x + "," + mTouchDownX);
 			if (Math.abs(mTouch.x - mTouchDownX) - mWidth / 10 > 0) {
-				startScroll(800);
+				startScroll(1000);
 			} else {
 				reset();
 			}
@@ -333,12 +337,13 @@ public abstract class BaseBookPage extends View {
 			if (this.mPageCallback != null && pageAction != 0) {
 				this.mPageCallback.onComplete(pageAction > 0 ? 1 : -1);
 				reset();// 注意需要先reset然后再post
-				// postInvalidate();
+				postInvalidate();
 			}
 		}
 	}
 
 	private void reset() {
+		Log.d("view", "------reset-------");
 		mTouch.x = mWidth;
 		mTouch.y = mHeight;
 		mCornerX = mWidth;
@@ -349,7 +354,13 @@ public abstract class BaseBookPage extends View {
 		pageAction = 0;
 		//
 		mPath0.reset();
+		mPath0.moveTo(0, 0);
+		mPath0.lineTo(0, 0);
+		mPath0.close();
 		mPath1.reset();
+		mPath1.moveTo(0, 0);
+		mPath1.lineTo(0, 0);
+		mPath1.close();
 	}
 
 	@Override
@@ -360,16 +371,17 @@ public abstract class BaseBookPage extends View {
 			mTouch.y = mScroller.getCurrY();
 			// 不能让
 			if (mWidth - Math.abs(mTouch.x) < 5) {
-				stopScroll();
+				stopScroll();// 该方法中有postInvalidate操作
+			} else {
+				postInvalidate();
 			}
-			postInvalidate();
 		}
 	}
 
 	@Override
 	public void postInvalidate() {
 		super.postInvalidate();
-		Log.d("postInvalidate", "开始刷屏。。");
+		Log.d("postInvalidate", "准备刷屏。。");
 	}
 
 	@Override
@@ -392,6 +404,14 @@ public abstract class BaseBookPage extends View {
 			Log.d("BookPage-left", mPages[0] + " ---  " + mPages[1] + " , " + mPages[2]);
 		}
 		canvas.drawColor(0xFFAAAAAA);
+		if (this.mPageCallback != null) {
+			int len0 = getPathLenght(mPath0);
+			int len1 = getPathLenght(mPath1);
+			if (len0 > 0 && len1 > 0) {
+				this.mPageCallback.onStart();
+			}
+			Log.d("path_measure", len0 + " , " + len1);
+		}
 		// 从屏幕的中间位置往左右划
 		if (this.mCornerY == this.mHeight / 2) {
 			calcPoints(true);
@@ -516,9 +536,8 @@ public abstract class BaseBookPage extends View {
 	 */
 	protected abstract void drawCurrentBackArea2(Canvas canvas, Bitmap bitmap);
 
-	@Deprecated
-	public int getPath0Lenght() {
-		PathMeasure pm = new PathMeasure(mPath0, false);
+	public int getPathLenght(Path path) {
+		PathMeasure pm = new PathMeasure(path, false);
 		try {
 			int len = (int) pm.getLength();
 			return len;
@@ -534,7 +553,8 @@ public abstract class BaseBookPage extends View {
 	 * 
 	 * @return 1,2,3,4 1:左侧中间。2右上角。3右侧中间。4右下角
 	 */
-	public int getCornerPosition() {
+	public int getCornerPosition(float x, float y) {
+		calcCornerXY(x, y);
 		if (mCornerX == 0 && mCornerY == mHeight / 2) {
 			return 1;
 		} else if (mCornerX == mWidth) {
