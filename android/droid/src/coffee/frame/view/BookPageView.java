@@ -41,6 +41,9 @@ public class BookPageView extends BaseBookPage {
 	}
 
 	protected void drawCurrentBackArea2(Canvas canvas, Bitmap bitmap) {
+		if (bitmap == null) {
+			return;
+		}
 		mPath1.reset();
 		mPath1.moveTo(mTouch.x, 0);
 		mPath1.lineTo(mTouch.x, mHeight);

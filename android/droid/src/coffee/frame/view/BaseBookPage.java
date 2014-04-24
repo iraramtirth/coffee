@@ -43,9 +43,15 @@ public abstract class BaseBookPage extends View {
 	protected Bitmap mCurPageBitmap = null; // 当前页
 	protected Bitmap mNextPageBitmap = null;// 下一页
 
-	// 贝塞尔曲线1顶点x坐标为0,时的临界点
+	/**
+	 * onTouchEvent事件中赋值
+	 */
 	protected PointF mTemp = new PointF();
-
+	/**
+	 * 用于画图 <br>
+	 * 一般情况下该值是mTemp的拷贝。但是有些场景需要手动对mTouch赋值。<br>
+	 * 为了onTouchEvent事件对mTouch手动赋值造成的影响,所以定义该变量<br>
+	 */
 	protected PointF mTouch = new PointF(); // 拖拽点
 	// 左测 -贝塞尔线(以右下角为拖拽点对应的页脚为例)
 	protected PointF mBezierStart1 = new PointF(); // 贝塞尔曲线起始点
@@ -107,7 +113,7 @@ public abstract class BaseBookPage extends View {
 		mPages[1] = currentPage;
 		mPages[2] = nextPage;
 
-		Log.d("BookPage----", mPages[0] + "  ---  " + mPages[1] + "  ---  " + mPages[2]);
+		Log.d("BookPage--设置Page", mPages[0] + "  ---  " + mPages[1] + "  ---  " + mPages[2]);
 	}
 
 	public void setPageCallback(PageCallback callback) {
@@ -142,6 +148,7 @@ public abstract class BaseBookPage extends View {
 				mCornerY = mHeight;
 			}
 		}
+		Log.d("calcCornerXY", "计算页脚" + mCornerX + " , " + mCornerY);
 	}
 
 	/**
@@ -187,7 +194,7 @@ public abstract class BaseBookPage extends View {
 				mBezierControl2.y = mMiddleY - (mCornerX - mMiddleX) * (mCornerX - mMiddleX) / (mCornerY - mMiddleY);
 				mBezierStart1.x = mBezierControl1.x - (mCornerX - mBezierControl1.x) / 2;
 			}
-			System.out.println("mBezierStart1.x" + mBezierStart1.x);
+			// System.out.println("mBezierStart1.x " + mBezierStart1.x);
 		}
 		mBezierStart2.x = mCornerX;
 		mBezierStart2.y = mBezierControl2.y - (mCornerY - mBezierControl2.y) / 2;
@@ -218,20 +225,20 @@ public abstract class BaseBookPage extends View {
 		// }
 		// }
 
-		if (mBezierStart1.x == 0 && mBezierStart1.y == 1280 || true) {
-			Log.d("bezier", " ---- 1 -----");
-			Log.d("bezier", mBezierStart1);
-			Log.d("bezier", mBezierVertex1);
-			Log.d("bezier", mBezierControl1);
-			Log.d("bezier", mBezierEnd1);
-			Log.d("bezier", " ---- 2 -----");
-			Log.d("bezier", mBezierStart2);
-			Log.d("bezier", mBezierVertex2);
-			Log.d("bezier", mBezierControl2);
-			Log.d("bezier", mBezierEnd2);
-			Log.d("bezier", " ====== ");
-			Log.d("bezier", mTouch);
-		}
+		// if (mBezierStart1.x == 0 && mBezierStart1.y == 1280 || true) {
+		// Log.d("bezier", " ---- 1 -----");
+		// Log.d("bezier", mBezierStart1);
+		// Log.d("bezier", mBezierVertex1);
+		// Log.d("bezier", mBezierControl1);
+		// Log.d("bezier", mBezierEnd1);
+		// Log.d("bezier", " ---- 2 -----");
+		// Log.d("bezier", mBezierStart2);
+		// Log.d("bezier", mBezierVertex2);
+		// Log.d("bezier", mBezierControl2);
+		// Log.d("bezier", mBezierEnd2);
+		// Log.d("bezier", " ====== ");
+		// Log.d("bezier", mTouch);
+		// }
 	}
 
 	// MotionEvent#ACTION_DOWN 时候的x坐标
@@ -243,13 +250,13 @@ public abstract class BaseBookPage extends View {
 	private boolean isFlipToLeft = false;
 
 	public boolean onTouchEvent(MotionEvent event) {
-		mPreTouchX = mTouch.x;
-		mTouch.x = event.getX();
-		mTouch.y = event.getY();
-		Log.d("event-view", event.getAction() + " - " + event.getX());
+		Log.d("view-onTouchEvent", event.getX() + " - " + event.getY());
 		if (event.getAction() == MotionEvent.ACTION_MOVE) {
+			mPreTouchX = mTouch.x;
+			mTouch.x = event.getX();
+			mTouch.y = event.getY();
 			// 往右滑动
-			if (mTouch.x - mPreTouchX > 1) {
+			if (mTouch.x - mPreTouchX > 0) {
 				if (isFlipToRight == false) {
 					pageAction--;
 				}
@@ -257,33 +264,37 @@ public abstract class BaseBookPage extends View {
 				isFlipToLeft = false;
 			}
 			// 向左滑动
-			else if (mPreTouchX - mTouch.x > 1) {
+			else if (mPreTouchX - mTouch.x > 0) {
 				if (isFlipToLeft == false) {
 					pageAction++;
 				}
 				isFlipToLeft = true;
 				isFlipToRight = false;
 			}
+			Log.d("page-action", isFlipToLeft + ", " + isFlipToLeft);
 			if (isFlipToLeft || isFlipToRight) {
 				this.postInvalidate();
 			}
 		}
 		// 按下的时候需要初始化数据
 		if (event.getAction() == MotionEvent.ACTION_DOWN) {
+			mTouch.x = event.getX();
+			mTouch.y = event.getY();
 			isFlipToLeft = false;
 			isFlipToRight = false;
 			mTouchDownX = event.getX();
 			calcCornerXY(mTouch.x, mTouch.y);
 		}
 		if (event.getAction() == MotionEvent.ACTION_UP) {
+			Log.d("View-touch-up", mTouch.x + "," + mTouchDownX);
 			if (Math.abs(mTouch.x - mTouchDownX) - mWidth / 10 > 0) {
-				startAnimation(800);
+				startScroll(800);
 			} else {
-				mTouch.x = mCornerX - 0.09f;
-				mTouch.y = mCornerY - 0.09f;
-				pageAction = 0;
+				reset();
 			}
+			// if (isFlipToLeft || isFlipToRight) {
 			this.postInvalidate();
+			// }
 		}
 		Log.d("pageAction", pageAction);
 		return true;
@@ -295,7 +306,7 @@ public abstract class BaseBookPage extends View {
 	 * @param duration
 	 * @param lastDirection
 	 */
-	private void startAnimation(int duration) {
+	private void startScroll(int duration) {
 		// dx 水平方向滑动的距离，负值会使滚动向左滚动 dy 垂直方向滑动的距离，负值会使滚动向上滚动
 		int dx = 0, dy = 0;
 		if (isFlipToLeft) {
@@ -315,6 +326,18 @@ public abstract class BaseBookPage extends View {
 		mScroller.startScroll(startX, startY, dx, dy, duration);
 	}
 
+	public void stopScroll() {
+		if (mScroller != null) {
+			Log.d("view-stopScroll", "停止");
+			mScroller.abortAnimation();
+			if (this.mPageCallback != null && pageAction != 0) {
+				this.mPageCallback.onComplete(pageAction > 0 ? 1 : -1);
+				reset();// 注意需要先reset然后再post
+				// postInvalidate();
+			}
+		}
+	}
+
 	private void reset() {
 		mTouch.x = mWidth;
 		mTouch.y = mHeight;
@@ -324,6 +347,9 @@ public abstract class BaseBookPage extends View {
 		isFlipToLeft = false;
 		isFlipToRight = false;
 		pageAction = 0;
+		//
+		mPath0.reset();
+		mPath1.reset();
 	}
 
 	@Override
@@ -334,71 +360,56 @@ public abstract class BaseBookPage extends View {
 			mTouch.y = mScroller.getCurrY();
 			// 不能让
 			if (mWidth - Math.abs(mTouch.x) < 5) {
-				mScroller.abortAnimation();
-				if (this.mPageCallback != null && pageAction != 0) {
-					this.mPageCallback.onComplete(pageAction > 0 ? 1 : -1);
-					reset();
-				}
+				stopScroll();
 			}
 			postInvalidate();
 		}
 	}
 
 	@Override
+	public void postInvalidate() {
+		super.postInvalidate();
+		Log.d("postInvalidate", "开始刷屏。。");
+	}
+
+	@Override
 	protected void onDraw(Canvas canvas) {
-		// int lenPath0 = getPath0Lenght();
+		Log.d("view-onDraw", "绘屏");
 		// 右滑--查看前一页
-		if (mCornerX == 0 && mCornerY == mHeight / 2) {
-			Log.d("path_measure-0", getPath0Lenght());
-			// if (lenPath0 == 0) {
+		if (mCornerX == 0 && mCornerY == mHeight / 2 && (isFlipToLeft || isFlipToRight)) {
 			mCurPageBitmap = mPages[0].getPageBitmap();
 			mNextPageBitmap = mPages[1].getPageBitmap();
-			// } else {
-			// // 已经被赋值果了, 则忽略
-			// }
 			Log.d("BookPage-right", mPages[0] + " , " + mPages[1] + " -- " + mPages[2]);
 		} else {
-			Log.d("path_measure-0", getPath0Lenght());
-			// if (lenPath0 == 0) {
+			if (pageAction == 0 && isFlipToLeft == false && isFlipToRight == false) {
+				mCornerX = mWidth;
+				mCornerY = mHeight;
+				mTouch.x = mWidth;
+				mTouch.y = mHeight;
+			}
 			mCurPageBitmap = mPages[1].getPageBitmap();
 			mNextPageBitmap = mPages[2].getPageBitmap();
-			// } else {
-			// // 已经被赋值果了, 则忽略
-			// }
 			Log.d("BookPage-left", mPages[0] + " ---  " + mPages[1] + " , " + mPages[2]);
 		}
-		// } else {
-		// // isFlipToLeft == true && isFlipToRight == true
-		// // ignore 继续保持之前的赋值
-		// }
 		canvas.drawColor(0xFFAAAAAA);
 		// 从屏幕的中间位置往左右划
 		if (this.mCornerY == this.mHeight / 2) {
 			calcPoints(true);
-			if (mCurPageBitmap != null) {
-				drawCurrentPageArea2(canvas, mCurPageBitmap);
-			}
-			if (mNextPageBitmap != null) {
-				drawNextPageAreaAndShadow2(canvas, mNextPageBitmap);
-			}
-			if (mCurPageBitmap != null) {
-				drawCurrentBackArea2(canvas, mCurPageBitmap);// 画背景
-			}
+			drawCurrentPageArea2(canvas, mCurPageBitmap);
+			drawNextPageAreaAndShadow2(canvas, mNextPageBitmap);
+			drawCurrentBackArea2(canvas, mCurPageBitmap);// 画背景
 		} else {
 			calcPoints(true);
-			if (mCurPageBitmap != null) {
-				drawCurrentPageArea(canvas, mCurPageBitmap);
-			}
-			if (mNextPageBitmap != null) {
-				drawNextPageAreaAndShadow(canvas, mNextPageBitmap);
-			}
-			if (mCurPageBitmap != null) {
-				drawCurrentBackArea(canvas, mCurPageBitmap);// 画背景
-			}
+			drawCurrentPageArea(canvas, mCurPageBitmap);
+			drawNextPageAreaAndShadow(canvas, mNextPageBitmap);
+			drawCurrentBackArea(canvas, mCurPageBitmap);// 画背景
 		}
 	}
 
 	private void drawCurrentPageArea2(Canvas canvas, Bitmap bitmap) {
+		if (bitmap == null) {
+			return;
+		}
 		mPath0.reset();
 		mPath0.moveTo(mTouch.x, 0);
 		mPath0.lineTo(mTouch.x, mHeight);
@@ -420,6 +431,9 @@ public abstract class BaseBookPage extends View {
 	}
 
 	private void drawNextPageAreaAndShadow2(Canvas canvas, Bitmap bitmap) {
+		if (bitmap == null) {
+			return;
+		}
 		mPath1.reset();
 		mPath1.moveTo(mTouch.x, 0);
 		mPath1.lineTo(mTouch.x, mHeight);
@@ -439,6 +453,9 @@ public abstract class BaseBookPage extends View {
 	}
 
 	private void drawCurrentPageArea(Canvas canvas, Bitmap bitmap) {
+		if (bitmap == null) {
+			return;
+		}
 		mPath0.reset();
 		mPath0.moveTo(mBezierStart1.x, mBezierStart1.y);
 		mPath0.quadTo(mBezierControl1.x, mBezierControl1.y, mBezierEnd1.x, mBezierEnd1.y);
@@ -465,6 +482,9 @@ public abstract class BaseBookPage extends View {
 	}
 
 	private void drawNextPageAreaAndShadow(Canvas canvas, Bitmap bitmap) {
+		if (bitmap == null) {
+			return;
+		}
 		mPath1.reset();
 		mPath1.moveTo(mBezierStart1.x, mBezierStart1.y);
 		mPath1.lineTo(mBezierVertex1.x, mBezierVertex1.y);
@@ -496,6 +516,7 @@ public abstract class BaseBookPage extends View {
 	 */
 	protected abstract void drawCurrentBackArea2(Canvas canvas, Bitmap bitmap);
 
+	@Deprecated
 	public int getPath0Lenght() {
 		PathMeasure pm = new PathMeasure(mPath0, false);
 		try {
@@ -505,5 +526,26 @@ public abstract class BaseBookPage extends View {
 			e.printStackTrace();
 			return 0;
 		}
+	}
+
+	/**
+	 * 拖拽点对应的页脚的位置<br>
+	 * 有1、2、3、4四个值
+	 * 
+	 * @return 1,2,3,4 1:左侧中间。2右上角。3右侧中间。4右下角
+	 */
+	public int getCornerPosition() {
+		if (mCornerX == 0 && mCornerY == mHeight / 2) {
+			return 1;
+		} else if (mCornerX == mWidth) {
+			if (mCornerY == 0) {
+				return 2;
+			} else if (mCornerY == mHeight / 2) {
+				return 3;
+			} else if (mCornerY == mHeight) {
+				return 4;
+			}
+		}
+		return 4;
 	}
 }

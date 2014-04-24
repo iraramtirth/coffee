@@ -73,22 +73,30 @@ public class BookActivity extends BaseActivity {
 	 */
 	@Override
 	public boolean dispatchTouchEvent(MotionEvent event) {
-		Log.d("event-dispatch", event.getAction() + " - " + event.getX());
+		Log.d("activity-dispatchTouch-", event.getX() + " - " + event.getY());
 		if (event.getAction() == MotionEvent.ACTION_DOWN) {
+			Log.d("event-", "----------------------------------------开始划屏");
+			mPageView.stopScroll();
 			showTip = false;
 			x1 = event.getX();
 		}
 		if (event.getAction() == MotionEvent.ACTION_MOVE) {
 			x2 = event.getX();
 			if (x2 - x1 > 0) {
-				Log.d("dispatch-pm", mPageView.getPath0Lenght());
-				if (currentPage == 1 && mPageView.getPath0Lenght() == 0) {
+				// Log.d("dispatch-pm", mPageView.getPath0Lenght());
+				Log.d("activity-cornerXY", "拖拽点 " + mPageView.getCornerPosition());
+				if (currentPage == 1 && mPageView.getCornerPosition() == 1) {
 					if (showTip == false) {
 						showTip = true;
 						Alert.toast("已经是第一页了");
 					}
+					Log.d("activity-move", "--拦截--");
 					return false;
+				} else {
+					Log.d("activity-move", "传递move");
 				}
+			} else {
+				Log.d("activity-move", "传递move--------");
 			}
 		}
 		if (event.getAction() == MotionEvent.ACTION_UP) {
