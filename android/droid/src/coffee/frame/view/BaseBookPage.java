@@ -96,11 +96,22 @@ public abstract class BaseBookPage extends View {
 		mScroller = new Scroller(context);
 	}
 
+	/**
+	 * 主要用于监听Scroll状态
+	 * 
+	 * @author coffee <br>
+	 *         2014年4月25日上午9:29:03
+	 */
 	public interface PageCallback {
 		/**
 		 * 当path0的区域面积大于0的时候调用该方法
 		 */
 		public void onStart();
+
+		/**
+		 * 滚动停止
+		 */
+		public void onStop();
 
 		/**
 		 * 翻页动作完成后的回调
@@ -138,8 +149,16 @@ public abstract class BaseBookPage extends View {
 		return CrossP;
 	}
 
+	/**
+	 * 
+	 * 
+	 * @param x
+	 *            当前的触点坐标 onTouchEvent (x)
+	 * @param y
+	 *            当前的触点坐标 onTouchEvent (y)
+	 */
 	public void calcCornerXY(float x, float y) {
-		if (x <= mWidth * 1 / 2) {
+		if (x <= mWidth * 1 / 2 && isFlipToRight) {
 			mCornerX = 0;
 			mCornerY = mHeight / 2;
 		} else {
@@ -147,6 +166,9 @@ public abstract class BaseBookPage extends View {
 			if (y <= mHeight * 1 / 3) {
 				mCornerY = 0;
 			} else if (y <= mHeight * 2 / 3) {
+//				if (isFlipToRight) {
+//					mCornerX = 0;
+//				}
 				mCornerY = mHeight / 2;
 			} else {
 				mCornerY = mHeight;
@@ -246,12 +268,13 @@ public abstract class BaseBookPage extends View {
 	}
 
 	// MotionEvent#ACTION_DOWN 时候的x坐标
-	private float mTouchDownX;
+	protected float mTouchDownX;
+	protected float mTouchDownY;
 	// 上一个Touch点的x坐标
-	private float mPreTouchX;
+	protected float mPreTouchX;
 	//
-	private boolean isFlipToRight = false;
-	private boolean isFlipToLeft = false;
+	protected boolean isFlipToRight = false;
+	protected boolean isFlipToLeft = false;
 
 	public boolean onTouchEvent(MotionEvent event) {
 		Log.d("view-onTouchEvent", event.getX() + " - " + event.getY());
@@ -277,6 +300,7 @@ public abstract class BaseBookPage extends View {
 			}
 			Log.d("page-action", isFlipToLeft + ", " + isFlipToLeft);
 			if (isFlipToLeft || isFlipToRight) {
+				calcCornerXY(mTouchDownX, mTouchDownY);
 				this.postInvalidate();
 			}
 		}
@@ -287,7 +311,8 @@ public abstract class BaseBookPage extends View {
 			isFlipToLeft = false;
 			isFlipToRight = false;
 			mTouchDownX = event.getX();
-			calcCornerXY(mTouch.x, mTouch.y);
+			mTouchDownY = event.getY();
+			calcCornerXY(mTouchDownX, mTouchDownY);
 		}
 		if (event.getAction() == MotionEvent.ACTION_UP) {
 			Log.d("View-touch-up", mTouch.x + "," + mTouchDownX);
@@ -334,10 +359,13 @@ public abstract class BaseBookPage extends View {
 		if (mScroller != null) {
 			Log.d("view-stopScroll", "停止");
 			mScroller.abortAnimation();
-			if (this.mPageCallback != null && pageAction != 0) {
-				this.mPageCallback.onComplete(pageAction > 0 ? 1 : -1);
-				reset();// 注意需要先reset然后再post
-				postInvalidate();
+			if (this.mPageCallback != null) {
+				this.mPageCallback.onStop();
+				if (pageAction != 0) {
+					this.mPageCallback.onComplete(pageAction > 0 ? 1 : -1);
+					reset();// 注意需要先reset然后再post
+					postInvalidate();
+				}
 			}
 		}
 	}
@@ -417,12 +445,12 @@ public abstract class BaseBookPage extends View {
 			calcPoints(true);
 			drawCurrentPageArea2(canvas, mCurPageBitmap);
 			drawNextPageAreaAndShadow2(canvas, mNextPageBitmap);
-			drawCurrentBackArea2(canvas, mCurPageBitmap);// 画背景
+			drawCurrentBackArea2(canvas, mCurPageBitmap);// 画后背
 		} else {
 			calcPoints(true);
 			drawCurrentPageArea(canvas, mCurPageBitmap);
 			drawNextPageAreaAndShadow(canvas, mNextPageBitmap);
-			drawCurrentBackArea(canvas, mCurPageBitmap);// 画背景
+			drawCurrentBackArea(canvas, mCurPageBitmap);// 画后背
 		}
 	}
 
@@ -430,9 +458,18 @@ public abstract class BaseBookPage extends View {
 		if (bitmap == null) {
 			return;
 		}
+		float x = mTouch.x;
+		if (mCornerX == 0) {
+			x = mTouch.x;
+		} else {
+			x = mWidth - (mTouchDownX - mTouch.x) / 2;
+			if (x > mWidth) {
+				x = mWidth;
+			}
+		}
 		mPath0.reset();
-		mPath0.moveTo(mTouch.x, 0);
-		mPath0.lineTo(mTouch.x, mHeight);
+		mPath0.moveTo(x, 0);
+		mPath0.lineTo(x, mHeight);
 		mPath0.lineTo(mWidth, mHeight);
 		mPath0.lineTo(mWidth, 0);
 		mPath0.close();
@@ -445,9 +482,6 @@ public abstract class BaseBookPage extends View {
 		canvas.drawBitmap(bitmap, 0, 0, null);
 		canvas.drawPath(mPath0, mPaint);
 		canvas.restore();
-		//
-		PathMeasure pm = new PathMeasure(mPath0, false);
-		Log.d("PathMeasure-0", pm.getLength());
 	}
 
 	private void drawNextPageAreaAndShadow2(Canvas canvas, Bitmap bitmap) {
@@ -455,8 +489,17 @@ public abstract class BaseBookPage extends View {
 			return;
 		}
 		mPath1.reset();
-		mPath1.moveTo(mTouch.x, 0);
-		mPath1.lineTo(mTouch.x, mHeight);
+		float x;
+		if (mCornerX == 0) {
+			x = mTouch.x;
+		} else {
+			x = mWidth - (mTouchDownX - mTouch.x) / 2;
+			if (x > mWidth) {
+				x = mWidth;
+			}
+		}
+		mPath1.moveTo(x, 0);
+		mPath1.lineTo(x, mHeight);
 		mPath1.lineTo(mWidth, mHeight);
 		mPath1.lineTo(mWidth, 0);
 		mPath1.close();
@@ -467,9 +510,6 @@ public abstract class BaseBookPage extends View {
 		canvas.drawPath(mPath1, mPaint);
 		canvas.drawBitmap(bitmap, 0, 0, null);
 		canvas.restore();
-		//
-		PathMeasure pm = new PathMeasure(mPath0, false);
-		Log.d("PathMeasure-1", pm.getLength());
 	}
 
 	private void drawCurrentPageArea(Canvas canvas, Bitmap bitmap) {
@@ -495,9 +535,6 @@ public abstract class BaseBookPage extends View {
 			canvas.drawBitmap(bitmap, 0, 0, null);
 		}
 		// canvas.drawText("可以叫我疯子，不能叫我傻子。", 0, 100, mPaint);
-
-		PathMeasure pm = new PathMeasure(mPath0, false);
-		Log.d("PathMeasure-0", pm.getLength());
 		canvas.restore();
 	}
 
@@ -521,8 +558,6 @@ public abstract class BaseBookPage extends View {
 		if (mNextPageBitmap != null) {
 			canvas.drawBitmap(bitmap, 0, 0, null);
 		}
-		PathMeasure pm = new PathMeasure(mPath1, false);
-		Log.d("PathMeasure-1", pm.getLength());
 		canvas.restore();
 	}
 

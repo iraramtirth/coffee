@@ -7,6 +7,7 @@ import android.graphics.ColorMatrix;
 import android.graphics.ColorMatrixColorFilter;
 import android.graphics.Matrix;
 import android.graphics.Region;
+import coffee.utils.log.Log;
 
 /**
  * 阅读-书页
@@ -33,25 +34,68 @@ public class BookPageView extends BaseBookPage {
 	@Override
 	protected void onDraw(Canvas canvas) {
 		super.onDraw(canvas);
-		if (this.mCornerY == this.mHeight / 2) {
-			drawCurrentBackArea2(canvas, mCurPageBitmap);
-		} else {
-			drawCurrentBackArea(canvas, mCurPageBitmap);
-		}
 	}
 
+	/**
+	 * 
+	 * 绘制翻起页背面
+	 */
+	@Override
 	protected void drawCurrentBackArea2(Canvas canvas, Bitmap bitmap) {
 		if (bitmap == null) {
 			return;
 		}
-		mPath1.reset();
-		mPath1.moveTo(mTouch.x, 0);
-		mPath1.lineTo(mTouch.x, mHeight);
-		float x = mTouch.x + (mWidth - mTouch.x) / 2;
-		mPath1.lineTo(x, mHeight);
-		mPath1.lineTo(x, 0);
-		mPath1.close();
-		canvas.save();
+		// 滑动的距离
+		// float distence = Math.abs(mTouch.x - mTouchDownX);
+
+		// float x1, x2;
+		// if (isFlipToRight) {
+		// x1 = mTouch.x;
+		// x2 = mWidth - x1;
+		// } else {
+		// if (mCornerX == 0) {
+		// x1 = 0;
+		// x2 = distence * 2;
+		// } else {// mCornerX == mHeight
+		// x1 = mWidth - distence;
+		// x2 = x1 - distence;// 二者距离相同
+		// if (x1 <= 0) {
+		// x1 = 0;
+		// x2 = 0;
+		// }
+		// }
+		// }
+
+		// x2是左侧边线。 x1是右侧轴线。
+		float x1, x2;//
+		if (mCornerX == 0) {
+			x1 = mTouch.x;
+			x2 = 2 * x1 - mWidth;
+			mPath1.reset();
+			mPath1.moveTo(x1, 0);
+			mPath1.lineTo(x1, mHeight);
+			mPath1.lineTo(x2, mHeight);
+			mPath1.lineTo(x2, 0);
+			Log.d("draw-touch", mTouch.x + " , " + mTouchDownX + " " + mCornerX);
+			Log.d("draw-back2", (int) x1 + " " + (int) x2);
+
+		} else {
+
+			x1 = mWidth - (mTouchDownX - mTouch.x) / 2;
+			if (x1 > mWidth) {
+				x1 = mWidth;
+			}
+			mPath1.reset();
+			mPath1.moveTo(x1, 0);
+			mPath1.lineTo(x1, mHeight);
+			// 其中 x1是x2和mWidth的中点坐标.数学公式 2x1 = x2 + width
+			x2 = 2 * x1 - mWidth;
+			mPath1.lineTo(x2, mHeight);
+			mPath1.lineTo(x2, 0);
+			mPath1.close();
+			canvas.save();
+
+		}
 		// 献花卷起的部分
 		// mPaint.setColor(Color.BLUE);
 		// mPaint.setStrokeWidth(1);
@@ -62,13 +106,16 @@ public class BookPageView extends BaseBookPage {
 		mMatrix.reset();
 		// mPaint.setColorFilter(mColorMatrixFilter);
 		// 注意 setScale 如果选的坐标不对。可能会导致图片显示不出来
-		mMatrix.setScale(-1.0f, 1f, x, 0);
+		mMatrix.setScale(-1.0f, 1f, x1, 0);
 		canvas.drawColor(0xFFAAAAAA);
 		canvas.drawBitmap(bitmap, mMatrix, mPaint);
 		canvas.restore();
 	}
 
-	/** 绘制翻起页背面 */
+	/**
+	 * 绘制翻起页背面
+	 **/
+	@Override
 	protected void drawCurrentBackArea(Canvas canvas, Bitmap bitmap) {
 		if (bitmap == null) {
 			return;

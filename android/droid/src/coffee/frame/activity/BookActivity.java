@@ -35,12 +35,18 @@ public class BookActivity extends BaseActivity {
 		mPageView.setPageCallback(new PageCallback() {
 			@Override
 			public void onStart() {
+				Log.d("page-Callback", "true");
 				isScroll = true;
 			}
 
 			@Override
-			public void onComplete(int action) {
+			public void onStop() {
+				Log.d("page-Callback", "false");
 				isScroll = false;
+			}
+
+			@Override
+			public void onComplete(int action) {
 				currentPage += action;
 				if (currentPage == 0) {
 					currentPage = 1;
@@ -99,7 +105,8 @@ public class BookActivity extends BaseActivity {
 				// Log.d("dispatch-pm", mPageView.getPath0Lenght());
 				int cornerPosition = mPageView.getCornerPosition(touchDownX, touchDownY);
 				Log.d("activity-cornerXY", "拖拽点 " + cornerPosition);
-				Log.d("path_measure------", isScroll + " , " + currentPage);
+				Log.d("path_measure------", "isScroll " + isScroll + " , currentPage " + currentPage);
+				// isScroll==false 滚动停止以后才判断. 防止翻页后取消之前的操作
 				if (isScroll == false && currentPage == 1 && (cornerPosition == 1 || cornerPosition == 3)) {
 					if (showTip == false) {
 						showTip = true;
@@ -109,6 +116,14 @@ public class BookActivity extends BaseActivity {
 					return false;
 				} else {
 					Log.d("activity-move", "传递move");
+				}
+			} else if (touchMoveX - touchDownX < 0) {
+				if (isScroll ==false && currentPage == 7) {
+					if (showTip == false) {
+						showTip = true;
+						Alert.toast("结尾了");
+					}
+					return false;
 				}
 			} else {
 				Log.d("activity-move", "传递move--------");
