@@ -151,4 +151,23 @@ public class BookPageView extends BaseBookPage {
 		canvas.restore();
 	}
 
+	public int getPageWidth() {
+		return super.mWidth;
+	}
+
+	/**
+	 * 
+	 * @param touchX
+	 * @param touchY
+	 */
+	public void setTouchXY(float touchX, float touchY) {
+		if (touchX == 0) {
+			touchX = 0.01F;
+		}
+		if (touchY == 0) {
+			touchY = 0.01F;
+		}
+		super.mTouch.x = touchX;
+		super.mTouch.y = touchY;
+	}
 }

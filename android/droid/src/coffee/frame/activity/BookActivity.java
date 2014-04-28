@@ -20,7 +20,8 @@ public class BookActivity extends BaseActivity {
 
 	private BookPage[] pages;
 	private BookPageView mPageView;
-	private boolean isScroll = false;
+
+	// private boolean isScroll = false;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -34,15 +35,17 @@ public class BookActivity extends BaseActivity {
 		mPageView.setPage(pages[0], pages[1], pages[2]);
 		mPageView.setPageCallback(new PageCallback() {
 			@Override
-			public void onStart() {
-				Log.d("page-Callback", "true");
-				isScroll = true;
+			public void onStart(int lenPath0, int lenPath1) {
+				Log.d("activity-page-onStart", "true" + " " + lenPath0 + "," + lenPath1);
+				if (lenPath0 > 0 && lenPath1 > 0) {
+					// isScroll = true;
+				}
 			}
 
 			@Override
 			public void onStop() {
-				Log.d("page-Callback", "false");
-				isScroll = false;
+				Log.d("activity-page-onStop", "false");
+				// isScroll = false;
 			}
 
 			@Override
@@ -91,47 +94,60 @@ public class BookActivity extends BaseActivity {
 	 */
 	@Override
 	public boolean dispatchTouchEvent(MotionEvent event) {
-		Log.d("activity-dispatchTouch-", event.getX() + " - " + event.getY());
 		if (event.getAction() == MotionEvent.ACTION_DOWN) {
-			Log.d("event-", "----------------------------------------开始划屏");
+			Log.d("activity-event", "----------------------------------------开始划屏");
 			mPageView.stopScroll();
+			// isScroll = false;
 			showTip = false;
 			touchDownX = event.getX();
 			touchDownY = event.getY();
 		}
+
 		if (event.getAction() == MotionEvent.ACTION_MOVE) {
 			touchMoveX = event.getX();
 			if (touchMoveX - touchDownX > 0) {
+				int cornerPosition = mPageView.getCornerPosition(touchDownX, touchDownY, true);
+				Log.d("activity-measure------", touchDownX + "," + touchDownY + "," + (touchMoveX - touchDownX) + " , currentPage " + currentPage + " , " + cornerPosition);
 				// Log.d("dispatch-pm", mPageView.getPath0Lenght());
-				int cornerPosition = mPageView.getCornerPosition(touchDownX, touchDownY);
-				Log.d("activity-cornerXY", "拖拽点 " + cornerPosition);
-				Log.d("path_measure------", "isScroll " + isScroll + " , currentPage " + currentPage);
+				// int cornerPosition = mPageView.getCornerPosition(touchDownX,
+				// touchDownY, true);
+				// Log.d("activity-cornerXY", "拖拽点 " + cornerPosition);
 				// isScroll==false 滚动停止以后才判断. 防止翻页后取消之前的操作
-				if (isScroll == false && currentPage == 1 && (cornerPosition == 1 || cornerPosition == 3)) {
+				if (currentPage == 1 && cornerPosition == 1) {
 					if (showTip == false) {
 						showTip = true;
+						touchDownX = 0;// 注意, 如果是首页往右滑动 以后再往左侧滑动。会出问题
+						// mPageView.setTouchXY(0,0);
 						Alert.toast("已经是第一页了");
 					}
 					Log.d("activity-move", "--拦截--");
 					return false;
 				} else {
-					Log.d("activity-move", "传递move");
+					// isScroll = true;
+					Log.d("activity-move--向右", "传递move");
 				}
 			} else if (touchMoveX - touchDownX < 0) {
-				if (isScroll ==false && currentPage == 7) {
+				int cornerPosition = mPageView.getCornerPosition(touchDownX, touchDownY, false);
+				Log.d("activity-measure------", touchDownX + "," + touchDownY + "," + (touchMoveX - touchDownX) + " , currentPage " + currentPage + " , " + cornerPosition);
+				if (currentPage == 7 && cornerPosition != 1) {
 					if (showTip == false) {
 						showTip = true;
+						touchDownX = mPageView.getPageWidth();
 						Alert.toast("结尾了");
 					}
 					return false;
+				} else {
+					// isScroll = true;
+					Log.d("activity-move---向左", "传递move");
 				}
 			} else {
 				Log.d("activity-move", "传递move--------");
 			}
 		}
 		if (event.getAction() == MotionEvent.ACTION_UP) {
+			touchMoveX = 0;
 			if (touchMoveX - touchDownX > 0) {
-				if (isScroll == false && currentPage == 1) {
+				if (currentPage == 1) {
 					return false;
 				}
 			}
