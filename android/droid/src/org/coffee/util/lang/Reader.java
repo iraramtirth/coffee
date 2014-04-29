@@ -7,22 +7,26 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URL;
 
+/**
+ * 文件读取类
+ * 
+ * @author coffee <br>
+ *         2014年4月29日下午3:39:20
+ */
 public class Reader {
 	private BufferedReader in;
 	private String line;
 
 	public Reader(String file) {
 		try {
-			in = new BufferedReader(new InputStreamReader(new FileInputStream(
-					file)));
+			in = new BufferedReader(new InputStreamReader(new FileInputStream(file)));
 		} catch (FileNotFoundException e) {
 			URL url = this.getClass().getClassLoader().getResource("./" + file);
 			if (url != null) {
 				file = url.getFile();
 			}
 			try {
-				in = new BufferedReader(new InputStreamReader(
-						new FileInputStream(file)));
+				in = new BufferedReader(new InputStreamReader(new FileInputStream(file)));
 			} catch (FileNotFoundException e1) {
 				e1.printStackTrace();
 			}
@@ -43,7 +47,11 @@ public class Reader {
 		return null;
 	}
 
-	// 读取一个文件的全部内容
+	/**
+	 * 读取完毕,需要根据情况关闭流
+	 * 
+	 * @return
+	 */
 	public String readAll() {
 		String line = null;
 		StringBuilder sb = new StringBuilder();
@@ -51,6 +59,16 @@ public class Reader {
 			sb.append(line);
 		}
 		return sb.toString();
+	}
+
+	public void close() {
+		if (in != null) {
+			try {
+				in.close();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
 	}
 
 	public static void main(String[] args) {

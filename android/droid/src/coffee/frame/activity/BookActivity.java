@@ -5,6 +5,7 @@ import org.coffee.util.framework.Alert;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.util.DisplayMetrics;
 import android.view.MotionEvent;
 import coffee.frame.activity.base.BaseActivity;
 import coffee.frame.view.BaseBookPage.PageCallback;
@@ -23,14 +24,30 @@ public class BookActivity extends BaseActivity {
 
 	// private boolean isScroll = false;
 
+	private BookPageFactory bookPageFactory;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+
+		DisplayMetrics dm = new DisplayMetrics();
+		dm = this.getResources().getDisplayMetrics();
+		int screenWidth = dm.widthPixels;
+		int screenHeight = dm.heightPixels;
+		System.out.println("screenWidth = " + screenWidth + "; screenHeight = " + screenHeight);
+		//
+		BookConfig bookConfig = new BookConfig(this);
+		bookPageFactory = new BookPageFactory("金庸.txt", bookConfig);
+		//
 		mPageView = new BookPageView(this);
 		pages = new BookPage[3];
-		pages[0] = createPage(1);
-		pages[1] = createPage(1);// current page
-		pages[2] = createPage(2); //
+		pages[0] = init(screenWidth, screenHeight, 0);
+		pages[1] = init(screenWidth, screenHeight, 1);
+		pages[2] = init(screenWidth, screenHeight, 2);
+		//
+		bookPageFactory.updatePage(pages[0].getPageBitmap(), true);
+		bookPageFactory.updatePage(pages[1].getPageBitmap(), true);
+		bookPageFactory.updatePage(pages[2].getPageBitmap(), true);
 		//
 		mPageView.setPage(pages[0], pages[1], pages[2]);
 		mPageView.setPageCallback(new PageCallback() {
@@ -50,10 +67,12 @@ public class BookActivity extends BaseActivity {
 
 			@Override
 			public void onComplete(int action) {
+				if (action == 0) {
+					return;
+				}
 				currentPage += action;
 				if (currentPage == 0) {
 					currentPage = 1;
-					return;
 				}
 				// 翻到下一页
 				if (action > 0) {
@@ -158,6 +177,12 @@ public class BookActivity extends BaseActivity {
 	private BookPage createPage(int pageIndex) {
 		int res = getResources().getIdentifier("page_" + pageIndex, "drawable", this.getPackageName());
 		Bitmap pageBitmap = BitmapFactory.decodeResource(context.getResources(), res);
+		BookPage page = new BookPage(pageIndex, pageBitmap);
+		return page;
+	}
+
+	private BookPage init(int screenWidth, int screenHeight, int pageIndex) {
+		Bitmap pageBitmap = Bitmap.createBitmap(screenWidth, screenHeight, Bitmap.Config.ARGB_8888);
 		BookPage page = new BookPage(pageIndex, pageBitmap);
 		return page;
 	}
