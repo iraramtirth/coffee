@@ -9,8 +9,15 @@ import android.graphics.Bitmap;
  */
 public class BookPage {
 	private int index;
+	private int offsetFirst;
+	private int offsetLast;
 	private Bitmap pageBitmap;
 	private String pageText;
+
+	public BookPage(Bitmap pageBitmap) {
+		super();
+		this.pageBitmap = pageBitmap;
+	}
 
 	public BookPage(int index, Bitmap pageBitmap) {
 		super();
@@ -43,9 +50,25 @@ public class BookPage {
 		this.pageText = pageText;
 	}
 
+	public int getOffsetFirst() {
+		return offsetFirst;
+	}
+
+	public void setOffsetFirst(int offsetFirst) {
+		this.offsetFirst = offsetFirst;
+	}
+
+	public int getOffsetLast() {
+		return offsetLast;
+	}
+
+	public void setOffsetLast(int offsetLast) {
+		this.offsetLast = offsetLast;
+	}
+
 	@Override
 	public String toString() {
-		return index + "";
+		return index + ", [" + offsetFirst + ",\t" + offsetLast + "]";
 	}
 
 }

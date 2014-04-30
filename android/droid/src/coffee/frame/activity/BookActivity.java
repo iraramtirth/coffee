@@ -3,7 +3,6 @@ package coffee.frame.activity;
 import org.coffee.util.framework.Alert;
 
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.view.MotionEvent;
@@ -45,9 +44,9 @@ public class BookActivity extends BaseActivity {
 		pages[1] = init(screenWidth, screenHeight, 1);
 		pages[2] = init(screenWidth, screenHeight, 2);
 		//
-		bookPageFactory.updatePage(pages[0].getPageBitmap(), true);
-		bookPageFactory.updatePage(pages[1].getPageBitmap(), true);
-		bookPageFactory.updatePage(pages[2].getPageBitmap(), true);
+		// bookPageFactory.updatePage(pages[0].getPageBitmap(), true);
+		bookPageFactory.updatePage(pages[1], 0, true);
+		bookPageFactory.updatePage(pages[2], pages[1].getOffsetLast(), true);
 		//
 		mPageView.setPage(pages[0], pages[1], pages[2]);
 		mPageView.setPageCallback(new PageCallback() {
@@ -74,17 +73,29 @@ public class BookActivity extends BaseActivity {
 				if (currentPage == 0) {
 					currentPage = 1;
 				}
-				// 翻到下一页
-				if (action > 0) {
-					pages[0] = pages[1];
-					pages[1] = pages[2];
-					pages[2] = createPage(currentPage + 1);
-				} else {
-					pages[2] = pages[1];
-					pages[1] = pages[0];
-					pages[0] = createPage(currentPage - 1);
+				if (action > 0) { // 下一页
+					if (pages[2].getOffsetLast() >= bookPageFactory.getMaxOffset()) {
+						// 图书已结束
+					} else {
+						bookPageFactory.updatePage(pages[0], pages[2].getOffsetLast(), true);
+						mPageView.setPage(pages[1], pages[2], pages[0]);
+						BookPage tmp = pages[0];
+						pages[0] = pages[1];
+						pages[1] = pages[2];
+						pages[2] = tmp;
+					}
+				} else {// 查看上一页
+					if (pages[0].getOffsetFirst() <= 0) {
+						// 当前是首页
+					} else {
+						bookPageFactory.updatePage(pages[2], pages[0].getOffsetFirst(), false);
+						mPageView.setPage(pages[2], pages[0], pages[1]);
+						BookPage tmp = pages[0];
+						pages[0] = pages[2];
+						pages[2] = pages[1];
+						pages[1] = tmp;
+					}
 				}
-				mPageView.setPage(pages[0], pages[1], pages[2]);
 			}
 		});
 		setContentView(mPageView);
@@ -174,12 +185,14 @@ public class BookActivity extends BaseActivity {
 		return super.dispatchTouchEvent(event);
 	}
 
-	private BookPage createPage(int pageIndex) {
-		int res = getResources().getIdentifier("page_" + pageIndex, "drawable", this.getPackageName());
-		Bitmap pageBitmap = BitmapFactory.decodeResource(context.getResources(), res);
-		BookPage page = new BookPage(pageIndex, pageBitmap);
-		return page;
-	}
+	// private BookPage createPage(int pageIndex) {
+	// int res = getResources().getIdentifier("page_" + pageIndex, "drawable",
+	// this.getPackageName());
+	// Bitmap pageBitmap = BitmapFactory.decodeResource(context.getResources(),
+	// res);
+	// BookPage page = new BookPage(pageIndex, pageBitmap);
+	// return page;
+	// }
 
 	private BookPage init(int screenWidth, int screenHeight, int pageIndex) {
 		Bitmap pageBitmap = Bitmap.createBitmap(screenWidth, screenHeight, Bitmap.Config.ARGB_8888);

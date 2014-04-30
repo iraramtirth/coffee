@@ -10,9 +10,9 @@ import java.nio.channels.FileChannel;
 
 import org.coffee.util.lang.Reader;
 
-import coffee.frame.Config;
-import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import coffee.frame.Config;
+import coffee.utils.log.Log;
 
 /**
  * 
@@ -23,7 +23,7 @@ public class BookPageFactory {
 	/**
 	 * 缓存路径
 	 */
-	private String path = Config.getCacheDir();
+	private String path = Config.getBookDir();
 	/**
 	 * 书名。书籍缓存在new File(path, bookName)目录下
 	 */
@@ -47,6 +47,8 @@ public class BookPageFactory {
 	private CharBuffer charBuffer;
 	// 缓存的最大值 ,暂定位最大缓存10M
 	private int maxSize = 10 * 1024 * 1024;
+	// 图书的最大偏移量,用于判断翻页是否结束
+	private int maxOffset;
 
 	public BookPageFactory(String bookName, BookConfig bookConfig) {
 		// this.bookName = bookName;
@@ -58,6 +60,7 @@ public class BookPageFactory {
 			Reader reader = new Reader(bookFile.getPath());
 			String bookContent = reader.readAll();
 			reader.close();
+			maxOffset = bookContent.length();
 			File bookBuffer = new File(path, bookName + ".buffer");
 			randomFile = new RandomAccessFile(bookBuffer, "rw");
 			// 最大支持10M
@@ -116,12 +119,15 @@ public class BookPageFactory {
 	 * @param isNext
 	 *            是否绘制下一页数据
 	 */
-	public void updatePage(Bitmap pageBitmap, boolean isNext) {
+	public void updatePage(BookPage bookPage, int offset, boolean isNext) {
 		// 每行显示的字数
 		int lineFontNums = bookConfig.getLineFontNum();
-		Canvas canvas = new Canvas(pageBitmap);
+		Canvas canvas = new Canvas(bookPage.getPageBitmap());
+		canvas.drawColor(bookConfig.getBackColor());
+		Log.d("bookFactory", " -  -  - - - - -  - - - - - - - - - - - - - ");
+		this.offsetFirst = offset;
+		this.offsetLast = offset;
 		if (isNext) {
-			this.offsetFirst = offsetLast;
 			float y = bookConfig.getMarginHeight();
 			StringBuilder line = new StringBuilder();
 			while (true) {
@@ -132,35 +138,59 @@ public class BookPageFactory {
 				}
 				for (int i = 0; i < lineFontNums; i++) {
 					char ch = charBuffer.get(offsetLast);
-					offsetLast = charBuffer.position();
 					line.append(ch);
+					// 移动下标
+					offsetLast = offsetLast + 1;
+					charBuffer.position(offsetLast);
 					if ("\n".equals(ch)) {
 						break;
 					}
 				}
+				Log.d("bookFactory-line-next", line);
 				canvas.drawText(line.toString(), bookConfig.getMarginWidth(), y, bookConfig.getmPaint());
 			}
+			Log.d("bookFactory-pointer-next", offsetFirst + "," + offsetLast + "\n");
 		} else {
-			this.offsetLast = offsetFirst;
-			float y = bookConfig.getMarginHeight() + bookConfig.getVisibleHeight();
-			StringBuilder line = new StringBuilder();
-			while (true) {
-				line.setLength(0);
-				for (int i = 0; i < lineFontNums; i++) {
-					char ch = charBuffer.get(offsetLast - 1);
-					offsetFirst = charBuffer.position();
-					line.insert(0, ch);
-					if ("\n".equals(ch)) {
+			// 当前是第一页,前一页已经木有数据了
+			if (offsetFirst == 0 && offsetLast == 0) {
+				// 此时pages数组的位移情况大概为 [0,160] [160,320] [320-480]
+				// 绘制结束以后为[0,0] [0,160] [160,320]
+			} else {
+				// 因为第一次循环会减去bookConfig.getFontSize()。所以初始值先加上
+				float y = bookConfig.getMarginHeight() + bookConfig.getVisibleHeight();
+				StringBuilder line = new StringBuilder();
+				while (true) {
+					line.setLength(0);
+					if (y < bookConfig.getFontSize() + bookConfig.getMarginHeight()) {
 						break;
 					}
+					for (int i = 0; i < lineFontNums; i++) {
+						char ch = charBuffer.get(offsetFirst - 1);
+						line.insert(0, ch);
+						offsetFirst = offsetFirst - 1;
+						charBuffer.position(offsetFirst);
+						if ("\n".equals(ch)) {
+							break;
+						}
+					}
+					y -= bookConfig.getFontSize();
+					Log.d("bookFactory-line-pre", line);
+					canvas.drawText(line.toString(), bookConfig.getMarginWidth(), y, bookConfig.getmPaint());
 				}
-				y -= bookConfig.getFontSize();
-				if (y < bookConfig.getMarginHeight()) {
-					break;
-				}
-				canvas.drawText(line.toString(), bookConfig.getMarginWidth(), y, bookConfig.getmPaint());
+				Log.d("bookFactory-pointer-pre", offsetFirst + "," + offsetLast + "\n");
 			}
 		}
+		//
+		bookPage.setOffsetFirst(offsetFirst);
+		bookPage.setOffsetLast(offsetLast);
+	}
 
+	/**
+	 * 返回当前图书内容的最大偏移量, 即图片内容长度
+	 * 
+	 * @return
+	 */
+	public int getMaxOffset() {
+		return this.maxOffset;
 	}
 }

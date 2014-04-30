@@ -1,15 +1,18 @@
 package coffee.frame.activity;
 
+import org.coffee.util.framework.Measurer;
+
 import android.app.Activity;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Paint.Align;
 import android.util.DisplayMetrics;
+import coffee.utils.log.Log;
 
 public class BookConfig {
-	private int fontSize = 18;
+	private int fontSize = 40;
 	private int textColor = Color.BLACK;
-	private int backColor = 0xffff9e85; // 背景颜色
+	private int backColor = 0xffbb9e85; // 背景颜色
 	private int marginWidth = 15; // 左右与边缘的距离
 	private int marginHeight = 20; // 上下与边缘的距离
 
@@ -27,14 +30,18 @@ public class BookConfig {
 		context.getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
 		this.mWidth = displayMetrics.widthPixels; // Pager 宽和高
 		this.mHeight = displayMetrics.heightPixels;
+	
 		mPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
 		mPaint.setTextAlign(Align.LEFT);
 		mPaint.setTextSize(fontSize);
 		mPaint.setColor(textColor);
 		visibleWidth = mWidth - marginWidth * 2;
-		visibleHeight = mHeight - marginHeight * 2;
+		visibleHeight = mHeight - marginHeight * 2 - new Measurer().getStatusBarHeight(context);
 		lineCount = (int) (visibleHeight / fontSize); // 可显示的行数
 		lineFontNum = (int) (visibleWidth / fontSize);
+		Log.d("bookConfig", "fontSize: " + fontSize + " , marginWidth: " + marginWidth + ", marginHeight: " + marginHeight);
+		Log.d("bookConfig", "lineCount: " + lineCount + " , lineFontNum: " + lineFontNum);
+		Log.d("bookConfig", "visibleHeight: " + visibleHeight + " , visibleWidth: " + visibleWidth);
 	}
 
 	public int getFontSize() {

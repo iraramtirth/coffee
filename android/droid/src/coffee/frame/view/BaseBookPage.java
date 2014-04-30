@@ -131,7 +131,7 @@ public abstract class BaseBookPage extends View {
 		mPages[0] = prePage;
 		mPages[1] = currentPage;
 		mPages[2] = nextPage;
-		Log.d("BookPage--设置Page", mPages[0] + "  ---  " + mPages[1] + "  ---  " + mPages[2]);
+		Log.d("BookPage--设置Page", mPages[0] + "  \t  " + mPages[1] + "  \t  " + mPages[2]);
 	}
 
 	public void setPageCallback(PageCallback callback) {

@@ -45,6 +45,18 @@ public class Config {
 		Log.d("config:cache", dir);
 		return dir;
 	}
+	
+	public final static String getBookDir(){
+		String dir = "";
+		if (cacheOnlyInSD || Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState())) {
+			dir = APP_BASE + "/book";
+		} else {
+			// /data/data/package/cache
+			dir = App.getContext().getDir("book", 0).getAbsolutePath();
+		}
+		Log.d("config:cache", dir);
+		return dir;
+	}
 
 	/**
 	 * 拍照保存的目录
