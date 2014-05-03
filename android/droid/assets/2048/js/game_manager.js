@@ -13,92 +13,6 @@ function GameManager(size, InputManager, Actuator, ScoreManager) {
   this.setup();
 }
 
-// Restart the game
-GameManager.prototype.restart = function () {
-  this.actuator.continue();
-  this.setup();
-};
-
-// Keep playing after winning
-GameManager.prototype.keepPlaying = function () {
-  this.keepPlaying = true;
-  this.actuator.continue();
-};
-
-GameManager.prototype.isGameTerminated = function () {
-  if (this.over || (this.won && !this.keepPlaying)) {
-    return true;
-  } else {
-    return false;
-  }
-};
-
-// Set up the game
-GameManager.prototype.setup = function () {
-  this.grid        = new Grid(this.size);
-
-  this.score       = 0;
-  this.over        = false;
-  this.won         = false;
-  this.keepPlaying = false;
-
-  // Add the initial tiles
-  this.addStartTiles();
-
-  // Update the actuator
-  this.actuate();
-};
-
-// Set up the initial tiles to start the game with
-GameManager.prototype.addStartTiles = function () {
-  for (var i = 0; i < this.startTiles; i++) {
-    this.addRandomTile();
-  }
-};
-
-// Adds a tile in a random position
-GameManager.prototype.addRandomTile = function () {
-  if (this.grid.cellsAvailable()) {
-    var value = Math.random() < 0.9 ? 2 : 4;
-    var tile = new Tile(this.grid.randomAvailableCell(), value);
-
-    this.grid.insertTile(tile);
-  }
-};
-
-// Sends the updated grid to the actuator
-GameManager.prototype.actuate = function () {
-  if (this.scoreManager.get() < this.score) {
-    this.scoreManager.set(this.score);
-  }
-
-  this.actuator.actuate(this.grid, {
-    score:      this.score,
-    over:       this.over,
-    won:        this.won,
-    bestScore:  this.scoreManager.get(),
-    terminated: this.isGameTerminated()
-  });
-
-};
-
-// Save all tile positions and remove merger info
-GameManager.prototype.prepareTiles = function () {
-  this.grid.eachCell(function (x, y, tile) {
-    if (tile) {
-      tile.mergedFrom = null;
-      tile.savePosition();
-    }
-  });
-};
-
-// Move a tile and its representation
-GameManager.prototype.moveTile = function (tile, cell) {
-  this.grid.cells[tile.x][tile.y] = null;
-  this.grid.cells[cell.x][cell.y] = tile;
-  tile.updatePosition(cell);
-};
-
 // Move tiles on the grid in the specified direction
 GameManager.prototype.move = function (direction) {
   // 0: up, 1: right, 2:down, 3: left
@@ -161,6 +75,87 @@ GameManager.prototype.move = function (direction) {
 
     this.actuate();
   }
+};
+// Restart the game
+GameManager.prototype.restart = function () {
+  this.actuator.continue();
+  this.setup();
+};
+
+// Keep playing after winning
+GameManager.prototype.keepPlaying = function () {
+  this.keepPlaying = true;
+  this.actuator.continue();
+};
+
+GameManager.prototype.isGameTerminated = function () {
+  if (this.over || (this.won && !this.keepPlaying)) {
+    return true;
+  } else {
+    return false;
+  }
+};
+
+// Set up the game
+GameManager.prototype.setup = function () {
+  this.grid        = new Grid(this.size);
+
+  this.score       = 0;
+  this.over        = false;
+  this.won         = false;
+  this.keepPlaying = false;
+
+  // Add the initial tiles
+  for (var i = 0; i < this.startTiles; i++) {
+    this.addRandomTile();
+  }
+
+  // Update the actuator
+  this.actuate();
+};
+
+
+// Adds a tile in a random position
+GameManager.prototype.addRandomTile = function () {
+  if (this.grid.cellsAvailable()) {
+    var value = Math.random() < 0.9 ? 2 : 4;
+    var tile = new Tile(this.grid.randomAvailableCell(), value);
+
+    this.grid.insertTile(tile);
+  }
+};
+
+// Sends the updated grid to the actuator
+GameManager.prototype.actuate = function () {
+  if (this.scoreManager.get() < this.score) {
+    this.scoreManager.set(this.score);
+  }
+
+  this.actuator.actuate(this.grid, {
+    score:      this.score,
+    over:       this.over,
+    won:        this.won,
+    bestScore:  this.scoreManager.get(),
+    terminated: this.isGameTerminated()
+  });
+
+};
+
+// Save all tile positions and remove merger info
+GameManager.prototype.prepareTiles = function () {
+  this.grid.eachCell(function (x, y, tile) {
+    if (tile) {
+      tile.mergedFrom = null;
+      tile.savePosition();
+    }
+  });
+};
+
+// Move a tile and its representation
+GameManager.prototype.moveTile = function (tile, cell) {
+  this.grid.cells[tile.x][tile.y] = null;
+  this.grid.cells[cell.x][cell.y] = tile;
+  tile.updatePosition(cell);
 };
 
 // Get the vector representing the chosen direction

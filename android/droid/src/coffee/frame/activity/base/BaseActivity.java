@@ -195,7 +195,7 @@ public abstract class BaseActivity extends FrameBaseActivity {
 	}
 
 	private void handleTitle(View view, TitleRes res, int position) {
-		if (res == null) {
+		if (res == null || view == null) {
 			if(view != null){
 				view.setVisibility(View.INVISIBLE);
 			}

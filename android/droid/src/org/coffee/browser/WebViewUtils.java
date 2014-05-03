@@ -9,72 +9,62 @@ import android.util.Base64;
 
 /**
  * webview的相关工具类
+ * 
  * @author coffee
  */
-@SuppressLint("NewApi") public class WebViewUtils {
-	
-	
-	protected static String metaLow = "<meta name=\"viewport\" "
-		+ " content=\"user-scalable=0; width=device-width; "
-		+ " initial-scale=0.75; maximum-scale=1.5; target-densitydpi=low-dpi\" />";
+@SuppressLint("NewApi")
+public class WebViewUtils {
 
-	protected static String metaMedium = "<meta name=\"viewport\" "
-		+ " content=\"user-scalable=0; width=device-width; "
-		+ " initial-scale=1; maximum-scale=1.5; target-densitydpi=medium-dpi\" />";
-	
-	protected static String metaHign = "<meta name=\"viewport\" "
-		+ " content=\"user-scalable=0; width=device-width; "
-		+ " initial-scale=1.5; maximum-scale=1.5; target-densitydpi=hign-dpi\" />";
-	
-	protected static String cssRemoveHighLight = "* { "+
-		" -webkit-tap-highlight-color: rgba(0, 0, 0, 0); "+	//去掉高亮的边框
-		" }";
-	
+	protected static String metaLow = "<meta name=\"viewport\" " + " content=\"user-scalable=0; width=device-width; " + " initial-scale=0.75; maximum-scale=1.5; target-densitydpi=low-dpi\" />";
+
+	protected static String metaMedium = "<meta name=\"viewport\" " + " content=\"user-scalable=0; width=device-width; " + " initial-scale=1; maximum-scale=1.5; target-densitydpi=medium-dpi\" />";
+
+	protected static String metaHign = "<meta name=\"viewport\" " + " content=\"user-scalable=0; width=device-width; " + " initial-scale=1.5; maximum-scale=1.5; target-densitydpi=hign-dpi\" />";
+
+	protected static String cssRemoveHighLight = "* { " + " -webkit-tap-highlight-color: rgba(0, 0, 0, 0); " + // 去掉高亮的边框
+			" }";
+
 	private static String charset = "UTF-8";
 	private static String mimeType = "text/html";
 	private static StringBuilder doc = new StringBuilder();
-	
+
 	/**
-	 * 解析url
-	 * 将URl转化成标准的格式  http://domain
-	 * 如果以ftp开头则忽略
+	 * 解析url 将URl转化成标准的格式 http://domain 如果以ftp开头则忽略
 	 */
-	public static String parserUrl(String base, String url){
-		if(url == null){
+	public static String parserUrl(String base, String url) {
+		if (url == null) {
 			return url;
 		}
-		if(url.startsWith("/")){
+		if (url.startsWith("/")) {
 			url = base + url;
 		}
-		if(url.startsWith("http://")){
-			return url; 
+		if (url.startsWith("http://")) {
+			return url;
 		}
-		if(url.startsWith("ftp://")){
+		if (url.startsWith("ftp://")) {
 			return url;
 		}
 		url = "http://" + url;
 		return url;
 	}
-	
+
 	private final static String digits = "0123456789ABCDEF";
+
 	// doc = doc.replace("#", "%23");
 	// doc = doc.replace("%", "%25");
 	// doc = doc.replace("\\", "%27");
 	// doc = doc.replace("?", "%3f");
 	/**
-	 * webView.loadData(data,....)
-	 * 第一个参数官方给的解释
-	 * data A String of data in the given encoding. 
-	 * The date must be URI-escaped -- '#', '%', '\', '?' should be replaced by %23, %25, %27, %3f respectively.
-	 * 但是搞不懂为啥要这样编码
+	 * webView.loadData(data,....) 第一个参数官方给的解释 data A String of data in the
+	 * given encoding. The date must be URI-escaped -- '#', '%', '\', '?' should
+	 * be replaced by %23, %25, %27, %3f respectively. 但是搞不懂为啥要这样编码
 	 */
 	public static String encode(String s) {
 		// Guess a bit bigger for encoded form
 		StringBuilder buf = new StringBuilder(s.length() + 16);
 		for (int i = 0; i < s.length(); i++) {
 			char ch = s.charAt(i);
-			if ((ch >= 'a' && ch <= 'z') || (ch >= 'A' && ch <= 'Z')
-					|| (ch >= '0' && ch <= '9') || ".-*_".indexOf(ch) > -1) { //$NON-NLS-1$   
+			if ((ch >= 'a' && ch <= 'z') || (ch >= 'A' && ch <= 'Z') || (ch >= '0' && ch <= '9') || ".-*_".indexOf(ch) > -1) { //$NON-NLS-1$   
 				buf.append(ch);
 			} else {
 				byte[] bytes = new String(new char[] { ch }).getBytes();
@@ -87,7 +77,7 @@ import android.util.Base64;
 		}
 		return buf.toString();
 	}
-	
+
 	/**
 	 * @param oriHtml
 	 *            : 原始html
@@ -99,44 +89,45 @@ import android.util.Base64;
 		if (doc.indexOf("</head>") > 0) {
 			doc.insert(doc.indexOf("</head>"), metaLow);
 		}
-		if(doc.indexOf("</style>") > 0){
+		if (doc.indexOf("</style>") > 0) {
 			doc.insert(doc.indexOf("</style>"), cssRemoveHighLight);
 		}
 		return doc.toString();
 	}
 
-	
 	/**
 	 * @param url
-	 *            
+	 * 
 	 * @return : 返回网页的标题<title></title>
 	 */
 	public static String loadUrl(BrowserActivity context, String linkUrl) {
 		String title = "";
 		try {
 			String doc = "";
-			//本地assets目录中读取
-			if(linkUrl.startsWith("file:///android_asset/")){
-				
+			// 本地assets目录中读取
+			if (linkUrl.startsWith("file:///android_asset/")) {
+				context.getWebView().loadUrl(linkUrl);
 			}
-			//查看图片
-			else if(linkUrl.matches(".+?\\.(jpg|gif|jpeg|png)+.*?")){
-				charset = null;
-				byte[] data = (byte[]) new HttpClient().get(linkUrl, 1); 
-				doc = Base64.encodeToString(data, Base64.DEFAULT);
-				doc = "<img src=\"data:image/jpeg;base64," + doc + "\" />";
-			}else{
-				doc = handleHtml(new HttpClient().get(linkUrl) + "");
-				title = RegexUtils.match(doc, "<title>(.+?)</title>",1);
-				charset = "utf-8";	
+			// 查看图片
+			else {
+				if (linkUrl.matches(".+?\\.(jpg|gif|jpeg|png)+.*?")) {
+					charset = null;
+					byte[] data = (byte[]) new HttpClient().get(linkUrl, 1);
+					doc = Base64.encodeToString(data, Base64.DEFAULT);
+					doc = "<img src=\"data:image/jpeg;base64," + doc + "\" />";
+				} else {
+					doc = handleHtml(new HttpClient().get(linkUrl) + "");
+					title = RegexUtils.match(doc, "<title>(.+?)</title>", 1);
+					charset = "utf-8";
+				}
+				// 即使记录
+				BrowserHistory.put(linkUrl, doc);
+				context.getWebView().loadDataWithBaseURL(linkUrl, doc, mimeType, charset, linkUrl);
 			}
-			//即使记录
-			BrowserHistory.put(linkUrl, doc);
-			context.getWebView().loadDataWithBaseURL(linkUrl, doc, mimeType, charset, linkUrl);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		return title;
 	}
-	
+
 }

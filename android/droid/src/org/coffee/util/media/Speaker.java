@@ -1,8 +1,9 @@
 package org.coffee.util.media;
 
+import org.coffee.App;
+
 import android.content.Context;
 import android.media.AudioManager;
-import coffee.frame.App;
 
 /**
  * 扬声器

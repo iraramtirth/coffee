@@ -10,6 +10,19 @@ function HTMLActuator() {
 HTMLActuator.prototype.actuate = function (grid, metadata) {
   var self = this;
 
+	var data = "";
+  		for (var x = 0; x < size; x++) {
+		   for (var y = 0; y < size; y++) {
+		   		if(grid.cells[x][y] != null){
+		   			data +=  grid.cells[x][y].value + " ";
+		   		}else{
+		   			data +=  0 + " ";
+		   		}
+		   }
+		   data +=  "["+x+"]\n";
+		}  	
+		//alert(data);
+
   window.requestAnimationFrame(function () {
     self.clearContainer(self.tileContainer);
 
@@ -62,6 +75,7 @@ HTMLActuator.prototype.addTile = function (tile) {
   this.applyClasses(wrapper, classes);
 
   inner.classList.add("tile-inner");
+  //alert(tile.value);
   inner.textContent = tile.value;
 
   if (tile.previousPosition) {

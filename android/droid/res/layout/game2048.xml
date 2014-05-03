@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="#FFFFFF"
+    android:orientation="vertical">
+    <LinearLayout
+        android:id="@+id/bottom_layout"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal">
+        <Button
+            android:id="@+id/history_save"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="保存进度"/>
+        <Button
+            android:id="@+id/history_load"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="读取进度"/>
+    </LinearLayout>
+    <WebView
+        android:id="@+id/webview"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"/>
+</LinearLayout>

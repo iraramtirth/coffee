@@ -11,10 +11,11 @@
  */
 package coffee.frame.imagescan;
 
+import org.coffee.App;
+
 import android.database.Cursor;
 import android.net.Uri;
 import android.provider.MediaStore;
-import coffee.frame.App;
 import coffee.utils.log.Log;
 
 /**

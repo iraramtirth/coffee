@@ -3,11 +3,13 @@ function KeyboardInputManager() {
 
   this.listen();
 }
-
+//"move", this.move.bind(this)
 KeyboardInputManager.prototype.on = function (event, callback) {
+  //alert(event + " " + !this.events[event] + " " + callback);
   if (!this.events[event]) {
     this.events[event] = [];
   }
+  //alert(this.events);
   this.events[event].push(callback);
 };
 

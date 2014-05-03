@@ -24,23 +24,18 @@
             android:name="coffee.frame.activity.BookActivity"
             android:configChanges="orientation|keyboardHidden"
             android:label="@string/app_name">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
-                <category android:name="android.intent.category.LAUNCHER"/>
-            </intent-filter>
         </activity>
         <activity
-            android:name="org.coffee.browser.activity.BrowserActivity"
+            android:name="coffee.frame.activity.Game2048Activity"
             android:label="webview">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-        <activity android:name="org.coffee.activity.ActivityCycle_A">
-        </activity>
-        <activity android:name="org.coffee.activity.ActivityCycle_B">
-        </activity>
+        <activity android:name="coffee.frame.activity.Game2048HistoryActivity"/>
+        <activity android:name="org.coffee.activity.ActivityCycle_A"/>
+        <activity android:name="org.coffee.activity.ActivityCycle_B"/>
         <provider
             android:name="org.coffee.provider.AppContentProvider"
             android:authorities="coffee.provider.AppContentProvider"

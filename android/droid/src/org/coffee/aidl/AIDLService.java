@@ -19,7 +19,7 @@ public class AIDLService extends Service {
 	public void onCreate() {
 		super.onCreate();
 		Log.d(TAG, "onCreate");
-		Log.d(TAG, App.count + "");
+		//Log.d(TAG, App.count + "");
 	}
 
 	@Override

@@ -2,29 +2,33 @@ package org.coffee;
 
 import android.app.Application;
 import android.content.Context;
-import android.util.Log;
+import android.os.Handler;
 
 /**
- * ContentProvider的初始化位于Application之前
  * 
  * @author coffee
+ * 
+ *         2013年12月13日下午4:48:36
  */
 public class App extends Application {
-	private final String TAG = App.class.getCanonicalName();
+	public static final String DB_NAME = "coffee";
+
 	private static Context context;
-	public static final String DB_NAME = "COFFEE";
-
-	public static int count = 100;
-
+	
+	private static Handler mHandler;
 	@Override
 	public void onCreate() {
-		Log.i(TAG, "onCreate application....");
 		context = this;
-		//Thread.setDefaultUncaughtExceptionHandler(new CrashHandler(this));
+		mHandler = new Handler(){
+			
+		};
 	}
-
-	public static Context getContext() {
+	
+	public static Context getContext(){
 		return context;
 	}
-
+	
+	public static Handler getHandler(){
+		return mHandler;
+	}
 }

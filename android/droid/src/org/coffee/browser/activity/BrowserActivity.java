@@ -2,6 +2,7 @@ package org.coffee.browser.activity;
 
 import org.coffee.browser.WebViewUtils;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -17,6 +18,7 @@ import android.webkit.WebViewClient;
  * 
  * @author coffee
  */
+@SuppressLint("SetJavaScriptEnabled")
 public class BrowserActivity extends Activity {
 
 	protected BrowserActivity context;
@@ -28,12 +30,10 @@ public class BrowserActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		context = this;
 		super.onCreate(savedInstanceState);
-
 		this.requestWindowFeature(Window.FEATURE_PROGRESS);
 		this.setProgressBarVisibility(true);
 
-		this.mWebView = new WebView(this);
-		this.setContentView(mWebView);
+		this.mWebView = createWebView();
 
 		mWebSettings = mWebView.getSettings();
 		// 开启js支持， 否则无法单击网页中的button。 即无法提交表单等操作
@@ -42,6 +42,7 @@ public class BrowserActivity extends Activity {
 		mWebSettings.setSupportZoom(true);
 		mWebSettings.setBuiltInZoomControls(true);
 		mWebSettings.setUseWideViewPort(true);// 设置无限缩放、
+		mWebSettings.setDefaultTextEncodingName("gbk");
 		mWebView.setInitialScale(50);
 		// mWebView.addJavascriptInterface(obj, interfaceName)
 
@@ -52,6 +53,12 @@ public class BrowserActivity extends Activity {
 
 	}
 
+	protected WebView createWebView() {
+		WebView webView = new WebView(this);
+		this.setContentView(mWebView);
+		return webView;
+	}
+
 	/**
 	 * 后退
 	 */
@@ -59,8 +66,7 @@ public class BrowserActivity extends Activity {
 	public boolean dispatchKeyEvent(KeyEvent event) {
 		switch (event.getKeyCode()) {
 		case KeyEvent.KEYCODE_BACK:
-			if (event.getAction() == KeyEvent.ACTION_DOWN
-					&& event.getRepeatCount() == 0) {
+			if (event.getAction() == KeyEvent.ACTION_DOWN && event.getRepeatCount() == 0) {
 				if (mWebView.canGoBack()) {
 					mWebView.goBack();
 				} else {// 退出系统
@@ -81,8 +87,6 @@ public class BrowserActivity extends Activity {
 
 	protected void loadUrl(String url) {
 		WebViewUtils.loadUrl(context, url);
-		//mWebView.loadUrl("file:///android_asset/test.html");
-		mWebView.loadUrl(url);
 		mWebView.setWebChromeClient(new WebChromeClient() {
 			@Override
 			public void onProgressChanged(WebView view, int progress) {
@@ -95,8 +99,7 @@ public class BrowserActivity extends Activity {
 
 		mWebView.setWebViewClient(new WebViewClient() {
 			@Override
-			public boolean shouldOverrideUrlLoading(WebView view,
-					final String url) {
+			public boolean shouldOverrideUrlLoading(WebView view, final String url) {
 				// 异步加载网页
 				new AsyncTask<Void, Void, Void>() {
 					@Override
@@ -119,8 +122,7 @@ public class BrowserActivity extends Activity {
 			}
 
 			@Override
-			public void onReceivedError(WebView view, int errorCode,
-					String description, String failingUrl) {
+			public void onReceivedError(WebView view, int errorCode, String description, String failingUrl) {
 				super.onReceivedError(view, errorCode, description, failingUrl);
 			}
 		});

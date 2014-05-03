@@ -1,5 +1,7 @@
 package coffee.frame;
 
+import org.coffee.App;
+
 import android.os.Environment;
 import coffee.utils.log.Log;
 
