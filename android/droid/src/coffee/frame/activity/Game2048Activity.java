@@ -4,7 +4,6 @@ import java.util.ArrayList;
 
 import org.coffee.R;
 import org.coffee.browser.activity.BrowserActivity;
-import org.coffee.util.framework.Alert;
 import org.coffee.util.lang.ObjectSerialize;
 
 import android.content.Intent;
@@ -69,7 +68,7 @@ public class Game2048Activity extends BrowserActivity {
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		if (resultCode == RESULT_OK && data != null) {
 			String item = data.getStringExtra("data");
-			Alert.toast(item);
+			//Alert.toast(item);
 			mWebView.loadUrl("javascript:loadHistory('" + item + "');");
 		}
 	}
