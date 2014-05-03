@@ -46,6 +46,7 @@
 		   		if(cell != null){
 		   		 	cells[x][y] = cell.value;
 		   		 	gameData += cell.value + ",";
+		   		 	gameData += cell.previousPosition + "-" + cell.mergedFrom + ",";
 		   		}else{
 		   			cells[x][y] = null;
 		   			gameData += 0 + ",";
@@ -53,6 +54,7 @@
 		   }
 		   gameData += ";";
 		}
+		alert(gameData);
 		window.android.save(gameData);
   	}
   	/**
