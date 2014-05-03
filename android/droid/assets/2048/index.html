@@ -46,7 +46,12 @@
 		   		if(cell != null){
 		   		 	cells[x][y] = cell.value;
 		   		 	gameData += cell.value + ",";
-		   		 	gameData += cell.previousPosition + "-" + cell.mergedFrom + ",";
+		   		 	gameData += cell.previousPosition + " ";
+		   		 	if(cell.mergedFrom != null){
+		   		 		gameData += + " -- " + cell.mergedFrom[0] + "," + cell.mergedFrom[1];
+		   		 	}else{
+						gameData += + " - null";		   		 	
+		   		 	}
 		   		}else{
 		   			cells[x][y] = null;
 		   			gameData += 0 + ",";
@@ -61,7 +66,7 @@
   	 * 记载历史记录 
   	 * @returns {} 
   	 */
-  	function loadHistory(gameData){
+  	function loadHistory(){
   		//alert(gameData);
   		//分割成四列
   		var cols = gameData.split(",;");
