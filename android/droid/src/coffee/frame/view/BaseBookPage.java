@@ -289,10 +289,15 @@ public abstract class BaseBookPage extends View {
 			mPreTouchX = mTouch.x;
 			mTouch.x = event.getX();
 			mTouch.y = event.getY();
+			// 第一次滑动的时候 下列条件==true. 忽略该次操作
+			if (mPreTouchX == mWidth) {
+				return true;
+			}
 			// 往右滑动
 			if (mTouch.x - mPreTouchX > 0) {
 				if (isFlipToRight == false) {
-					pageAction--;
+					setPageAction(getPageAction() - 1);
+					Log.d("BookPage--", " pageAction - 1 == " + getPageAction() + " - " + mPreTouchX + "," + mTouch.x);
 				}
 				isFlipToRight = true;
 				isFlipToLeft = false;
@@ -300,7 +305,8 @@ public abstract class BaseBookPage extends View {
 			// 向左滑动
 			else if (mPreTouchX - mTouch.x > 0) {
 				if (isFlipToLeft == false) {
-					pageAction++;
+					setPageAction(getPageAction() + 1);
+					Log.d("BookPage--", " pageAction + 1 == " + getPageAction() + " - " + mPreTouchX + "," + mTouch.x);
 				}
 				isFlipToLeft = true;
 				isFlipToRight = false;
@@ -333,8 +339,16 @@ public abstract class BaseBookPage extends View {
 			// firstMove = true;
 			this.postInvalidate();
 		}
-		Log.d("pageAction", pageAction);
+		Log.d("pageAction", getPageAction());
 		return true;
+	}
+
+	private void setPageAction(int pageAction) {
+		this.pageAction = pageAction;
+	}
+
+	private int getPageAction() {
+		return this.pageAction;
 	}
 
 	/**
@@ -374,8 +388,8 @@ public abstract class BaseBookPage extends View {
 		if (mScroller != null) {
 			Log.d("view-stopScroll", "停止");
 			mScroller.abortAnimation();
-			if(this.mPageCallback != null){
-				this.mPageCallback.onComplete(pageAction);
+			if (this.mPageCallback != null) {
+				this.mPageCallback.onComplete(getPageAction());
 			}
 			onReset();
 			postInvalidate();
@@ -384,15 +398,17 @@ public abstract class BaseBookPage extends View {
 
 	private void onReset() {
 		Log.d("view", "------reset-------");
-		mTouch.x = mWidth;
-		mTouch.y = mHeight;
+		// mTouch.x = mWidth;
+		// mTouch.y = mHeight;
 		mCornerX = mWidth;
 		mCornerY = mHeight;
 
 		firstMove = true;
 		isFlipToLeft = false;
 		isFlipToRight = false;
-		pageAction = 0;
+		//
+		setPageAction(0);
+		Log.d("BookPage--", " reset PageAction  == " + getPageAction());
 		//
 		mPath0.reset();
 		mPath0.moveTo(0, 0);
@@ -415,8 +431,9 @@ public abstract class BaseBookPage extends View {
 			if (mWidth - Math.abs(mTouch.x) <= 1) {
 				if (this.mPageCallback != null) {
 					this.mPageCallback.onStop();
-					if (pageAction != 0) {
-						this.mPageCallback.onComplete(pageAction > 0 ? 1 : -1);
+					Log.d("BookPage--onComplete", " stop " + this.getPageAction());
+					if (getPageAction() != 0) {
+						this.mPageCallback.onComplete(getPageAction() > 0 ? 1 : -1);
 						onReset();// 注意需要先reset然后再post
 						postInvalidate();
 					}
@@ -443,9 +460,9 @@ public abstract class BaseBookPage extends View {
 			mTouch.x = mWidth;
 			mTouch.y = mHeight;
 		}
-		Log.d("onDraw", "绘屏" + mCornerX + "," + mCornerY + " , " + isFlipToLeft + "," + isFlipToRight);
+		Log.d("onDraw", "绘屏" + mCornerX + "," + mCornerY + " , " + firstMove + " -- " + isFlipToLeft + "," + isFlipToRight);
 		// 右滑--查看前一页
-		if (mCornerX == 0 && mCornerY == mHeight / 2) {
+		if (mCornerX == 0 && mCornerY == mHeight / 2 && (isFlipToLeft || isFlipToRight)) {
 			mCurPageBitmap = mPages[0].getPageBitmap();
 			mNextPageBitmap = mPages[1].getPageBitmap();
 			Log.d("BookPage-onDraw-right", mPages[0] + " , " + mPages[1] + " -- " + mPages[2]);
@@ -626,7 +643,7 @@ public abstract class BaseBookPage extends View {
 	 */
 	public int getCornerPosition(float x, float y, boolean isRight) {
 		if (firstMove) {
-			firstMove = false;
+//			firstMove = false;
 			calcCornerXY(x, y, isRight);
 		}
 		if (mCornerX == 0 && mCornerY == mHeight / 2) {

@@ -7,6 +7,7 @@ import android.graphics.ColorMatrix;
 import android.graphics.ColorMatrixColorFilter;
 import android.graphics.Matrix;
 import android.graphics.Region;
+import android.graphics.drawable.GradientDrawable;
 import coffee.utils.log.Log;
 
 /**
@@ -29,6 +30,8 @@ public class BookPageView extends BaseBookPage {
 		cm.set(array);
 		mColorMatrixFilter = new ColorMatrixColorFilter(cm);
 		mMatrix = new Matrix();
+		//
+		this.createDrawable();
 	}
 
 	@Override
@@ -45,27 +48,6 @@ public class BookPageView extends BaseBookPage {
 		if (bitmap == null) {
 			return;
 		}
-		// 滑动的距离
-		// float distence = Math.abs(mTouch.x - mTouchDownX);
-
-		// float x1, x2;
-		// if (isFlipToRight) {
-		// x1 = mTouch.x;
-		// x2 = mWidth - x1;
-		// } else {
-		// if (mCornerX == 0) {
-		// x1 = 0;
-		// x2 = distence * 2;
-		// } else {// mCornerX == mHeight
-		// x1 = mWidth - distence;
-		// x2 = x1 - distence;// 二者距离相同
-		// if (x1 <= 0) {
-		// x1 = 0;
-		// x2 = 0;
-		// }
-		// }
-		// }
-
 		// x2是左侧边线。 x1是右侧轴线。
 		float x1, x2;//
 		if (mCornerX == 0) {
@@ -109,6 +91,10 @@ public class BookPageView extends BaseBookPage {
 		mMatrix.setScale(-1.0f, 1f, x1, 0);
 		canvas.drawColor(0xFFAAAAAA);
 		canvas.drawBitmap(bitmap, mMatrix, mPaint);
+		{// 画阴影
+			mBackShadowDrawableRL.setBounds((int) x2, 0, (int) x1 + 10, mHeight);
+			mBackShadowDrawableRL.draw(canvas);
+		}
 		canvas.restore();
 	}
 
@@ -155,19 +141,46 @@ public class BookPageView extends BaseBookPage {
 		return super.mWidth;
 	}
 
-	/**
-	 * 
-	 * @param touchX
-	 * @param touchY
-	 */
-	public void setTouchXY(float touchX, float touchY) {
-		if (touchX == 0) {
-			touchX = 0.01F;
-		}
-		if (touchY == 0) {
-			touchY = 0.01F;
-		}
-		super.mTouch.x = touchX;
-		super.mTouch.y = touchY;
+	int[] mBackShadowColors;
+	int[] mFrontShadowColors;
+	GradientDrawable mBackShadowDrawableLR;
+	GradientDrawable mBackShadowDrawableRL;
+	GradientDrawable mFolderShadowDrawableLR;
+	GradientDrawable mFolderShadowDrawableRL;
+
+	GradientDrawable mFrontShadowDrawableHBT;
+	GradientDrawable mFrontShadowDrawableHTB;
+	GradientDrawable mFrontShadowDrawableVLR;
+	GradientDrawable mFrontShadowDrawableVRL;
+
+	/** 创建阴影的GradientDrawable */
+	private void createDrawable() {
+		int[] color = { 0x333333, 0xb0333333 };
+		mFolderShadowDrawableRL = new GradientDrawable(GradientDrawable.Orientation.RIGHT_LEFT, color);
+		mFolderShadowDrawableRL.setGradientType(GradientDrawable.LINEAR_GRADIENT);
+
+		mFolderShadowDrawableLR = new GradientDrawable(GradientDrawable.Orientation.LEFT_RIGHT, color);
+		mFolderShadowDrawableLR.setGradientType(GradientDrawable.LINEAR_GRADIENT);
+
+		mBackShadowColors = new int[] { 0x66222222, 0x222222 };
+
+//		mBackShadowColors = new int[] { 0xF0AAAAAA, 0x10AAAAAA };
+		mBackShadowDrawableRL = new GradientDrawable(GradientDrawable.Orientation.RIGHT_LEFT, mBackShadowColors);
+		mBackShadowDrawableRL.setGradientType(GradientDrawable.LINEAR_GRADIENT);
+
+		mBackShadowDrawableLR = new GradientDrawable(GradientDrawable.Orientation.LEFT_RIGHT, mBackShadowColors);
+		mBackShadowDrawableLR.setGradientType(GradientDrawable.LINEAR_GRADIENT);
+
+		mFrontShadowColors = new int[] { 0x80111111, 0x111111 };
+		mFrontShadowDrawableVLR = new GradientDrawable(GradientDrawable.Orientation.LEFT_RIGHT, mFrontShadowColors);
+		mFrontShadowDrawableVLR.setGradientType(GradientDrawable.LINEAR_GRADIENT);
+		mFrontShadowDrawableVRL = new GradientDrawable(GradientDrawable.Orientation.RIGHT_LEFT, mFrontShadowColors);
+		mFrontShadowDrawableVRL.setGradientType(GradientDrawable.LINEAR_GRADIENT);
+
+		mFrontShadowDrawableHTB = new GradientDrawable(GradientDrawable.Orientation.TOP_BOTTOM, mFrontShadowColors);
+		mFrontShadowDrawableHTB.setGradientType(GradientDrawable.LINEAR_GRADIENT);
+
+		mFrontShadowDrawableHBT = new GradientDrawable(GradientDrawable.Orientation.BOTTOM_TOP, mFrontShadowColors);
+		mFrontShadowDrawableHBT.setGradientType(GradientDrawable.LINEAR_GRADIENT);
 	}
 }

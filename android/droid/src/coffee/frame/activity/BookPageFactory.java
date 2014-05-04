@@ -128,26 +128,36 @@ public class BookPageFactory {
 		this.offsetFirst = offset;
 		this.offsetLast = offset;
 		if (isNext) {
-			float y = bookConfig.getMarginHeight();
-			StringBuilder line = new StringBuilder();
-			while (true) {
-				line.setLength(0);
-				y += bookConfig.getFontSize();
-				if (y > bookConfig.getMarginHeight() + bookConfig.getVisibleHeight()) {
-					break;
-				}
-				for (int i = 0; i < lineFontNums; i++) {
-					char ch = charBuffer.get(offsetLast);
-					line.append(ch);
-					// 移动下标
-					offsetLast = offsetLast + 1;
-					charBuffer.position(offsetLast);
-					if ("\n".equals(ch)) {
+			if (offsetFirst == getMaxOffset() && offsetLast == getMaxOffset()) {
+				// 此时pages数组的位移情况大概为 [160,320] [320-480] [480-600]
+				// 绘制结束以后为[320-480] [480-600] [600-600]
+			} else {
+				float y = bookConfig.getMarginHeight();
+				StringBuilder line = new StringBuilder();
+				while (true) {
+					line.setLength(0);
+					y += bookConfig.getFontSize();
+					if (y > bookConfig.getMarginHeight() + bookConfig.getVisibleHeight()) {
 						break;
 					}
+					for (int i = 0; i < lineFontNums; i++) {
+						char ch = charBuffer.get(offsetLast);
+						line.append(ch);
+						// 已经到文章结尾
+						if (offsetLast == getMaxOffset()) {
+							break;
+						} else {
+							// 移动下标
+							offsetLast = offsetLast + 1;
+							charBuffer.position(offsetLast);
+							if ("\n".equals(ch)) {
+								break;
+							}
+						}
+					}
+					Log.d("bookFactory-line-next", line);
+					canvas.drawText(line.toString(), bookConfig.getMarginWidth(), y, bookConfig.getmPaint());
 				}
-				Log.d("bookFactory-line-next", line);
-				canvas.drawText(line.toString(), bookConfig.getMarginWidth(), y, bookConfig.getmPaint());
 			}
 			Log.d("bookFactory-pointer-next", offsetFirst + "," + offsetLast + "\n");
 		} else {
@@ -165,12 +175,17 @@ public class BookPageFactory {
 						break;
 					}
 					for (int i = 0; i < lineFontNums; i++) {
-						char ch = charBuffer.get(offsetFirst - 1);
-						line.insert(0, ch);
-						offsetFirst = offsetFirst - 1;
-						charBuffer.position(offsetFirst);
-						if ("\n".equals(ch)) {
+						if (offsetFirst <= 0) {
+							//前面已经没有数据了。
 							break;
+						} else {
+							char ch = charBuffer.get(offsetFirst - 1);
+							line.insert(0, ch);
+							offsetFirst = offsetFirst - 1;
+							charBuffer.position(offsetFirst);
+							if ("\n".equals(ch)) {
+								break;
+							}
 						}
 					}
 					y -= bookConfig.getFontSize();

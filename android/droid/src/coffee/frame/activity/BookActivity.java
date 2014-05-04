@@ -74,7 +74,7 @@ public class BookActivity extends BaseActivity {
 					currentPage = 1;
 				}
 				if (action > 0) { // 下一页
-					if (pages[2].getOffsetLast() >= bookPageFactory.getMaxOffset()) {
+					if (pages[2].getOffsetFirst() >= bookPageFactory.getMaxOffset()) {
 						// 图书已结束
 					} else {
 						bookPageFactory.updatePage(pages[0], pages[2].getOffsetLast(), true);
@@ -85,7 +85,7 @@ public class BookActivity extends BaseActivity {
 						pages[2] = tmp;
 					}
 				} else {// 查看上一页
-					if (pages[0].getOffsetFirst() <= 0) {
+					if (pages[0].getOffsetLast() <= 0) {
 						// 当前是首页
 					} else {
 						bookPageFactory.updatePage(pages[2], pages[0].getOffsetFirst(), false);
@@ -143,7 +143,7 @@ public class BookActivity extends BaseActivity {
 				// touchDownY, true);
 				// Log.d("activity-cornerXY", "拖拽点 " + cornerPosition);
 				// isScroll==false 滚动停止以后才判断. 防止翻页后取消之前的操作
-				if (currentPage == 1 && cornerPosition == 1) {
+				if (isFirstPage() && cornerPosition == 1) {
 					if (showTip == false) {
 						showTip = true;
 						touchDownX = 0;// 注意, 如果是首页往右滑动 以后再往左侧滑动。会出问题
@@ -159,7 +159,7 @@ public class BookActivity extends BaseActivity {
 			} else if (touchMoveX - touchDownX < 0) {
 				int cornerPosition = mPageView.getCornerPosition(touchDownX, touchDownY, false);
 				Log.d("activity-measure------", touchDownX + "," + touchDownY + "," + (touchMoveX - touchDownX) + " , currentPage " + currentPage + " , " + cornerPosition);
-				if (currentPage == 7 && cornerPosition != 1) {
+				if (isLastPage() && cornerPosition != 1) {
 					if (showTip == false) {
 						showTip = true;
 						touchDownX = mPageView.getPageWidth();
@@ -177,7 +177,7 @@ public class BookActivity extends BaseActivity {
 		if (event.getAction() == MotionEvent.ACTION_UP) {
 			touchMoveX = 0;
 			if (touchMoveX - touchDownX > 0) {
-				if (currentPage == 1) {
+				if (isFirstPage()) {
 					return false;
 				}
 			}
@@ -198,5 +198,22 @@ public class BookActivity extends BaseActivity {
 		Bitmap pageBitmap = Bitmap.createBitmap(screenWidth, screenHeight, Bitmap.Config.ARGB_8888);
 		BookPage page = new BookPage(pageIndex, pageBitmap);
 		return page;
+	}
+
+	/**
+	 * 当前页面是否是首页
+	 * 
+	 * @return
+	 */
+	private boolean isFirstPage() {
+		// 此时pages数组的排列形式为
+		// [0, 0] [0, 165] [165, 330]
+		return pages[0].getOffsetFirst() == 0 && pages[0].getOffsetLast() == 0;
+	}
+
+	private boolean isLastPage() {
+		// 此时pages数组的排列形式为
+		// [330, 495] [496, 700] [700, 700]
+		return (pages[2].getOffsetFirst() == pages[2].getOffsetLast()) && (pages[2].getOffsetFirst() == pages[1].getOffsetLast());
 	}
 }
