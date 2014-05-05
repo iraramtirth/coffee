@@ -1,4 +1,4 @@
-package coffee.frame.activity;
+package coffee.frame.book.activity;
 
 import org.coffee.util.framework.Alert;
 
@@ -7,8 +7,11 @@ import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.view.MotionEvent;
 import coffee.frame.activity.base.BaseActivity;
-import coffee.frame.view.BaseBookPage.PageCallback;
-import coffee.frame.view.BookPageView;
+import coffee.frame.book.BookConfig;
+import coffee.frame.book.BookPage;
+import coffee.frame.book.BookPageFactory;
+import coffee.frame.book.view.BaseBookPage.PageCallback;
+import coffee.frame.book.view.BookPageView;
 import coffee.utils.log.Log;
 
 public class BookActivity extends BaseActivity {

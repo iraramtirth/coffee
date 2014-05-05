@@ -1,4 +1,4 @@
-package coffee.frame.activity;
+package coffee.frame.book;
 
 import org.coffee.util.framework.Measurer;
 

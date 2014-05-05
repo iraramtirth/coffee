@@ -1,4 +1,4 @@
-package coffee.frame.view;
+package coffee.frame.book.view;
 
 import android.content.Context;
 import android.graphics.Bitmap;

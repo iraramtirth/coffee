@@ -1,4 +1,4 @@
-package coffee.frame.view;
+package coffee.frame.book.view;
 
 import android.app.Activity;
 import android.content.Context;
@@ -14,7 +14,7 @@ import android.util.DisplayMetrics;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Scroller;
-import coffee.frame.activity.BookPage;
+import coffee.frame.book.BookPage;
 import coffee.utils.log.Log;
 
 /**
