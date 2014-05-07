@@ -36,6 +36,7 @@
 	});
 	var cells = new Array();
 	var gameData = "";
+	var gataStr = "";
 	//保存游戏数据。左上角是0，0坐标 
   	function saveHistory(){
   		gameData = "";
@@ -43,21 +44,19 @@
   		   cells[x] = new Array();
 		   for (var y = 0; y < size; y++) {
 		   		var cell = gameManager.grid.cells[x][y];
+		   		console.log(x +"-" + y + " " + JSON.stringify(cell));
 		   		if(cell != null){
 		   		 	cells[x][y] = cell.value;
+		   		 	//alert(cell.value);
 		   		 	gameData += cell.value + ",";
-		   		 	gameData += cell.previousPosition + " ";
-		   		 	if(cell.mergedFrom != null){
-		   		 		gameData += + " -- " + cell.mergedFrom[0] + "," + cell.mergedFrom[1];
-		   		 	}else{
-						gameData += + " - null";		   		 	
-		   		 	}
+		   		 	gameData += cell.previousPosition + ",";
 		   		}else{
 		   			cells[x][y] = null;
 		   			gameData += 0 + ",";
 		   		} 
 		   }
-		   gameData += ";";
+		   gameData += ";\n";
+		   //break;
 		}
 		alert(gameData);
 		window.android.save(gameData);
