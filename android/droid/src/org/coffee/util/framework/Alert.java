@@ -4,7 +4,9 @@ import org.coffee.App;
 
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.content.DialogInterface.OnClickListener;
+import android.content.DialogInterface;
+import android.content.DialogInterface.OnKeyListener;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Toast;
 
@@ -45,26 +47,67 @@ public class Alert {
 	 *            <item>center button text</item> <br>
 	 *            <item>right button text</item> <br>
 	 *            </string-array>
-	 * @param listeners
+	 * @param message
+	 * @param items
 	 */
-	public static void dialog(Activity context, int stringArray,
-			final OnClickListener... listeners) {
+	public static void dialog(Activity context, String title, String message, Alert.Item... items) {
+		if (context.isFinishing()) {
+			return;
+		}
 		AlertDialog.Builder builder = new AlertDialog.Builder(context);
-		String[] arr = context.getResources().getStringArray(stringArray);
-		int iconRes = context.getResources().getIdentifier(arr[0], "drawable",
-				null);
-		builder.setIcon(iconRes);
-		builder.setTitle(arr[1]);
-		builder.setMessage(arr[2]);
-		if (listeners.length == 2) {
-			builder.setPositiveButton(arr[3], listeners[0]);
-			builder.setNegativeButton(arr[5], listeners[1]);
-		} else if (listeners.length == 3) {
-			builder.setPositiveButton(arr[3], listeners[0]);
-			builder.setNeutralButton(arr[4], listeners[1]);
-			builder.setNegativeButton(arr[5], listeners[2]);
+		builder.setTitle(title);
+		builder.setMessage(message);
+		if (items.length == 1) {
+			builder.setNeutralButton(items[0].label, items[0].listener);
+		} else if (items.length == 2) {
+			builder.setPositiveButton(items[0].label, items[0].listener);
+			builder.setNegativeButton(items[1].label, items[1].listener);
+		} else if (items.length == 3) {
+			builder.setPositiveButton(items[0].label, items[0].listener);
+			builder.setNeutralButton(items[1].label, items[1].listener);
+			builder.setNegativeButton(items[2].label, items[2].listener);
 		}
 		builder.show();
+	}
+
+	public static void dialog(final Activity context, String title, String message, boolean backFinish, Alert.Item... items) {
+		AlertDialog.Builder builder = new AlertDialog.Builder(context);
+
+		builder.setTitle(title);
+		builder.setMessage(message);
+		if (items.length == 1) {
+			builder.setNeutralButton(items[0].label, items[0].listener);
+		} else if (items.length == 2) {
+			builder.setPositiveButton(items[0].label, items[0].listener);
+			builder.setNegativeButton(items[1].label, items[1].listener);
+		} else if (items.length == 3) {
+			builder.setPositiveButton(items[0].label, items[0].listener);
+			builder.setNeutralButton(items[1].label, items[1].listener);
+			builder.setNegativeButton(items[2].label, items[2].listener);
+		}
+		if (backFinish) {
+			builder.setOnKeyListener(new OnKeyListener() {
+				@Override
+				public boolean onKey(DialogInterface dialog, int keyCode, KeyEvent event) {
+					if (keyCode == KeyEvent.KEYCODE_BACK) {
+						context.finish();
+					}
+					dialog.dismiss();
+					return false;
+				}
+			});
+		}
+		builder.show();
+	}
+
+	public static class Item {
+		private String label;
+		private DialogInterface.OnClickListener listener;
+
+		public Item(String label, DialogInterface.OnClickListener listener) {
+			this.label = label;
+			this.listener = listener;
+		}
 	}
 
 	/**

@@ -4,9 +4,11 @@ import org.coffee.browser.WebViewUtils;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.Window;
+import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
@@ -47,7 +49,7 @@ public class BrowserActivity extends Activity {
 		String url = "http://wap.baidu.com";
 		url = "http://a.hiphotos.baidu.com/album/w%3D2048/sign=0a938b00d53f8794d3ff4f2ee6230cf4/faedab64034f78f06fe0f24b78310a55b2191c9a.jpg";
 		url = "file:///android_asset/2048/index.html";
-		url = "file:///android_asset/test.html";
+//		url = "file:///android_asset/test.html";
 		loadUrl(url);
 
 	}
@@ -86,50 +88,49 @@ public class BrowserActivity extends Activity {
 
 	protected void loadUrl(String url) {
 		WebViewUtils.loadUrl(context, url);
-//		mWebView.setWebChromeClient(new WebChromeClient() {
-//			@Override
-//			public void onProgressChanged(WebView view, int progress) {
-//				context.setProgress(progress * 100);
-//				if (progress == 100) {
-//					// context.setTitle(".....");
-//				}
-//			}
-//		});
+		mWebView.setWebChromeClient(new WebChromeClient() {
+			@Override
+			public void onProgressChanged(WebView view, int progress) {
+				context.setProgress(progress * 100);
+				if (progress == 100) {
+					// context.setTitle(".....");
+				}
+			}
+		});
 
-//		mWebView.setWebViewClient(new WebViewClient() {
-//			@Override
-//			public boolean shouldOverrideUrlLoading(WebView view, final String url) {
-//				if (url.startsWith("http") == false) {
-//					//mWebView.loadUrl(url);
-//					return super.shouldOverrideUrlLoading(view, url);
-//				} else {
-//					// 异步加载网页
-//					new AsyncTask<Void, Void, Void>() {
-//						@Override
-//						protected Void doInBackground(Void... params) {
-//							WebViewUtils.loadUrl(context, url);
-//							return null;
-//						}
-//					}.execute();
-//					return true;
-//				}
-//			}
+		mWebView.setWebViewClient(new WebViewClient() {
+			@Override
+			public boolean shouldOverrideUrlLoading(WebView view, final String url) {
+				if (url.startsWith("http") == false) {
+					//mWebView.loadUrl(url);
+					return super.shouldOverrideUrlLoading(view, url);
+				} else {
+					// 异步加载网页
+					new AsyncTask<Void, Void, Void>() {
+						@Override
+						protected Void doInBackground(Void... params) {
+							WebViewUtils.loadUrl(context, url);
+							return null;
+						}
+					}.execute();
+					return true;
+				}
+			}
+			/**
+			 * page加载完成后，设置web.requestFocus(); 否则webView中的控件无法获取焦点
+			 */
+			@Override
+			public void onPageFinished(WebView view, String url) {
+				/**
+				 * 如果页面加载失败， 将不会调用该方法。
+				 */
+			}
 
-//			/**
-//			 * page加载完成后，设置web.requestFocus(); 否则webView中的控件无法获取焦点
-//			 */
-//			@Override
-//			public void onPageFinished(WebView view, String url) {
-//				/**
-//				 * 如果页面加载失败， 将不会调用该方法。
-//				 */
-//			}
-//
-//			@Override
-//			public void onReceivedError(WebView view, int errorCode, String description, String failingUrl) {
-//				super.onReceivedError(view, errorCode, description, failingUrl);
-//			}
-//		});
+			@Override
+			public void onReceivedError(WebView view, int errorCode, String description, String failingUrl) {
+				super.onReceivedError(view, errorCode, description, failingUrl);
+			}
+		});
 	}
 
 	/**

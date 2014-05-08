@@ -1,25 +1,27 @@
 ﻿<!DOCTYPE html PUBLIC "-//WAPFORUM//DTD XHTML Mobile 1.0//EN" "http://www.wapforum.org/DTD/xhtml-mobile10.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml"><head>
+<html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
-  <title>2048</title>
+<head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+	<title>2048</title>
 
-  <link href="style/main.css" rel="stylesheet" type="text/css">
-  <link rel="shortcut icon" href="favicon.ico">
-  <link rel="apple-touch-icon" href="meta/apple-touch-icon.png">
-  <meta name="apple-mobile-web-app-capable" content="yes">
+	<link href="style/main.css" rel="stylesheet" type="text/css">
+		<link rel="shortcut icon" href="favicon.ico">
+			<link rel="apple-touch-icon" href="meta/apple-touch-icon.png">
+				<meta name="apple-mobile-web-app-capable" content="yes">
 
-  <meta name="HandheldFriendly" content="True">
-  <meta name="MobileOptimized" content="320">
-  <meta name="viewport" content="width=device-width, target-densitydpi=160dpi, initial-scale=1.0, maximum-scale=1, user-scalable=no, minimal-ui">
-  <script src="js/animframe_polyfill.js"></script>
-  <script src="js/keyboard_input_manager.js"></script>
-  <script src="js/html_actuator.js"></script>
-  <script src="js/grid.js"></script>
-  <script src="js/tile.js"></script>
-  <script src="js/local_score_manager.js"></script>
-  <script src="js/game_manager.js"></script>
-  <script>
+					<meta name="HandheldFriendly" content="True">
+						<meta name="MobileOptimized" content="320">
+							<meta name="viewport"
+								content="width=device-width, target-densitydpi=160dpi, initial-scale=1.0, maximum-scale=1, user-scalable=no, minimal-ui">
+								<script src="js/animframe_polyfill.js"></script>
+								<script src="js/keyboard_input_manager.js"></script>
+								<script src="js/html_actuator.js"></script>
+								<script src="js/grid.js"></script>
+								<script src="js/tile.js"></script>
+								<script src="js/local_score_manager.js"></script>
+								<script src="js/game_manager.js"></script>
+								<script>
     var size = 4;
     var gameManager;
   	window.requestAnimationFrame(function () {
@@ -36,7 +38,7 @@
 	});
 	var cells = new Array();
 	var gameData = "";
-	var gataStr = "";
+	var gataJsons = "";
 	//保存游戏数据。左上角是0，0坐标 
   	function saveHistory(){
   		gameData = "";
@@ -44,41 +46,44 @@
   		   cells[x] = new Array();
 		   for (var y = 0; y < size; y++) {
 		   		var cell = gameManager.grid.cells[x][y];
-		   		console.log(x +"-" + y + " " + JSON.stringify(cell));
+		   		//console.log(x +"-" + y + " " + JSON.stringify(cell));
+		   		gataJsons += JSON.stringify(cell) + "|";
 		   		if(cell != null){
 		   		 	cells[x][y] = cell.value;
-		   		 	//alert(cell.value);
 		   		 	gameData += cell.value + ",";
-		   		 	gameData += cell.previousPosition + ",";
 		   		}else{
 		   			cells[x][y] = null;
 		   			gameData += 0 + ",";
 		   		} 
 		   }
-		   gameData += ";\n";
-		   //break;
+		   gameData += ";";
 		}
-		alert(gameData);
-		window.android.save(gameData);
+		window.android.save(gameData, gataJsons);
   	}
   	/**
   	 * 记载历史记录 
   	 * @returns {} 
   	 */
-  	function loadHistory(){
-  		//alert(gameData);
-  		//分割成四列
-  		var cols = gameData.split(",;");
+  	function loadHistory(jsons){
+  		//var jsons = gataJsons;
+  		//alert(jsons);
+  		var jsons = jsons.split("|");
+  		var index = 0; 
+  		//alert(jsons.length);
   		for (var x = 0; x < size; x++){
-  			var cell = cols[x].split(",");
   			 for (var y = 0; y < size; y++) {
-  			 	var xy = {x:x, y:y};
-  			 	var tile = new Tile(xy, cell[y]);
-  			 	if(cell[y] != 0){
-		      		gameManager.grid.insertTile(tile); 
-		      	}else{
-		      		gameManager.grid.removeTile(tile);
-		      	}
+  			 	var	tmpTile = JSON.parse(jsons[index]);
+  			 	console.log(index + " -- " + JSON.stringify(tmpTile));
+  			 	if(tmpTile != null){
+  			 		var tile = new Tile({x:x,y:y}, tmpTile.value);
+  			 		tile.previousPosition = tmpTile.previousPosition;
+  			 		tile.mergedFrom = tmpTile.mergedFrom;
+  			 		gameManager.grid.insertTile(tile); 
+  			 	}else{
+  			 		var tile = new Tile({x:x,y:y},0);
+  			 		gameManager.grid.removeTile(tile); 		
+  			 	}
+  			 	index++;
   			 }
   		}
 		gameManager.actuate();
@@ -104,60 +109,58 @@
   </script>
 </head>
 <body>
-  <div class="container">
-    <div class="heading">
-      <h1 class="title">2048</h1>
-      <div class="scores-container">
-        <div class="score-container">0</div>
-        <div class="best-container">0</div>
-      </div>
-    </div>
-    <div style="text-align:right;">
-      <input type="button" onclick="saveHistory();" value="save"/>
-      <input type="button" onclick="loadHistory();" value="load"/>
-      <input type="button" onclick="restart();" value="restart"/>
-    </div>
-    <div class="game-container">
-      <div class="game-message">
-        <p></p>
-        <div class="lower">
-	        <a class="keep-playing-button">Keep going</a>
-          <a class="retry-button">Try again</a>
-        </div>
-      </div>
+	<div class="container">
+		<div class="heading">
+			<h1 class="title">2048</h1>
+			<div class="scores-container">
+				<div class="score-container">0</div>
+				<div class="best-container">0</div>
+			</div>
+		</div>
+		<div style="text-align: right;">
+			<input type="button" onclick="saveHistory();" value="save" />
+			<input type="button" onclick="loadHistory();" value="load" /> 
+			<input type="button" onclick="restart();" value="restart" />
+		</div>
+		<div class="game-container">
+			<div class="game-message">
+				<p></p>
+				<div class="lower">
+					<a class="keep-playing-button">Keep going</a> <a
+						class="retry-button">Try again</a>
+				</div>
+			</div>
 
-      <div class="grid-container">
-        <div class="grid-row">
-          <div class="grid-cell"></div>
-          <div class="grid-cell"></div>
-          <div class="grid-cell"></div>
-          <div class="grid-cell"></div>
-        </div>
-        <div class="grid-row">
-          <div class="grid-cell"></div>
-          <div class="grid-cell"></div>
-          <div class="grid-cell"></div>
-          <div class="grid-cell"></div>
-        </div>
-        <div class="grid-row">
-          <div class="grid-cell"></div>
-          <div class="grid-cell"></div>
-          <div class="grid-cell"></div>
-          <div class="grid-cell"></div>
-        </div>
-        <div class="grid-row">
-          <div class="grid-cell"></div>
-          <div class="grid-cell"></div>
-          <div class="grid-cell"></div>
-          <div class="grid-cell"></div>
-        </div>
-      </div>
-	  <!--  -->
-      <div class="tile-container">
-
-      </div>
-    </div>
-  </div>
+			<div class="grid-container">
+				<div class="grid-row">
+					<div class="grid-cell"></div>
+					<div class="grid-cell"></div>
+					<div class="grid-cell"></div>
+					<div class="grid-cell"></div>
+				</div>
+				<div class="grid-row">
+					<div class="grid-cell"></div>
+					<div class="grid-cell"></div>
+					<div class="grid-cell"></div>
+					<div class="grid-cell"></div>
+				</div>
+				<div class="grid-row">
+					<div class="grid-cell"></div>
+					<div class="grid-cell"></div>
+					<div class="grid-cell"></div>
+					<div class="grid-cell"></div>
+				</div>
+				<div class="grid-row">
+					<div class="grid-cell"></div>
+					<div class="grid-cell"></div>
+					<div class="grid-cell"></div>
+					<div class="grid-cell"></div>
+				</div>
+			</div>
+			<!--  -->
+			<div class="tile-container"></div>
+		</div>
+	</div>
 
 </body>
 </html>

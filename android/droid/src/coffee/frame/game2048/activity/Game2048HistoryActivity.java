@@ -1,12 +1,15 @@
-package coffee.frame.activity;
+package coffee.frame.game2048.activity;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import org.coffee.R;
+import org.coffee.util.framework.Alert;
 import org.coffee.util.lang.ObjectSerialize;
 
 import android.app.Activity;
+import android.content.DialogInterface;
+import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -15,6 +18,7 @@ import android.view.ViewGroup;
 import android.widget.ListView;
 import android.widget.TextView;
 import coffee.frame.activity.base.BaseActivity;
+import coffee.frame.game2048.bean.GridDataBean;
 
 public class Game2048HistoryActivity extends BaseActivity {
 	private ListView mListVIew;
@@ -31,36 +35,45 @@ public class Game2048HistoryActivity extends BaseActivity {
 		super.findViewById();
 		setCommonTitle("游戏进度");
 		this.mListVIew = (ListView) findViewById(R.id.listView);
-		List<String> gameData = ObjectSerialize.read(ArrayList.class, String.class);
-		this.mListVIew.setAdapter(new HistoryAdapter(gameData, this));
+		List<GridDataBean> datas = ObjectSerialize.read(ArrayList.class, GridDataBean.class);
+		this.mListVIew.setAdapter(new HistoryAdapter(datas, this));
 	}
 
-	private class HistoryAdapter extends coffee.frame.adapter.base.BaseAdapter<String> {
+	private class HistoryAdapter extends coffee.frame.adapter.base.BaseAdapter<GridDataBean> {
 
-		public HistoryAdapter(List<String> items, Activity mContext) {
+		public HistoryAdapter(List<GridDataBean> items, Activity mContext) {
 			super(items, mContext);
 		}
 
 		@Override
 		public View getView(final int position, View convertView, ViewGroup parent) {
 			convertView = LayoutInflater.from(mContext).inflate(R.layout.game2048_history_item, parent, false);
-			TextView dataView = (TextView) convertView.findViewById(R.id.history_text);
+			TextView valueView = (TextView) convertView.findViewById(R.id.history_text);
 			View deleteView = convertView.findViewById(R.id.history_delete);
 			View selectView = convertView.findViewById(R.id.history_select);
-			String data = getItem(position);
-			dataView.setText(formatData(data));
+			final GridDataBean data = getItem(position);
+			valueView.setText(formatData(data.getValue()));
 			deleteView.setOnClickListener(new View.OnClickListener() {
+				@SuppressWarnings("unchecked")
 				@Override
 				public void onClick(View v) {
-//					ObjectSerialize.read(beanClass, id)
+					Alert.dialog(context, "确认删除", "删除后数据不可恢复,是否删除?", new Alert.Item("删除", new OnClickListener() {
+						@Override
+						public void onClick(DialogInterface dialog, int which) {
+							ArrayList<GridDataBean> datas = ObjectSerialize.read(ArrayList.class, GridDataBean.class);
+							datas.remove(data);
+							ObjectSerialize.write(datas, GridDataBean.class);
+							notifyData(datas, true);
+						}
+					}), new Alert.Item("取消", null));
 				}
 			});
 			selectView.setOnClickListener(new View.OnClickListener() {
 				@Override
 				public void onClick(View v) {
-					Intent data = new Intent();
-					data.putExtra("data", getItem(position));
-					mContext.setResult(RESULT_OK, data);
+					Intent intent = new Intent();
+					intent.putExtra("json", data.getJson());
+					mContext.setResult(RESULT_OK, intent);
 					mContext.finish();
 				}
 			});

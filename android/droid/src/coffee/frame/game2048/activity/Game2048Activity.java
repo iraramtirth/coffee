@@ -1,6 +1,4 @@
-package coffee.frame.activity;
-
-import java.util.ArrayList;
+package coffee.frame.game2048.activity;
 
 import org.coffee.R;
 import org.coffee.browser.activity.BrowserActivity;
@@ -12,6 +10,7 @@ import android.view.View;
 import android.view.Window;
 import android.webkit.WebView;
 import android.widget.Button;
+import coffee.frame.game2048.bean.GridDataBean;
 
 public class Game2048Activity extends BrowserActivity {
 
@@ -23,17 +22,14 @@ public class Game2048Activity extends BrowserActivity {
 		this.requestWindowFeature(Window.FEATURE_NO_TITLE);
 		super.onCreate(savedInstanceState);
 		super.mWebView.addJavascriptInterface(new Object() {
-			@SuppressWarnings({ "unused", "unchecked" })
+			@SuppressWarnings({ "unused" })
 			// @JavascriptInterface
-			public void save(String gameData) {
+			public void save(String gameData, String gameJson) {
 				// 每一列的数据有,;分割
 				// 4,4,4,4,;4,4,4,4,;0,0,0,0,;0,0,2,0,;
-				ObjectSerialize.append(gameData);
+				ObjectSerialize.append(new GridDataBean(gameData, gameJson));
 				System.out.println(gameData);
-				ArrayList<String> items = ObjectSerialize.read(ArrayList.class, String.class);
-				for (String item : items) {
-					System.out.println(items);
-				}
+				System.out.println(gameJson);
 			}
 		}, "android");
 	}
@@ -67,9 +63,9 @@ public class Game2048Activity extends BrowserActivity {
 
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		if (resultCode == RESULT_OK && data != null) {
-			String item = data.getStringExtra("data");
+			String json = data.getStringExtra("json");
 			//Alert.toast(item);
-			mWebView.loadUrl("javascript:loadHistory('" + item + "');");
+			mWebView.loadUrl("javascript:loadHistory('" + json + "');");
 		}
 	}
 }
