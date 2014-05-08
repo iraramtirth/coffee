@@ -11,6 +11,7 @@ import android.view.Window;
 import android.webkit.WebView;
 import android.widget.Button;
 import coffee.frame.game2048.bean.GridDataBean;
+import coffee.utils.log.Log;
 
 public class Game2048Activity extends BrowserActivity {
 
@@ -64,7 +65,11 @@ public class Game2048Activity extends BrowserActivity {
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		if (resultCode == RESULT_OK && data != null) {
 			String json = data.getStringExtra("json");
-			//Alert.toast(item);
+			Log.d("Web Console Java", json);
+			String[] arr = json.split("\\|");
+			for(int i= 0;i<arr.length;i++){
+				Log.d("Web Console Java ["+i+"]", arr[i]);
+			}
 			mWebView.loadUrl("javascript:loadHistory('" + json + "');");
 		}
 	}

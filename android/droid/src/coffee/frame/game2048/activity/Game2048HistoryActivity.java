@@ -19,6 +19,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import coffee.frame.activity.base.BaseActivity;
 import coffee.frame.game2048.bean.GridDataBean;
+import coffee.utils.log.Log;
 
 public class Game2048HistoryActivity extends BaseActivity {
 	private ListView mListVIew;
@@ -61,7 +62,18 @@ public class Game2048HistoryActivity extends BaseActivity {
 						@Override
 						public void onClick(DialogInterface dialog, int which) {
 							ArrayList<GridDataBean> datas = ObjectSerialize.read(ArrayList.class, GridDataBean.class);
-							datas.remove(data);
+							for(GridDataBean item : datas){
+								if(item.getValue().equals(data.getValue())){
+									datas.remove(item);
+									break;
+								}
+							}
+							//先清空,然后重新写入
+							for(GridDataBean item : datas){
+								Log.d("JSON", item.getValue());
+								Log.d("JSON", item.getJson());
+							}
+							//覆盖之前的数据
 							ObjectSerialize.write(datas, GridDataBean.class);
 							notifyData(datas, true);
 						}

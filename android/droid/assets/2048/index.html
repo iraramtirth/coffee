@@ -1,27 +1,23 @@
 ﻿<!DOCTYPE html PUBLIC "-//WAPFORUM//DTD XHTML Mobile 1.0//EN" "http://www.wapforum.org/DTD/xhtml-mobile10.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<head>
-<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+<meta http-equiv="content-type" content="text/html; charset=UTF-8"/>
 	<title>2048</title>
-
-	<link href="style/main.css" rel="stylesheet" type="text/css">
-		<link rel="shortcut icon" href="favicon.ico">
-			<link rel="apple-touch-icon" href="meta/apple-touch-icon.png">
-				<meta name="apple-mobile-web-app-capable" content="yes">
-
-					<meta name="HandheldFriendly" content="True">
-						<meta name="MobileOptimized" content="320">
-							<meta name="viewport"
-								content="width=device-width, target-densitydpi=160dpi, initial-scale=1.0, maximum-scale=1, user-scalable=no, minimal-ui">
-								<script src="js/animframe_polyfill.js"></script>
-								<script src="js/keyboard_input_manager.js"></script>
-								<script src="js/html_actuator.js"></script>
-								<script src="js/grid.js"></script>
-								<script src="js/tile.js"></script>
-								<script src="js/local_score_manager.js"></script>
-								<script src="js/game_manager.js"></script>
-								<script>
+	<link href="style/main.css" rel="stylesheet" type="text/css"/>
+	<link rel="shortcut icon" href="favicon.ico"/>
+	<link rel="apple-touch-icon" href="meta/apple-touch-icon.png"/>
+	<meta name="apple-mobile-web-app-capable" content="yes"/>
+	<meta name="HandheldFriendly" content="True"/>
+	<meta name="MobileOptimized" content="320"/>
+	<meta name="viewport" content="width=device-width, target-densitydpi=160dpi, initial-scale=1.0, maximum-scale=1, user-scalable=no, minimal-ui"/>
+	<script src="js/animframe_polyfill.js"></script>
+	<script src="js/keyboard_input_manager.js"></script>
+	<script src="js/html_actuator.js"></script>
+	<script src="js/grid.js"></script>
+	<script src="js/tile.js"></script>
+	<script src="js/local_score_manager.js"></script>
+	<script src="js/game_manager.js"></script>
+	<script>
     var size = 4;
     var gameManager;
   	window.requestAnimationFrame(function () {
@@ -42,6 +38,7 @@
 	//保存游戏数据。左上角是0，0坐标 
   	function saveHistory(){
   		gameData = "";
+  		gataJsons = "";
   		for (var x = 0; x < size; x++) {
   		   cells[x] = new Array();
 		   for (var y = 0; y < size; y++) {
@@ -64,14 +61,17 @@
   	 * 记载历史记录 
   	 * @returns {} 
   	 */
-  	function loadHistory(jsons){
-  		//var jsons = gataJsons;
-  		//alert(jsons);
-  		var jsons = jsons.split("|");
+  	function loadHistory(gataJsons){
+  		console.log(gataJsons);
+  		var jsons = gataJsons.split("\|");
   		var index = 0; 
-  		//alert(jsons.length);
+  		console.log(jsons);
+  		for(var i=0; i<jsons.length;i++){
+  			console.log("jsons["+i+"] == " + jsons[i]);
+  		}
   		for (var x = 0; x < size; x++){
   			 for (var y = 0; y < size; y++) {
+  				console.log(index + " -- " + jsons[index]); 
   			 	var	tmpTile = JSON.parse(jsons[index]);
   			 	console.log(index + " -- " + JSON.stringify(tmpTile));
   			 	if(tmpTile != null){
