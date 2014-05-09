@@ -4,13 +4,14 @@ import java.util.List;
 
 import android.app.Activity;
 import android.bluetooth.BluetoothDevice;
+import android.content.Intent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 import coffee.im.bluetooth.R;
 import coffee.im.bluetooth.activity.ChatActivity;
-import coffee.im.bluetooth.activity.base.BaseActivity;
+import coffee.im.bluetooth.activity.MainActivity;
 import coffee.im.bluetooth.adapter.base.BaseAdapter;
 import coffee.im.bluetooth.utils.BtUtils;
 
@@ -69,7 +70,11 @@ public class DeviceInfoAdapter extends BaseAdapter<BluetoothDevice> {
 			holder.action.setOnClickListener(new View.OnClickListener() {
 				@Override
 				public void onClick(View v) {
-					((BaseActivity) mContext).startActivity(ChatActivity.class, "device", device.getAddress());
+					Intent intent = new Intent();
+					intent.setClass(mContext, ChatActivity.class);
+					intent.putExtra("address", device.getAddress());
+					intent.putExtra("type", "bluetooth");
+					MainActivity.getContext().startActivity(intent);
 				}
 			});
 		}

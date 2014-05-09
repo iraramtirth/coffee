@@ -81,7 +81,7 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener {
 		String type = getIntent().getStringExtra("type");
 		if ("bluetooth".equals(type)) {
 			isBluetooth = true;
-			setTitle(new TitleRes("开启服务"), new TitleRes("聊天"), new TitleRes("连接"));
+			setTitle(new TitleRes("开启服务", this), new TitleRes("聊天"), new TitleRes("连接", this));
 		} else {
 			setCommonTitle("与" + remoteAddress + "聊天中");
 		}

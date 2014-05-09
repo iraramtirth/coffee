@@ -46,6 +46,7 @@ public class ContactAdapter extends BaseAdapter<ContactBean> {
 				Intent intent = new Intent();
 				intent.setClass(mContext, ChatActivity.class);
 				intent.putExtra("address", item.getName());
+				intent.putExtra("type", "bluetooth");
 				mContext.startActivity(intent);
 			}
 		});

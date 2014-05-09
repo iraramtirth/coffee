@@ -30,7 +30,7 @@ public class MainActivity extends BaseActivityGroup implements OnClickListener {
 		context = this;
 		//
 		mHandler = new Handler(this);
-		showViewGroup(MessageLogActivity.class);
+		showViewGroup(ConversationActivity.class);
 		Log.d("thread-main-activity", Thread.currentThread().getId() + "");
 	}
 
@@ -70,13 +70,13 @@ public class MainActivity extends BaseActivityGroup implements OnClickListener {
 	public void onClick(View v) {
 		switch (v.getId()) {
 		case R.id.tab_1:
-			showViewGroup(MessageLogActivity.class);
+			showViewGroup(ConversationActivity.class);
 			break;
 		case R.id.tab_2:
-//			showViewGroup(ContactActivity.class);
+			showViewGroup(ContactActivity.class);
 			break;
 		case R.id.tab_3:
-			showViewGroup(ContactActivity.class);
+			showViewGroup(ScanDeviceActivity.class);
 			break;
 		}
 	}

@@ -5,6 +5,7 @@ import java.util.List;
 
 import android.bluetooth.BluetoothDevice;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.widget.ListView;
 import coffee.im.bluetooth.R;
 import coffee.im.bluetooth.activity.ScanDeviceActivity;
@@ -32,7 +33,7 @@ public abstract class BaseBluetoothListActivity extends BaseActivity {
 
 	@Override
 	public void findViewById() {
-		mListView = (ListView) this.findViewById(R.id.contact_list);
+		mListView = (ListView) this.findViewById(R.id.device_list);
 		mListAdapter = new DeviceInfoAdapter(mDevices, this);
 		mListView.setAdapter(mListAdapter);
 	}
@@ -45,19 +46,17 @@ public abstract class BaseBluetoothListActivity extends BaseActivity {
 	protected boolean checkBluetoothOpen() {
 		if (!BtUtils.isOpen()) {
 			if (ActivityMgr.peek() != null) {
-				Alert.dialog(ActivityMgr.peek(), R.array.alert_bluetooth_open,
-						new DialogInterface.OnClickListener() {
-							@Override
-							public void onClick(DialogInterface dialog,
-									int which) {
-								BtUtils.requestDeviceOpen(ActivityMgr.peek());
-							}
-						}, null);
+				Alert.dialog(ActivityMgr.peek(), R.array.alert_bluetooth_open, new DialogInterface.OnClickListener() {
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						BtUtils.requestDeviceOpen(ActivityMgr.peek());
+					}
+				}, null);
 			}
 			return false;
 		} else {
 			// 蓝牙已打开
-			startActivity(ScanDeviceActivity.class);
+			startActivity(new Intent(context, ScanDeviceActivity.class));
 		}
 		return true;
 	}

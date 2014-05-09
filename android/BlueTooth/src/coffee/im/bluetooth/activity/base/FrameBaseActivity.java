@@ -74,22 +74,6 @@ public abstract class FrameBaseActivity extends Activity implements Handler.Call
 
 	/* TODO**************** 以下重写Activity的方法 ********************* */
 
-	public void startActivity(Class<?> activityClass, Object... params) {
-		Intent intent = new Intent();
-		// intent.setAction(action);
-		intent.setClass(this, activityClass);
-		for (int i = 0; i < params.length; i += 2) {
-			if (i + 1 < params.length) {
-				intent.putExtra(String.valueOf(params[i]), String.valueOf(params[i + 1]));
-			}
-		}
-		if (ActivityMgr.peek() == null) {
-			MainActivity.getContext().startActivity(intent);
-		} else {
-			ActivityMgr.peek().startActivity(intent);
-		}
-	}
-
 	public String getExtra(String paramName) {
 		if (getIntent() != null && getIntent().getExtras() != null) {
 			return String.valueOf(getIntent().getExtras().get(paramName));
