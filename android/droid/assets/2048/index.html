@@ -62,18 +62,12 @@
   	 * @returns {} 
   	 */
   	function loadHistory(gataJsons){
-  		console.log(gataJsons);
+  		//console.log(gataJsons);
   		var jsons = gataJsons.split("\|");
   		var index = 0; 
-  		console.log(jsons);
-  		for(var i=0; i<jsons.length;i++){
-  			console.log("jsons["+i+"] == " + jsons[i]);
-  		}
   		for (var x = 0; x < size; x++){
   			 for (var y = 0; y < size; y++) {
-  				console.log(index + " -- " + jsons[index]); 
   			 	var	tmpTile = JSON.parse(jsons[index]);
-  			 	console.log(index + " -- " + JSON.stringify(tmpTile));
   			 	if(tmpTile != null){
   			 		var tile = new Tile({x:x,y:y}, tmpTile.value);
   			 		tile.previousPosition = tmpTile.previousPosition;
