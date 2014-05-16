@@ -52,7 +52,8 @@ public class MainActivity extends Activity {
 		private Path mPath = null;
 		private Paint mPaint = null;
 		private Bitmap backgroudBitmap = null;
-		private Bitmap foregroundBitmap = null; 
+		private Bitmap foregroundBitmap = null;
+
 		public GuaGuaKa(Context context) {
 			super(context);
 			init(context);
@@ -60,7 +61,7 @@ public class MainActivity extends Activity {
 
 		private void init(Context context) {
 			setBackground();
-			//paint
+			// paint
 			mPaint = new Paint();
 			mPaint.setFlags(Paint.ANTI_ALIAS_FLAG);
 			mPaint.setAntiAlias(true);
@@ -71,9 +72,9 @@ public class MainActivity extends Activity {
 			mPaint.setStrokeJoin(Join.ROUND);
 			mPaint.setXfermode(new PorterDuffXfermode(Mode.DST_IN));
 			mPaint.setAlpha(0);
-			//path
+			// path
 			mPath = new Path();
-			//back
+			// back
 			foregroundBitmap = Bitmap.createBitmap(screenWidth, screenHeight, Config.ARGB_8888);
 			mCanvas = new Canvas(foregroundBitmap);
 			mCanvas.drawColor(Color.GRAY);
@@ -106,10 +107,10 @@ public class MainActivity extends Activity {
 			super.onDraw(canvas);
 			mCanvas.drawPath(mPath, mPaint);
 			canvas.drawBitmap(foregroundBitmap, 0, 0, null);
-			
+
 			System.out.println("xxx " + backgroudBitmap.getPixel(110, 110));
 		}
- 
+
 		private int x = 0;
 		private int y = 0;
 
@@ -137,6 +138,28 @@ public class MainActivity extends Activity {
 				break;
 			}
 			return true;
+		}
+	}
+
+	/**
+	 * 计算刮开的面积百分比
+	 */
+	private class AreaThread extends Thread {
+		private boolean isRunning = false;
+		private int totalPoint;// 全部的点
+		private int openPoint;// 已经刮开的点
+		private Rect rect;
+		private final int interval = 2;// 间隔两个点
+
+		public AreaThread(Rect rect) {
+			this.rect = rect;
+		}
+
+		@Override
+		public void run() {
+			while (isRunning) {
+
+			}
 		}
 	}
 }
