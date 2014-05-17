@@ -2,6 +2,7 @@ package com.example.guagua;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.res.TypedArray;
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.Config;
 import android.graphics.Canvas;
@@ -22,20 +23,23 @@ import android.view.MotionEvent;
 import android.view.View;
 
 public class ShaveView extends View {
-	private Bitmap foregroundBitmap;
 	private int width, height;
 	// 字体大小
-	private int TEXT_SIZE;
+	private int TEXT_SIZE = 40;
 	private String drawText;
 	// 中奖文本绘制的区域Rect
 	private Rect drawRect;
-	private int STROKE_WIDTH = 20;// 画壁粗细
-	private Canvas mCanvas = null;
-	private Path mPath = null;
-	private Paint mPaint = null;
-	private Bitmap backgroudBitmap = null;
+	private int STROKE_WIDTH = 20;// 画笔粗细
+	private Path foregroundPath = null;
+	private Paint backgroudPaint, foregroundPaint;
+	private Canvas backgroundCanvas, foregroundCanvas;
+	private Bitmap backgroundBitmap, foregroundBitmap;
 
-	private AreaThread areaThread;
+	// 像素点-存放像素值。
+	private short[][] pixel;
+	private int totalPoint;// 全部的点
+	private int openPoint;// 已经刮开的点的总数
+	private final int space = 1;// 间隔两个点
 
 	public ShaveView(Context context) {
 		super(context);
@@ -45,73 +49,73 @@ public class ShaveView extends View {
 	@SuppressLint("NewApi")
 	public ShaveView(Context context, AttributeSet attrs) {
 		super(context, attrs);
+		int[] attrsArray = new int[] { android.R.attr.id, // 0
+				android.R.attr.background, // 1
+				android.R.attr.layout_width, // 2
+				android.R.attr.layout_height, // 3
+				android.R.attr.text, // 4
+				android.R.attr.textSize };
+		TypedArray ta = context.obtainStyledAttributes(attrs, attrsArray);
 		// 关闭硬件加速。否则会报OpenGLRenderer Message：Cannot generate texture from bitmap
 		// setLayerType(View.LAYER_TYPE_SOFTWARE, null);
-		drawText = "我中奖了";
-		TEXT_SIZE = 40;
-		// measure(MeasureSpec.EXACTLY, MeasureSpec.EXACTLY);
+		drawText = ta.getString(4);
+		TEXT_SIZE = ta.getIndex(5);
+		ta.recycle();
 	}
 
 	@Override
 	protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
 		super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-		if (getHeight() > 0 && mPaint == null) {
+		if (getHeight() > 0 && foregroundBitmap == null) {
 			init();
 		}
 	}
 
-	// 像素点-存放像素值。
-	private short[][] pixel;
-	private int totalPoint;// 全部的点
-	private int openPoint;// 已经刮开的点的总数
-	private final int space = 1;// 间隔两个点
-
 	private void init() {
-		this.width = getMeasuredWidth();
-		this.height = getMeasuredHeight();
-		//
-		setBackground();
-		// paint
-		mPaint = new Paint();
-		mPaint.setFlags(Paint.ANTI_ALIAS_FLAG);
-		mPaint.setAntiAlias(true);
-		mPaint.setDither(true);
-		mPaint.setStyle(Style.STROKE);
-		mPaint.setStrokeWidth(STROKE_WIDTH);
-		mPaint.setStrokeCap(Cap.ROUND);
-		mPaint.setStrokeJoin(Join.ROUND);
-		mPaint.setXfermode(new PorterDuffXfermode(Mode.DST_IN));
-		mPaint.setAlpha(0);
-		// path
-		mPath = new Path();
-		// back
+		this.width = getWidth();
+		this.height = getHeight();
+		// 背景图
+		backgroundBitmap = Bitmap.createBitmap(width, height, Config.ARGB_8888);
+		backgroundCanvas = new Canvas(backgroundBitmap);
+		// 背景Paint
+		backgroudPaint = new Paint();
+		backgroudPaint.setTextSize(TEXT_SIZE);
+		backgroudPaint.setColor(Color.BLACK);
+		backgroudPaint.setFlags(Paint.ANTI_ALIAS_FLAG);
+		backgroudPaint.setTextAlign(Align.CENTER);
+		backgroudPaint.setAntiAlias(true);
+		// 前景图
 		foregroundBitmap = Bitmap.createBitmap(width, height, Config.ARGB_8888);
-		mCanvas = new Canvas(foregroundBitmap);
-		mCanvas.drawColor(Color.GRAY);
+		foregroundCanvas = new Canvas(foregroundBitmap);
+
+		// 前景Paint
+		foregroundPaint = new Paint();
+		foregroundPaint.setFlags(Paint.ANTI_ALIAS_FLAG);
+		foregroundPaint.setAntiAlias(true);
+		foregroundPaint.setDither(true);
+		foregroundPaint.setStyle(Style.STROKE);
+		foregroundPaint.setStrokeWidth(STROKE_WIDTH);
+		foregroundPaint.setStrokeCap(Cap.ROUND);
+		foregroundPaint.setStrokeJoin(Join.ROUND);
+		foregroundPaint.setXfermode(new PorterDuffXfermode(Mode.DST_IN));
+		foregroundPaint.setAlpha(0);
+		// path
+		foregroundPath = new Path();
+		onReset(drawText);
 	}
 
 	@SuppressWarnings("deprecation")
-	private void setBackground() {
-		Paint paint = new Paint();
-		backgroudBitmap = Bitmap.createBitmap(width, height, Config.ARGB_8888);
-		paint.setTextSize(TEXT_SIZE);
-		paint.setColor(Color.BLACK);
-		paint.setFlags(Paint.ANTI_ALIAS_FLAG);
-		paint.setTextAlign(Align.CENTER);
-		paint.setAntiAlias(true);
-		//
-		Canvas canvas = new Canvas(backgroudBitmap);
-		canvas.drawColor(Color.WHITE);
-		//
-		int centerX = (canvas.getWidth() / 2);
-		int centerY = (int) ((canvas.getHeight() / 2) - ((paint.descent() + paint.ascent()) / 2));
+	private void drawBackground() {
+		backgroundCanvas.drawColor(Color.WHITE);
+		int centerX = (backgroundCanvas.getWidth() / 2);
+		int centerY = (int) ((backgroundCanvas.getHeight() / 2) - ((backgroudPaint.descent() + backgroudPaint.ascent()) / 2));
 		// ((textPaint.descent() + textPaint.ascent()) / 2) is the distance from
 		// the baseline to the center.
-		canvas.drawText(drawText, centerX, centerY, paint);
-		setBackgroundDrawable(new BitmapDrawable(getResources(), backgroudBitmap));
+		backgroundCanvas.drawText(drawText, centerX, centerY, backgroudPaint);
+		setBackgroundDrawable(new BitmapDrawable(getResources(), backgroundBitmap));
 		// 计算Draw区域
-		int drawTextWidth = (int) (paint.getTextSize() * drawText.length());
-		int drawTextHeight = (int) paint.getTextSize();
+		int drawTextWidth = (int) backgroudPaint.measureText(drawText);
+		int drawTextHeight = (int) backgroudPaint.getTextSize();
 		int left = centerX - drawTextWidth / 2;
 		int right = centerX + drawTextWidth / 2;
 		int bottom = centerY + drawTextHeight / 2;
@@ -124,25 +128,49 @@ public class ShaveView extends View {
 		totalPoint = xLen * yLen;
 	}
 
+	private boolean isShaveOpen = false;
+
+	/**
+	 * 刮开-回调
+	 */
+	private void onShaveOpen() {
+		isShaveOpen = true;
+		if (shaveOpenCallback != null) {
+			shaveOpenCallback.callback();
+		}
+	}
+
+	public void onReset(String drawText) {
+		this.drawText = drawText;
+		drawBackground();
+		foregroundCanvas.drawColor(Color.GRAY);
+		isShaveOpen = false;
+		// postInvalidate();
+	}
+
 	@Override
 	protected void onDraw(Canvas canvas) {
-		mCanvas.drawPath(mPath, mPaint);
+		foregroundCanvas.drawPath(foregroundPath, foregroundPaint);
 		canvas.drawBitmap(foregroundBitmap, 0, 0, null);
-
-		openPoint = 0;// Rect(248, 308 - 408, 348)
-		for (int x = 0; x < pixel.length; x += space) {
-			for (int y = 0; y < pixel[x].length; y += space) {
-				// 已经刮开
-				if (foregroundBitmap.getPixel(drawRect.left + x, drawRect.top + y) == 0) {
-					openPoint++;
-				} else {
-					// System.out.println((rect.left + x) + "," +
-					// (rect.top + y));
+		if (isShaveOpen == false) {
+			openPoint = 0;// Rect(248, 308 - 408, 348)
+			for (int x = 0; x < pixel.length; x += space) {
+				for (int y = 0; y < pixel[x].length; y += space) {
+					// 已经刮开
+					if (foregroundBitmap.getPixel(drawRect.left + x, drawRect.top + y) == 0) {
+						openPoint++;
+					} else {
+						// System.out.println((drawRect.left + x) + "," +
+						// (drawRect.top + y));
+					}
 				}
 			}
-
-		}// Rect(100, 70 - 220, 100)
-		Log.d("open", openPoint / (float) totalPoint + "");
+			float percent = openPoint / (float) totalPoint;
+			Log.d("open", percent + "");
+			if (percent > 0.8) {
+				onShaveOpen();
+			}
+		}
 	}
 
 	private int x = 0;
@@ -155,124 +183,33 @@ public class ShaveView extends View {
 		int currY = (int) event.getY();
 		switch (action) {
 		case MotionEvent.ACTION_DOWN:
-			mPath.reset();
+			foregroundPath.reset();
 			x = currX;
 			y = currY;
-			mPath.moveTo(x, y);
-			// if (areaThread == null && isRunning) {
-			// areaThread = new AreaThread();
-			// areaThread.start();
-			// } else {
-			// areaThread.resumeCalc();
-			// }
+			foregroundPath.moveTo(x, y);
 			break;
 		case MotionEvent.ACTION_MOVE:
-			mPath.quadTo(x, y, currX, currY);
+			foregroundPath.quadTo(x, y, currX, currY);
 			x = currX;
 			y = currY;
 			postInvalidate();
 			break;
 		case MotionEvent.ACTION_UP:
 		case MotionEvent.ACTION_CANCEL:
-			mPath.reset();
-			if (areaThread != null) {
-				areaThread.suspendCalc();
-			}
+			foregroundPath.reset();
 			break;
 		}
 		return true;
 	}
 
-	/**
-	 * 标志 . 是否开启Area线程
-	 */
-	private boolean isRunning = false;
+	private SheveOpenCallback shaveOpenCallback;
 
-	public void startAreaThread() {
-		isRunning = true;
+	public static interface SheveOpenCallback {
+		public void callback();
 	}
 
-	public void stopAreaThread() {
-		if (areaThread != null) {
-			areaThread.stopCalc();
-			areaThread = null;
-		}
-	}
-
-	/**
-	 * 计算刮开的面积百分比
-	 */
-	private class AreaThread extends Thread {
-		private final String TAG = "AreaThread";
-		// 是否挂起线程
-		private boolean isSuspend = false;
-		// 像素点-存放像素值。
-		private short[][] pixel;
-		private int totalPoint;// 全部的点
-		private int openPoint;// 已经刮开的点的总数
-		private final int space = 1;// 间隔两个点
-
-		public AreaThread() {
-			int xLen = drawRect.right - drawRect.left;
-			int yLen = drawRect.bottom - drawRect.top;
-			pixel = new short[xLen][yLen];
-			totalPoint = xLen * yLen;
-			// pixelSet = new HashSet<short[][]>();
-		}
-
-		@Override
-		public void run() {
-			while (isRunning) {
-				openPoint = 0;// Rect(248, 308 - 408, 348)
-				for (int x = 0; x < pixel.length; x += space) {
-					for (int y = 0; y < pixel[x].length; y += space) {
-						// 已经刮开
-						if (foregroundBitmap.getPixel(drawRect.left + x, drawRect.top + y) == 0) {
-							openPoint++;
-						} else {
-							// System.out.println((rect.left + x) + "," +
-							// (rect.top + y));
-						}
-					}
-					if (isSuspend) {
-						try {
-							synchronized (this) {
-								Log.d(TAG, "wait");
-								wait();
-							}
-						} catch (InterruptedException e) {
-							e.printStackTrace();
-						}
-					}
-				}// Rect(100, 70 - 220, 100)
-				Log.d("open", openPoint / (float) totalPoint + "");
-			}
-		}
-
-		@Override
-		public synchronized void start() {
-			super.start();
-			isRunning = true;
-			Log.d(TAG, "start");
-		}
-
-		public void resumeCalc() {
-			this.isSuspend = false;
-			synchronized (this) {
-				notify();
-			}
-			Log.d(TAG, "resumeCalc");
-		}
-
-		public void suspendCalc() {
-			this.isSuspend = true;
-			Log.d(TAG, "suspendCalc");
-		}
-
-		public void stopCalc() {
-			isRunning = false;
-			Log.d(TAG, "stopCalc");
-		}
+	public void setShaveOpenCallback(SheveOpenCallback shaveOpenCallback) {
+		this.shaveOpenCallback = shaveOpenCallback;
 	}
 
 }
