@@ -87,7 +87,6 @@ public class ShaveView extends View {
 		// 前景图
 		foregroundBitmap = Bitmap.createBitmap(width, height, Config.ARGB_8888);
 		foregroundCanvas = new Canvas(foregroundBitmap);
-
 		// 前景Paint
 		foregroundPaint = new Paint();
 		foregroundPaint.setFlags(Paint.ANTI_ALIAS_FLAG);
@@ -114,18 +113,20 @@ public class ShaveView extends View {
 		backgroundCanvas.drawText(drawText, centerX, centerY, backgroudPaint);
 		setBackgroundDrawable(new BitmapDrawable(getResources(), backgroundBitmap));
 		// 计算Draw区域
-		int drawTextWidth = (int) backgroudPaint.measureText(drawText);
-		int drawTextHeight = (int) backgroudPaint.getTextSize();
+		drawRect = new Rect();
+		// Rect(3, -33 - 226, 1)
+		Rect bounds = new Rect();
+		backgroudPaint.getTextBounds(drawText, 0, drawText.length(), bounds);
+		int drawTextWidth =  bounds.width(); //(int) backgroudPaint.measureText(drawText);
+		int drawTextHeight =  bounds.height();
 		int left = centerX - drawTextWidth / 2;
 		int right = centerX + drawTextWidth / 2;
 		int bottom = centerY + drawTextHeight / 2;
 		int top = centerY - drawTextHeight / 2;
-		drawRect = new Rect(left, top, right, bottom);
+		drawRect = new Rect(left, top, right, bottom); 
 		//
-		int xLen = drawRect.right - drawRect.left;
-		int yLen = drawRect.bottom - drawRect.top;
-		pixel = new short[xLen][yLen];
-		totalPoint = xLen * yLen;
+		pixel = new short[drawRect.width()][drawRect.height()];
+		totalPoint = drawRect.width() * drawRect.height();
 	}
 
 	private boolean isShaveOpen = false;
@@ -150,6 +151,10 @@ public class ShaveView extends View {
 
 	@Override
 	protected void onDraw(Canvas canvas) {
+		if (foregroundCanvas == null) {
+			super.onDraw(canvas);
+			return;
+		}
 		foregroundCanvas.drawPath(foregroundPath, foregroundPaint);
 		canvas.drawBitmap(foregroundBitmap, 0, 0, null);
 		if (isShaveOpen == false) {
