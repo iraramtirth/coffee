@@ -8,13 +8,42 @@
     </style>
     <!-- 整体layout样式 -->
     <style name="common_layout_style">
-        <item name="android:background">#ffffff</item>
+        <item name="android:background">#ffe1e0de</item>
+    </style>
+    <style name="common_layout_body_style">
+        <item name="android:orientation">vertical</item>
+        <item name="android:paddingLeft">18.0dip</item>
+        <item name="android:paddingTop">26.0dip</item>
+        <item name="android:paddingRight">18.0dip</item>
+        <item name="android:paddingBottom">18.0dip</item>
+        <item name="android:fadingEdge">none</item>
+        <item name="android:layout_width">fill_parent</item>
+        <item name="android:layout_height">fill_parent</item>
+        <item name="android:layout_weight">1.0</item>
+    </style>
+    <style name="CommonButton">
+        <item name="android:textSize">16.0dip</item>
+        <item name="android:textColor">#FFFFFF</item>
+        <item name="android:background">@null</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:minWidth">40.0dip</item>
+        <item name="android:minHeight">40.0dip</item>
+        <item name="android:paddingLeft">15.0dip</item>
+        <item name="android:paddingRight">15.0dip</item>
+    </style>
+    <style name="CommonActionButton" parent="@style/CommonButton">
+        <item name="android:background">@drawable/btn_style_one</item>
+        <item name="android:shadowColor">#ff000000</item>
+        <item name="android:shadowDx">1.2</item>
+        <item name="android:shadowDy">1.2</item>
+        <item name="android:shadowRadius">1.0</item>
     </style>
     <!-- 顶部title样式 -->
     <style name="common_title_style">
         <item name="android:layout_width">fill_parent</item>
         <item name="android:layout_height">50dip</item>
-        <item name="android:background">@drawable/title_background</item>
+        <item name="android:background">@drawable/common_title_bg</item>
     </style>
     <!-- ListView通用样式 -->
     <style name="common_list_style">

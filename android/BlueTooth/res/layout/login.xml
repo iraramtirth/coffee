@@ -1,32 +1,47 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- 联系人列表 -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/common_layout_style"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/bg"
     android:orientation="vertical">
     <include
         android:id="@+id/title_layout"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         layout="@layout/common_title"/>
-    <EditText
-        android:id="@+id/host"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:text=""/>
-    <EditText
-        android:id="@+id/username"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:hint="用户名"/>
-    <EditText
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:hint="密码"/>
-    <Button
-        android:id="@+id/login_btn"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:text="登录"/>
+    <LinearLayout style="@style/common_layout_body_style">
+        <EditText
+            android:id="@+id/host"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/common_edit"
+            android:text=""/>
+        <EditText
+            android:id="@+id/username"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dip"
+            android:background="@drawable/common_edit"
+            android:hint="用户名"/>
+        <EditText
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dip"
+            android:background="@drawable/common_edit"
+            android:hint="密码"/>
+        <!--  -->
+        <RelativeLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dip">
+            <Button
+                android:id="@+id/login_btn"
+                style="@style/CommonActionButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:text="登    录"/>
+        </RelativeLayout>
+    </LinearLayout>
 </LinearLayout>
