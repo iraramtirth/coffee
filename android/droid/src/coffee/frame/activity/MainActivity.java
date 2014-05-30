@@ -37,7 +37,7 @@ public class MainActivity extends BaseActivityGroup implements OnClickListener {
 
 	@Override
 	public void findViewById() {
-		this.setContentView(R.layout.main);
+		this.setContentView(R.layout.main_fragment);
 		// 会话界面
 		Button btn0 = (Button) this.findViewById(R.id.tab_conversation);
 		// 联系人界面
